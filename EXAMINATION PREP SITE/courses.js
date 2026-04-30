@@ -1,0 +1,1178 @@
+const STORAGE_KEY = window.GnpLearning?.getStorageKey?.() || "gnp-learning-state-v2";
+const courseImages = {
+    nurseTablet: "https://images.unsplash.com/photo-1580281657527-47c57d5a0b8b?auto=format&fit=crop&q=80&w=1200",
+    simulationLab: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&q=80&w=1200",
+    lectureRoom: "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=1200",
+    medicationTray: "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&q=80&w=1200",
+    blisterPack: "https://images.unsplash.com/photo-1628771065518-0d82f1938462?auto=format&fit=crop&q=80&w=1200",
+    pediatricCare: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=1200",
+    criticalCare: "https://images.unsplash.com/photo-1550831107-1553da8c8464?auto=format&fit=crop&q=80&w=1200",
+    ecgTraining: "https://images.unsplash.com/photo-1666214280557-f1b5022eb634?auto=format&fit=crop&q=80&w=1200",
+    doseReview: "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?auto=format&fit=crop&q=80&w=1200",
+    reasoningBoard: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=1200",
+    mentorSession: "https://images.unsplash.com/photo-1584433144859-1fc3ab64a957?auto=format&fit=crop&q=80&w=1200",
+    anatomyLab: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&q=80&w=1200",
+    skeletalStudy: "https://images.unsplash.com/photo-1530497610245-94d3c16cda28?auto=format&fit=crop&q=80&w=1200",
+    respiratoryCare: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80&w=1200",
+    digestionNotes: "https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&q=80&w=1200",
+    pediatricsPlay: "https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?auto=format&fit=crop&q=80&w=1200",
+    pediatricWard: "https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&q=80&w=1200",
+    emergencyTriage: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&q=80&w=1200",
+    nclexDesk: "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&q=80&w=1200",
+    nurseConference: "https://images.unsplash.com/photo-1576765608866-5b51046452be?auto=format&fit=crop&q=80&w=1200",
+    medMath: "https://images.unsplash.com/photo-1576671414121-aa0c81c86931?auto=format&fit=crop&q=80&w=1200"
+};
+
+const courseCatalog = [
+    {
+        id: "nck-masterclass",
+        title: "NCK Licensing Exam Masterclass",
+        category: "Licensing Prep (NCK)",
+        difficulty: "Intermediate",
+        badge: "Flagship",
+        durationHours: 40,
+        questions: 1500,
+        exams: 8,
+        format: "Live + Recorded",
+        summary: "Complete syllabus coverage, guided revision, mock exams, and structured lecturer support for the NCK pathway.",
+        image: courseImages.nurseTablet,
+        outcomes: ["End-to-end syllabus roadmap", "Weekly revision checkpoints", "Timed mock readiness"],
+        facts: ["Mentor-led", "Revision plans", "Mock exams"],
+        keywords: ["nck", "licensing", "mock exams", "study plan"],
+        modules: [
+            {
+                title: "Cardiovascular Assessment and Monitoring",
+                objective: "Recognize unstable findings early and connect assessment with urgent action.",
+                body: "This module organizes cardiovascular revision around patient observation, focused history, monitoring interpretation, and escalation logic for clinical safety.",
+                pearlTitle: "Clinical Pearl",
+                pearl: "In nursing exams, the question often hides priority in the trend rather than the single value. Compare symptoms, vitals, and timing together.",
+                structures: ["Focused chest pain assessment", "Fluid balance and perfusion monitoring", "Escalation cues in acute deterioration"],
+                image: courseImages.ecgTraining,
+                quiz: {
+                    prompt: "Which finding most strongly suggests reduced cardiac output?",
+                    options: ["Warm dry skin", "Bounding pulses", "Hypotension with cool extremities", "Mild thirst"],
+                    correctOption: 2,
+                    success: "Correct. Cool extremities with hypotension point toward poor perfusion.",
+                    failure: "Look for the option that most directly signals low perfusion."
+                }
+            },
+            {
+                title: "Medication Safety in Adult Care",
+                objective: "Prioritize safe administration and monitoring in common adult medical conditions.",
+                body: "You will revise high-yield medication groups, nursing checks before administration, and how exam questions test safety, contraindications, and monitoring.",
+                pearlTitle: "Clinical Pearl",
+                pearl: "Medication questions reward sequence thinking: verify, assess, give, monitor, teach.",
+                structures: ["High-alert medication checks", "Common contraindication patterns", "Monitoring after administration"],
+                image: courseImages.blisterPack,
+                quiz: {
+                    prompt: "Before giving digoxin, which action is prioritized?",
+                    options: ["Check apical pulse", "Offer food", "Encourage walking", "Give with milk"],
+                    correctOption: 0,
+                    success: "Correct. Digoxin should be checked against the apical pulse before administration.",
+                    failure: "This drug requires a cardiovascular assessment before giving it."
+                }
+            },
+            {
+                title: "Mock Strategy and Rationales",
+                objective: "Convert revision into exam performance using timing, elimination, and rationale review.",
+                body: "This module helps learners build exam stamina, manage timed sections, and turn every incorrect answer into a revision asset.",
+                pearlTitle: "Clinical Pearl",
+                pearl: "The fastest score growth usually comes from pattern review of repeated mistakes, not just doing more questions.",
+                structures: ["Timed answer strategy", "Elimination under pressure", "Using rationales for targeted review"],
+                image: courseImages.reasoningBoard,
+                quiz: {
+                    prompt: "What is the strongest use of an incorrect mock answer?",
+                    options: ["Ignore it and move on", "Memorize only the right option", "Review the rationale and identify the weak concept", "Retake immediately without review"],
+                    correctOption: 2,
+                    success: "Correct. Rationales turn mistakes into targeted revision.",
+                    failure: "Use wrong answers as a map to weak concepts, not just as marks lost."
+                }
+            }
+        ]
+    },
+    {
+        id: "nclex-comprehensive",
+        title: "NCLEX-RN Comprehensive Prep",
+        category: "NCLEX Preparation",
+        difficulty: "Advanced",
+        badge: "High Demand",
+        durationHours: 52,
+        questions: 2000,
+        exams: 12,
+        format: "Live Coaching",
+        summary: "Next Generation case studies, CAT-style strategy, and decision-based coaching for serious NCLEX preparation.",
+        image: courseImages.simulationLab,
+        outcomes: ["NGN case-style reasoning", "CAT readiness habits", "Delegation and prioritization mastery"],
+        facts: ["Advanced track", "Case simulations", "Coach feedback"],
+        keywords: ["nclex", "ngn", "cat", "coaching"],
+        modules: [
+            {
+                title: "NGN Case Framing",
+                objective: "Break down client cases into assessment, hypotheses, and prioritized nursing action.",
+                body: "This section trains the learner to read a case stem for context, identify what changed, and connect the scenario to nursing judgement categories.",
+                pearlTitle: "Clinical Pearl",
+                pearl: "NGN questions punish rushing. Start by naming what the patient problem is before choosing what to do.",
+                structures: ["Cue recognition", "Hypothesis formation", "Priority response selection"],
+                image: courseImages.nurseConference,
+                quiz: {
+                    prompt: "What should be identified first in an NGN case?",
+                    options: ["The nurse's shift schedule", "The main patient problem", "The discharge date", "The room number"],
+                    correctOption: 1,
+                    success: "Correct. The main problem anchors every later decision.",
+                    failure: "Start with the patient problem before interventions."
+                }
+            },
+            {
+                title: "Prioritization and Delegation",
+                objective: "Strengthen judgement in who to see first, what to delegate, and what cannot wait.",
+                body: "This module focuses on unstable versus stable clients, RN scope, and how NCLEX tests safety through priority and delegation.",
+                pearlTitle: "Clinical Pearl",
+                pearl: "A safe delegation answer still keeps unstable, teaching, and high-risk assessment tasks with the RN.",
+                structures: ["Stable vs unstable sorting", "Delegation boundaries", "Urgent reassessment patterns"],
+                image: courseImages.mentorSession,
+                quiz: {
+                    prompt: "Which task should stay with the RN?",
+                    options: ["Routine bed making", "Stable vital signs on a recovering patient", "Initial assessment of chest pain", "Transport to imaging"],
+                    correctOption: 2,
+                    success: "Correct. Initial assessment of chest pain belongs to the RN.",
+                    failure: "Think about instability and need for nursing judgement."
+                }
+            },
+            {
+                title: "CAT Exam Endurance",
+                objective: "Develop pacing and emotional control for adaptive testing conditions.",
+                body: "You will practice maintaining focus through uncertainty, using pacing checkpoints and answer discipline to protect performance.",
+                pearlTitle: "Clinical Pearl",
+                pearl: "Not knowing whether you're doing well is part of CAT. Keep quality high one question at a time.",
+                structures: ["Pacing targets", "Reset routines between questions", "Adaptive test mindset"],
+                image: courseImages.nclexDesk,
+                quiz: {
+                    prompt: "What is the best mindset in CAT testing?",
+                    options: ["Guess faster to save time", "Focus on one high-quality answer at a time", "Track every difficult item emotionally", "Change strategy every five questions"],
+                    correctOption: 1,
+                    success: "Correct. CAT rewards consistent answer quality more than emotional reacting.",
+                    failure: "Adaptive exams need calm consistency, not panic pacing."
+                }
+            }
+        ]
+    },
+    {
+        id: "lecture-series",
+        title: "Global Nursing Lecture Series",
+        category: "Professional Lectures",
+        difficulty: "Beginner",
+        badge: "Core Track",
+        durationHours: 36,
+        questions: 600,
+        exams: 6,
+        format: "Recorded",
+        summary: "Foundational lectures across anatomy, pharmacology, med-surg, pediatrics, and community health for broad clinical grounding.",
+        image: courseImages.lectureRoom,
+        outcomes: ["Foundational theory refresh", "Concept linking for practice questions", "Flexible self-paced revision"],
+        facts: ["Recorded lessons", "Core sciences", "Lecture notes"],
+        keywords: ["anatomy", "med surg", "pediatrics", "lectures"],
+        modules: [
+            {
+                title: "Cardiovascular System",
+                objective: "Understand the physiological relationship between the heart, vessels, and systemic circulation.",
+                body: "The cardiovascular system is the body's delivery network. Blood flow depends on coordinated heart contraction, vascular resistance, oxygen transport, and fluid balance.",
+                pearlTitle: "Clinical Pearl",
+                pearl: "Peripheral edema, jugular venous distension, and changes in exercise tolerance often point to evolving heart failure before the patient names chest pain.",
+                structures: [
+                    "Systemic circuit delivers oxygenated blood from the left ventricle to tissues.",
+                    "Pulmonary circuit carries deoxygenated blood to the lungs for gas exchange."
+                ],
+                image: courseImages.anatomyLab,
+                quiz: {
+                    prompt: "Which chamber pumps oxygenated blood into the aorta?",
+                    options: ["Right atrium", "Right ventricle", "Left ventricle", "Left atrium"],
+                    correctOption: 2,
+                    success: "Correct. The left ventricle generates the pressure needed for systemic circulation.",
+                    failure: "Review the blood flow path from the lungs through the left side of the heart."
+                }
+            },
+            {
+                title: "Skeletal System",
+                objective: "Connect bone structure to movement, protection, and mineral balance in the clinical setting.",
+                body: "The skeletal system provides structure, protects vital organs, stores minerals, and supports blood cell production in the marrow.",
+                pearlTitle: "Clinical Pearl",
+                pearl: "Fracture risk is not only about trauma; prolonged immobility, steroid use, and nutritional deficits quietly weaken bone quality.",
+                structures: [
+                    "Axial skeleton protects the brain, spinal cord, and thoracic organs.",
+                    "Appendicular skeleton enables mobility and weight transfer."
+                ],
+                image: courseImages.skeletalStudy,
+                quiz: {
+                    prompt: "Where does hematopoiesis primarily occur in adults?",
+                    options: ["Ligaments", "Bone marrow", "Cartilage", "Synovial fluid"],
+                    correctOption: 1,
+                    success: "Correct. Adult blood cell production mainly occurs in red bone marrow.",
+                    failure: "Think about which skeletal structure produces red and white blood cells."
+                }
+            },
+            {
+                title: "Respiratory Mechanics",
+                objective: "Explain how ventilation, diffusion, and perfusion work together to maintain oxygenation.",
+                body: "Respiration depends on airway patency, diaphragmatic movement, alveolar exchange, and the matching of ventilation with perfusion.",
+                pearlTitle: "Clinical Pearl",
+                pearl: "A rising respiratory rate often appears before oxygen saturation drops. It is one of the earliest clinical warning signs.",
+                structures: [
+                    "Alveoli provide the primary surface area for oxygen and carbon dioxide diffusion.",
+                    "The diaphragm is the main muscle driving inspiration at rest."
+                ],
+                image: courseImages.respiratoryCare,
+                quiz: {
+                    prompt: "Which structure is the primary site of gas exchange?",
+                    options: ["Bronchi", "Trachea", "Alveoli", "Pleura"],
+                    correctOption: 2,
+                    success: "Correct. Gas exchange happens across the alveolar-capillary membrane.",
+                    failure: "Gas exchange happens deeper in the lungs than the conducting airways."
+                }
+            }
+        ]
+    },
+    {
+        id: "pharmacology-intensive",
+        title: "Pharmacology Intensive",
+        category: "Pharmacology",
+        difficulty: "Advanced",
+        badge: "Calculation Lab",
+        durationHours: 28,
+        questions: 480,
+        exams: 5,
+        format: "Recorded + Quiz Bank",
+        summary: "Drug classes, dosage calculations, medication safety, and rapid-fire review drills for high-stakes medication questions.",
+        image: courseImages.medicationTray,
+        outcomes: ["Dosage confidence", "Medication group recall", "Safer answer choices under pressure"],
+        facts: ["Quiz bank", "Safety emphasis", "Drug tables"],
+        keywords: ["drugs", "dosage", "medication safety"],
+        modules: [
+            {
+                title: "Drug Class Recognition",
+                objective: "Group medications by use, action, and common adverse effects.",
+                body: "This module makes pharmacology revision easier by clustering drugs into families and nursing watch-outs rather than isolated facts.",
+                pearlTitle: "Clinical Pearl",
+                pearl: "Drug suffixes often point you to both the class and the likely adverse effects.",
+                structures: ["Class naming patterns", "High-yield adverse effects", "Nursing implications before administration"],
+                image: courseImages.doseReview,
+                quiz: {
+                    prompt: "What is the quickest clue to identify a medication class in many exam questions?",
+                    options: ["Patient age", "Drug suffix pattern", "Room location", "Nurse shift"],
+                    correctOption: 1,
+                    success: "Correct. Many medications can be recognized by their suffix pattern.",
+                    failure: "Think of the naming feature built into many pharmacology questions."
+                }
+            },
+            {
+                title: "Dosage Safety and Calculations",
+                objective: "Apply unit conversion and dose logic accurately without rushing.",
+                body: "Learners review dimensional thinking, rounding safety, and the nursing steps that protect medication administration from preventable errors.",
+                pearlTitle: "Clinical Pearl",
+                pearl: "A correct calculation is not enough if the clinical dose still looks unsafe. Always sense-check the answer.",
+                structures: ["Dose formula flow", "Unit conversion", "Reasonableness check"],
+                image: courseImages.medMath,
+                quiz: {
+                    prompt: "After computing a dose, what should be done next?",
+                    options: ["Give immediately", "Reasonableness and safety check", "Skip documentation", "Ignore the route"],
+                    correctOption: 1,
+                    success: "Correct. Safe dosing requires a final sense-check.",
+                    failure: "Medication safety always includes a final plausibility review."
+                }
+            }
+        ]
+    },
+    {
+        id: "pediatrics-clinical",
+        title: "Pediatrics Clinical Review",
+        category: "Pediatrics",
+        difficulty: "Intermediate",
+        badge: "Clinical Focus",
+        durationHours: 24,
+        questions: 360,
+        exams: 4,
+        format: "Live Review",
+        summary: "Growth and development, emergencies, family-centered care, and scenario-based pediatrics revision.",
+        image: courseImages.pediatricCare,
+        outcomes: ["Age-based nursing judgement", "Parent education confidence", "Emergency prioritization in children"],
+        facts: ["Live sessions", "Case review", "Growth milestones"],
+        keywords: ["children", "growth", "pediatric emergencies"],
+        modules: [
+            {
+                title: "Growth and Development",
+                objective: "Use age-specific expectations to guide nursing assessment and parent teaching.",
+                body: "This module links developmental milestones with normal assessment findings, safety teaching, and common exam scenarios.",
+                pearlTitle: "Clinical Pearl",
+                pearl: "Pediatrics questions often hide the answer inside what is normal for that age group.",
+                structures: ["Milestone recognition", "Age-based communication", "Safety teaching by stage"],
+                image: courseImages.pediatricsPlay,
+                quiz: {
+                    prompt: "What is the safest first step when answering a pediatrics milestone question?",
+                    options: ["Assume adult norms", "Identify the child's developmental stage", "Choose the longest option", "Ignore age data"],
+                    correctOption: 1,
+                    success: "Correct. Age and stage drive the interpretation.",
+                    failure: "The developmental stage is the anchor for the answer."
+                }
+            },
+            {
+                title: "Pediatric Emergencies",
+                objective: "Prioritize airway, hydration, and escalation in acute pediatric scenarios.",
+                body: "You will revise red flags in respiratory distress, dehydration, fever complications, and emergency triage for children.",
+                pearlTitle: "Clinical Pearl",
+                pearl: "In pediatrics, subtle deterioration can become severe quickly. Trend changes matter.",
+                structures: ["Respiratory distress warning signs", "Hydration assessment", "Escalation priorities"],
+                image: courseImages.pediatricWard,
+                quiz: {
+                    prompt: "Which sign in a child needs urgent escalation?",
+                    options: ["Playful behavior", "Normal appetite", "Increased work of breathing", "Mild curiosity"],
+                    correctOption: 2,
+                    success: "Correct. Increased work of breathing is a high-priority sign.",
+                    failure: "Watch for the option that signals respiratory compromise."
+                }
+            }
+        ]
+    },
+    {
+        id: "med-surg-bootcamp",
+        title: "Med-Surg Readiness Bootcamp",
+        category: "Clinical Practice",
+        difficulty: "Intermediate",
+        badge: "Mock Ready",
+        durationHours: 32,
+        questions: 540,
+        exams: 7,
+        format: "Live + Recorded",
+        summary: "Adult health systems review, prioritization practice, and readiness checkpoints for med-surg confidence.",
+        image: courseImages.criticalCare,
+        outcomes: ["System-based review", "Prioritization under pressure", "Readiness checkpoint discipline"],
+        facts: ["Adult health", "Timed checkpoints", "Coach-guided review"],
+        keywords: ["adult health", "clinical reasoning", "med surg"],
+        modules: [
+            {
+                title: "Respiratory and Oxygenation Priorities",
+                objective: "Prioritize nursing response in respiratory compromise and oxygenation failure.",
+                body: "This module focuses on the fast clinical reasoning needed for oxygen delivery, assessment trends, and urgent nursing action.",
+                pearlTitle: "Clinical Pearl",
+                pearl: "In med-surg questions, breathing problems often outrank everything except immediate airway collapse.",
+                structures: ["Respiratory assessment order", "Oxygenation warning signs", "Urgent supportive action"],
+                image: courseImages.emergencyTriage,
+                quiz: {
+                    prompt: "In a deteriorating adult patient, which problem usually takes priority?",
+                    options: ["Mild boredom", "Breathing compromise", "Delayed lunch", "Room transfer"],
+                    correctOption: 1,
+                    success: "Correct. Oxygenation problems are high priority.",
+                    failure: "Choose the option most directly related to ABC priorities."
+                }
+            },
+            {
+                title: "Fluids, Electrolytes, and Monitoring",
+                objective: "Interpret imbalance patterns and act on unsafe shifts early.",
+                body: "The module brings together assessment findings, common imbalance symptoms, and the nursing actions most often tested in adult care.",
+                pearlTitle: "Clinical Pearl",
+                pearl: "Electrolyte questions often reward pattern matching: muscle, cardiac, neurological, and GI clues cluster together.",
+                structures: ["Common imbalance clues", "Monitoring priorities", "Escalation and safety response"],
+                image: courseImages.digestionNotes,
+                quiz: {
+                    prompt: "What is most important when an electrolyte result returns abnormal with symptoms?",
+                    options: ["Ignore symptoms", "Delay all reassessment", "Match lab change with clinical presentation", "Focus only on discharge planning"],
+                    correctOption: 2,
+                    success: "Correct. Clinical significance matters as much as the number.",
+                    failure: "Always connect the abnormal result with the patient's presentation."
+                }
+            }
+        ]
+    }
+];
+
+document.addEventListener("DOMContentLoaded", () => {
+    initializeCatalogPage();
+    initializeCourseDetailPage();
+});
+
+function uid(prefix = "id") {
+    if (window.crypto && typeof window.crypto.randomUUID === "function") {
+        return `${prefix}_${window.crypto.randomUUID()}`;
+    }
+    return `${prefix}_${Math.random().toString(16).slice(2)}_${Date.now().toString(16)}`;
+}
+
+function initializeCatalogPage() {
+    if (document.body.dataset.page !== "catalog") {
+        return;
+    }
+
+    const grid = document.getElementById("course-grid");
+    const categoryContainer = document.getElementById("category-filters");
+    const searchInput = document.getElementById("course-search");
+    const sortSelect = document.getElementById("sort-select");
+    const resultCount = document.getElementById("catalog-results");
+    const difficultyInputs = Array.from(document.querySelectorAll(".difficulty-filter"));
+    const enrollButton = document.getElementById("selected-enroll-btn");
+
+    const categories = ["All Courses", ...new Set(courseCatalog.map((course) => course.category))];
+    const state = getLearningState();
+    const view = {
+        category: "All Courses",
+        search: "",
+        difficulties: [],
+        sort: "featured",
+        selectedCourseId: state.selectedCourseId || courseCatalog[0].id
+    };
+
+    categoryContainer.innerHTML = categories
+        .map((category) => `<button class="filter-chip${category === view.category ? " active" : ""}" data-category="${category}">${category}</button>`)
+        .join("");
+
+    categoryContainer.addEventListener("click", (event) => {
+        const target = event.target.closest(".filter-chip");
+        if (!target) {
+            return;
+        }
+
+        view.category = target.dataset.category;
+        categoryContainer.querySelectorAll(".filter-chip").forEach((chip) => {
+            chip.classList.toggle("active", chip === target);
+        });
+        renderCatalog();
+    });
+
+    searchInput.addEventListener("input", (event) => {
+        view.search = event.target.value.trim().toLowerCase();
+        renderCatalog();
+    });
+
+    difficultyInputs.forEach((input) => {
+        input.addEventListener("change", () => {
+            view.difficulties = difficultyInputs.filter((item) => item.checked).map((item) => item.value);
+            renderCatalog();
+        });
+    });
+
+    sortSelect.addEventListener("change", (event) => {
+        view.sort = event.target.value;
+        renderCatalog();
+    });
+
+    enrollButton.addEventListener("click", () => {
+        const latest = getLearningState();
+        const selectedCourse = getCourseById(view.selectedCourseId);
+        if (!selectedCourse) {
+            return;
+        }
+
+        const enrolledIndex = latest.enrolledCourseIds.indexOf(selectedCourse.id);
+        if (enrolledIndex === -1) {
+            latest.enrolledCourseIds.push(selectedCourse.id);
+            ensureCourseProgress(latest, selectedCourse.id);
+        } else {
+            const ok = window.confirm(
+                `Cancel enrollment in "${selectedCourse.title}"?\n\nYou can re-enroll anytime and continue where you left off.`
+            );
+            if (!ok) {
+                return;
+            }
+            latest.enrolledCourseIds.splice(enrolledIndex, 1);
+        }
+        latest.selectedCourseId = selectedCourse.id;
+        saveLearningState(latest);
+        renderCatalog();
+    });
+
+    renderCatalog();
+
+    function renderCatalog() {
+        const latestState = getLearningState();
+        const filteredCourses = courseCatalog
+            .filter((course) => matchesCategory(course, view.category))
+            .filter((course) => matchesDifficulty(course, view.difficulties))
+            .filter((course) => matchesSearch(course, view.search))
+            .sort((left, right) => sortCourses(left, right, view.sort));
+
+        if (!filteredCourses.some((course) => course.id === view.selectedCourseId)) {
+            view.selectedCourseId = filteredCourses[0]?.id || courseCatalog[0].id;
+        }
+
+        const selectedCourse = getCourseById(view.selectedCourseId) || courseCatalog[0];
+        latestState.selectedCourseId = selectedCourse.id;
+        saveLearningState(latestState);
+
+        resultCount.textContent = `${filteredCourses.length} ${filteredCourses.length === 1 ? "program" : "programs"}`;
+        renderHeroStats();
+        renderSelectedProgram(selectedCourse, latestState);
+        renderLearnerRail(selectedCourse.id, latestState);
+
+        if (!filteredCourses.length) {
+            grid.innerHTML = `
+                <div class="empty-state">
+                    <h3>No programs match those filters.</h3>
+                    <p>Try a broader search, switch category, or clear a difficulty filter.</p>
+                </div>
+            `;
+            revealElements(document.querySelectorAll(".reveal-on-scroll"));
+            return;
+        }
+
+        grid.innerHTML = filteredCourses
+            .map((course) => renderCourseCard(course, latestState))
+            .join("");
+
+        grid.querySelectorAll("[data-select-course]").forEach((button) => {
+            button.addEventListener("click", () => {
+                view.selectedCourseId = button.dataset.selectCourse;
+                renderCatalog();
+                document.getElementById("selected-program")?.scrollIntoView({ behavior: "smooth", block: "start" });
+            });
+        });
+
+        grid.querySelectorAll("[data-enroll-course]").forEach((button) => {
+            button.addEventListener("click", () => {
+                const latest = getLearningState();
+                const courseId = button.dataset.enrollCourse;
+                const course = getCourseById(courseId);
+                if (!course) {
+                    return;
+                }
+
+                const enrolledIndex = latest.enrolledCourseIds.indexOf(courseId);
+                if (enrolledIndex === -1) {
+                    latest.enrolledCourseIds.push(courseId);
+                    ensureCourseProgress(latest, courseId);
+                } else {
+                    const ok = window.confirm(
+                        `Cancel enrollment in "${course.title}"?\n\nYou can re-enroll anytime and continue where you left off.`
+                    );
+                    if (!ok) {
+                        return;
+                    }
+                    latest.enrolledCourseIds.splice(enrolledIndex, 1);
+                }
+
+                latest.selectedCourseId = courseId;
+                saveLearningState(latest);
+                view.selectedCourseId = courseId;
+                renderCatalog();
+            });
+        });
+
+        revealElements(document.querySelectorAll(".reveal-on-scroll"));
+    }
+}
+
+function initializeCourseDetailPage() {
+    if (document.body.dataset.page !== "course-detail") {
+        return;
+    }
+
+    const state = getLearningState();
+    const requestedCourseId = new URLSearchParams(window.location.search).get("course");
+    const currentCourse = getCourseById(requestedCourseId) || getCourseById(state.selectedCourseId) || courseCatalog[0];
+
+    state.selectedCourseId = currentCourse.id;
+    ensureCourseProgress(state, currentCourse.id);
+    saveLearningState(state);
+
+    if (!state.enrolledCourseIds.includes(currentCourse.id)) {
+        window.alert("Enroll in this course first to open the learning workspace.");
+        window.location.replace(`../courses.html#selected-program`);
+        return;
+    }
+
+    const elements = {
+        workspaceTitle: document.getElementById("workspace-course-title"),
+        workspaceSummary: document.getElementById("workspace-course-summary"),
+        workspaceImage: document.getElementById("workspace-course-image"),
+        workspaceMeta: document.getElementById("workspace-meta"),
+        workspaceProgressLabel: document.getElementById("workspace-progress-label"),
+        workspaceProgressBar: document.getElementById("workspace-progress-bar"),
+        workspaceSaveState: document.getElementById("workspace-save-state"),
+        certificateLink: document.getElementById("view-certificate-link"),
+        switcher: document.getElementById("workspace-course-switcher"),
+        outlineList: document.getElementById("workspace-outline-list"),
+        moduleTitle: document.getElementById("module-title"),
+        moduleObjective: document.getElementById("module-objective"),
+        moduleBody: document.getElementById("module-body"),
+        moduleImage: document.getElementById("module-image"),
+        modulePearlTitle: document.getElementById("module-pearl-title"),
+        modulePearlBody: document.getElementById("module-pearl-body"),
+        structureList: document.getElementById("module-structures"),
+        quizPrompt: document.getElementById("quiz-prompt"),
+        quizOptions: document.querySelector(".quiz-options"),
+        quizFeedback: document.querySelector(".quiz-feedback"),
+        notes: document.getElementById("module-notes"),
+        prevButton: document.getElementById("prev-module-btn"),
+        nextButton: document.getElementById("next-module-btn"),
+        markCompleteButton: document.getElementById("mark-complete-btn")
+    };
+
+    let saveTimer = null;
+    let activeCourse = currentCourse;
+    let activeModuleIndex = clampModuleIndex(state.progress[activeCourse.id].currentModuleIndex, activeCourse.modules.length);
+
+    elements.prevButton.addEventListener("click", () => {
+        if (activeModuleIndex > 0) {
+            activeModuleIndex -= 1;
+            persistModulePosition();
+            renderWorkspace();
+        }
+    });
+
+    elements.nextButton.addEventListener("click", () => {
+        if (activeModuleIndex < activeCourse.modules.length - 1) {
+            activeModuleIndex += 1;
+            persistModulePosition();
+            renderWorkspace();
+        }
+    });
+
+    elements.markCompleteButton.addEventListener("click", () => {
+        const latest = getLearningState();
+        const progress = ensureCourseProgress(latest, activeCourse.id);
+        if (progress.completedModules.includes(activeModuleIndex)) {
+            return;
+        }
+
+        const passed = progress.quizPassed?.[activeModuleIndex] === true;
+        if (!passed) {
+            elements.quizFeedback.textContent = "Answer the knowledge check correctly before marking this module complete.";
+            elements.quizFeedback.className = "quiz-feedback incorrect";
+            return;
+        }
+
+        if (!progress.completedModules.includes(activeModuleIndex)) {
+            progress.completedModules.push(activeModuleIndex);
+        }
+        progress.currentModuleIndex = activeModuleIndex;
+        progress.lastVisited = new Date().toISOString();
+        saveLearningState(latest);
+        elements.workspaceSaveState.textContent = "Module completed";
+        renderWorkspace();
+    });
+
+    elements.quizOptions.addEventListener("change", (event) => {
+        const selectedOption = event.target.closest("input[type='radio']");
+        if (!selectedOption) {
+            return;
+        }
+
+        const latest = getLearningState();
+        const progress = ensureCourseProgress(latest, activeCourse.id);
+        progress.quizAnswers[activeModuleIndex] = Number(selectedOption.value);
+        if (progress.quizPassed?.[activeModuleIndex]) {
+            progress.quizPassed[activeModuleIndex] = false;
+        }
+        if (progress.quizChecked?.[activeModuleIndex]) {
+            progress.quizChecked[activeModuleIndex] = false;
+        }
+        progress.lastVisited = new Date().toISOString();
+        saveLearningState(latest);
+        elements.workspaceSaveState.textContent = "Answer saved";
+        renderWorkspace();
+    });
+
+    document.querySelector(".check-answer-btn").addEventListener("click", () => {
+        const selectedOption = elements.quizOptions.querySelector("input[type='radio']:checked");
+        if (!selectedOption) {
+            elements.quizFeedback.textContent = "Select an answer before checking your understanding.";
+            elements.quizFeedback.className = "quiz-feedback";
+            return;
+        }
+
+        const module = activeCourse.modules[activeModuleIndex];
+        const isCorrect = Number(selectedOption.value) === module.quiz.correctOption;
+
+        const latest = getLearningState();
+        const progress = ensureCourseProgress(latest, activeCourse.id);
+        progress.quizChecked[activeModuleIndex] = true;
+        progress.quizPassed[activeModuleIndex] = isCorrect;
+        progress.lastVisited = new Date().toISOString();
+        saveLearningState(latest);
+        elements.workspaceSaveState.textContent = isCorrect ? "Knowledge check passed" : "Review and retry";
+        renderWorkspace();
+    });
+
+    elements.notes.addEventListener("input", () => {
+        elements.workspaceSaveState.textContent = "Saving...";
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(() => {
+            const latest = getLearningState();
+            const progress = ensureCourseProgress(latest, activeCourse.id);
+            progress.notes[activeModuleIndex] = elements.notes.value;
+            progress.currentModuleIndex = activeModuleIndex;
+            progress.lastVisited = new Date().toISOString();
+            saveLearningState(latest);
+            elements.workspaceSaveState.textContent = "Synced";
+        }, 250);
+    });
+
+    renderWorkspace();
+
+    function renderWorkspace() {
+        const latest = getLearningState();
+        const progress = ensureCourseProgress(latest, activeCourse.id);
+
+        elements.workspaceTitle.textContent = activeCourse.title;
+        elements.workspaceSummary.textContent = activeCourse.summary;
+        elements.workspaceImage.src = activeCourse.image;
+        elements.workspaceImage.alt = activeCourse.title;
+        elements.workspaceMeta.innerHTML = [
+            createMetaPill("Track", activeCourse.category),
+            createMetaPill("Level", activeCourse.difficulty),
+            createMetaPill("Format", activeCourse.format)
+        ].join("");
+
+        const percent = getProgressPercent(activeCourse.id, latest);
+        elements.workspaceProgressLabel.textContent = `${percent}% complete`;
+        elements.workspaceProgressBar.style.width = `${percent}%`;
+        renderCertificateLink(latest, progress, percent);
+        renderSwitcher(latest);
+        renderOutline(progress);
+        renderModule(progress);
+        revealElements(document.querySelectorAll(".reveal-on-scroll"));
+    }
+
+    function renderCertificateLink(latestState, progress, percent) {
+        const link = elements.certificateLink;
+        if (!link) return;
+
+        if (percent === 100) {
+            if (!progress.certificate?.id) {
+                progress.certificate = {
+                    id: uid("cert"),
+                    issuedAt: new Date().toISOString()
+                };
+                saveLearningState(latestState);
+            }
+
+            const params = new URLSearchParams({
+                source: "exam",
+                courseId: activeCourse.id,
+                title: activeCourse.title,
+                certId: progress.certificate.id
+            });
+            link.href = `../../certificate.html?${params.toString()}`;
+            link.target = "_blank";
+            link.rel = "noopener";
+            link.textContent = "View Certificate";
+            link.classList.remove("is-disabled");
+            link.setAttribute("aria-disabled", "false");
+            return;
+        }
+
+        link.href = "#";
+        link.target = "";
+        link.rel = "";
+        link.textContent = "Certificate locked";
+        link.classList.add("is-disabled");
+        link.setAttribute("aria-disabled", "true");
+    }
+
+    function renderSwitcher(latest) {
+        const enrolledCourses = latest.enrolledCourseIds.map(getCourseById).filter(Boolean);
+        elements.switcher.innerHTML = enrolledCourses
+            .map((course) => {
+                const percent = getProgressPercent(course.id);
+                return `
+                    <a class="workspace-course-link${course.id === activeCourse.id ? " active" : ""}" href="anatomy.html?course=${course.id}">
+                        <strong>${course.title}</strong>
+                        <span>${percent}% complete</span>
+                    </a>
+                `;
+            })
+            .join("");
+    }
+
+    function renderOutline(progress) {
+        elements.outlineList.innerHTML = activeCourse.modules
+            .map((module, index) => `
+                <li class="outline-item${index === activeModuleIndex ? " active" : ""}${progress.completedModules.includes(index) ? " completed" : ""}" data-module-index="${index}">
+                    ${module.title}
+                </li>
+            `)
+            .join("");
+
+        elements.outlineList.querySelectorAll("[data-module-index]").forEach((item) => {
+            item.addEventListener("click", () => {
+                activeModuleIndex = Number(item.dataset.moduleIndex);
+                persistModulePosition();
+                renderWorkspace();
+            });
+        });
+    }
+
+    function renderModule(progress) {
+        const module = activeCourse.modules[activeModuleIndex];
+        const savedAnswer = progress.quizAnswers[activeModuleIndex];
+        const passed = progress.quizPassed?.[activeModuleIndex] === true;
+        const checked = progress.quizChecked?.[activeModuleIndex] === true;
+        const completed = progress.completedModules.includes(activeModuleIndex);
+
+        elements.moduleTitle.textContent = module.title;
+        elements.moduleObjective.textContent = module.objective;
+        elements.moduleBody.textContent = module.body;
+        elements.moduleImage.src = module.image;
+        elements.moduleImage.alt = module.title;
+        elements.modulePearlTitle.textContent = module.pearlTitle;
+        elements.modulePearlBody.textContent = module.pearl;
+        elements.structureList.innerHTML = module.structures.map((item) => `<li>${item}</li>`).join("");
+        elements.quizPrompt.textContent = module.quiz.prompt;
+        elements.quizOptions.innerHTML = module.quiz.options
+            .map((option, optionIndex) => `
+                <label>
+                    <input type="radio" name="module-quiz" value="${optionIndex}" ${savedAnswer === optionIndex ? "checked" : ""}>
+                    <span>${option}</span>
+                </label>
+            `)
+            .join("");
+        if (checked) {
+            elements.quizFeedback.textContent = passed ? module.quiz.success : module.quiz.failure;
+            elements.quizFeedback.className = `quiz-feedback ${passed ? "correct" : "incorrect"}`;
+        } else {
+            elements.quizFeedback.textContent = "";
+            elements.quizFeedback.className = "quiz-feedback";
+        }
+        elements.notes.value = progress.notes[activeModuleIndex] || "";
+        elements.prevButton.disabled = activeModuleIndex === 0;
+        elements.nextButton.disabled = activeModuleIndex === activeCourse.modules.length - 1;
+        elements.nextButton.textContent = activeModuleIndex === activeCourse.modules.length - 1 ? "Stay on Final Module" : "Next Module";
+        elements.markCompleteButton.disabled = completed || !passed;
+        elements.markCompleteButton.textContent = completed ? "Completed" : passed ? "Mark Complete" : "Answer quiz to complete";
+        elements.workspaceProgressBar.style.width = `${getProgressPercent(activeCourse.id)}%`;
+        elements.workspaceProgressLabel.textContent = `${getProgressPercent(activeCourse.id)}% complete`;
+    }
+
+    function persistModulePosition() {
+        const latest = getLearningState();
+        const progress = ensureCourseProgress(latest, activeCourse.id);
+        progress.currentModuleIndex = activeModuleIndex;
+        progress.lastVisited = new Date().toISOString();
+        latest.selectedCourseId = activeCourse.id;
+        saveLearningState(latest);
+        elements.workspaceSaveState.textContent = "Synced";
+    }
+}
+
+function renderCourseCard(course, state) {
+    const isEnrolled = state.enrolledCourseIds.includes(course.id);
+    const workspaceHref = isEnrolled ? `exam-lobby/anatomy.html?course=${course.id}` : `#selected-program`;
+    return `
+        <article class="course-card reveal-on-scroll">
+            <div class="course-card-media">
+                <div class="card-frame">
+                    <img src="${course.image}" alt="${course.title}" class="fit-image">
+                </div>
+            </div>
+            <div class="course-card-body">
+                <div class="course-card-top">
+                    <div>
+                        <h3>${course.title}</h3>
+                        <p>${course.summary}</p>
+                    </div>
+                    <span class="course-badge">${course.badge}</span>
+                </div>
+                <div class="course-meta">
+                    ${createMetaPill("Track", course.category)}
+                    ${createMetaPill("Level", course.difficulty)}
+                </div>
+                <div class="course-stats">
+                    <div><strong>${course.questions}+</strong><span>Questions</span></div>
+                    <div><strong>${course.durationHours}h</strong><span>Guided hours</span></div>
+                    <div><strong>${course.modules.length}</strong><span>Modules</span></div>
+                </div>
+                <div class="course-actions">
+                    <button class="btn-primary" data-select-course="${course.id}">View Program</button>
+                    <button class="${isEnrolled ? "btn-outline" : "btn-primary"}" data-enroll-course="${course.id}">${isEnrolled ? "Cancel" : "Enroll"}</button>
+                    <a class="btn-outline${isEnrolled ? "" : " is-disabled"}" href="${workspaceHref}">${isEnrolled ? "Resume" : "Enroll to open"}</a>
+                </div>
+            </div>
+        </article>
+    `;
+}
+
+function renderSelectedProgram(course, state) {
+    const progress = ensureCourseProgress(state, course.id);
+    const percent = getProgressPercent(course.id, state);
+    const enrolled = state.enrolledCourseIds.includes(course.id);
+
+    document.getElementById("selected-title").textContent = course.title;
+    document.getElementById("selected-summary").textContent = course.summary;
+    document.getElementById("selected-image").src = course.image;
+    document.getElementById("selected-image").alt = course.title;
+    document.getElementById("selected-facts").innerHTML = [
+        createMetaPill("Duration", `${course.durationHours} hours`),
+        createMetaPill("Format", course.format),
+        createMetaPill("Modules", `${course.modules.length} modules`)
+    ].join("");
+    const openBtn = document.getElementById("selected-open-btn");
+    if (openBtn) {
+        openBtn.href = enrolled ? `exam-lobby/anatomy.html?course=${course.id}` : "#selected-program";
+        openBtn.textContent = enrolled ? "Open Workspace" : "Enroll to open";
+        openBtn.classList.toggle("is-disabled", !enrolled);
+    }
+    const enrollBtn = document.getElementById("selected-enroll-btn");
+    if (enrollBtn) {
+        enrollBtn.textContent = enrolled ? "Cancel" : "Enroll";
+        enrollBtn.classList.toggle("btn-outline", enrolled);
+        enrollBtn.classList.toggle("btn-primary", !enrolled);
+    }
+    document.getElementById("selected-enrollment-status").textContent = enrolled ? "Enrolled" : "Not enrolled";
+    document.getElementById("selected-progress-status").textContent = `${percent}%`;
+    document.getElementById("selected-progress-bar").style.width = `${percent}%`;
+    document.getElementById("selected-last-activity").textContent = progress.lastVisited
+        ? `Last activity: ${formatDate(progress.lastVisited)}`
+        : "No activity yet. Start this program to begin saving progress.";
+
+    document.getElementById("hero-course-image").src = course.image;
+    document.getElementById("hero-course-image").alt = course.title;
+}
+
+function renderLearnerRail(selectedCourseId, state) {
+    const enrolledCourses = state.enrolledCourseIds.map(getCourseById).filter(Boolean);
+    const container = document.getElementById("learner-rail-list");
+
+    if (!enrolledCourses.length) {
+        container.innerHTML = `<div class="empty-state"><p>No enrolled programs yet. Enroll in one course and it will live here for quick switching.</p></div>`;
+        return;
+    }
+
+    container.innerHTML = enrolledCourses
+        .map((course) => {
+            const percent = getProgressPercent(course.id, state);
+            return `
+                <a class="learner-chip${course.id === selectedCourseId ? " active" : ""}" href="exam-lobby/anatomy.html?course=${course.id}">
+                    <strong>${course.title}</strong>
+                    <span>${percent}% complete</span>
+                </a>
+            `;
+        })
+        .join("");
+}
+
+function renderHeroStats() {
+    const state = getLearningState();
+    const activeCourses = state.enrolledCourseIds.map(getCourseById).filter(Boolean);
+    const totalHours = activeCourses.reduce((sum, course) => sum + course.durationHours, 0);
+    const totalQuestions = activeCourses.reduce((sum, course) => sum + course.questions, 0);
+
+    document.getElementById("hero-active-count").textContent = String(activeCourses.length);
+    document.getElementById("hero-hours-count").textContent = `${totalHours || courseCatalog.reduce((sum, course) => sum + course.durationHours, 0)}h`;
+    document.getElementById("hero-question-count").textContent = `${totalQuestions || courseCatalog.reduce((sum, course) => sum + course.questions, 0)}+`;
+}
+
+function getLearningState() {
+    const fallback = {
+        selectedCourseId: courseCatalog[0].id,
+        enrolledCourseIds: [],
+        progress: {}
+    };
+
+    const core = window.GnpLearning;
+    let parsed = null;
+    if (core?.loadState) {
+        parsed = core.loadState();
+    } else {
+        try {
+            parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+        } catch {
+            parsed = null;
+        }
+    }
+
+    const state = parsed && typeof parsed === "object" ? parsed : fallback;
+    state.selectedCourseId ||= fallback.selectedCourseId;
+    state.enrolledCourseIds = Array.isArray(state.enrolledCourseIds) ? state.enrolledCourseIds : fallback.enrolledCourseIds.slice();
+    state.progress = state.progress && typeof state.progress === "object" ? state.progress : {};
+
+    state.enrolledCourseIds.forEach((courseId) => ensureCourseProgress(state, courseId));
+    ensureCourseProgress(state, state.selectedCourseId);
+
+    saveLearningState(state);
+    return state;
+}
+
+function saveLearningState(state) {
+    const core = window.GnpLearning;
+    if (core?.saveState) {
+        core.saveState(state);
+        return;
+    }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function ensureCourseProgress(state, courseId) {
+    if (!state.progress[courseId]) {
+        state.progress[courseId] = {
+            currentModuleIndex: 0,
+            completedModules: [],
+            notes: {},
+            quizAnswers: {},
+            quizChecked: {},
+            quizPassed: {},
+            certificate: null,
+            courseTitle: "",
+            courseCategory: "",
+            courseDifficulty: "",
+            totalModules: 0,
+            lastVisited: ""
+        };
+    }
+
+    const progress = state.progress[courseId];
+    progress.currentModuleIndex = Number.isFinite(progress.currentModuleIndex) ? progress.currentModuleIndex : 0;
+    progress.completedModules = Array.isArray(progress.completedModules) ? progress.completedModules : [];
+    progress.notes = progress.notes && typeof progress.notes === "object" ? progress.notes : {};
+    progress.quizAnswers = progress.quizAnswers && typeof progress.quizAnswers === "object" ? progress.quizAnswers : {};
+    progress.quizChecked = progress.quizChecked && typeof progress.quizChecked === "object" ? progress.quizChecked : {};
+    progress.quizPassed = progress.quizPassed && typeof progress.quizPassed === "object" ? progress.quizPassed : {};
+    progress.certificate = progress.certificate && typeof progress.certificate === "object" ? progress.certificate : null;
+    progress.courseTitle = typeof progress.courseTitle === "string" ? progress.courseTitle : "";
+    progress.courseCategory = typeof progress.courseCategory === "string" ? progress.courseCategory : "";
+    progress.courseDifficulty = typeof progress.courseDifficulty === "string" ? progress.courseDifficulty : "";
+    progress.totalModules = Number.isFinite(progress.totalModules) ? progress.totalModules : 0;
+    progress.lastVisited = typeof progress.lastVisited === "string" ? progress.lastVisited : "";
+
+    const course = getCourseById(courseId);
+    if (course) {
+        progress.courseTitle = course.title;
+        progress.courseCategory = course.category;
+        progress.courseDifficulty = course.difficulty;
+        progress.totalModules = course.modules.length;
+    }
+
+    return progress;
+}
+
+function getProgressPercent(courseId, providedState = null) {
+    const state = providedState || getLearningState();
+    const course = getCourseById(courseId);
+    const progress = ensureCourseProgress(state, courseId);
+    if (!course || !course.modules.length) {
+        return 0;
+    }
+    return Math.round((progress.completedModules.length / course.modules.length) * 100);
+}
+
+function getCourseById(courseId) {
+    return courseCatalog.find((course) => course.id === courseId) || null;
+}
+
+function createMetaPill(label, value) {
+    return `<div class="meta-pill"><strong>${label}</strong><span>${value}</span></div>`;
+}
+
+function matchesCategory(course, selectedCategory) {
+    return selectedCategory === "All Courses" || course.category === selectedCategory;
+}
+
+function matchesDifficulty(course, selectedDifficulties) {
+    return selectedDifficulties.length === 0 || selectedDifficulties.includes(course.difficulty);
+}
+
+function matchesSearch(course, searchValue) {
+    if (!searchValue) {
+        return true;
+    }
+
+    const haystack = [course.title, course.category, course.summary, ...course.keywords, ...course.outcomes].join(" ").toLowerCase();
+    return haystack.includes(searchValue);
+}
+
+function sortCourses(left, right, sortMode) {
+    if (sortMode === "questions") {
+        return right.questions - left.questions;
+    }
+    if (sortMode === "duration") {
+        return right.durationHours - left.durationHours;
+    }
+    if (sortMode === "title") {
+        return left.title.localeCompare(right.title);
+    }
+    return right.exams - left.exams;
+}
+
+function clampModuleIndex(index, length) {
+    if (!length) {
+        return 0;
+    }
+    return Math.max(0, Math.min(index, length - 1));
+}
+
+function formatDate(value) {
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) {
+        return "Recently";
+    }
+    return date.toLocaleString([], {
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+    });
+}
+
+function revealElements(elements) {
+    const targets = Array.from(elements || []).filter(Boolean);
+    if (!targets.length) {
+        return;
+    }
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    targets.forEach((element, index) => {
+        element.classList.add("reveal-on-scroll");
+        element.style.transitionDelay = reduceMotion ? "0ms" : `${Math.min(index * 45, 240)}ms`;
+    });
+
+    if (reduceMotion || !("IntersectionObserver" in window)) {
+        targets.forEach((element) => element.classList.add("is-visible"));
+        return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15, rootMargin: "0px 0px -30px 0px" });
+
+    targets.forEach((element) => {
+        if (!element.classList.contains("is-visible")) {
+            observer.observe(element);
+        }
+    });
+}
+document.addEventListener("DOMContentLoaded", () => {
+    const courseMediaPool = [
+        "https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=1200&q=80"
+    ];
+
+    const ensureCourseMedia = () => {
+        document.querySelectorAll(".program-card, .course-card, .workspace-card, .learning-card").forEach((card, index) => {
+            const existingImage = card.querySelector("img");
+            const fallback = courseMediaPool[index % courseMediaPool.length];
+
+            if (existingImage) {
+                if (!existingImage.getAttribute("src")) {
+                    existingImage.src = fallback;
+                }
+
+                existingImage.addEventListener("error", () => {
+                    existingImage.src = fallback;
+                }, { once: true });
+                return;
+            }
+
+            const media = document.createElement("div");
+            media.className = "card-media auto-media";
+            media.innerHTML = `<img src="${fallback}" alt="Course preview image">`;
+            card.prepend(media);
+        });
+    };
+
+    ensureCourseMedia();
+    window.setTimeout(ensureCourseMedia, 250);
+});
