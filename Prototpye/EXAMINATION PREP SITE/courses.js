@@ -43,7 +43,7 @@ const courseCatalog = [
             {
                 title: "Cardiovascular Assessment and Monitoring",
                 objective: "Recognize unstable findings early and connect assessment with urgent action.",
-                body: "This module organizes cardiovascular revision around patient observation, focused history, monitoring interpretation, and escalation logic for clinical safety.",
+                body: "Build a fast, safe cardiovascular assessment routine for exams and clinical reasoning. You will practice reading the stem for red flags (chest pain, dyspnea, syncope), linking symptoms to perfusion, and interpreting trends in BP, pulse, urine output, and mental status.\n\nKey focus:\n• Distinguish stable vs unstable findings and what to escalate first\n• Interpret common monitoring data (SpO2, ECG basics, fluid balance) in context\n• Match assessment clues to the safest first nursing action and reassessment plan",
                 pearlTitle: "Clinical Pearl",
                 pearl: "In nursing exams, the question often hides priority in the trend rather than the single value. Compare symptoms, vitals, and timing together.",
                 structures: ["Focused chest pain assessment", "Fluid balance and perfusion monitoring", "Escalation cues in acute deterioration"],
@@ -59,7 +59,7 @@ const courseCatalog = [
             {
                 title: "Medication Safety in Adult Care",
                 objective: "Prioritize safe administration and monitoring in common adult medical conditions.",
-                body: "You will revise high-yield medication groups, nursing checks before administration, and how exam questions test safety, contraindications, and monitoring.",
+                body: "Medication questions are safety questions. This module builds a step-by-step routine: verify the order and patient, check allergies and key vitals/labs, confirm route and timing, then plan monitoring and teaching.\n\nYou will revise:\n• High-alert meds and common do-not-give cues (e.g., abnormal pulse, low BP, critical labs)\n• Contraindication patterns and drug-condition red flags\n• What to monitor and document after administration so the answer stays safe",
                 pearlTitle: "Clinical Pearl",
                 pearl: "Medication questions reward sequence thinking: verify, assess, give, monitor, teach.",
                 structures: ["High-alert medication checks", "Common contraindication patterns", "Monitoring after administration"],
@@ -75,7 +75,7 @@ const courseCatalog = [
             {
                 title: "Mock Strategy and Rationales",
                 objective: "Convert revision into exam performance using timing, elimination, and rationale review.",
-                body: "This module helps learners build exam stamina, manage timed sections, and turn every incorrect answer into a revision asset.",
+                body: "Mock exams are only useful when you review them the right way. You will learn how to answer under time pressure, then turn every missed item into a clear revision target.\n\nApproach:\n• Use elimination + priority frameworks (ABCs, safety, infection control)\n• Build an error log (topic, why you missed it, the correct rule, and a mini-flashcard)\n• Schedule repeat practice so weak areas become strengths before the next mock",
                 pearlTitle: "Clinical Pearl",
                 pearl: "The fastest score growth usually comes from pattern review of repeated mistakes, not just doing more questions.",
                 structures: ["Timed answer strategy", "Elimination under pressure", "Using rationales for targeted review"],
@@ -109,7 +109,7 @@ const courseCatalog = [
             {
                 title: "NGN Case Framing",
                 objective: "Break down client cases into assessment, hypotheses, and prioritized nursing action.",
-                body: "This section trains the learner to read a case stem for context, identify what changed, and connect the scenario to nursing judgement categories.",
+                body: "Next Generation (NGN) cases test how you think, not what you can memorize. This module gives you a repeatable process to read the case, extract key cues, and select the safest priority action.\n\nYou will practice:\n• Identifying what is abnormal and what changed from baseline\n• Turning cues into reasonable hypotheses before choosing interventions\n• Selecting actions that match nursing judgment categories (assessment, intervention, evaluation)",
                 pearlTitle: "Clinical Pearl",
                 pearl: "NGN questions punish rushing. Start by naming what the patient problem is before choosing what to do.",
                 structures: ["Cue recognition", "Hypothesis formation", "Priority response selection"],
@@ -125,7 +125,7 @@ const courseCatalog = [
             {
                 title: "Prioritization and Delegation",
                 objective: "Strengthen judgement in who to see first, what to delegate, and what cannot wait.",
-                body: "This module focuses on unstable versus stable clients, RN scope, and how NCLEX tests safety through priority and delegation.",
+                body: "Prioritization questions reward safety and scope awareness. This module trains you to sort clients by instability and to delegate tasks appropriately while keeping nursing judgment with the RN.\n\nRules you will apply:\n• Unstable or acute changes come first; stable chronic issues can wait\n• RN keeps initial assessments, teaching, triage, and evaluation of responses\n• Delegate predictable routine tasks with clear instructions and follow-up",
                 pearlTitle: "Clinical Pearl",
                 pearl: "A safe delegation answer still keeps unstable, teaching, and high-risk assessment tasks with the RN.",
                 structures: ["Stable vs unstable sorting", "Delegation boundaries", "Urgent reassessment patterns"],
@@ -141,7 +141,7 @@ const courseCatalog = [
             {
                 title: "CAT Exam Endurance",
                 objective: "Develop pacing and emotional control for adaptive testing conditions.",
-                body: "You will practice maintaining focus through uncertainty, using pacing checkpoints and answer discipline to protect performance.",
+                body: "CAT testing can feel unpredictable, so your goal is consistency. This module builds pacing habits and emotional control so you protect answer quality from start to finish.\n\nYou will learn:\n• Pacing checkpoints to prevent rushing or getting stuck\n• A reset routine after hard questions (breathe, reread, apply framework)\n• How to avoid common traps: changing answers without a reason and scoring yourself emotionally",
                 pearlTitle: "Clinical Pearl",
                 pearl: "Not knowing whether you're doing well is part of CAT. Keep quality high one question at a time.",
                 structures: ["Pacing targets", "Reset routines between questions", "Adaptive test mindset"],
@@ -175,7 +175,7 @@ const courseCatalog = [
             {
                 title: "Cardiovascular System",
                 objective: "Understand the physiological relationship between the heart, vessels, and systemic circulation.",
-                body: "The cardiovascular system is the body's delivery network. Blood flow depends on coordinated heart contraction, vascular resistance, oxygen transport, and fluid balance.",
+                body: "This lecture refreshes core cardiovascular physiology so exam stems make sense. You will connect heart anatomy and blood flow with cardiac output, blood pressure, and tissue perfusion.\n\nKey ideas:\n• Cardiac output = heart rate x stroke volume; BP reflects output + vascular resistance\n• Preload, afterload, and contractility shape common clinical findings\n• Nursing assessment emphasizes perfusion signs (skin, mentation, urine output) and fluid balance",
                 pearlTitle: "Clinical Pearl",
                 pearl: "Peripheral edema, jugular venous distension, and changes in exercise tolerance often point to evolving heart failure before the patient names chest pain.",
                 structures: [
@@ -194,7 +194,7 @@ const courseCatalog = [
             {
                 title: "Skeletal System",
                 objective: "Connect bone structure to movement, protection, and mineral balance in the clinical setting.",
-                body: "The skeletal system provides structure, protects vital organs, stores minerals, and supports blood cell production in the marrow.",
+                body: "Understand bones as living tissue: support, protection, mineral storage, and blood cell production. This module links structure (axial vs appendicular) to movement and common clinical problems.\n\nYou will review:\n• Bone remodeling and calcium balance, and why immobility, steroids, and nutrition affect fracture risk\n• Red vs yellow marrow and the basics of hematopoiesis\n• Key post-injury assessment points: pain, swelling, and neurovascular status (circulation, sensation, movement)",
                 pearlTitle: "Clinical Pearl",
                 pearl: "Fracture risk is not only about trauma; prolonged immobility, steroid use, and nutritional deficits quietly weaken bone quality.",
                 structures: [
@@ -213,7 +213,7 @@ const courseCatalog = [
             {
                 title: "Respiratory Mechanics",
                 objective: "Explain how ventilation, diffusion, and perfusion work together to maintain oxygenation.",
-                body: "Respiration depends on airway patency, diaphragmatic movement, alveolar exchange, and the matching of ventilation with perfusion.",
+                body: "Respiratory questions often test early recognition of deterioration. This lecture explains ventilation (moving air), diffusion (gas exchange), and perfusion (blood flow) and how mismatch causes hypoxia.\n\nYou will learn to:\n• Identify increased work of breathing and why respiratory rate is an early warning sign\n• Connect common causes to patterns (obstruction, alveolar collapse, fluid, anxiety)\n• Choose safe first actions: positioning, oxygen support, and reassessment",
                 pearlTitle: "Clinical Pearl",
                 pearl: "A rising respiratory rate often appears before oxygen saturation drops. It is one of the earliest clinical warning signs.",
                 structures: [
@@ -250,7 +250,7 @@ const courseCatalog = [
             {
                 title: "Drug Class Recognition",
                 objective: "Group medications by use, action, and common adverse effects.",
-                body: "This module makes pharmacology revision easier by clustering drugs into families and nursing watch-outs rather than isolated facts.",
+                body: "Stop memorizing drugs one by one—learn patterns. This module teaches you to recognize drug classes by suffixes/prefixes, typical uses, and predictable adverse effects.\n\nStudy method:\n• Build a one-page class table: name pattern -> action -> key adverse effects -> nursing checks\n• Link each class to watch-outs (vitals, labs, interactions) that exam items test\n• Use small comparison pairs to prevent confusion between similar classes",
                 pearlTitle: "Clinical Pearl",
                 pearl: "Drug suffixes often point you to both the class and the likely adverse effects.",
                 structures: ["Class naming patterns", "High-yield adverse effects", "Nursing implications before administration"],
@@ -266,7 +266,7 @@ const courseCatalog = [
             {
                 title: "Dosage Safety and Calculations",
                 objective: "Apply unit conversion and dose logic accurately without rushing.",
-                body: "Learners review dimensional thinking, rounding safety, and the nursing steps that protect medication administration from preventable errors.",
+                body: "Medication math is about safety, not speed. You will practice unit conversions and dimensional analysis, then add the nursing safety steps that protect patients.\n\nFocus areas:\n• Conversions (mg <-> g, mL <-> L) and weight-based dosing setups\n• Rounding rules and dose-range checks (does the answer make clinical sense?)\n• Final habits: confirm route and concentration, double-check the order, then document and monitor",
                 pearlTitle: "Clinical Pearl",
                 pearl: "A correct calculation is not enough if the clinical dose still looks unsafe. Always sense-check the answer.",
                 structures: ["Dose formula flow", "Unit conversion", "Reasonableness check"],
@@ -300,7 +300,7 @@ const courseCatalog = [
             {
                 title: "Growth and Development",
                 objective: "Use age-specific expectations to guide nursing assessment and parent teaching.",
-                body: "This module links developmental milestones with normal assessment findings, safety teaching, and common exam scenarios.",
+                body: "Pediatrics stems are age questions disguised as behavior questions. This module helps you match the child's age to expected milestones, communication style, and safety risks.\n\nYou will practice:\n• Spotting normal vs abnormal findings for the stated age\n• Planning parent teaching (injury prevention, feeding, sleep, play) by stage\n• Choosing actions that reduce fear and improve cooperation (simple language, caregiver presence)",
                 pearlTitle: "Clinical Pearl",
                 pearl: "Pediatrics questions often hide the answer inside what is normal for that age group.",
                 structures: ["Milestone recognition", "Age-based communication", "Safety teaching by stage"],
@@ -316,7 +316,7 @@ const courseCatalog = [
             {
                 title: "Pediatric Emergencies",
                 objective: "Prioritize airway, hydration, and escalation in acute pediatric scenarios.",
-                body: "You will revise red flags in respiratory distress, dehydration, fever complications, and emergency triage for children.",
+                body: "Children can compensate and then deteriorate quickly—exams test early signs. This module reviews high-yield pediatric red flags and the priority sequence for safe nursing response.\n\nYou will learn to spot:\n• Respiratory distress cues (retractions, nasal flaring, grunting, color change)\n• Dehydration severity and which findings require urgent escalation\n• Fever complications and when to reassess, support airway/breathing, and call for help",
                 pearlTitle: "Clinical Pearl",
                 pearl: "In pediatrics, subtle deterioration can become severe quickly. Trend changes matter.",
                 structures: ["Respiratory distress warning signs", "Hydration assessment", "Escalation priorities"],
@@ -350,7 +350,7 @@ const courseCatalog = [
             {
                 title: "Respiratory and Oxygenation Priorities",
                 objective: "Prioritize nursing response in respiratory compromise and oxygenation failure.",
-                body: "This module focuses on the fast clinical reasoning needed for oxygen delivery, assessment trends, and urgent nursing action.",
+                body: "Med-surg prioritization is built on ABCs and safety. This module trains you to recognize when breathing/oxygenation is the primary threat and to choose the safest first action.\n\nYou will apply:\n• Rapid respiratory assessment (rate, effort, breath sounds, SpO2, mental status)\n• Immediate supportive steps (positioning, oxygen per protocol, call for help) with reassessment\n• Common exam traps: focusing on comfort or labs while the patient is deteriorating",
                 pearlTitle: "Clinical Pearl",
                 pearl: "In med-surg questions, breathing problems often outrank everything except immediate airway collapse.",
                 structures: ["Respiratory assessment order", "Oxygenation warning signs", "Urgent supportive action"],
@@ -366,7 +366,7 @@ const courseCatalog = [
             {
                 title: "Fluids, Electrolytes, and Monitoring",
                 objective: "Interpret imbalance patterns and act on unsafe shifts early.",
-                body: "The module brings together assessment findings, common imbalance symptoms, and the nursing actions most often tested in adult care.",
+                body: "Electrolyte items test pattern recognition plus monitoring. This module links lab changes to symptoms and shows what nursing action keeps the patient safest.\n\nYou will review:\n• High-yield patterns (Na/K/Ca/Mg) and their neuro, cardiac, and GI signs\n• What to monitor first when symptoms are present (vitals, ECG, intake/output, mental status)\n• Safe responses: report critical values, follow protocol, and reassess after interventions",
                 pearlTitle: "Clinical Pearl",
                 pearl: "Electrolyte questions often reward pattern matching: muscle, cardiac, neurological, and GI clues cluster together.",
                 structures: ["Common imbalance clues", "Monitoring priorities", "Escalation and safety response"],

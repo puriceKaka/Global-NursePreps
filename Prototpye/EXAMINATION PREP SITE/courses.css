@@ -601,6 +601,7 @@
 .module-copy {
     color: var(--text-muted);
     line-height: 1.78;
+    white-space: pre-line;
 }
 
 .outline-list {
