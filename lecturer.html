@@ -50,6 +50,7 @@
                 <button class="tab-button" data-panel="groupsPanel">Membership Groups</button>
                 <button class="tab-button" data-panel="meetingsPanel">Meetings</button>
                 <button class="tab-button" data-panel="examsPanel">Submit Exams</button>
+                <button class="tab-button" data-panel="publishPanel">Publish Course</button>
                 <button class="tab-button" data-panel="resourcesPanel">Course Resources</button>
             </aside>
 
@@ -157,6 +158,28 @@
                         <button class="primary-button" type="submit">Add resource</button>
                     </form>
                     <div class="data-grid" id="resourcesList"></div>
+                </section>
+
+                <section class="panel" id="publishPanel">
+                    <div class="panel-head">
+                        <div>
+                            <p class="lecturer-kicker">Course publishing</p>
+                            <h2>Upload notes and post a course</h2>
+                        </div>
+                    </div>
+                    <form class="lecturer-form grid-form" id="publishCourseForm">
+                        <label><span>Course title</span><input id="publishTitle" required></label>
+                        <label><span>Category</span><input id="publishCategory" placeholder="e.g. Critical Care" required></label>
+                        <label><span>Level</span><select id="publishLevel"><option>Beginner</option><option>Intermediate</option><option>Advanced</option></select></label>
+                        <label><span>Access</span><select id="publishAccess"><option value="free">Free</option><option value="paid">Paid</option></select></label>
+                        <label><span>Price (KES)</span><input id="publishPrice" type="number" min="0" value="0"></label>
+                        <label><span>Document</span><input id="publishDocument" type="file" accept=".txt,.md,.pdf,.doc,.docx,.rtf"></label>
+                        <label class="wide"><span>Course summary</span><textarea id="publishSummary" rows="3" required></textarea></label>
+                        <label class="wide"><span>Course notes</span><textarea id="publishNotes" rows="8" placeholder="Paste the course notes here. Text files can also be loaded from the document field."></textarea></label>
+                        <button class="primary-button" type="submit">Post course to students</button>
+                    </form>
+                    <p class="form-message" id="publishMessage" aria-live="polite"></p>
+                    <div class="data-grid" id="publishedCoursesList"></div>
                 </section>
             </div>
         </section>

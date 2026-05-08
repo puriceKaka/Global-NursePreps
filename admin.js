@@ -64,20 +64,6 @@
     }
 
     function ensureStarterRecords() {
-        const lecturers = readJson(KEYS.lecturers, []);
-        if (!lecturers.length) {
-            writeJson(KEYS.lecturers, [
-                {
-                    id: "lecturer_primary",
-                    name: "Nurse Educator",
-                    email: "lecturer@globalnurseprep.com",
-                    status: "approved",
-                    subscription: "Professional Lecturer",
-                    createdAt: new Date().toISOString()
-                }
-            ]);
-        }
-
         const payments = readJson(KEYS.payments, []);
         if (!payments.length) {
             writeJson(KEYS.payments, [
@@ -217,7 +203,7 @@
                     <h3>${escapeHtml(course.title)}</h3>
                     <p class="muted">${escapeHtml(course.summary)}</p>
                     <p><span class="status-pill">${escapeHtml(course.category)}</span> <span class="status-pill">${escapeHtml(access.toUpperCase())}</span></p>
-                    <p><strong>${money(course.price)}</strong> ${escapeHtml(course.lecturer || "No lecturer assigned")}</p>
+                    <p><strong>${money(course.price)}</strong> ${course.lecturer ? escapeHtml(course.lecturer) : "Lecturer not selected"}</p>
                     <div class="data-actions">
                         <button type="button" data-edit-course="${escapeHtml(course.id)}">Edit</button>
                         <button type="button" class="danger-button" data-delete-course="${escapeHtml(course.id)}">Delete</button>
@@ -240,7 +226,16 @@
     }
 
     function renderLecturers() {
-        const lecturers = readJson(KEYS.lecturers, []);
+        const byEmail = new Map();
+        readJson(KEYS.lecturers, []).forEach((lecturer) => {
+            const key = String(lecturer.email || lecturer.id).toLowerCase();
+            const existing = byEmail.get(key);
+            if (!existing || existing.status !== "approved") {
+                byEmail.set(key, lecturer);
+            }
+        });
+        const lecturers = Array.from(byEmail.values());
+        writeJson(KEYS.lecturers, lecturers);
         $("#lecturerList").innerHTML = lecturers.map((lecturer) => `
             <article class="data-card">
                 <h3>${escapeHtml(lecturer.name)}</h3>
@@ -355,6 +350,12 @@
         ensureStarterRecords();
         $("#adminLoginForm")?.addEventListener("submit", handleLogin);
         $("#courseAdminForm")?.addEventListener("submit", saveCourse);
+        $("#toggleAdminCourses")?.addEventListener("click", (event) => {
+            const list = $("#adminCourseList");
+            if (!list) return;
+            const hidden = list.classList.toggle("hidden");
+            event.currentTarget.textContent = hidden ? "Show saved courses" : "Hide saved courses";
+        });
         $("#seedDataBtn")?.addEventListener("click", () => {
             ensureStarterRecords();
             renderAll();

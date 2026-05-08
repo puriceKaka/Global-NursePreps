@@ -424,6 +424,35 @@ courseCatalog.push(...additionalCourseTracks.map((track) => ({
     modules: []
 })));
 
+const externalCourses = window.GnpLearning?.getCourses?.() || [];
+externalCourses.forEach((course) => {
+    if (courseCatalog.some((item) => item.id === course.id)) {
+        return;
+    }
+    courseCatalog.push({
+        id: course.id,
+        title: course.title,
+        category: course.category || "Nursing",
+        difficulty: course.difficulty || "Beginner",
+        badge: course.access === "paid" || Number(course.price || 0) > 0 ? "Paid" : "Free",
+        durationHours: Number(course.durationHours || 24),
+        questions: Number(course.questions || 100),
+        exams: Number(course.exams || 1),
+        format: course.format || "Lecturer notes",
+        summary: course.summary || "Lecturer-posted nursing course.",
+        image: course.image || courseImages.nurseTablet,
+        outcomes: ["Structured topic learning", "Practice question readiness", "Weak-area revision"],
+        facts: [course.category || "Nursing", course.difficulty || "Beginner", course.format || "Lecturer notes"],
+        keywords: [course.title, course.category, course.lecturer].filter(Boolean),
+        contentNotes: course.contentNotes || "",
+        access: course.access || "free",
+        price: Number(course.price || 0),
+        lecturer: course.lecturer || "",
+        uploadedDocument: course.uploadedDocument || null,
+        modules: []
+    });
+});
+
 const COURSE_TOPIC_BLUEPRINTS = {
     "nck-masterclass": [
         "Introduction to the NCK pathway",
@@ -515,6 +544,10 @@ const MODULE_IMAGE_SEQUENCE = [
 
 function createTextbookModule(course, topic, index) {
     const phase = index === 0 ? "Introduction" : `Unit ${index + 1}`;
+    const lecturerNotes = String(course.contentNotes || "").trim();
+    const noteExcerpt = lecturerNotes
+        ? `\n\nLecturer notes:\n${lecturerNotes.slice(0, 1800)}${lecturerNotes.length > 1800 ? "\n\nContinue with the uploaded notes and class guidance in your saved resources." : ""}`
+        : "";
     const body = `${topic} gives the student a structured textbook-style lesson for ${course.title}. Start by reading the key idea, then connect it to patient assessment, nursing priorities, exam wording, and safe clinical action.
 
 Study content:
@@ -522,13 +555,7 @@ Study content:
 - Assessment cues: identify symptoms, vital-sign trends, risk factors, and patient statements that matter.
 - Nursing action: decide what to assess first, what to report, what to teach, and what to document.
 - Exam focus: watch for priority words such as first, best, most important, immediate, unstable, and teaching.
-- Clinical link: connect the topic to patient safety, infection prevention, medication safety, communication, and escalation.
-
-Study procedure:
-1. Read the overview slowly and write three important points.
-2. Review the image and connect it to the patient problem.
-3. Answer the knowledge check before moving forward.
-4. Save notes about confusing terms so you can revise them before practice questions.`;
+- Clinical link: connect the topic to patient safety, infection prevention, medication safety, communication, and escalation.${noteExcerpt}`;
 
     return {
         title: `${phase}: ${topic}`,
@@ -700,13 +727,8 @@ function initializeCatalogPage() {
             latest.enrolledCourseIds.push(selectedCourse.id);
             ensureCourseProgress(latest, selectedCourse.id);
         } else {
-            const ok = window.confirm(
-                `Cancel enrollment in "${selectedCourse.title}"?\n\nYou can re-enroll anytime and continue where you left off.`
-            );
-            if (!ok) {
-                return;
-            }
-            latest.enrolledCourseIds.splice(enrolledIndex, 1);
+            window.location.href = `exam-lobby/anatomy.html?course=${selectedCourse.id}`;
+            return;
         }
         latest.selectedCourseId = selectedCourse.id;
         saveLearningState(latest);
@@ -771,13 +793,8 @@ function initializeCatalogPage() {
                     latest.enrolledCourseIds.push(courseId);
                     ensureCourseProgress(latest, courseId);
                 } else {
-                    const ok = window.confirm(
-                        `Cancel enrollment in "${course.title}"?\n\nYou can re-enroll anytime and continue where you left off.`
-                    );
-                    if (!ok) {
-                        return;
-                    }
-                    latest.enrolledCourseIds.splice(enrolledIndex, 1);
+                    window.location.href = `exam-lobby/anatomy.html?course=${courseId}`;
+                    return;
                 }
 
                 latest.selectedCourseId = courseId;
@@ -1129,8 +1146,8 @@ function renderCourseCard(course, state) {
                 </div>
                 <div class="course-actions">
                     <button class="btn-outline" data-select-course="${course.id}">View structure</button>
-                    <button class="${isEnrolled ? "btn-outline" : "btn-primary"}" data-enroll-course="${course.id}">${isEnrolled ? "Cancel" : "Enroll"}</button>
-                    <a class="btn-outline${isEnrolled ? "" : " is-disabled"}" href="${workspaceHref}">${isEnrolled ? "Resume" : "Enroll to open"}</a>
+                    <button class="${isEnrolled ? "btn-outline" : "btn-primary"}" data-enroll-course="${course.id}">${isEnrolled ? "Continue learning" : "Enroll"}</button>
+                    <a class="btn-outline${isEnrolled ? "" : " is-disabled"}" href="${workspaceHref}">${isEnrolled ? "Open course" : "Enroll to open"}</a>
                 </div>
             </div>
         </article>
@@ -1156,8 +1173,8 @@ function renderSelectedProgram(course, state) {
     if (outline) {
         outline.innerHTML = `
             <div class="selected-outline-head">
-                <strong>Study procedure</strong>
-                <span>Open the workspace after enrollment and move from Unit 1 to the final practice block.</span>
+                <strong>${course.title} structure</strong>
+                <span>${course.modules.length} learning units before the final practice block.</span>
             </div>
             <ol>
                 ${course.modules.map((module, index) => `
@@ -1177,7 +1194,7 @@ function renderSelectedProgram(course, state) {
     }
     const enrollBtn = document.getElementById("selected-enroll-btn");
     if (enrollBtn) {
-        enrollBtn.textContent = enrolled ? "Cancel" : "Enroll";
+        enrollBtn.textContent = enrolled ? "Continue learning" : "Enroll";
         enrollBtn.classList.toggle("btn-outline", enrolled);
         enrollBtn.classList.toggle("btn-primary", !enrolled);
     }

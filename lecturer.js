@@ -69,19 +69,24 @@
 
     function registerLecturer(session) {
         const lecturers = readJson(KEYS.lecturers, []);
-        const exists = lecturers.some((lecturer) => lecturer.id === session.id);
-        if (exists) return;
-        writeJson(KEYS.lecturers, [
-            {
-                id: session.id,
-                name: session.name,
-                email: session.email,
-                status: "pending",
-                subscription: "Not paid",
-                createdAt: new Date().toISOString()
-            },
-            ...lecturers
-        ]);
+        const email = session.email.toLowerCase();
+        const existing = lecturers.find((lecturer) => String(lecturer.email || "").toLowerCase() === email);
+        if (existing) {
+            writeJson(KEYS.lecturers, lecturers.map((lecturer) => (
+                String(lecturer.email || "").toLowerCase() === email
+                    ? { ...lecturer, id: session.id, name: session.name, email: session.email }
+                    : lecturer
+            )));
+            return;
+        }
+        writeJson(KEYS.lecturers, [{
+            id: session.id,
+            name: session.name,
+            email: session.email,
+            status: "pending",
+            subscription: "Not paid",
+            createdAt: new Date().toISOString()
+        }, ...lecturers]);
     }
 
     function showApp() {
@@ -181,7 +186,10 @@
 
     function currentLecturer() {
         const session = getSession();
-        return readJson(KEYS.lecturers, []).find((lecturer) => lecturer.id === session?.id) || null;
+        const matches = readJson(KEYS.lecturers, []).filter((lecturer) => (
+            lecturer.id === session?.id || String(lecturer.email || "").toLowerCase() === String(session?.email || "").toLowerCase()
+        ));
+        return matches.find((lecturer) => lecturer.status === "approved") || matches[0] || null;
     }
 
     function handlePayment(event) {
@@ -289,6 +297,87 @@
         renderAll();
     }
 
+    function addCourseToCatalog(course) {
+        if (window.GnpLearning?.addCourse) {
+            window.GnpLearning.addCourse(course);
+            return;
+        }
+        const saved = readJson("nurseprep_admin_courses", []);
+        writeJson("nurseprep_admin_courses", [course, ...saved]);
+    }
+
+    function loadDocumentIntoNotes(file) {
+        const message = $("#publishMessage");
+        if (!file) return;
+        const notes = $("#publishNotes");
+        if (/\.(txt|md|rtf)$/i.test(file.name)) {
+            const reader = new FileReader();
+            reader.addEventListener("load", () => {
+                notes.value = String(reader.result || "");
+                if (message) {
+                    message.textContent = "Document text loaded into the course notes.";
+                    message.className = "form-message success";
+                }
+            });
+            reader.readAsText(file);
+            return;
+        }
+        if (message) {
+            message.textContent = "Document attached. For PDF or Word files, paste the main notes into the course notes box before posting.";
+            message.className = "form-message";
+        }
+    }
+
+    function handlePublishCourse(event) {
+        event.preventDefault();
+        const session = getSession();
+        const file = $("#publishDocument").files?.[0] || null;
+        const notes = $("#publishNotes").value.trim();
+        const title = $("#publishTitle").value.trim();
+        const price = Number($("#publishPrice").value || 0);
+        const access = $("#publishAccess").value;
+        const course = {
+            id: `lecturer-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}-${Date.now().toString(36)}`,
+            title,
+            category: $("#publishCategory").value.trim(),
+            difficulty: $("#publishLevel").value,
+            access,
+            price: access === "paid" ? price : 0,
+            lecturer: session.name,
+            badge: access === "paid" ? "Paid" : "Free",
+            durationHours: Math.max(12, Math.ceil((notes.length || 2400) / 1200)),
+            questions: 100,
+            exams: 1,
+            format: "Lecturer notes",
+            summary: $("#publishSummary").value.trim(),
+            image: "assets/course-images/default.jpg",
+            moduleCount: 10,
+            contentNotes: notes,
+            uploadedDocument: file ? { name: file.name, type: file.type, size: file.size } : null,
+            source: "lecturer"
+        };
+        addCourseToCatalog(course);
+        saveOwnItem(KEYS.resources, {
+            id: uid("resource"),
+            lecturerId: session.id,
+            lecturerName: session.name,
+            title: `${title} course notes`,
+            courseId: course.id,
+            courseTitle: title,
+            type: "Course Notes",
+            link: file?.name || "Manual notes",
+            createdAt: new Date().toISOString()
+        });
+        event.currentTarget.reset();
+        populateCourseSelects();
+        renderAll();
+        const message = $("#publishMessage");
+        if (message) {
+            message.textContent = "Course posted to the student course catalog.";
+            message.className = "form-message success";
+        }
+    }
+
     function renderPayments() {
         const payments = readJson(KEYS.payments, []).filter((payment) => payment.lecturerId === getSession()?.id);
         $("#lecturerPayments").innerHTML = payments.map((payment) => `
@@ -352,6 +441,22 @@
         renderMeetings();
         renderExams();
         renderResources();
+        renderPublishedCourses();
+    }
+
+    function renderPublishedCourses() {
+        const session = getSession();
+        const courses = getCourses().filter((course) => course.source === "lecturer" && course.lecturer === session?.name);
+        const container = $("#publishedCoursesList");
+        if (!container) return;
+        container.innerHTML = courses.map((course) => `
+            <article class="data-card">
+                <h3>${escapeHtml(course.title)}</h3>
+                <p class="muted">${escapeHtml(course.category)} • ${escapeHtml(course.difficulty)} • ${course.access === "paid" ? money(course.price) : "Free"}</p>
+                <p>${escapeHtml(course.summary)}</p>
+                <span class="status-pill">Posted to students</span>
+            </article>
+        `).join("") || `<article class="data-card empty-card"><p class="muted">Published courses will appear here after posting.</p></article>`;
     }
 
     function handleTabs(event) {
@@ -368,6 +473,8 @@
         $("#meetingForm")?.addEventListener("submit", handleMeeting);
         $("#examForm")?.addEventListener("submit", handleExam);
         $("#resourceForm")?.addEventListener("submit", handleResource);
+        $("#publishCourseForm")?.addEventListener("submit", handlePublishCourse);
+        $("#publishDocument")?.addEventListener("change", (event) => loadDocumentIntoNotes(event.target.files?.[0]));
         $("#lecturerLogout")?.addEventListener("click", () => {
             localStorage.removeItem(KEYS.session);
             showAuth();

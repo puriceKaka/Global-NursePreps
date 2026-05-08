@@ -691,20 +691,10 @@
 
             const cancelBtn = document.createElement('button');
             cancelBtn.type = 'button';
-            cancelBtn.className = enrolled.has(course.id) ? 'secondary-button' : 'pill-button';
-            cancelBtn.textContent = enrolled.has(course.id) ? 'Cancel' : 'Open catalog';
+            cancelBtn.className = 'pill-button';
+            cancelBtn.textContent = enrolled.has(course.id) ? 'Open catalog' : 'View catalog';
             cancelBtn.addEventListener('click', () => {
-                if (!core) return;
-                if (!enrolled.has(course.id)) {
-                    window.location.href = 'EXAMINATION%20PREP%20SITE/courses.html';
-                    return;
-                }
-
-                const ok = window.confirm(`Cancel enrollment in "${course.title}"?`);
-                if (!ok) return;
-                core.cancelEnrollment(course.id);
-                renderCourses(userId);
-                renderProfileCounts(userId);
+                window.location.href = 'EXAMINATION%20PREP%20SITE/courses.html';
             });
 
             actions.appendChild(startBtn);

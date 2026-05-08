@@ -83,6 +83,7 @@
                             <p class="portal-kicker">Catalog</p>
                             <h2>Courses, prices, and access</h2>
                         </div>
+                        <button type="button" class="secondary-button" id="toggleAdminCourses">Show saved courses</button>
                     </div>
                     <form class="portal-form grid-form" id="courseAdminForm">
                         <input type="hidden" id="courseId">
@@ -95,7 +96,7 @@
                         <label class="wide"><span>Summary</span><textarea id="courseSummary" rows="3" required></textarea></label>
                         <button class="primary-button" type="submit">Save course</button>
                     </form>
-                    <div class="data-grid" id="adminCourseList"></div>
+                    <div class="data-grid hidden" id="adminCourseList"></div>
                 </section>
 
                 <section class="panel" id="lecturers">

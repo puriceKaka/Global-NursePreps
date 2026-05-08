@@ -146,6 +146,11 @@
             summary: String(course?.summary || fallback.summary || "Nursing learning course.").trim(),
             image: String(course?.image || fallback.image || COURSE_IMAGES.defaultCourse).trim(),
             moduleCount: Number(course?.moduleCount || fallback.moduleCount || 1),
+            access: String(course?.access || fallback.access || (Number(course?.price || fallback.price || 0) > 0 ? "paid" : "free")).trim(),
+            price: Number(course?.price || fallback.price || 0),
+            lecturer: String(course?.lecturer || fallback.lecturer || "").trim(),
+            contentNotes: String(course?.contentNotes || fallback.contentNotes || "").trim(),
+            uploadedDocument: course?.uploadedDocument || fallback.uploadedDocument || null,
             source: String(course?.source || fallback.source || "admin").trim()
         };
     }
