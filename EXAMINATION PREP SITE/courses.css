@@ -42,7 +42,7 @@
 .workspace-hero {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 0.75rem;
     align-items: stretch;
 }
 
@@ -66,7 +66,7 @@
 
 .catalog-hero-copy,
 .workspace-hero-copy {
-    padding: 1.35rem;
+    padding: 1rem 1.15rem;
     background: linear-gradient(145deg, #0b2444 0%, #174a71 100%);
     color: var(--white);
     box-shadow: 0 20px 42px rgba(10, 35, 66, 0.16);
@@ -84,8 +84,8 @@
 .catalog-hero-copy h1,
 .workspace-hero-copy h1 {
     margin: 0;
-    font-size: clamp(2.4rem, 4.5vw, 4rem);
-    line-height: 1.02;
+    font-size: clamp(1.75rem, 3vw, 2.8rem);
+    line-height: 1.06;
 }
 
 .hero-description,
@@ -217,7 +217,7 @@
 .learning-layout .discovery-rail {
     position: static;
     display: grid;
-    grid-template-columns: minmax(240px, 1fr) minmax(220px, 0.9fr) minmax(220px, 0.8fr) minmax(220px, 0.9fr);
+    grid-template-columns: minmax(260px, 0.6fr) minmax(0, 1.4fr);
     gap: 0.8rem;
 }
 
@@ -226,7 +226,7 @@
 }
 
 .rail-card {
-    padding: 1.1rem;
+    padding: 0.85rem;
     box-shadow: 0 12px 28px rgba(22, 34, 49, 0.05);
 }
 
@@ -242,7 +242,7 @@
 
 .search-label {
     display: block;
-    margin: 1rem 0 0.45rem;
+    margin: 0 0 0.45rem;
     color: var(--navy);
     font-size: 0.92rem;
     font-weight: 700;
@@ -267,16 +267,31 @@
 }
 
 .filter-list,
-.learner-rail-list,
 .workspace-course-switcher {
     display: grid;
     gap: 0.7rem;
 }
 
+.filter-list {
+    display: flex;
+    gap: 0.55rem;
+    overflow-x: auto;
+    padding-bottom: 0.15rem;
+    scrollbar-width: thin;
+}
+
+.filter-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.7rem;
+}
+
 .filter-chip,
 .learner-chip,
 .workspace-course-link {
-    width: 100%;
+    width: auto;
     text-align: left;
     border: 1px solid var(--border-color);
     border-radius: 8px;
@@ -285,6 +300,16 @@
     color: var(--text-dark);
     font: inherit;
     cursor: pointer;
+}
+
+.filter-chip {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+.learner-chip,
+.workspace-course-link {
+    width: 100%;
 }
 
 .learner-chip,
@@ -302,9 +327,22 @@
 }
 
 .difficulty-list {
-    display: grid;
-    gap: 0.7rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
     color: var(--text-muted);
+}
+
+.difficulty-list label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.45rem 0.65rem;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    background: #ffffff;
+    color: var(--navy);
+    font-weight: 700;
 }
 
 .catalog-stage {

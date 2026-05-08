@@ -732,9 +732,7 @@ function initializeCatalogPage() {
         saveLearningState(latestState);
 
         resultCount.textContent = `${filteredCourses.length} ${filteredCourses.length === 1 ? "program" : "programs"}`;
-        renderHeroStats();
         renderSelectedProgram(selectedCourse, latestState);
-        renderLearnerRail(selectedCourse.id, latestState);
 
         if (!filteredCourses.length) {
             grid.innerHTML = `
@@ -1190,41 +1188,6 @@ function renderSelectedProgram(course, state) {
         ? `Last activity: ${formatDate(progress.lastVisited)}`
         : "No activity yet. Start this program to begin saving progress.";
 
-    document.getElementById("hero-course-image").src = course.image;
-    document.getElementById("hero-course-image").alt = course.title;
-}
-
-function renderLearnerRail(selectedCourseId, state) {
-    const enrolledCourses = state.enrolledCourseIds.map(getCourseById).filter(Boolean);
-    const container = document.getElementById("learner-rail-list");
-
-    if (!enrolledCourses.length) {
-        container.innerHTML = `<div class="empty-state"><p>No enrolled programs yet. Enroll in one course and it will live here for quick switching.</p></div>`;
-        return;
-    }
-
-    container.innerHTML = enrolledCourses
-        .map((course) => {
-            const percent = getProgressPercent(course.id, state);
-            return `
-                <a class="learner-chip${course.id === selectedCourseId ? " active" : ""}" href="exam-lobby/anatomy.html?course=${course.id}">
-                    <strong>${course.title}</strong>
-                    <span>${percent}% complete</span>
-                </a>
-            `;
-        })
-        .join("");
-}
-
-function renderHeroStats() {
-    const state = getLearningState();
-    const activeCourses = state.enrolledCourseIds.map(getCourseById).filter(Boolean);
-    const totalHours = activeCourses.reduce((sum, course) => sum + course.durationHours, 0);
-    const totalQuestions = activeCourses.reduce((sum, course) => sum + course.questions, 0);
-
-    document.getElementById("hero-active-count").textContent = String(activeCourses.length);
-    document.getElementById("hero-hours-count").textContent = `${totalHours || courseCatalog.reduce((sum, course) => sum + course.durationHours, 0)}h`;
-    document.getElementById("hero-question-count").textContent = `${totalQuestions || courseCatalog.reduce((sum, course) => sum + course.questions, 0)}+`;
 }
 
 function getLearningState() {
