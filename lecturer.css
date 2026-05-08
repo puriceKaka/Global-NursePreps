@@ -1,0 +1,282 @@
+.lecturer-topbar,
+.lecturer-brand,
+.lecturer-links,
+.lecturer-shell,
+.lecturer-app,
+.lecturer-sidebar,
+.lecturer-content,
+.panel,
+.lecturer-card,
+.data-card {
+    box-sizing: border-box;
+}
+
+.lecturer-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.65rem 1rem;
+    background: var(--navy);
+    color: #fff;
+    box-shadow: 0 10px 24px rgba(8, 27, 52, 0.16);
+}
+
+.lecturer-brand,
+.lecturer-links {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.lecturer-brand {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.1rem;
+}
+
+.lecturer-brand strong span {
+    color: var(--gold);
+}
+
+.lecturer-links a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 800;
+}
+
+.lecturer-shell {
+    width: min(100%, 1440px);
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.lecturer-auth {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.75fr);
+    gap: 1rem;
+    align-items: center;
+    min-height: calc(100vh - 86px);
+}
+
+.lecturer-auth > div,
+.lecturer-form,
+.lecturer-card,
+.data-card,
+.lecturer-sidebar,
+.panel {
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 8px 18px rgba(11, 31, 58, 0.06);
+}
+
+.lecturer-auth > div {
+    padding: 1.3rem;
+}
+
+.lecturer-auth h1 {
+    margin: 0;
+    color: var(--navy);
+    font-size: clamp(2rem, 4vw, 3.8rem);
+    line-height: 1;
+}
+
+.lecturer-kicker {
+    margin: 0 0 0.45rem;
+    color: var(--gold);
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.lecturer-form {
+    padding: 1rem;
+    display: grid;
+    gap: 0.75rem;
+}
+
+.lecturer-form label {
+    display: grid;
+    gap: 0.35rem;
+    color: var(--navy);
+    font-weight: 800;
+}
+
+.lecturer-form input,
+.lecturer-form select,
+.lecturer-form textarea {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.7rem 0.75rem;
+    font: inherit;
+    color: var(--text);
+    background: #fff;
+}
+
+.grid-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid-form .wide {
+    grid-column: 1 / -1;
+}
+
+.hint,
+.form-message {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.form-message.error {
+    color: #b42318;
+}
+
+.form-message.success {
+    color: #067647;
+}
+
+.lecturer-app {
+    display: grid;
+    grid-template-columns: 245px minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+}
+
+.lecturer-sidebar {
+    position: sticky;
+    top: 78px;
+    padding: 0.8rem;
+    display: grid;
+    gap: 0.55rem;
+}
+
+.lecturer-sidebar strong {
+    color: var(--navy);
+}
+
+.tab-button {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.75rem 0.85rem;
+    background: #fff;
+    color: var(--navy);
+    cursor: pointer;
+    text-align: left;
+    font-weight: 850;
+}
+
+.tab-button.active,
+.tab-button:hover {
+    background: var(--navy);
+    color: #fff;
+}
+
+.panel {
+    display: none;
+    padding: 1rem;
+}
+
+.panel.active {
+    display: block;
+}
+
+.panel-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: 1rem;
+    margin-bottom: 0.85rem;
+}
+
+.panel h2,
+.lecturer-card h3,
+.data-card h3 {
+    margin: 0;
+    color: var(--navy);
+}
+
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 0.85rem;
+}
+
+.stat-card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.85rem;
+    background: linear-gradient(145deg, #fff, #f4f9fc);
+}
+
+.stat-card strong {
+    display: block;
+    color: var(--navy);
+    font-size: 1.55rem;
+}
+
+.split-grid,
+.data-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
+.lecturer-card,
+.data-card {
+    padding: 0.85rem;
+}
+
+.data-card {
+    display: grid;
+    gap: 0.45rem;
+}
+
+.data-card p {
+    margin: 0;
+}
+
+.status-pill {
+    display: inline-flex;
+    width: fit-content;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.4rem 0.65rem;
+    background: var(--ice);
+    color: var(--navy);
+    font-weight: 850;
+}
+
+@media (max-width: 920px) {
+    .lecturer-auth,
+    .lecturer-app,
+    .grid-form,
+    .stat-grid,
+    .split-grid,
+    .data-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .lecturer-sidebar {
+        position: static;
+    }
+}
+
+@media (max-width: 640px) {
+    .lecturer-topbar,
+    .panel-head {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .lecturer-links {
+        justify-content: space-between;
+    }
+}

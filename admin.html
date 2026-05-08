@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal | Global NursePrep</title>
+    <link rel="stylesheet" href="homepage.css">
+    <link rel="stylesheet" href="admin.css">
+    <script defer src="learning-core.js"></script>
+    <script defer src="admin.js"></script>
+</head>
+<body>
+    <header class="portal-topbar">
+        <a class="portal-brand" href="homepage.html">
+            <span class="brand-logo"><img src="logo/Screenshot_20260421-123818.jpg" alt="Global NursePrep logo"></span>
+            <strong>Global <span>Nurse</span>Prep</strong>
+        </a>
+        <nav class="portal-links" aria-label="Admin navigation">
+            <a href="homepage.html">Student Site</a>
+            <a href="lecturer.html">Lecturer Portal</a>
+            <button type="button" id="adminLogout" class="secondary-button hidden">Logout</button>
+        </nav>
+    </header>
+
+    <main class="portal-shell">
+        <section class="auth-panel" id="adminAuth">
+            <div>
+                <p class="portal-kicker">Secure admin access</p>
+                <h1>Admin governance portal</h1>
+                <p class="muted">Manage lecturers, students, courses, payments, exams, memberships, and platform statistics from one place.</p>
+            </div>
+            <form class="portal-form" id="adminLoginForm">
+                <label>
+                    <span>Email</span>
+                    <input type="email" id="adminEmail" value="admin@globalnurseprep.com" required>
+                </label>
+                <label>
+                    <span>Password</span>
+                    <input type="password" id="adminPassword" value="admin123" required>
+                </label>
+                <button class="primary-button" type="submit">Sign in as admin</button>
+                <p class="hint">Demo admin: admin@globalnurseprep.com / admin123</p>
+                <p class="form-message" id="adminLoginMessage" aria-live="polite"></p>
+            </form>
+        </section>
+
+        <section class="portal-app hidden" id="adminApp">
+            <aside class="portal-sidebar">
+                <strong>Admin Console</strong>
+                <button class="tab-button active" data-panel="overview">Overview</button>
+                <button class="tab-button" data-panel="courses">Courses & Pricing</button>
+                <button class="tab-button" data-panel="lecturers">Lecturers</button>
+                <button class="tab-button" data-panel="exams">Exam Submissions</button>
+                <button class="tab-button" data-panel="memberships">Membership Groups</button>
+                <button class="tab-button" data-panel="payments">Payments</button>
+            </aside>
+
+            <div class="portal-content">
+                <section class="panel active" id="overview">
+                    <div class="panel-head">
+                        <div>
+                            <p class="portal-kicker">Platform status</p>
+                            <h2>Scalable learning control center</h2>
+                        </div>
+                        <button class="secondary-button" id="seedDataBtn">Refresh demo data</button>
+                    </div>
+                    <div class="stat-grid" id="adminStats"></div>
+                    <div class="split-grid">
+                        <article class="portal-card">
+                            <h3>Access rules</h3>
+                            <p class="muted">Student, lecturer, and admin records are separated by role and user id in storage so portals do not show another user's private details.</p>
+                        </article>
+                        <article class="portal-card">
+                            <h3>Payment readiness</h3>
+                            <p class="muted">Courses can be marked free or payable. Supported payment choices are M-Pesa, PayPal, card, and wallet records.</p>
+                        </article>
+                    </div>
+                </section>
+
+                <section class="panel" id="courses">
+                    <div class="panel-head">
+                        <div>
+                            <p class="portal-kicker">Catalog</p>
+                            <h2>Courses, prices, and access</h2>
+                        </div>
+                    </div>
+                    <form class="portal-form grid-form" id="courseAdminForm">
+                        <input type="hidden" id="courseId">
+                        <label><span>Course title</span><input id="courseTitle" required></label>
+                        <label><span>Category</span><input id="courseCategory" required></label>
+                        <label><span>Level</span><select id="courseLevel"><option>Beginner</option><option>Intermediate</option><option>Advanced</option></select></label>
+                        <label><span>Access</span><select id="courseAccess"><option value="free">Free</option><option value="paid">Paid</option></select></label>
+                        <label><span>Price (KES)</span><input id="coursePrice" type="number" min="0" value="0"></label>
+                        <label><span>Lecturer</span><input id="courseLecturer" placeholder="Lecturer name"></label>
+                        <label class="wide"><span>Summary</span><textarea id="courseSummary" rows="3" required></textarea></label>
+                        <button class="primary-button" type="submit">Save course</button>
+                    </form>
+                    <div class="data-grid" id="adminCourseList"></div>
+                </section>
+
+                <section class="panel" id="lecturers">
+                    <div class="panel-head">
+                        <div>
+                            <p class="portal-kicker">Teaching access</p>
+                            <h2>Lecturer approvals and subscriptions</h2>
+                        </div>
+                    </div>
+                    <div class="data-grid" id="lecturerList"></div>
+                </section>
+
+                <section class="panel" id="exams">
+                    <div class="panel-head">
+                        <div>
+                            <p class="portal-kicker">Quality control</p>
+                            <h2>Submitted exams</h2>
+                        </div>
+                    </div>
+                    <div class="data-grid" id="examList"></div>
+                </section>
+
+                <section class="panel" id="memberships">
+                    <div class="panel-head">
+                        <div>
+                            <p class="portal-kicker">Groups</p>
+                            <h2>Membership groups created by lecturers</h2>
+                        </div>
+                    </div>
+                    <div class="data-grid" id="groupList"></div>
+                </section>
+
+                <section class="panel" id="payments">
+                    <div class="panel-head">
+                        <div>
+                            <p class="portal-kicker">Revenue</p>
+                            <h2>Payment methods and access records</h2>
+                        </div>
+                    </div>
+                    <div class="payment-methods">
+                        <span>M-Pesa</span><span>PayPal</span><span>Card</span><span>Wallet</span>
+                    </div>
+                    <div class="data-grid" id="paymentList"></div>
+                </section>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

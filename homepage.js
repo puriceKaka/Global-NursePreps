@@ -8,7 +8,8 @@
         examByUser: 'nurseprep_examplan_by_user',
         questions: 'nurseprep_questions',
         practiceStats: 'nurseprep_practice_stats',
-        ui: 'nurseprep_ui_settings'
+        ui: 'nurseprep_ui_settings',
+        payments: 'gnp_payments'
     };
 
     const COURSES = [
@@ -368,6 +369,48 @@
         setMap(STORAGE_KEYS.enrollmentsByUser, map);
     }
 
+    function getPayments() {
+        const payments = loadJson(STORAGE_KEYS.payments, []);
+        return Array.isArray(payments) ? payments : [];
+    }
+
+    function savePayments(payments) {
+        saveJson(STORAGE_KEYS.payments, payments);
+    }
+
+    function hasCoursePayment(userId, courseId) {
+        return getPayments().some((payment) => (
+            payment.payerRole === 'student' &&
+            payment.payerId === userId &&
+            payment.courseId === courseId &&
+            payment.status === 'recorded'
+        ));
+    }
+
+    function recordCoursePayment(userId, course) {
+        const method = window.prompt('Choose payment method: M-Pesa, PayPal, Card, or Wallet', 'M-Pesa');
+        if (!method) return false;
+        const reference = window.prompt('Enter payment reference or transaction code');
+        if (!reference) return false;
+        savePayments([
+            {
+                id: uid('payment'),
+                payerRole: 'student',
+                payerId: userId,
+                payerName: getSession()?.name || 'Student',
+                courseId: course.id,
+                item: course.title,
+                method: method.trim(),
+                reference: reference.trim(),
+                amount: Number(course.price || 0),
+                status: 'recorded',
+                createdAt: new Date().toISOString()
+            },
+            ...getPayments()
+        ]);
+        return true;
+    }
+
     function getUserGoals(userId) {
         const map = getMap(STORAGE_KEYS.goalsByUser);
         return Array.isArray(map[userId]) ? map[userId] : [];
@@ -592,6 +635,9 @@
             const percent = core?.getProgressPercent ? core.getProgressPercent(course.id, state) : 0;
             const totalModules = progress?.totalModules || course.moduleCount || 0;
             const doneModules = Array.isArray(progress?.completedModules) ? progress.completedModules.length : 0;
+            const price = Number(course.price || 0);
+            const isPaidCourse = course.access === 'paid' || price > 0;
+            const paid = !isPaidCourse || hasCoursePayment(userId, course.id);
 
             const imageSrc = getCourseImage(course, index);
             const image = document.createElement('img');
@@ -607,6 +653,7 @@
                 <span class="badge">${course.category}</span>
                 <span class="badge alt">${course.difficulty}</span>
                 <span class="badge alt">${totalModules ? `${doneModules}/${totalModules} modules` : 'Modules'}</span>
+                <span class="badge alt">${isPaidCourse ? `KES ${price.toLocaleString()}` : 'Free'}</span>
             `;
 
             const title = document.createElement('h4');
@@ -625,11 +672,18 @@
             const startBtn = document.createElement('button');
             startBtn.type = 'button';
             startBtn.className = 'primary-button';
-            startBtn.textContent = enrolled.has(course.id) ? 'Continue learning' : 'Enroll & start';
+            startBtn.textContent = enrolled.has(course.id)
+                ? 'Continue learning'
+                : isPaidCourse && !paid
+                    ? 'Pay & enroll'
+                    : 'Enroll & start';
 
             startBtn.addEventListener('click', () => {
                 if (!core) return;
                 if (!enrolled.has(course.id)) {
+                    if (isPaidCourse && !hasCoursePayment(userId, course.id) && !recordCoursePayment(userId, course)) {
+                        return;
+                    }
                     core.enrollCourse(course.id);
                 }
                 window.location.href = `EXAMINATION%20PREP%20SITE/exam-lobby/anatomy.html?course=${encodeURIComponent(course.id)}`;
