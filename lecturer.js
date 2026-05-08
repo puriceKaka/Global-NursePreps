@@ -9,9 +9,6 @@
         payments: "gnp_payments"
     };
 
-    const DEMO_EMAIL = "lecturer@globalnurseprep.com";
-    const DEMO_PASSWORD = "teach123";
-
     const $ = (selector) => document.querySelector(selector);
     const $$ = (selector) => Array.from(document.querySelectorAll(selector));
 
@@ -120,9 +117,9 @@
             return;
         }
 
-        if (email === DEMO_EMAIL && password !== DEMO_PASSWORD) {
+        if (password.length < 6) {
             if (message) {
-                message.textContent = "Incorrect demo lecturer password.";
+                message.textContent = "Use a password with at least 6 characters.";
                 message.className = "form-message error";
             }
             return;
@@ -243,7 +240,7 @@
             lecturerName: session.name,
             title: $("#meetingTitle").value.trim(),
             groupId: group?.id || "",
-            groupName: group?.name || "No group",
+            groupName: group?.name || "Unassigned group",
             date: $("#meetingDate").value,
             link: $("#meetingLink").value.trim(),
             createdAt: new Date().toISOString()
@@ -297,10 +294,10 @@
         $("#lecturerPayments").innerHTML = payments.map((payment) => `
             <article class="data-card">
                 <h3>${escapeHtml(payment.item)}</h3>
-                <p class="muted">${escapeHtml(payment.method)} • ${escapeHtml(payment.reference || "No reference")}</p>
+                <p class="muted">${escapeHtml(payment.method)} • ${escapeHtml(payment.reference || "Reference pending")}</p>
                 <p><strong>${money(payment.amount)}</strong> <span class="status-pill">${escapeHtml(payment.status)}</span></p>
             </article>
-        `).join("") || `<article class="data-card"><p class="muted">No teaching payments recorded yet.</p></article>`;
+        `).join("") || `<article class="data-card empty-card"><p class="muted">Teaching payment records will appear here.</p></article>`;
     }
 
     function renderGroups() {
@@ -311,7 +308,7 @@
                 <p class="muted">${escapeHtml(group.courseTitle)} • ${escapeHtml(group.access)} • limit ${escapeHtml(group.limit)}</p>
                 <p><span class="status-pill">${escapeHtml(group.members?.length || 0)} students joined</span></p>
             </article>
-        `).join("") || `<article class="data-card"><p class="muted">No groups yet. Create one for students to join.</p></article>`;
+        `).join("") || `<article class="data-card empty-card"><p class="muted">Create a membership group to organize students by course or cohort.</p></article>`;
     }
 
     function renderMeetings() {
@@ -319,10 +316,10 @@
         $("#meetingsList").innerHTML = meetings.map((meeting) => `
             <article class="data-card">
                 <h3>${escapeHtml(meeting.title)}</h3>
-                <p class="muted">${escapeHtml(meeting.groupName)} • ${escapeHtml(meeting.date || "No date")}</p>
+                <p class="muted">${escapeHtml(meeting.groupName)} • ${escapeHtml(meeting.date || "Date pending")}</p>
                 <p><a href="${escapeHtml(meeting.link)}" target="_blank" rel="noopener">Open meeting link</a></p>
             </article>
-        `).join("") || `<article class="data-card"><p class="muted">No meetings scheduled yet.</p></article>`;
+        `).join("") || `<article class="data-card empty-card"><p class="muted">Scheduled teaching sessions will appear here.</p></article>`;
     }
 
     function renderExams() {
@@ -334,7 +331,7 @@
                 <p>${escapeHtml(exam.instructions)}</p>
                 <p><span class="status-pill">${escapeHtml(exam.status)}</span></p>
             </article>
-        `).join("") || `<article class="data-card"><p class="muted">No exams submitted yet.</p></article>`;
+        `).join("") || `<article class="data-card empty-card"><p class="muted">Submitted exams will appear here with their review status.</p></article>`;
     }
 
     function renderResources() {
@@ -345,7 +342,7 @@
                 <p class="muted">${escapeHtml(resource.courseTitle)} • ${escapeHtml(resource.type)}</p>
                 <p><a href="${escapeHtml(resource.link)}" target="_blank" rel="noopener">Open resource</a></p>
             </article>
-        `).join("") || `<article class="data-card"><p class="muted">No resources added yet.</p></article>`;
+        `).join("") || `<article class="data-card empty-card"><p class="muted">Add notes, links, worksheets, or question banks for your courses.</p></article>`;
     }
 
     function renderAll() {

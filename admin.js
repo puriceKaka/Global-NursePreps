@@ -4,11 +4,9 @@
         lecturers: "gnp_lecturers",
         groups: "gnp_membership_groups",
         exams: "gnp_lecturer_exams",
-        payments: "gnp_payments"
+        payments: "gnp_payments",
+        adminProfile: "gnp_admin_profile"
     };
-
-    const ADMIN_EMAIL = "admin@globalnurseprep.com";
-    const ADMIN_PASSWORD = "admin123";
 
     const $ = (selector) => document.querySelector(selector);
     const $$ = (selector) => Array.from(document.querySelectorAll(selector));
@@ -24,6 +22,13 @@
 
     function writeJson(key, value) {
         localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    async function sha256Hex(text) {
+        if (!window.crypto?.subtle) return text;
+        const data = new TextEncoder().encode(text);
+        const hash = await window.crypto.subtle.digest("SHA-256", data);
+        return Array.from(new Uint8Array(hash)).map((byte) => byte.toString(16).padStart(2, "0")).join("");
     }
 
     function uid(prefix) {
@@ -58,13 +63,13 @@
         writeJson("nurseprep_admin_courses", courses);
     }
 
-    function seedData() {
+    function ensureStarterRecords() {
         const lecturers = readJson(KEYS.lecturers, []);
         if (!lecturers.length) {
             writeJson(KEYS.lecturers, [
                 {
-                    id: "lecturer_demo",
-                    name: "Nurse Lecturer",
+                    id: "lecturer_primary",
+                    name: "Nurse Educator",
                     email: "lecturer@globalnurseprep.com",
                     status: "approved",
                     subscription: "Professional Lecturer",
@@ -77,9 +82,9 @@
         if (!payments.length) {
             writeJson(KEYS.payments, [
                 {
-                    id: "pay_demo_1",
+                    id: "pay_student_1",
                     payerRole: "student",
-                    payerName: "Student Demo",
+                    payerName: "Student Account",
                     item: "NCLEX-RN Comprehensive Prep",
                     method: "M-Pesa",
                     amount: 3500,
@@ -87,9 +92,9 @@
                     createdAt: new Date().toISOString()
                 },
                 {
-                    id: "pay_demo_2",
+                    id: "pay_lecturer_1",
                     payerRole: "lecturer",
-                    payerName: "Nurse Lecturer",
+                    payerName: "Nurse Educator",
                     item: "Professional Lecturer Subscription",
                     method: "PayPal",
                     amount: 2500,
@@ -113,18 +118,36 @@
         $("#adminLogout")?.classList.add("hidden");
     }
 
-    function handleLogin(event) {
+    async function handleLogin(event) {
         event.preventDefault();
         const email = ($("#adminEmail")?.value || "").trim().toLowerCase();
         const password = $("#adminPassword")?.value || "";
         const message = $("#adminLoginMessage");
 
-        if (email !== ADMIN_EMAIL || password !== ADMIN_PASSWORD) {
+        if (!email || password.length < 6) {
             if (message) {
-                message.textContent = "Invalid admin credentials.";
+                message.textContent = "Enter an admin email and a password with at least 6 characters.";
                 message.className = "form-message error";
             }
             return;
+        }
+
+        const passwordHash = await sha256Hex(password);
+        const profile = readJson(KEYS.adminProfile, null);
+        if (profile?.email && (profile.email !== email || profile.passwordHash !== passwordHash)) {
+            if (message) {
+                message.textContent = "The admin email or password is incorrect.";
+                message.className = "form-message error";
+            }
+            return;
+        }
+
+        if (!profile?.email) {
+            writeJson(KEYS.adminProfile, {
+                email,
+                passwordHash,
+                createdAt: new Date().toISOString()
+            });
         }
 
         writeJson(KEYS.session, {
@@ -132,7 +155,7 @@
             email,
             loginAt: new Date().toISOString()
         });
-        seedData();
+        ensureStarterRecords();
         showApp();
     }
 
@@ -228,7 +251,7 @@
                     <button type="button" data-lecturer-status="${escapeHtml(lecturer.id)}" data-status="suspended">Suspend</button>
                 </div>
             </article>
-        `).join("") || `<article class="data-card"><p class="muted">No lecturers registered yet.</p></article>`;
+        `).join("") || `<article class="data-card empty-card"><p class="muted">Lecturer applications will appear here after registration.</p></article>`;
     }
 
     function renderExams() {
@@ -244,7 +267,7 @@
                     <button type="button" data-exam-status="${escapeHtml(exam.id)}" data-status="needs revision">Needs revision</button>
                 </div>
             </article>
-        `).join("") || `<article class="data-card"><p class="muted">No exams submitted yet.</p></article>`;
+        `).join("") || `<article class="data-card empty-card"><p class="muted">Submitted exams will appear here for review.</p></article>`;
     }
 
     function renderGroups() {
@@ -255,7 +278,7 @@
                 <p class="muted">${escapeHtml(group.courseTitle)} • ${escapeHtml(group.access)} • limit ${escapeHtml(group.limit)}</p>
                 <p>Lecturer: ${escapeHtml(group.lecturerName)} • Students joined: ${escapeHtml(group.members?.length || 0)}</p>
             </article>
-        `).join("") || `<article class="data-card"><p class="muted">No membership groups created yet.</p></article>`;
+        `).join("") || `<article class="data-card empty-card"><p class="muted">Lecturer membership groups will appear here.</p></article>`;
     }
 
     function renderPayments() {
@@ -266,7 +289,7 @@
                 <p class="muted">${escapeHtml(payment.payerRole)} • ${escapeHtml(payment.payerName)} • ${escapeHtml(payment.method)}</p>
                 <p><strong>${money(payment.amount)}</strong> <span class="status-pill">${escapeHtml(payment.status)}</span></p>
             </article>
-        `).join("") || `<article class="data-card"><p class="muted">No payments recorded yet.</p></article>`;
+        `).join("") || `<article class="data-card empty-card"><p class="muted">Payment records will appear here after students or lecturers pay.</p></article>`;
     }
 
     function renderAll() {
@@ -329,11 +352,11 @@
     }
 
     function main() {
-        seedData();
+        ensureStarterRecords();
         $("#adminLoginForm")?.addEventListener("submit", handleLogin);
         $("#courseAdminForm")?.addEventListener("submit", saveCourse);
         $("#seedDataBtn")?.addEventListener("click", () => {
-            seedData();
+            ensureStarterRecords();
             renderAll();
         });
         $("#adminLogout")?.addEventListener("click", () => {

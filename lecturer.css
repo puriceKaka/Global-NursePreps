@@ -144,7 +144,7 @@
 
 .lecturer-app {
     display: grid;
-    grid-template-columns: 245px minmax(0, 1fr);
+    grid-template-columns: 250px minmax(0, 1fr);
     gap: 1rem;
     align-items: start;
 }
@@ -152,13 +152,23 @@
 .lecturer-sidebar {
     position: sticky;
     top: 78px;
-    padding: 0.8rem;
+    padding: 0.9rem;
     display: grid;
     gap: 0.55rem;
 }
 
 .lecturer-sidebar strong {
+    display: block;
     color: var(--navy);
+}
+
+.lecturer-sidebar > div {
+    padding: 0.35rem 0.35rem 0.65rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.lecturer-sidebar .small {
+    overflow-wrap: anywhere;
 }
 
 .tab-button {
@@ -180,7 +190,7 @@
 
 .panel {
     display: none;
-    padding: 1rem;
+    padding: 1.1rem;
 }
 
 .panel.active {
@@ -192,7 +202,9 @@
     justify-content: space-between;
     align-items: start;
     gap: 1rem;
-    margin-bottom: 0.85rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
 }
 
 .panel h2,
@@ -231,12 +243,13 @@
 
 .lecturer-card,
 .data-card {
-    padding: 0.85rem;
+    padding: 0.95rem;
 }
 
 .data-card {
     display: grid;
     gap: 0.45rem;
+    align-content: start;
 }
 
 .data-card p {
@@ -252,6 +265,15 @@
     background: var(--ice);
     color: var(--navy);
     font-weight: 850;
+}
+
+.empty-card {
+    border-style: dashed;
+    background: #fbfdff;
+}
+
+.lecturer-form + .data-grid {
+    margin-top: 1rem;
 }
 
 @media (max-width: 920px) {

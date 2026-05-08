@@ -25,21 +25,21 @@
     <main class="portal-shell">
         <section class="auth-panel" id="adminAuth">
             <div>
-                <p class="portal-kicker">Secure admin access</p>
-                <h1>Admin governance portal</h1>
-                <p class="muted">Manage lecturers, students, courses, payments, exams, memberships, and platform statistics from one place.</p>
+                <p class="portal-kicker">Admin access</p>
+                <h1>Manage the learning platform with clarity.</h1>
+                <p class="muted">Review courses, lecturer access, payments, exams, groups, and student-facing records from one organized workspace.</p>
             </div>
             <form class="portal-form" id="adminLoginForm">
                 <label>
                     <span>Email</span>
-                    <input type="email" id="adminEmail" value="admin@globalnurseprep.com" required>
+                    <input type="email" id="adminEmail" autocomplete="username" required>
                 </label>
                 <label>
                     <span>Password</span>
-                    <input type="password" id="adminPassword" value="admin123" required>
+                    <input type="password" id="adminPassword" autocomplete="current-password" required>
                 </label>
                 <button class="primary-button" type="submit">Sign in as admin</button>
-                <p class="hint">Demo admin: admin@globalnurseprep.com / admin123</p>
+                <p class="hint">The first admin sign-in creates the local admin account for this browser.</p>
                 <p class="form-message" id="adminLoginMessage" aria-live="polite"></p>
             </form>
         </section>
@@ -60,19 +60,19 @@
                     <div class="panel-head">
                         <div>
                             <p class="portal-kicker">Platform status</p>
-                            <h2>Scalable learning control center</h2>
+                            <h2>Daily operations</h2>
                         </div>
-                        <button class="secondary-button" id="seedDataBtn">Refresh demo data</button>
+                        <button class="secondary-button" id="seedDataBtn">Load starter records</button>
                     </div>
                     <div class="stat-grid" id="adminStats"></div>
                     <div class="split-grid">
                         <article class="portal-card">
-                            <h3>Access rules</h3>
-                            <p class="muted">Student, lecturer, and admin records are separated by role and user id in storage so portals do not show another user's private details.</p>
+                            <h3>Access control</h3>
+                            <p class="muted">Students, lecturers, and admins work in separate areas. Each role only sees the records that belong to that role.</p>
                         </article>
                         <article class="portal-card">
-                            <h3>Payment readiness</h3>
-                            <p class="muted">Courses can be marked free or payable. Supported payment choices are M-Pesa, PayPal, card, and wallet records.</p>
+                            <h3>Course payments</h3>
+                            <p class="muted">Courses can be free or paid. Payment records support M-Pesa, PayPal, card, and wallet references.</p>
                         </article>
                     </div>
                 </section>
