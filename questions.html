@@ -89,7 +89,13 @@
                 <div class="practice-score-card hidden" id="practiceScoreCard" aria-live="polite"></div>
             </section>
 
-            <form class="stack-form ask-question-card" id="questionForm">
+            <div class="ask-question-toggle">
+                <button type="button" class="secondary-button" id="askQuestionToggle" aria-expanded="false" aria-controls="questionForm">
+                    Ask your own question
+                </button>
+            </div>
+
+            <form class="stack-form ask-question-card hidden" id="questionForm">
                 <div>
                     <h3>Ask your own question</h3>
                     <p class="muted">Type a nursing question and Global NursePrep will give you a study answer.</p>

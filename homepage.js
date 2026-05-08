@@ -1288,6 +1288,15 @@
     }
 
     function initQuestions(userId, userName) {
+        const questionForm = $('#questionForm');
+        const askToggle = $('#askQuestionToggle');
+        askToggle?.addEventListener('click', () => {
+            if (!questionForm) return;
+            const isHidden = questionForm.classList.toggle('hidden');
+            askToggle.setAttribute('aria-expanded', String(!isHidden));
+            askToggle.textContent = isHidden ? 'Ask your own question' : 'Hide question form';
+        });
+
         $('#questionForm')?.addEventListener('submit', (event) => {
             event.preventDefault();
             const titleEl = $('#questionTitle');
