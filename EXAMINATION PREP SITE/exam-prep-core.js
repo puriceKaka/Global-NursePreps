@@ -620,41 +620,59 @@
             return cachedContentPromise;
         }
 
-        cachedContentPromise = fetch(CONTENT_ENDPOINT, {
-            headers: {
-                Accept: "application/json"
-            }
-        })
-            .then(async (response) => {
+        cachedContentPromise = (async () => {
+            try {
+                const response = await fetch(CONTENT_ENDPOINT, {
+                    headers: {
+                        Accept: "application/json"
+                    }
+                });
+                
                 if (!response.ok) {
-                    throw new Error(`Unable to load exam prep content (${response.status})`);
+                    throw new Error(`API endpoint returned ${response.status}`);
                 }
 
                 const payload = await response.json();
                 if (!payload?.ok || !payload.content) {
                     throw new Error("Exam prep content payload was empty.");
                 }
+                console.log("Content loaded from API endpoint");
                 return payload.content;
-            })
-            .catch(async (error) => {
-                console.warn(error);
+            } catch (error) {
+                console.warn("API fetch failed, trying local fallback:", error.message);
                 try {
-                    const fallbackResponse = await fetch("../data/exam-prep-content.json", {
-                        headers: {
-                            Accept: "application/json"
-                        }
-                    });
-                    if (fallbackResponse.ok) {
-                        const fallbackPayload = await fallbackResponse.json();
-                        if (fallbackPayload && typeof fallbackPayload === "object") {
-                            return fallbackPayload;
+                    const fallbackPaths = [
+                        "../data/exam-prep-content.json",
+                        "./data/exam-prep-content.json",
+                        "/data/exam-prep-content.json"
+                    ];
+                    
+                    for (const path of fallbackPaths) {
+                        try {
+                            const fallbackResponse = await fetch(path, {
+                                headers: {
+                                    Accept: "application/json"
+                                }
+                            });
+                            if (fallbackResponse.ok) {
+                                const fallbackPayload = await fallbackResponse.json();
+                                if (fallbackPayload && typeof fallbackPayload === "object") {
+                                    console.log("Content loaded from local file:", path);
+                                    return fallbackPayload;
+                                }
+                            }
+                        } catch (innerError) {
+                            console.warn(`Fallback path ${path} failed:`, innerError.message);
                         }
                     }
-                } catch (innerError) {
-                    console.warn("Exam prep local data fallback failed.", innerError);
+                } catch (outerError) {
+                    console.warn("All fallback attempts failed.", outerError);
                 }
+                
+                console.log("Using default seed content");
                 return clone(defaultContent);
-            });
+            }
+        })();
 
         return cachedContentPromise;
     }

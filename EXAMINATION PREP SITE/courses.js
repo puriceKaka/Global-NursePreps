@@ -125,6 +125,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         ];
 
+        const fallbackImages = [
+            "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=800",
+            "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=800&q=80"
+        ];
+
         courseList.forEach((course) => {
             course.modules = Array.isArray(course.modules) ? course.modules : [];
             course.modules.forEach((module, index) => normalizeCourseModule(module, course, index));
@@ -166,7 +174,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const module = {
                     ...template,
                     id: `${course.id}-generated-${moduleIndex + 1}`,
-                    title: `${template.title}: ${course.title}`,
+                    title: `${template.title} - Unit ${moduleIndex + 1}`,
                     image: course.image,
                     videoResourceUrl: "",
                     videoEmbedUrl: ""
@@ -183,6 +191,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                 passMark: 70,
                 instructions: "Complete all modules, then sit this course assessment inside the learning workspace."
             };
+
+            if (!course.image || course.image.trim() === "" || course.image.includes("undefined")) {
+                course.image = fallbackImages[Math.floor(Math.random() * fallbackImages.length)];
+            }
         });
     }
 
@@ -220,9 +232,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const searchInput = document.getElementById("course-search");
         const sortSelect = document.getElementById("sort-select");
         const resultCount = document.getElementById("catalog-results");
-        const testCategoryList = document.getElementById("test-category-list");
         const difficultyInputs = Array.from(document.querySelectorAll(".difficulty-filter"));
-        const enrollButton = document.getElementById("selected-enroll-btn");
 
         const state = getLearningState(courseList);
         const defaultCourse = getCourseById(courseList, queryCourseId) || getCourseById(courseList, state.selectedCourseId) || courseList[0];
@@ -283,19 +293,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             renderCatalog();
         });
 
-        enrollButton.addEventListener("click", () => {
-            const latest = getLearningState(courseList);
-            const selectedCourse = getCourseById(courseList, view.selectedCourseId);
-            if (!selectedCourse) {
-                return;
-            }
-
-            toggleEnrollment(latest, selectedCourse);
-            latest.selectedCourseId = selectedCourse.id;
-            saveLearningState(latest);
-            renderCatalog();
-        });
-
         renderCatalog();
 
         function renderCatalog() {
@@ -317,8 +314,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             resultCount.textContent = `${filteredCourses.length} ${filteredCourses.length === 1 ? "course" : "courses"}`;
             renderHeroStats(latestState);
-            renderSelectedProgram(selectedCourse, latestState);
-            renderLearnerRail(selectedCourse.id, latestState);
 
             if (!filteredCourses.length) {
                 grid.innerHTML = `
@@ -371,13 +366,9 @@ document.addEventListener("DOMContentLoaded", async () => {
             const label = category === "All Courses" ? "Full catalog" : category;
 
             return `
-                <button class="filter-chip academy-category-chip${isActive ? " active" : ""}" data-category="${escapeHtml(category)}" type="button">
-                    <span class="category-marker" aria-hidden="true"></span>
-                    <span class="category-copy">
-                        <strong>${escapeHtml(label)}</strong>
-                        <small>${source.length} ${source.length === 1 ? "course" : "courses"} - ${moduleCount} modules</small>
-                    </span>
-                    <span class="category-count">${questionCount.toLocaleString()} Qs</span>
+                <button class="filter-chip academy-category-chip${isActive ? " active" : ""}" data-category="${escapeHtml(category)}">
+                    <span class="cat-label">${escapeHtml(label)}</span>
+                    <span class="cat-meta">${source.length}</span>
                 </button>
             `;
         }
@@ -441,6 +432,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             document.getElementById("hero-course-image").src = course.image;
             document.getElementById("hero-course-image").alt = course.title;
         }
+    }
 
         function renderSelectedModulePreview(course) {
             const container = document.getElementById("selected-module-preview");
@@ -450,7 +442,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             container.innerHTML = `
                 <div class="module-preview-head">
-                    <strong>Module pathway</strong>
+                    <strong>Learning Pathway</strong>
                     <span>${course.modules.length} guided modules + final test</span>
                 </div>
                 <div class="module-preview-list">
