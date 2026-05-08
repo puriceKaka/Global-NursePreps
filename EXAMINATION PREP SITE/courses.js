@@ -1085,31 +1085,22 @@ function renderCourseCard(course, state) {
     const isEnrolled = state.enrolledCourseIds.includes(course.id);
     const percent = getProgressPercent(course.id, state);
     const workspaceHref = isEnrolled ? `exam-lobby/anatomy.html?course=${course.id}` : `#selected-program`;
-    const intro = course.modules[0]?.title.replace(/^Introduction:\s*/i, "") || "Introduction";
-    const finalUnit = course.modules[course.modules.length - 1]?.title || "Final practice";
     return `
-        <article class="course-card simple-course-card reveal-on-scroll">
+        <article class="course-card reveal-on-scroll">
             <div class="course-card-media">
                 <img src="${course.image}" alt="${course.title}" class="fit-image">
             </div>
             <div class="course-card-body">
-                <div class="course-card-top">
-                    <div>
-                        <h3>${course.title}</h3>
-                        <p>${course.summary}</p>
-                    </div>
+                <div class="badge-row">
                     <span class="course-badge">${course.badge}</span>
+                    <span class="course-chip">${course.difficulty}</span>
+                    <span class="course-chip">${course.modules.length} units</span>
                 </div>
+                <h3>${course.title}</h3>
+                <p>${course.summary}</p>
                 <div class="course-quick-row">
                     <span>${course.category}</span>
-                    <span>${course.difficulty}</span>
-                    <span>${course.modules.length} units</span>
                     <span>${course.questions}+ questions</span>
-                </div>
-                <div class="simple-course-path" aria-label="${course.title} study structure">
-                    <div><span>1</span><strong>${intro}</strong></div>
-                    <div><span>2</span><strong>${course.modules.length - 2} textbook units</strong></div>
-                    <div><span>3</span><strong>${finalUnit}</strong></div>
                 </div>
                 <div class="course-progress-line">
                     <span style="width: ${percent}%"></span>
