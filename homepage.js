@@ -989,28 +989,20 @@
         let activeCourseId = '';
         let session = null;
 
-        function renderSessionScore(message = '') {
+        function renderSessionScore() {
             if (!scoreCard || !session) return;
-            const answered = session.answers.filter(Boolean).length;
+            const answered = session.answers.filter((item) => item !== null).length;
             const percentage = answered === 0 ? 0 : Math.round((session.correct / answered) * 100);
             const complete = answered === session.total;
-            const weakTopics = Object.entries(session.weakAreas).sort((a, b) => b[1] - a[1]);
-            const weakText = weakTopics.length
-                ? `Weak area: ${weakTopics[0][0]}. Revise this topic before the main exam.`
-                : answered > 0
-                    ? 'No weak area yet. Keep answering until the set is complete.'
-                    : 'Answer the first question to start scoring.';
             scoreCard.classList.remove('hidden');
             scoreCard.innerHTML = `
                 <div>
                     <span class="panel-kicker">${complete ? 'Final score' : 'Live score'}</span>
                     <strong>${percentage}%</strong>
-                    <p class="muted small">${session.correct} correct out of ${answered} answered. Set size: ${session.total} questions.</p>
                 </div>
                 <div class="practice-meter" aria-label="Practice percentage">
                     <span style="width: ${percentage}%"></span>
                 </div>
-                <div class="practice-weakness">${message || weakText}</div>
             `;
         }
 
@@ -1069,7 +1061,7 @@
                 weakAreas: {},
                 questions: buildQuestionSet(course, total)
             };
-            renderSessionScore('Answer each question. Your percentage updates automatically.');
+            renderSessionScore();
             renderCurrentQuestion();
         }
 
@@ -1130,7 +1122,6 @@
                     const percentage = Math.round((session.correct / answeredCount) * 100);
                     feedback.innerHTML = `
                         <strong>${isCorrect ? 'Correct' : 'Needs review'} - ${percentage}%</strong>
-                        <span>${template.rationale}</span>
                     `;
                     feedback.classList.remove('hidden');
                     renderSessionScore();
@@ -1159,7 +1150,7 @@
                         <button type="button" class="primary-button" id="restartPracticeBtn">Start another set</button>
                     </div>
                 `;
-                renderSessionScore('Practice complete. Use the weak-area note before starting the next set.');
+                renderSessionScore();
                 $('#restartPracticeBtn')?.addEventListener('click', startPracticeSet);
             });
 
