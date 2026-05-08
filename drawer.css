@@ -22,6 +22,20 @@ body.drawer-open {
     flex: 0 0 auto;
 }
 
+#menuToggle {
+    position: fixed;
+    top: 14px;
+    left: 14px;
+    z-index: 2102;
+    box-shadow: 0 10px 24px rgba(11, 31, 58, 0.12);
+}
+
+.logo-container #menuToggle,
+.topbar #menuToggle,
+.header #menuToggle {
+    margin-right: 42px;
+}
+
 .menu-floating {
     position: fixed;
     top: 16px;

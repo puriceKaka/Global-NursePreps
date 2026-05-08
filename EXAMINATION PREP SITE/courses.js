@@ -383,6 +383,201 @@ const courseCatalog = [
     }
 ];
 
+const COURSE_TOPIC_BLUEPRINTS = {
+    "nck-masterclass": [
+        "Introduction to the NCK pathway",
+        "Professional nursing ethics and scope",
+        "Adult assessment and vital signs",
+        "Cardiovascular and respiratory priorities",
+        "Maternal and newborn nursing",
+        "Pediatric safety and growth",
+        "Mental health and therapeutic communication",
+        "Medication safety and calculations",
+        "Community health and infection prevention",
+        "Emergency care and triage"
+    ],
+    "nclex-comprehensive": [
+        "Introduction to NCLEX-RN and NGN thinking",
+        "Clinical judgment model",
+        "Cue recognition and case analysis",
+        "Prioritization and delegation",
+        "Safety, infection control, and risk reduction",
+        "Pharmacology and adverse effects",
+        "Med-surg systems review",
+        "Maternal-child and pediatrics review",
+        "Psychosocial integrity",
+        "CAT exam strategy and endurance",
+        "Rationale review and weak-area repair"
+    ],
+    "lecture-series": [
+        "Introduction to professional nursing study",
+        "Anatomy language and body organization",
+        "Cardiovascular system",
+        "Respiratory system",
+        "Digestive and metabolic systems",
+        "Renal and fluid balance",
+        "Neurological assessment basics",
+        "Pharmacology foundations",
+        "Community health foundations",
+        "Clinical documentation and communication"
+    ],
+    "pharmacology-intensive": [
+        "Introduction to medication safety",
+        "Drug class recognition",
+        "Dosage calculations and conversions",
+        "Antibiotics and infection treatment",
+        "Cardiovascular medications",
+        "Endocrine medications and insulin",
+        "Respiratory medications",
+        "Pain, sedation, and mental health drugs",
+        "IV therapy and high-alert medication checks",
+        "Patient teaching and adverse-effect monitoring"
+    ],
+    "pediatrics-clinical": [
+        "Introduction to pediatric nursing",
+        "Growth and developmental milestones",
+        "Pediatric assessment and communication",
+        "Immunization and health promotion",
+        "Respiratory problems in children",
+        "Fluid balance and dehydration",
+        "Pediatric medication safety",
+        "Family-centered care",
+        "Pediatric emergencies",
+        "Neonatal and infant priorities"
+    ],
+    "med-surg-bootcamp": [
+        "Introduction to med-surg reasoning",
+        "Adult health assessment",
+        "Cardiovascular disorders",
+        "Respiratory disorders",
+        "Neurological disorders",
+        "Endocrine and diabetes care",
+        "Renal and fluid-electrolyte problems",
+        "Gastrointestinal and nutrition care",
+        "Perioperative nursing",
+        "Prioritization, discharge, and patient teaching"
+    ]
+};
+
+const MODULE_IMAGE_SEQUENCE = [
+    courseImages.nurseTablet,
+    courseImages.anatomyLab,
+    courseImages.respiratoryCare,
+    courseImages.ecgTraining,
+    courseImages.medicationTray,
+    courseImages.pediatricCare,
+    courseImages.mentorSession,
+    courseImages.reasoningBoard,
+    courseImages.emergencyTriage,
+    courseImages.nclexDesk
+];
+
+function createTextbookModule(course, topic, index) {
+    const phase = index === 0 ? "Introduction" : `Unit ${index + 1}`;
+    const body = `${topic} gives the student a structured textbook-style lesson for ${course.title}. Start by reading the key idea, then connect it to patient assessment, nursing priorities, exam wording, and safe clinical action.
+
+Study content:
+- Definition and purpose: understand what the topic means in nursing practice.
+- Assessment cues: identify symptoms, vital-sign trends, risk factors, and patient statements that matter.
+- Nursing action: decide what to assess first, what to report, what to teach, and what to document.
+- Exam focus: watch for priority words such as first, best, most important, immediate, unstable, and teaching.
+- Clinical link: connect the topic to patient safety, infection prevention, medication safety, communication, and escalation.
+
+Study procedure:
+1. Read the overview slowly and write three important points.
+2. Review the image and connect it to the patient problem.
+3. Answer the knowledge check before moving forward.
+4. Save notes about confusing terms so you can revise them before practice questions.`;
+
+    return {
+        title: `${phase}: ${topic}`,
+        objective: `Build clear understanding of ${topic.toLowerCase()} before moving to practice questions.`,
+        body,
+        pearlTitle: "Textbook Focus",
+        pearl: `Do not memorize this unit in isolation. Link ${topic.toLowerCase()} to assessment cues, safe nursing action, and the reason one answer is safer than another.`,
+        structures: [
+            "Core concept and definition",
+            "Assessment findings and warning signs",
+            "Nursing intervention and patient teaching",
+            "Exam traps and rationale review"
+        ],
+        image: MODULE_IMAGE_SEQUENCE[index % MODULE_IMAGE_SEQUENCE.length],
+        quiz: {
+            prompt: `What is the safest way to study ${topic.toLowerCase()}?`,
+            options: [
+                "Memorize one sentence and skip practice",
+                "Connect the concept to assessment cues, nursing action, and rationales",
+                "Read only the title of the topic",
+                "Wait until the main exam to revise it"
+            ],
+            correctOption: 1,
+            success: "Correct. Strong nursing study links content, cues, action, and rationales.",
+            failure: "Review the unit procedure: content must connect to patient cues and safe nursing action."
+        }
+    };
+}
+
+function createFinalPracticeModule(course, index) {
+    return {
+        title: "Final Practice: 100 lecturer-prep questions",
+        objective: "Use a 100-question practice block to prepare for the lecturer-set main exam.",
+        body: `This final unit is the preparation bridge between course learning and the main exam set by the lecturer. Complete the course units first, then attempt a 100-question practice block in exam conditions.
+
+Practice procedure:
+1. Review your notes from every completed unit.
+2. Attempt 100 mixed questions without checking answers during the block.
+3. Mark every missed question by weak topic, not just by score.
+4. Re-study the weakest three topics before attempting another practice block.
+5. When your practice score is consistent, proceed to the lecturer-set main exam.
+
+Use this unit as a readiness checkpoint. The goal is not only to finish questions, but to prove that you can explain why the correct option is safest.`,
+        pearlTitle: "Exam Readiness Rule",
+        pearl: "A student is ready for the main exam when weak topics have been reviewed and practice scores are consistent, not when the course is simply opened.",
+        structures: [
+            "100 mixed practice questions",
+            "Timed exam conditions",
+            "Weak-topic correction list",
+            "Lecturer-set main exam readiness"
+        ],
+        image: MODULE_IMAGE_SEQUENCE[index % MODULE_IMAGE_SEQUENCE.length],
+        quiz: {
+            prompt: "What should you do after finishing the 100-question practice block?",
+            options: [
+                "Ignore missed questions",
+                "Record weak topics and revise them before the main exam",
+                "Delete your notes",
+                "Skip straight to a certificate"
+            ],
+            correctOption: 1,
+            success: "Correct. Weak-topic review turns practice into exam readiness.",
+            failure: "The practice block is useful only when missed questions become revision targets."
+        }
+    };
+}
+
+function expandCourseModules(course) {
+    const topics = COURSE_TOPIC_BLUEPRINTS[course.id] || [
+        "Introduction to the course",
+        "Core concepts",
+        "Assessment priorities",
+        "Clinical decision making",
+        "Medication and safety links",
+        "Patient teaching",
+        "Case-based reasoning",
+        "Documentation and reporting",
+        "Revision and weak-topic repair"
+    ];
+
+    const generated = topics.map((topic, index) => createTextbookModule(course, topic, index));
+    generated.push(createFinalPracticeModule(course, generated.length));
+    return generated;
+}
+
+courseCatalog.forEach((course) => {
+    course.modules = expandCourseModules(course);
+    course.questions = Math.max(course.questions, 100);
+});
+
 document.addEventListener("DOMContentLoaded", () => {
     initializeCatalogPage();
     initializeCourseDetailPage();
@@ -852,13 +1047,14 @@ function initializeCourseDetailPage() {
 
 function renderCourseCard(course, state) {
     const isEnrolled = state.enrolledCourseIds.includes(course.id);
+    const percent = getProgressPercent(course.id, state);
     const workspaceHref = isEnrolled ? `exam-lobby/anatomy.html?course=${course.id}` : `#selected-program`;
+    const intro = course.modules[0]?.title.replace(/^Introduction:\s*/i, "") || "Introduction";
+    const finalUnit = course.modules[course.modules.length - 1]?.title || "Final practice";
     return `
-        <article class="course-card reveal-on-scroll">
+        <article class="course-card simple-course-card reveal-on-scroll">
             <div class="course-card-media">
-                <div class="card-frame">
-                    <img src="${course.image}" alt="${course.title}" class="fit-image">
-                </div>
+                <img src="${course.image}" alt="${course.title}" class="fit-image">
             </div>
             <div class="course-card-body">
                 <div class="course-card-top">
@@ -868,17 +1064,22 @@ function renderCourseCard(course, state) {
                     </div>
                     <span class="course-badge">${course.badge}</span>
                 </div>
-                <div class="course-meta">
-                    ${createMetaPill("Track", course.category)}
-                    ${createMetaPill("Level", course.difficulty)}
+                <div class="course-quick-row">
+                    <span>${course.category}</span>
+                    <span>${course.difficulty}</span>
+                    <span>${course.modules.length} units</span>
+                    <span>${course.questions}+ questions</span>
                 </div>
-                <div class="course-stats">
-                    <div><strong>${course.questions}+</strong><span>Questions</span></div>
-                    <div><strong>${course.durationHours}h</strong><span>Guided hours</span></div>
-                    <div><strong>${course.modules.length}</strong><span>Modules</span></div>
+                <div class="simple-course-path" aria-label="${course.title} study structure">
+                    <div><span>1</span><strong>${intro}</strong></div>
+                    <div><span>2</span><strong>${course.modules.length - 2} textbook units</strong></div>
+                    <div><span>3</span><strong>${finalUnit}</strong></div>
+                </div>
+                <div class="course-progress-line">
+                    <span style="width: ${percent}%"></span>
                 </div>
                 <div class="course-actions">
-                    <button class="btn-primary" data-select-course="${course.id}">View Program</button>
+                    <button class="btn-outline" data-select-course="${course.id}">View structure</button>
                     <button class="${isEnrolled ? "btn-outline" : "btn-primary"}" data-enroll-course="${course.id}">${isEnrolled ? "Cancel" : "Enroll"}</button>
                     <a class="btn-outline${isEnrolled ? "" : " is-disabled"}" href="${workspaceHref}">${isEnrolled ? "Resume" : "Enroll to open"}</a>
                 </div>
@@ -899,8 +1100,26 @@ function renderSelectedProgram(course, state) {
     document.getElementById("selected-facts").innerHTML = [
         createMetaPill("Duration", `${course.durationHours} hours`),
         createMetaPill("Format", course.format),
-        createMetaPill("Modules", `${course.modules.length} modules`)
+        createMetaPill("Units", `${course.modules.length} units`),
+        createMetaPill("Practice", "100 final questions")
     ].join("");
+    const outline = document.getElementById("selected-outline");
+    if (outline) {
+        outline.innerHTML = `
+            <div class="selected-outline-head">
+                <strong>Study procedure</strong>
+                <span>Open the workspace after enrollment and move from Unit 1 to the final practice block.</span>
+            </div>
+            <ol>
+                ${course.modules.map((module, index) => `
+                    <li>
+                        <span>${index + 1}</span>
+                        <strong>${module.title}</strong>
+                    </li>
+                `).join("")}
+            </ol>
+        `;
+    }
     const openBtn = document.getElementById("selected-open-btn");
     if (openBtn) {
         openBtn.href = enrolled ? `exam-lobby/anatomy.html?course=${course.id}` : "#selected-program";
