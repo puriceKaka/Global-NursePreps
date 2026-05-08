@@ -383,6 +383,47 @@ const courseCatalog = [
     }
 ];
 
+const additionalCourseTracks = [
+    ["fundamentals-nursing", "Fundamentals of Nursing", "Fundamentals", "Beginner", "Core Skills", 30, 520, 5, "Recorded + Practice", "Patient safety, hygiene, mobility, vital signs, documentation, communication, and bedside nursing foundations.", courseImages.nurseTablet, ["basic care", "vitals", "documentation"]],
+    ["health-assessment", "Health Assessment Mastery", "Assessment", "Beginner", "Assessment Lab", 34, 620, 6, "Recorded + Skills Lab", "Head-to-toe assessment, history taking, vital signs, focused assessment, and clinical reporting.", courseImages.mentorSession, ["assessment", "history", "vitals"]],
+    ["anatomy-physiology", "Anatomy and Physiology for Nurses", "Anatomy", "Beginner", "Core Science", 42, 700, 6, "Recorded", "Body systems explained for nursing assessment, symptoms, interventions, and exam reasoning.", courseImages.anatomyLab, ["anatomy", "physiology", "systems"]],
+    ["community-health", "Community Health Nursing", "Community Health", "Intermediate", "Public Health", 28, 430, 4, "Recorded + Cases", "Health promotion, epidemiology, family health, disease prevention, and community assessment.", courseImages.nurseConference, ["community", "public health", "prevention"]],
+    ["mental-health", "Mental Health Nursing Review", "Mental Health", "Intermediate", "Therapeutic Care", 30, 500, 5, "Live Review", "Therapeutic communication, risk assessment, psychiatric conditions, crisis care, and safety planning.", courseImages.mentorSession, ["mental health", "communication", "risk"]],
+    ["maternal-newborn", "Maternal and Newborn Nursing", "Maternal Health", "Intermediate", "Mother-Baby", 36, 620, 6, "Live + Recorded", "Pregnancy, labor, postpartum, newborn assessment, emergencies, and parent teaching.", courseImages.pediatricCare, ["maternal", "newborn", "postpartum"]],
+    ["emergency-nursing", "Emergency and Triage Nursing", "Emergency", "Advanced", "Urgent Care", 32, 580, 6, "Simulation", "Triage, trauma priorities, shock, rapid assessment, emergency medications, and escalation.", courseImages.emergencyTriage, ["emergency", "triage", "trauma"]],
+    ["critical-care", "Critical Care Nursing Foundations", "Critical Care", "Advanced", "ICU Track", 44, 760, 8, "Simulation + Cases", "ICU assessment, oxygenation, sepsis, shock, ventilation basics, and high-risk monitoring.", courseImages.criticalCare, ["icu", "critical care", "shock"]],
+    ["surgical-nursing", "Perioperative and Surgical Nursing", "Surgical Nursing", "Intermediate", "Surgery Prep", 26, 410, 4, "Recorded", "Pre-op, intra-op, post-op care, anesthesia safety, wound monitoring, and discharge teaching.", courseImages.simulationLab, ["surgery", "perioperative", "wound"]],
+    ["leadership-management", "Nursing Leadership and Management", "Leadership", "Intermediate", "Management", 24, 360, 4, "Recorded", "Delegation, supervision, ethics, team communication, patient safety, and quality improvement.", courseImages.nurseConference, ["leadership", "delegation", "management"]],
+    ["research-evidence", "Nursing Research and Evidence-Based Practice", "Research", "Intermediate", "Evidence", 22, 320, 3, "Recorded", "Research basics, evidence appraisal, ethics, data interpretation, and applying evidence to nursing care.", courseImages.reasoningBoard, ["research", "evidence", "ethics"]],
+    ["nutrition-dietetics", "Nutrition and Dietetics for Nurses", "Nutrition", "Beginner", "Nutrition Care", 24, 380, 4, "Recorded", "Therapeutic diets, nutrition assessment, diabetes nutrition, feeding support, and patient education.", courseImages.digestionNotes, ["nutrition", "diet", "feeding"]],
+    ["geriatric-nursing", "Geriatric Nursing Care", "Geriatrics", "Intermediate", "Older Adult", 28, 440, 4, "Cases", "Older adult assessment, falls, dementia care, polypharmacy, mobility, and family support.", courseImages.mentorSession, ["geriatric", "older adult", "falls"]],
+    ["oncology-nursing", "Oncology Nursing Review", "Oncology", "Advanced", "Cancer Care", 30, 460, 5, "Recorded + Cases", "Cancer basics, chemotherapy safety, symptom control, infection risk, and psychosocial support.", courseImages.medicationTray, ["oncology", "chemotherapy", "cancer"]],
+    ["infection-prevention", "Infection Prevention and Control", "Infection Control", "Beginner", "Safety Track", 24, 520, 5, "Recorded + Drills", "Standard precautions, isolation, sterilization, outbreak control, and healthcare-associated infection prevention.", courseImages.blisterPack, ["infection", "isolation", "prevention"]],
+    ["wound-care", "Wound Care and Tissue Viability", "Wound Care", "Intermediate", "Clinical Skills", 26, 390, 4, "Skills Lab", "Wound assessment, dressing selection, pressure injury prevention, diabetic wounds, and documentation.", courseImages.simulationLab, ["wound", "pressure injury", "dressing"]],
+    ["neonatal-nursing", "Neonatal Nursing Essentials", "Neonatal", "Intermediate", "Newborn Care", 30, 420, 4, "Recorded + Cases", "Newborn transition, feeding, thermoregulation, jaundice, respiratory distress, and family teaching.", courseImages.pediatricWard, ["neonatal", "newborn", "jaundice"]],
+    ["renal-nursing", "Renal Nursing and Dialysis Basics", "Renal", "Advanced", "Renal Care", 30, 450, 5, "Recorded", "Kidney function, AKI, CKD, dialysis basics, fluid balance, electrolytes, and patient education.", courseImages.doseReview, ["renal", "dialysis", "electrolytes"]],
+    ["diabetes-endocrine", "Diabetes and Endocrine Nursing", "Endocrine", "Intermediate", "Diabetes Care", 28, 520, 5, "Recorded + Questions", "Diabetes care, insulin safety, endocrine emergencies, patient teaching, and complication prevention.", courseImages.medMath, ["diabetes", "insulin", "endocrine"]],
+    ["cardiac-nursing", "Cardiac Nursing and ECG Basics", "Cardiac", "Advanced", "Cardiac Track", 34, 620, 6, "Simulation", "Cardiac assessment, ECG basics, chest pain, heart failure, cardiac medications, and escalation.", courseImages.ecgTraining, ["cardiac", "ecg", "heart failure"]]
+];
+
+courseCatalog.push(...additionalCourseTracks.map((track) => ({
+    id: track[0],
+    title: track[1],
+    category: track[2],
+    difficulty: track[3],
+    badge: track[4],
+    durationHours: track[5],
+    questions: track[6],
+    exams: track[7],
+    format: track[8],
+    summary: track[9],
+    image: track[10],
+    outcomes: ["Structured topic learning", "Practice question readiness", "Weak-area revision"],
+    facts: [track[2], track[3], track[8]],
+    keywords: track[11],
+    modules: []
+})));
+
 const COURSE_TOPIC_BLUEPRINTS = {
     "nck-masterclass": [
         "Introduction to the NCK pathway",
@@ -501,15 +542,6 @@ Study procedure:
             "Nursing intervention and patient teaching",
             "Exam traps and rationale review"
         ],
-        diagram: {
-            title: topic,
-            steps: [
-                "Read concept",
-                "Identify cues",
-                "Choose nursing action",
-                "Check rationale"
-            ]
-        },
         image: MODULE_IMAGE_SEQUENCE[index % MODULE_IMAGE_SEQUENCE.length],
         quiz: {
             prompt: `What is the safest way to study ${topic.toLowerCase()}?`,
@@ -548,15 +580,6 @@ Use this unit as a readiness checkpoint. The goal is not only to finish question
             "Weak-topic correction list",
             "Lecturer-set main exam readiness"
         ],
-        diagram: {
-            title: "Practice readiness cycle",
-            steps: [
-                "Review units",
-                "Answer 100 questions",
-                "Record weak topics",
-                "Prepare for lecturer exam"
-            ]
-        },
         image: MODULE_IMAGE_SEQUENCE[index % MODULE_IMAGE_SEQUENCE.length],
         quiz: {
             prompt: "What should you do after finishing the 100-question practice block?",
@@ -807,7 +830,8 @@ function initializeCourseDetailPage() {
         modulePearlTitle: document.getElementById("module-pearl-title"),
         modulePearlBody: document.getElementById("module-pearl-body"),
         structureList: document.getElementById("module-structures"),
-        moduleDiagram: document.getElementById("module-diagram"),
+        quizPanel: document.getElementById("module-quiz-panel"),
+        quizToggle: document.getElementById("toggle-quiz-btn"),
         quizPrompt: document.getElementById("quiz-prompt"),
         quizOptions: document.querySelector(".quiz-options"),
         quizFeedback: document.querySelector(".quiz-feedback"),
@@ -829,6 +853,13 @@ function initializeCourseDetailPage() {
         }
     });
 
+    elements.quizToggle?.addEventListener("click", () => {
+        if (!elements.quizPanel) return;
+        const isHidden = elements.quizPanel.classList.toggle("hidden");
+        elements.quizToggle.setAttribute("aria-expanded", String(!isHidden));
+        elements.quizToggle.textContent = isHidden ? "Show questions" : "Hide questions";
+    });
+
     elements.nextButton.addEventListener("click", () => {
         if (activeModuleIndex < activeCourse.modules.length - 1) {
             activeModuleIndex += 1;
@@ -846,6 +877,11 @@ function initializeCourseDetailPage() {
 
         const passed = progress.quizPassed?.[activeModuleIndex] === true;
         if (!passed) {
+            elements.quizPanel?.classList.remove("hidden");
+            if (elements.quizToggle) {
+                elements.quizToggle.setAttribute("aria-expanded", "true");
+                elements.quizToggle.textContent = "Hide questions";
+            }
             elements.quizFeedback.textContent = "Answer the knowledge check correctly before marking this module complete.";
             elements.quizFeedback.className = "quiz-feedback incorrect";
             return;
@@ -1027,22 +1063,10 @@ function initializeCourseDetailPage() {
         elements.modulePearlTitle.textContent = module.pearlTitle;
         elements.modulePearlBody.textContent = module.pearl;
         elements.structureList.innerHTML = module.structures.map((item) => `<li>${item}</li>`).join("");
-        if (elements.moduleDiagram) {
-            const diagram = module.diagram || {
-                title: module.title,
-                steps: ["Learn", "Assess", "Act", "Review"]
-            };
-            elements.moduleDiagram.innerHTML = `
-                <div class="diagram-title">${diagram.title}</div>
-                <div class="diagram-flow">
-                    ${diagram.steps.map((step, index) => `
-                        <div class="diagram-node">
-                            <span>${index + 1}</span>
-                            <strong>${step}</strong>
-                        </div>
-                    `).join("")}
-                </div>
-            `;
+        elements.quizPanel?.classList.add("hidden");
+        if (elements.quizToggle) {
+            elements.quizToggle.setAttribute("aria-expanded", "false");
+            elements.quizToggle.textContent = "Show questions";
         }
         elements.quizPrompt.textContent = module.quiz.prompt;
         elements.quizOptions.innerHTML = module.quiz.options
