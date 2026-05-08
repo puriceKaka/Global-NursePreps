@@ -759,6 +759,77 @@
     white-space: pre-line;
 }
 
+.module-diagram-card {
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid rgba(0, 156, 166, 0.18);
+    border-radius: 8px;
+    background: #f7fbff;
+}
+
+.module-diagram-card h4 {
+    margin: 0 0 0.8rem;
+    color: var(--navy);
+}
+
+.module-diagram {
+    display: grid;
+    gap: 0.85rem;
+}
+
+.diagram-title {
+    padding: 0.7rem 0.85rem;
+    border-radius: 8px;
+    background: rgba(215, 181, 93, 0.16);
+    color: #6f5317;
+    font-weight: 800;
+}
+
+.diagram-flow {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.6rem;
+}
+
+.diagram-node {
+    position: relative;
+    min-height: 92px;
+    padding: 0.85rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: #ffffff;
+    display: grid;
+    gap: 0.45rem;
+    align-content: start;
+}
+
+.diagram-node:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: -0.55rem;
+    width: 0.55rem;
+    height: 2px;
+    background: var(--teal);
+}
+
+.diagram-node span {
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: var(--navy);
+    color: #ffffff;
+    font-weight: 800;
+}
+
+.diagram-node strong {
+    color: var(--text-dark);
+    line-height: 1.35;
+}
+
 .outline-list {
     list-style: none;
     padding: 0;
@@ -920,6 +991,14 @@
 
     .selected-outline ol {
         max-height: none;
+    }
+
+    .diagram-flow {
+        grid-template-columns: 1fr;
+    }
+
+    .diagram-node:not(:last-child)::after {
+        display: none;
     }
 }
 

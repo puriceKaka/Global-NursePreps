@@ -501,6 +501,15 @@ Study procedure:
             "Nursing intervention and patient teaching",
             "Exam traps and rationale review"
         ],
+        diagram: {
+            title: topic,
+            steps: [
+                "Read concept",
+                "Identify cues",
+                "Choose nursing action",
+                "Check rationale"
+            ]
+        },
         image: MODULE_IMAGE_SEQUENCE[index % MODULE_IMAGE_SEQUENCE.length],
         quiz: {
             prompt: `What is the safest way to study ${topic.toLowerCase()}?`,
@@ -539,6 +548,15 @@ Use this unit as a readiness checkpoint. The goal is not only to finish question
             "Weak-topic correction list",
             "Lecturer-set main exam readiness"
         ],
+        diagram: {
+            title: "Practice readiness cycle",
+            steps: [
+                "Review units",
+                "Answer 100 questions",
+                "Record weak topics",
+                "Prepare for lecturer exam"
+            ]
+        },
         image: MODULE_IMAGE_SEQUENCE[index % MODULE_IMAGE_SEQUENCE.length],
         quiz: {
             prompt: "What should you do after finishing the 100-question practice block?",
@@ -789,6 +807,7 @@ function initializeCourseDetailPage() {
         modulePearlTitle: document.getElementById("module-pearl-title"),
         modulePearlBody: document.getElementById("module-pearl-body"),
         structureList: document.getElementById("module-structures"),
+        moduleDiagram: document.getElementById("module-diagram"),
         quizPrompt: document.getElementById("quiz-prompt"),
         quizOptions: document.querySelector(".quiz-options"),
         quizFeedback: document.querySelector(".quiz-feedback"),
@@ -1008,6 +1027,23 @@ function initializeCourseDetailPage() {
         elements.modulePearlTitle.textContent = module.pearlTitle;
         elements.modulePearlBody.textContent = module.pearl;
         elements.structureList.innerHTML = module.structures.map((item) => `<li>${item}</li>`).join("");
+        if (elements.moduleDiagram) {
+            const diagram = module.diagram || {
+                title: module.title,
+                steps: ["Learn", "Assess", "Act", "Review"]
+            };
+            elements.moduleDiagram.innerHTML = `
+                <div class="diagram-title">${diagram.title}</div>
+                <div class="diagram-flow">
+                    ${diagram.steps.map((step, index) => `
+                        <div class="diagram-node">
+                            <span>${index + 1}</span>
+                            <strong>${step}</strong>
+                        </div>
+                    `).join("")}
+                </div>
+            `;
+        }
         elements.quizPrompt.textContent = module.quiz.prompt;
         elements.quizOptions.innerHTML = module.quiz.options
             .map((option, optionIndex) => `
