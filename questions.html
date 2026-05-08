@@ -65,25 +65,29 @@
             <header class="section-header">
                 <div>
                     <h3>Questions</h3>
-                    <p class="muted">Choose a course, practice generated questions, or type your own question to get an answer.</p>
+                    <p class="muted">Choose a course, follow the study path, answer practice questions, and see your score with weak-area guidance.</p>
                 </div>
             </header>
 
-            <section class="practice-lab" aria-label="Course practice questions">
+            <section class="practice-lab question-practice-shell" aria-label="Course practice questions">
                 <div class="practice-controls">
                     <label class="field">
                         <span>Choose course</span>
                         <select id="practiceCourseSelect"></select>
                     </label>
-                    <button type="button" class="primary-button" id="generatePracticeBtn">Generate question</button>
+                    <button type="button" class="primary-button" id="generatePracticeBtn" disabled>Start practice</button>
                 </div>
 
-                <div class="practice-question-card" id="practiceQuestionCard">
-                    <div class="muted small">Select a course, then generate as many practice questions as you want.</div>
+                <div class="practice-course-path hidden" id="practiceCoursePath"></div>
+
+                <div class="practice-score-card hidden" id="practiceScoreCard" aria-live="polite"></div>
+
+                <div class="practice-question-card hidden" id="practiceQuestionCard">
+                    <div class="muted small">Select a course to unlock practice questions.</div>
                 </div>
             </section>
 
-            <form class="stack-form" id="questionForm">
+            <form class="stack-form ask-question-card" id="questionForm">
                 <div>
                     <h3>Ask your own question</h3>
                     <p class="muted">Type a nursing question and Global NursePrep will give you a study answer.</p>

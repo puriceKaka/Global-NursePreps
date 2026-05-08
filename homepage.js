@@ -7,6 +7,7 @@
         goalsByUser: 'nurseprep_goals_by_user',
         examByUser: 'nurseprep_examplan_by_user',
         questions: 'nurseprep_questions',
+        practiceStats: 'nurseprep_practice_stats',
         ui: 'nurseprep_ui_settings'
     };
 
@@ -397,6 +398,36 @@
 
     function setQuestions(list) {
         saveJson(STORAGE_KEYS.questions, list);
+    }
+
+    function getPracticeStats() {
+        const stats = loadJson(STORAGE_KEYS.practiceStats, {});
+        return stats && typeof stats === 'object' ? stats : {};
+    }
+
+    function setPracticeStats(stats) {
+        saveJson(STORAGE_KEYS.practiceStats, stats);
+    }
+
+    function getCoursePracticeStats(courseId) {
+        const stats = getPracticeStats();
+        return stats[courseId] || { attempted: 0, correct: 0, weakAreas: {} };
+    }
+
+    function saveCoursePracticeResult(courseId, topic, isCorrect) {
+        const stats = getPracticeStats();
+        const current = stats[courseId] || { attempted: 0, correct: 0, weakAreas: {} };
+        const weakAreas = current.weakAreas && typeof current.weakAreas === 'object' ? current.weakAreas : {};
+        current.attempted += 1;
+        if (isCorrect) {
+            current.correct += 1;
+        } else {
+            weakAreas[topic] = (weakAreas[topic] || 0) + 1;
+        }
+        current.weakAreas = weakAreas;
+        stats[courseId] = current;
+        setPracticeStats(stats);
+        return current;
     }
 
     function getUiSettings() {
@@ -874,6 +905,7 @@
     const PRACTICE_TEMPLATES = [
         {
             match: ['nck', 'licensing'],
+            topic: 'Licensing priority and safety',
             stem: 'A nursing student is preparing for a licensing-style priority question. Which action is usually safest first?',
             options: ['Choose the longest answer', 'Assess the client and identify unstable cues', 'Skip assessment and start teaching', 'Document before intervening'],
             correct: 1,
@@ -881,6 +913,7 @@
         },
         {
             match: ['nclex'],
+            topic: 'NCLEX clinical judgment',
             stem: 'In an NCLEX-style clinical judgment item, what should the student do first after reading the case?',
             options: ['Pick the first familiar option', 'Identify the main patient problem and key cues', 'Ignore abnormal trends', 'Focus only on the diagnosis label'],
             correct: 1,
@@ -888,6 +921,7 @@
         },
         {
             match: ['lecture', 'professional'],
+            topic: 'Concept learning',
             stem: 'During a nursing lecture review, which study behavior builds the strongest clinical understanding?',
             options: ['Memorize isolated facts only', 'Connect concepts to patient assessment findings', 'Avoid practice questions', 'Read notes once and stop'],
             correct: 1,
@@ -895,6 +929,7 @@
         },
         {
             match: ['pharmacology', 'drug', 'medication'],
+            topic: 'Medication safety',
             stem: 'Before administering a high-risk medication, which nursing action is most important?',
             options: ['Give it quickly', 'Check the right patient, order, dose, route, time, and relevant vitals/labs', 'Skip allergies if the patient is busy', 'Document before giving'],
             correct: 1,
@@ -902,6 +937,7 @@
         },
         {
             match: ['pediatric'],
+            topic: 'Pediatric safety',
             stem: 'A pediatric medication dose is ordered. Which check is most important before administration?',
             options: ['Adult dose range', 'Weight-based dose calculation', 'Parent preference only', 'Medication color'],
             correct: 1,
@@ -909,6 +945,7 @@
         },
         {
             match: ['clinical', 'med-surg', 'surg'],
+            topic: 'Med-surg prioritization',
             stem: 'In med-surg prioritization, which patient should usually be assessed first?',
             options: ['A stable patient awaiting discharge teaching', 'A patient with new shortness of breath', 'A patient asking for a blanket', 'A patient with unchanged chronic pain'],
             correct: 1,
@@ -920,6 +957,7 @@
         const text = `${course?.title || ''} ${course?.category || ''} ${course?.summary || ''}`.toLowerCase();
         return PRACTICE_TEMPLATES.find((item) => item.match.some((term) => text.includes(term))) || {
             match: [],
+            topic: 'Safe nursing reasoning',
             stem: `For ${course?.title || 'this nursing course'}, what is the best way to approach a difficult exam question?`,
             options: ['Guess quickly', 'Identify key cues, eliminate unsafe options, and choose the safest nursing action', 'Ignore the stem details', 'Choose based only on memory'],
             correct: 1,
@@ -931,33 +969,115 @@
         const select = $('#practiceCourseSelect');
         const generateBtn = $('#generatePracticeBtn');
         const card = $('#practiceQuestionCard');
+        const path = $('#practiceCoursePath');
+        const scoreCard = $('#practiceScoreCard');
         if (!select || !generateBtn || !card) return;
 
         const courses = window.GnpLearning?.getCourses ? window.GnpLearning.getCourses() : window.GnpLearning?.COURSE_META || [];
         select.innerHTML = '';
+        const placeholder = document.createElement('option');
+        placeholder.value = '';
+        placeholder.textContent = 'Select a course to begin';
+        select.appendChild(placeholder);
         courses.forEach((course) => {
             const option = document.createElement('option');
             option.value = course.id;
-            option.textContent = course.title;
+            option.textContent = `${course.title} (${course.category || 'Nursing'})`;
             select.appendChild(option);
         });
 
         let questionNumber = 0;
+        let activeCourseId = '';
+
+        function getWeakAreaText(stats) {
+            const weakEntries = Object.entries(stats.weakAreas || {}).sort((a, b) => b[1] - a[1]);
+            if (stats.attempted === 0) {
+                return 'Start with 5 questions to unlock weak-area feedback.';
+            }
+            if (weakEntries.length === 0) {
+                return 'Good start. Keep practicing mixed questions to confirm consistency.';
+            }
+            const [topic] = weakEntries[0];
+            return `Weak area: ${topic}. Practice this topic again before moving to a mock exam.`;
+        }
+
+        function renderScore(courseId) {
+            if (!scoreCard || !courseId) return;
+            const stats = getCoursePracticeStats(courseId);
+            const percentage = stats.attempted === 0 ? 0 : Math.round((stats.correct / stats.attempted) * 100);
+            scoreCard.classList.remove('hidden');
+            scoreCard.innerHTML = `
+                <div>
+                    <span class="panel-kicker">Practice score</span>
+                    <strong>${percentage}%</strong>
+                    <p class="muted small">${stats.correct} correct out of ${stats.attempted} questions.</p>
+                </div>
+                <div class="practice-meter" aria-label="Practice percentage">
+                    <span style="width: ${percentage}%"></span>
+                </div>
+                <div class="practice-weakness">${getWeakAreaText(stats)}</div>
+            `;
+        }
+
+        function renderCoursePath(course) {
+            if (!path || !course) return;
+            const template = getPracticeTemplate(course);
+            path.classList.remove('hidden');
+            path.innerHTML = `
+                <div>
+                    <span class="panel-kicker">Study path</span>
+                    <h4>${course.title}</h4>
+                    <p class="muted small">${course.description || course.summary || 'Practice questions, review rationales, and repeat weak topics.'}</p>
+                </div>
+                <ol class="practice-path-list">
+                    <li><span>1</span><strong>Review:</strong> ${course.category || 'Course'} basics</li>
+                    <li><span>2</span><strong>Practice:</strong> ${template.topic}</li>
+                    <li><span>3</span><strong>Improve:</strong> Use your score and weak-area feedback</li>
+                </ol>
+            `;
+        }
+
+        function showSelectPrompt() {
+            generateBtn.disabled = true;
+            generateBtn.textContent = 'Start practice';
+            path?.classList.add('hidden');
+            scoreCard?.classList.add('hidden');
+            card.classList.add('hidden');
+            card.innerHTML = '<div class="muted small">Select a course to unlock practice questions.</div>';
+        }
+
+        function activateSelectedCourse() {
+            activeCourseId = select.value;
+            const course = courses.find((item) => item.id === activeCourseId);
+            if (!course) {
+                showSelectPrompt();
+                return;
+            }
+            questionNumber = 0;
+            generateBtn.disabled = false;
+            generateBtn.textContent = 'Generate question';
+            card.classList.add('hidden');
+            renderCoursePath(course);
+            renderScore(course.id);
+        }
 
         function renderPracticeQuestion() {
-            const course = courses.find((item) => item.id === select.value) || courses[0];
+            const course = courses.find((item) => item.id === activeCourseId || item.id === select.value);
             if (!course) return;
+            activeCourseId = course.id;
             questionNumber += 1;
             const template = getPracticeTemplate(course);
             const stem = `${template.stem}`;
 
             card.innerHTML = '';
+            card.classList.remove('hidden');
 
             const meta = document.createElement('div');
             meta.className = 'badge-row';
             meta.innerHTML = `
                 <span class="badge">${course.category || 'Course'}</span>
                 <span class="badge alt">Question ${questionNumber}</span>
+                <span class="badge">${template.topic}</span>
             `;
 
             const title = document.createElement('h4');
@@ -968,6 +1088,7 @@
 
             const feedback = document.createElement('div');
             feedback.className = 'practice-feedback hidden';
+            let answered = false;
 
             template.options.forEach((optionText, index) => {
                 const option = document.createElement('button');
@@ -975,15 +1096,25 @@
                 option.className = 'practice-option';
                 option.textContent = optionText;
                 option.addEventListener('click', () => {
+                    if (answered) return;
+                    answered = true;
+                    const isCorrect = index === template.correct;
                     Array.from(optionsWrap.children).forEach((child) => {
                         child.disabled = true;
                     });
-                    option.classList.add(index === template.correct ? 'is-correct' : 'is-wrong');
-                    if (index !== template.correct) {
+                    option.classList.add(isCorrect ? 'is-correct' : 'is-wrong');
+                    if (!isCorrect) {
                         optionsWrap.children[template.correct]?.classList.add('is-correct');
                     }
-                    feedback.textContent = template.rationale;
+                    const stats = saveCoursePracticeResult(course.id, template.topic, isCorrect);
+                    const percentage = Math.round((stats.correct / stats.attempted) * 100);
+                    feedback.innerHTML = `
+                        <strong>${isCorrect ? 'Correct' : 'Needs review'} - ${percentage}%</strong>
+                        <span>${stats.correct} correct out of ${stats.attempted} questions. ${template.rationale}</span>
+                        <span>${getWeakAreaText(stats)}</span>
+                    `;
                     feedback.classList.remove('hidden');
+                    renderScore(course.id);
                 });
                 optionsWrap.appendChild(option);
             });
@@ -997,7 +1128,9 @@
             card.append(meta, title, optionsWrap, feedback, next);
         }
 
+        select.addEventListener('change', activateSelectedCourse);
         generateBtn.addEventListener('click', renderPracticeQuestion);
+        showSelectPrompt();
     }
 
     function buildTutorAnswer(title, category, details) {
