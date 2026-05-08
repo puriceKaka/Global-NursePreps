@@ -3,18 +3,19 @@
 }
 
 :root {
-    --navy: #0b1f3a;
-    --blue: #1a73e8;
-    --ice: #e8f0fe;
-    --ice-2: #eef4ff;
-    --bg: #f3f5f8;
+    --navy: #0F4C81;
+    --blue: #1E88E5;
+    --gold: #d7b55d;
+    --ice: #EAF4FC;
+    --ice-2: #F0F7FC;
+    --bg: #F5F9FC;
     --card: #ffffff;
-    --text: #202124;
-    --muted: #5f6368;
-    --border: #e8eaed;
-    --shadow: 0 18px 34px rgba(11, 31, 58, 0.10);
-    --radius-xl: 28px;
-    --radius-lg: 22px;
+    --text: #1F2937;
+    --muted: #667085;
+    --border: #DDE8F0;
+    --shadow: 0 10px 22px rgba(11, 31, 58, 0.08);
+    --radius-xl: 16px;
+    --radius-lg: 14px;
 }
 
 html, body {
@@ -33,8 +34,8 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 16px;
-    padding: 18px 22px;
+    gap: 10px;
+    padding: 8px 12px;
     background: #ffffff;
     border-bottom: 1px solid var(--border);
     position: sticky;
@@ -72,6 +73,10 @@ html, body {
     color: var(--navy);
 }
 
+.brand-nurse {
+    color: var(--gold);
+}
+
 .brand p {
     margin: 6px 0 0;
     font-size: 13px;
@@ -101,20 +106,20 @@ html, body {
 }
 
 .pill-button {
-    padding: 12px 16px;
+    padding: 9px 13px;
     background: var(--ice);
     color: var(--navy);
 }
 
 .secondary-button {
-    padding: 12px 16px;
+    padding: 9px 13px;
     background: #ffffff;
     border: 1px solid var(--border);
     color: var(--navy);
 }
 
 .primary-button {
-    padding: 12px 16px;
+    padding: 9px 13px;
     background: var(--navy);
     color: #ffffff;
 }
@@ -122,17 +127,17 @@ html, body {
 .page {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 20px 18px 44px;
+    padding: 10px 10px 20px;
 }
 
 .hero {
     background: #ffffff;
     border: 1px solid var(--border);
     border-radius: var(--radius-xl);
-    padding: 22px;
+    padding: 12px;
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 240px);
-    gap: 16px;
+    gap: 10px;
     align-items: center;
 }
 
@@ -163,16 +168,16 @@ html, body {
     height: 160px;
     background: #ffffff;
     border: 1px solid var(--border);
-    border-radius: 28px;
-    padding: 14px;
+    border-radius: 14px;
+    padding: 10px;
 }
 
 .section-card {
-    margin-top: 18px;
+    margin-top: 10px;
     background: #ffffff;
     border: 1px solid var(--border);
     border-radius: var(--radius-xl);
-    padding: 18px;
+    padding: 12px;
 }
 
 .section-header {

@@ -5,9 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exam Results | GlobalNursePrep</title>
+    <link rel="stylesheet" href="../../css/design-system.css">
     <link rel="stylesheet" href="results.css">
+    <link rel="stylesheet" href="../../css/exam-prep-theme.css">
     <link rel="stylesheet" href="../../drawer.css">
     <script defer src="results.js"></script>
+    <script defer src="../../js/auth-guard.js" data-login="../../login.html"></script>
     <script defer src="../../drawer.js"></script>
 </head>
 <body>
@@ -52,9 +55,9 @@
             <a class="drawer-link" href="../../my-learnings.html" target="_blank" rel="noopener">My Learnings</a>
             <a class="drawer-link" href="../../Profile.html" target="_blank" rel="noopener">Profile</a>
             <a class="drawer-link" href="../../Membership.html" target="_blank" rel="noopener">Membership</a>
-            <a class="drawer-link" href="../../Dashboard.html" target="_blank" rel="noopener">Meeting and Lecturese</a>
-            <a class="drawer-link" href="../landing.html" target="_blank" rel="noopener">Examamination</a>
-            <a class="drawer-link" href="../exam-lobby/exam-lobby.html" target="_blank" rel="noopener">Examiniation</a>
+            <a class="drawer-link" href="../../meetings.html" target="_blank" rel="noopener">Meetings and Lectures</a>
+            <a class="drawer-link" href="../landing.html" target="_blank" rel="noopener">Exam Prep</a>
+            <a class="drawer-link" href="../exam-lobby/exam-lobby.html" target="_blank" rel="noopener">Exam Lobby</a>
         </nav>
 
         <div class="drawer-footer">
@@ -63,6 +66,20 @@
     </aside>
     <div class="results-container">
         <h1>Exam Completed!</h1>
+        <section class="exam-summary-grid" aria-label="Results summary">
+            <article class="exam-summary-card">
+                <strong>Score Summary</strong>
+                <span>Your final percentage and category performance appear below.</span>
+            </article>
+            <article class="exam-summary-card">
+                <strong>Weak Areas</strong>
+                <span>Use analytics to decide what to revise before the next mock.</span>
+            </article>
+            <article class="exam-summary-card">
+                <strong>Secure Submission</strong>
+                <span>Submitted results should be reviewed server-side before certification.</span>
+            </article>
+        </section>
         <div class="score-section">
             <h2>Your Score: <span id="score">0%</span></h2>
             <div id="performance-breakdown"></div>

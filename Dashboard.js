@@ -28,6 +28,7 @@ const networkQualityLabel = document.getElementById('networkQualityLabel');
 const meetingScheduleRow = document.getElementById('meetingScheduleRow');
 const meetingStartDisplay = document.getElementById('meetingStartDisplay');
 const meetingEndDisplay = document.getElementById('meetingEndDisplay');
+const meetingNotice = document.getElementById('meetingNotice');
 const micButton = document.getElementById('micButton');
 const cameraButton = document.getElementById('cameraButton');
 const screenButton = document.getElementById('screenButton');
@@ -334,11 +335,27 @@ function setStatus(text) {
     meetingStatus.textContent = text;
 }
 
+function showMeetingNotice(message, type = 'info') {
+    if (!meetingNotice) return;
+    meetingNotice.textContent = message;
+    meetingNotice.className = `meeting-notice ${type}`.trim();
+    meetingNotice.classList.remove('hidden');
+}
+
+function clearMeetingNotice() {
+    if (!meetingNotice) return;
+    meetingNotice.textContent = '';
+    meetingNotice.className = 'meeting-notice hidden';
+}
+
 function closeMenu() {
     menuPopup.classList.add('hidden');
 }
 
 function updateControls() {
+    const hasMicTrack = Boolean(mediaStream?.getAudioTracks().length);
+    const hasCameraTrack = Boolean(mediaStream?.getVideoTracks().length);
+
     micButton.classList.toggle('active', micOn);
     cameraButton.classList.toggle('active', cameraOn);
     screenButton.classList.toggle('active', screenSharing);
@@ -349,8 +366,8 @@ function updateControls() {
     raiseHandButton.classList.toggle('active', handRaised);
     raiseHandButton.querySelector('span').textContent = handRaised ? 'Lower hand' : 'Raise hand';
 
-    micButton.disabled = !meetingActive;
-    cameraButton.disabled = !meetingActive;
+    micButton.disabled = !meetingActive || !hasMicTrack;
+    cameraButton.disabled = !meetingActive || !hasCameraTrack || screenSharing;
     screenButton.disabled = !meetingActive;
     leaveCallButton.disabled = !meetingActive;
     menuButton.disabled = !meetingActive;
@@ -781,10 +798,18 @@ function refreshLocalPreview() {
 }
 
 async function getLocalMedia() {
+    if (!navigator.mediaDevices || typeof navigator.mediaDevices.getUserMedia !== 'function') {
+        showMeetingNotice('Camera and microphone need a modern browser on localhost or HTTPS.', 'error');
+        return false;
+    }
+
     const mediaProfiles = [
         { video: CAMERA_CONSTRAINTS, audio: AUDIO_CONSTRAINTS },
         { video: true, audio: AUDIO_CONSTRAINTS },
-        { video: true, audio: true }
+        { video: true, audio: true },
+        { video: false, audio: AUDIO_CONSTRAINTS },
+        { video: CAMERA_CONSTRAINTS, audio: false },
+        { video: true, audio: false }
     ];
 
     try {
@@ -793,7 +818,7 @@ async function getLocalMedia() {
         for (const profile of mediaProfiles) {
             try {
                 capturedStream = await navigator.mediaDevices.getUserMedia(profile);
-                if (capturedStream.getVideoTracks().length > 0) {
+                if (capturedStream.getTracks().length > 0) {
                     break;
                 }
             } catch {}
@@ -807,22 +832,30 @@ async function getLocalMedia() {
 
         localStream = mediaStream;
         await Promise.all(mediaStream.getAudioTracks().map((track) => optimizeAudioTrack(track)));
+        micOn = mediaStream.getAudioTracks().length > 0;
         mediaStream.getAudioTracks().forEach((track) => {
             track.enabled = micOn;
         });
         await Promise.all(localStream.getVideoTracks().map((track) => optimizeVideoTrack(track, false)));
+        cameraOn = localStream.getVideoTracks().length > 0;
         localStream.getVideoTracks().forEach((track) => {
             track.enabled = cameraOn;
         });
 
-        if (localStream.getVideoTracks().length === 0) {
-            alert('Camera permission was not granted or no camera was found. Allow camera access in the browser and try again.');
-            return false;
+        const hasAudio = mediaStream.getAudioTracks().length > 0;
+        const hasVideo = localStream.getVideoTracks().length > 0;
+
+        if (hasAudio && hasVideo) {
+            showMeetingNotice('Camera and microphone are connected.', 'success');
+        } else if (hasAudio) {
+            showMeetingNotice('Microphone is connected. Camera was not available or permission was not granted.', 'info');
+        } else if (hasVideo) {
+            showMeetingNotice('Camera is connected. Microphone was not available or permission was not granted.', 'info');
         }
 
         return true;
     } catch {
-        alert('Could not access camera and microphone. Check browser permissions.');
+        showMeetingNotice('Could not access camera or microphone. Check browser permissions, then try again.', 'error');
         return false;
     }
 }
@@ -1137,6 +1170,7 @@ function resetMeetingUi() {
     setStatus('Offline');
     setMeetingTimeLabel('No time set');
     creatingMeeting = false;
+    clearMeetingNotice();
     updateControls();
 }
 
@@ -1303,32 +1337,42 @@ async function toggleFloatVideo() {
 }
 
 function toggleMic() {
-    if (!mediaStream) {
+    const audioTracks = mediaStream?.getAudioTracks() || [];
+    if (audioTracks.length === 0) {
         if (!meetingActive) {
             alert('Start or join a meeting to use the microphone.');
+        } else {
+            showMeetingNotice('No microphone track is available. Check browser permission and rejoin.', 'error');
         }
         return;
     }
 
     micOn = !micOn;
-    mediaStream.getAudioTracks().forEach((track) => {
+    audioTracks.forEach((track) => {
         track.enabled = micOn;
     });
+    showMeetingNotice(micOn ? 'Microphone is on.' : 'Microphone is muted.', 'info');
     updateControls();
 }
 
 async function toggleCamera() {
-    if (!localStream) {
+    const cameraTracks = mediaStream?.getVideoTracks() || [];
+    if (cameraTracks.length === 0) {
         if (!meetingActive) {
             alert('Start or join a meeting to use the camera.');
+        } else {
+            showMeetingNotice('No camera track is available. Check browser permission and rejoin.', 'error');
         }
         return;
     }
 
     cameraOn = !cameraOn;
-    localStream.getVideoTracks().forEach((track) => {
+    cameraTracks.forEach((track) => {
         track.enabled = cameraOn;
     });
+    if (!screenSharing) {
+        localStream = mediaStream;
+    }
     if (currentSocketId) {
         setParticipant(currentSocketId, `${userName} (You)`, hasOutgoingVideo(), handRaised);
     }
@@ -1336,6 +1380,7 @@ async function toggleCamera() {
     if (socket && socket.connected && currentRoomId) {
         socket.emit('camera-state-changed', currentRoomId, hasOutgoingVideo());
     }
+    showMeetingNotice(cameraOn ? 'Camera is on.' : 'Camera is off.', 'info');
     refreshLocalPreview();
     renderParticipants();
     updateControls();

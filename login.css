@@ -3,15 +3,15 @@
 }
 
 :root {
-    --navy: #0b1f3a;
-    --blue: #1a73e8;
-    --ice: #e8f0fe;
-    --ice-2: #eef4ff;
-    --bg: #f3f5f8;
+    --navy: #0F4C81;
+    --blue: #1E88E5;
+    --ice: #EAF4FC;
+    --ice-2: #F0F7FC;
+    --bg: #F5F9FC;
     --card: #ffffff;
-    --text: #202124;
-    --muted: #5f6368;
-    --border: #e8eaed;
+    --text: #1F2937;
+    --muted: #667085;
+    --border: #DDE8F0;
     --shadow: 0 18px 34px rgba(11, 31, 58, 0.12);
 }
 
@@ -23,16 +23,60 @@ html, body {
     color: var(--text);
 }
 
+.public-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 12px clamp(16px, 4vw, 56px);
+    background: #0F4C81;
+    color: #ffffff;
+}
+
+.public-brand,
+.public-nav nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 900;
+}
+
+.public-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.brand-nurse {
+    color: #d7b55d;
+}
+
+.public-nav nav {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.public-nav nav a {
+    padding: 9px 12px;
+    border-radius: 999px;
+}
+
+.public-nav nav a:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
 .auth-shell {
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 22px;
+    padding: clamp(32px, 6vw, 70px);
 }
 
 .auth-card {
-    width: min(1040px, 100%);
+    width: min(1120px, 100%);
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 28px;
@@ -137,10 +181,10 @@ html, body {
 }
 
 .auth-right {
-    padding: 26px 24px;
+    padding: 34px 30px;
     display: grid;
     align-content: start;
-    gap: 10px;
+    gap: 14px;
 }
 
 .auth-right h2 {
@@ -150,9 +194,9 @@ html, body {
 }
 
 .form {
-    margin-top: 10px;
+    margin-top: 16px;
     display: grid;
-    gap: 14px;
+    gap: 18px;
 }
 
 .field span {
@@ -218,10 +262,10 @@ input:focus {
 }
 
 .links {
-    margin-top: 6px;
+    margin-top: 18px;
     display: flex;
     justify-content: space-between;
-    gap: 12px;
+    gap: 18px;
     flex-wrap: wrap;
     font-weight: 800;
 }
@@ -245,6 +289,16 @@ input:focus {
     }
     .left-content h2 {
         font-size: 28px;
+    }
+}
+
+@media (max-width: 620px) {
+    .public-nav {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+    .public-nav nav {
+        justify-content: flex-start;
     }
 }
 

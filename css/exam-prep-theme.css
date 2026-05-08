@@ -1,0 +1,90 @@
+:root {
+    --navy: #0F4C81;
+    --primary: #0F4C81;
+    --secondary: #1E88E5;
+    --accent: #4CAF50;
+    --bg: #F5F9FC;
+    --text: #1F2937;
+    --muted: #667085;
+    --border: #DDE8F0;
+}
+
+body {
+    background: var(--bg) !important;
+    color: var(--text) !important;
+}
+
+.navbar,
+.results-top-bar,
+.exam-top-bar {
+    background: var(--primary) !important;
+    color: #ffffff !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.navbar a,
+.results-link,
+.exam-top-link {
+    color: #ffffff !important;
+}
+
+.btn-primary,
+.primary-button,
+#start-exam-btn,
+#generate-btn,
+#next-btn,
+#review-answers-btn {
+    background: var(--primary) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 999px !important;
+    font-weight: 800 !important;
+}
+
+.btn-secondary,
+.secondary-button,
+.tab-btn,
+#prev-btn,
+#flag-btn {
+    background: #EAF4FC !important;
+    color: var(--primary) !important;
+    border: 1px solid rgba(15, 76, 129, 0.14) !important;
+    border-radius: 999px !important;
+    font-weight: 800 !important;
+}
+
+.card,
+.program-card,
+.step,
+.stat-item,
+.exam-summary-card {
+    background: #ffffff !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 14px 30px rgba(15, 76, 129, 0.10) !important;
+}
+
+.exam-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 12px;
+    margin: 16px auto;
+    width: min(1120px, calc(100% - 24px));
+}
+
+.exam-summary-card {
+    padding: 16px;
+}
+
+.exam-summary-card strong {
+    display: block;
+    color: var(--primary);
+    font-size: 20px;
+}
+
+.exam-summary-card span {
+    display: block;
+    margin-top: 8px;
+    color: var(--muted);
+    font-weight: 700;
+}

@@ -166,6 +166,55 @@
         }
     ];
 
+    const COURSE_IMAGE_BY_ID = {
+        'nck-masterclass': 'https://images.unsplash.com/photo-1666214280557-f1b5022eb634?auto=format&fit=crop&q=80&w=1200',
+        'nclex-comprehensive': 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&q=80&w=1200',
+        'lecture-series': 'https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=1200',
+        'pharmacology-intensive': 'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&q=80&w=1200',
+        'pediatrics-clinical': 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=1200',
+        'med-surg-bootcamp': 'https://images.unsplash.com/photo-1550831107-1553da8c8464?auto=format&fit=crop&q=80&w=1200'
+    };
+
+    const COURSE_IMAGE_FALLBACKS = [
+        'https://images.unsplash.com/photo-1666214280557-f1b5022eb634?auto=format&fit=crop&q=80&w=1200',
+        'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&q=80&w=1200',
+        'https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=1200',
+        'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&q=80&w=1200',
+        'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=1200',
+        'https://images.unsplash.com/photo-1550831107-1553da8c8464?auto=format&fit=crop&q=80&w=1200'
+    ];
+
+    function isGenericCourseImage(src) {
+        const value = String(src || '').toLowerCase();
+        return (
+            value === '' ||
+            value.includes('default.') ||
+            value.includes('home image') ||
+            value.includes('home%20image') ||
+            value.endsWith('/nck.jpg') ||
+            value.endsWith('/nclex.jpg') ||
+            value.endsWith('/lectures.jpg') ||
+            value.endsWith('/pharmacology.jpg') ||
+            value.endsWith('/pediatrics.jpg') ||
+            value.endsWith('/med-surg.jpg')
+        );
+    }
+
+    function getCourseImage(course, index) {
+        if (COURSE_IMAGE_BY_ID[course.id]) return COURSE_IMAGE_BY_ID[course.id];
+
+        const text = `${course.title || ''} ${course.category || ''}`.toLowerCase();
+        if (text.includes('nck') || text.includes('licensing')) return COURSE_IMAGE_FALLBACKS[0];
+        if (text.includes('nclex')) return COURSE_IMAGE_FALLBACKS[1];
+        if (text.includes('lecture') || text.includes('professional')) return COURSE_IMAGE_FALLBACKS[2];
+        if (text.includes('pharmacology') || text.includes('drug') || text.includes('medication')) return COURSE_IMAGE_FALLBACKS[3];
+        if (text.includes('pediatric')) return COURSE_IMAGE_FALLBACKS[4];
+        if (text.includes('clinical') || text.includes('med-surg') || text.includes('surg')) return COURSE_IMAGE_FALLBACKS[5];
+
+        if (!isGenericCourseImage(course.image)) return course.image;
+        return COURSE_IMAGE_FALLBACKS[index % COURSE_IMAGE_FALLBACKS.length];
+    }
+
     const EXAM_CHECKLIST_ITEMS = [
         { id: 'plan', label: 'Create a 4-week study plan (topics + days)' },
         { id: 'questions', label: 'Do 20+ practice questions per day' },
@@ -478,7 +527,7 @@
         const levelValue = ($('#courseLevel')?.value || 'all').trim();
 
         const core = window.GnpLearning;
-        const catalog = core?.COURSE_META || [];
+        const catalog = core?.getCourses ? core.getCourses() : core?.COURSE_META || [];
         const state = core?.loadState ? core.loadState() : { enrolledCourseIds: [], progress: {} };
         const enrolled = new Set(Array.isArray(state.enrolledCourseIds) ? state.enrolledCourseIds : []);
 
@@ -504,7 +553,7 @@
             return;
         }
 
-        filtered.forEach((course) => {
+        filtered.forEach((course, index) => {
             const card = document.createElement('div');
             card.className = 'course-card';
 
@@ -512,6 +561,14 @@
             const percent = core?.getProgressPercent ? core.getProgressPercent(course.id, state) : 0;
             const totalModules = progress?.totalModules || course.moduleCount || 0;
             const doneModules = Array.isArray(progress?.completedModules) ? progress.completedModules.length : 0;
+
+            const imageSrc = getCourseImage(course, index);
+            const image = document.createElement('img');
+            image.className = 'course-card-image';
+            image.src = imageSrc;
+            image.alt = `${course.title} course image`;
+            image.loading = 'lazy';
+            card.appendChild(image);
 
             const badges = document.createElement('div');
             badges.className = 'badge-row';
@@ -544,7 +601,7 @@
                 if (!enrolled.has(course.id)) {
                     core.enrollCourse(course.id);
                 }
-                window.open(`EXAMINATION%20PREP%20SITE/exam-lobby/anatomy.html?course=${encodeURIComponent(course.id)}`, '_blank', 'noopener');
+                window.location.href = `EXAMINATION%20PREP%20SITE/exam-lobby/anatomy.html?course=${encodeURIComponent(course.id)}`;
             });
 
             const cancelBtn = document.createElement('button');
@@ -554,7 +611,7 @@
             cancelBtn.addEventListener('click', () => {
                 if (!core) return;
                 if (!enrolled.has(course.id)) {
-                    window.open('EXAMINATION%20PREP%20SITE/courses.html', '_blank', 'noopener');
+                    window.location.href = 'EXAMINATION%20PREP%20SITE/courses.html';
                     return;
                 }
 
@@ -580,7 +637,8 @@
     function initCourses(userId) {
         const categorySelect = $('#courseCategory');
         if (categorySelect) {
-            const categories = Array.from(new Set((window.GnpLearning?.COURSE_META || []).map((c) => c.category))).sort((a, b) => a.localeCompare(b));
+            const catalog = window.GnpLearning?.getCourses ? window.GnpLearning.getCourses() : window.GnpLearning?.COURSE_META || [];
+            const categories = Array.from(new Set(catalog.map((c) => c.category))).sort((a, b) => a.localeCompare(b));
             categories.forEach((cat) => {
                 const opt = document.createElement('option');
                 opt.value = cat;
@@ -599,6 +657,8 @@
     function initCareerPaths() {
         const pillsWrap = $('#careerPills');
         const detail = $('#careerDetail');
+        const panel = $('#careerPathPanel');
+        const toggle = $('#careerPathToggle');
         if (!pillsWrap || !detail) return;
 
         pillsWrap.innerHTML = '';
@@ -628,6 +688,11 @@
         });
 
         setActive(CAREER_PATHS[0]?.id);
+
+        toggle?.addEventListener('click', () => {
+            const isHidden = panel?.classList.toggle('hidden');
+            toggle.textContent = isHidden ? 'Show career paths' : 'Hide career paths';
+        });
     }
 
     function renderGoals(userId) {
@@ -806,6 +871,152 @@
         });
     }
 
+    const PRACTICE_TEMPLATES = [
+        {
+            match: ['nck', 'licensing'],
+            stem: 'A nursing student is preparing for a licensing-style priority question. Which action is usually safest first?',
+            options: ['Choose the longest answer', 'Assess the client and identify unstable cues', 'Skip assessment and start teaching', 'Document before intervening'],
+            correct: 1,
+            rationale: 'Licensing questions usually reward safe assessment, prioritization, and recognition of unstable findings before action.'
+        },
+        {
+            match: ['nclex'],
+            stem: 'In an NCLEX-style clinical judgment item, what should the student do first after reading the case?',
+            options: ['Pick the first familiar option', 'Identify the main patient problem and key cues', 'Ignore abnormal trends', 'Focus only on the diagnosis label'],
+            correct: 1,
+            rationale: 'NCLEX clinical judgment starts with recognizing cues and defining the patient problem before selecting interventions.'
+        },
+        {
+            match: ['lecture', 'professional'],
+            stem: 'During a nursing lecture review, which study behavior builds the strongest clinical understanding?',
+            options: ['Memorize isolated facts only', 'Connect concepts to patient assessment findings', 'Avoid practice questions', 'Read notes once and stop'],
+            correct: 1,
+            rationale: 'Concepts become useful when connected to assessment findings, priorities, and nursing actions.'
+        },
+        {
+            match: ['pharmacology', 'drug', 'medication'],
+            stem: 'Before administering a high-risk medication, which nursing action is most important?',
+            options: ['Give it quickly', 'Check the right patient, order, dose, route, time, and relevant vitals/labs', 'Skip allergies if the patient is busy', 'Document before giving'],
+            correct: 1,
+            rationale: 'Medication safety depends on verification plus checking relevant contraindications, vitals, labs, and allergies.'
+        },
+        {
+            match: ['pediatric'],
+            stem: 'A pediatric medication dose is ordered. Which check is most important before administration?',
+            options: ['Adult dose range', 'Weight-based dose calculation', 'Parent preference only', 'Medication color'],
+            correct: 1,
+            rationale: 'Pediatric medication safety depends heavily on accurate weight-based dosing.'
+        },
+        {
+            match: ['clinical', 'med-surg', 'surg'],
+            stem: 'In med-surg prioritization, which patient should usually be assessed first?',
+            options: ['A stable patient awaiting discharge teaching', 'A patient with new shortness of breath', 'A patient asking for a blanket', 'A patient with unchanged chronic pain'],
+            correct: 1,
+            rationale: 'New breathing difficulty may indicate acute deterioration and should be prioritized.'
+        }
+    ];
+
+    function getPracticeTemplate(course) {
+        const text = `${course?.title || ''} ${course?.category || ''} ${course?.summary || ''}`.toLowerCase();
+        return PRACTICE_TEMPLATES.find((item) => item.match.some((term) => text.includes(term))) || {
+            match: [],
+            stem: `For ${course?.title || 'this nursing course'}, what is the best way to approach a difficult exam question?`,
+            options: ['Guess quickly', 'Identify key cues, eliminate unsafe options, and choose the safest nursing action', 'Ignore the stem details', 'Choose based only on memory'],
+            correct: 1,
+            rationale: 'Most nursing questions test safe reasoning: cues, priority, elimination, and patient-centered action.'
+        };
+    }
+
+    function initPracticeQuestions() {
+        const select = $('#practiceCourseSelect');
+        const generateBtn = $('#generatePracticeBtn');
+        const card = $('#practiceQuestionCard');
+        if (!select || !generateBtn || !card) return;
+
+        const courses = window.GnpLearning?.getCourses ? window.GnpLearning.getCourses() : window.GnpLearning?.COURSE_META || [];
+        select.innerHTML = '';
+        courses.forEach((course) => {
+            const option = document.createElement('option');
+            option.value = course.id;
+            option.textContent = course.title;
+            select.appendChild(option);
+        });
+
+        let questionNumber = 0;
+
+        function renderPracticeQuestion() {
+            const course = courses.find((item) => item.id === select.value) || courses[0];
+            if (!course) return;
+            questionNumber += 1;
+            const template = getPracticeTemplate(course);
+            const stem = `${template.stem}`;
+
+            card.innerHTML = '';
+
+            const meta = document.createElement('div');
+            meta.className = 'badge-row';
+            meta.innerHTML = `
+                <span class="badge">${course.category || 'Course'}</span>
+                <span class="badge alt">Question ${questionNumber}</span>
+            `;
+
+            const title = document.createElement('h4');
+            title.textContent = stem;
+
+            const optionsWrap = document.createElement('div');
+            optionsWrap.className = 'practice-option-list';
+
+            const feedback = document.createElement('div');
+            feedback.className = 'practice-feedback hidden';
+
+            template.options.forEach((optionText, index) => {
+                const option = document.createElement('button');
+                option.type = 'button';
+                option.className = 'practice-option';
+                option.textContent = optionText;
+                option.addEventListener('click', () => {
+                    Array.from(optionsWrap.children).forEach((child) => {
+                        child.disabled = true;
+                    });
+                    option.classList.add(index === template.correct ? 'is-correct' : 'is-wrong');
+                    if (index !== template.correct) {
+                        optionsWrap.children[template.correct]?.classList.add('is-correct');
+                    }
+                    feedback.textContent = template.rationale;
+                    feedback.classList.remove('hidden');
+                });
+                optionsWrap.appendChild(option);
+            });
+
+            const next = document.createElement('button');
+            next.type = 'button';
+            next.className = 'pill-button';
+            next.textContent = 'Generate another question';
+            next.addEventListener('click', renderPracticeQuestion);
+
+            card.append(meta, title, optionsWrap, feedback, next);
+        }
+
+        generateBtn.addEventListener('click', renderPracticeQuestion);
+    }
+
+    function buildTutorAnswer(title, category, details) {
+        const combined = `${title} ${details}`.toLowerCase();
+        if (combined.includes('insulin') || combined.includes('medication') || category === 'Pharmacology') {
+            return 'Start with medication safety: identify the drug class, check the order, allergies, dose, route, time, and relevant vitals/labs. For insulin, connect onset, peak, and duration to hypoglycemia risk and meal timing.';
+        }
+        if (combined.includes('priority') || combined.includes('first') || category === 'Examination') {
+            return 'Use a priority framework: assess airway, breathing, circulation, safety, acute changes, and unstable findings first. Eliminate answers that delay assessment or ignore risk.';
+        }
+        if (combined.includes('child') || combined.includes('pediatric')) {
+            return 'For pediatric questions, focus on age, weight-based dosing, growth stage, family-centered care, hydration, respiratory status, and safety.';
+        }
+        if (combined.includes('anatomy') || category === 'Anatomy') {
+            return 'Break the anatomy topic into structure, function, normal findings, abnormal findings, and the nursing action linked to the abnormal clue.';
+        }
+        return 'A good approach is to identify the key patient cues, decide what is unsafe or abnormal, connect it to the nursing concept, and choose the safest next action. Review the rationale and turn the weak point into a short study note.';
+    }
+
     function renderQuestions(userId, userName) {
         const wrap = $('#questionsList');
         if (!wrap) return;
@@ -936,7 +1147,15 @@
                     authorId: userId,
                     authorName: userName,
                     createdAt: new Date().toISOString(),
-                    answers: []
+                    answers: [
+                        {
+                            id: uid('ans'),
+                            text: buildTutorAnswer(title, category, details),
+                            authorId: 'system',
+                            authorName: 'Global NursePrep Tutor',
+                            createdAt: new Date().toISOString()
+                        }
+                    ]
                 },
                 ...getQuestions()
             ];
@@ -949,6 +1168,7 @@
         });
 
         renderQuestions(userId, userName);
+        initPracticeQuestions();
     }
 
     function renderProfileCounts(userId) {

@@ -1,11 +1,11 @@
 :root {
-    --navy: #0b1f3a;
-    --blue: #1a73e8;
-    --ice: #e8f0fe;
-    --bg: #f3f5f8;
+    --navy: #0F4C81;
+    --blue: #1E88E5;
+    --ice: #EAF4FC;
+    --bg: #F5F9FC;
     --card: #ffffff;
-    --muted: #5f6368;
-    --border: #e8eaed;
+    --muted: #667085;
+    --border: #DDE8F0;
     --gold: #d7b55d;
 }
 
@@ -19,7 +19,7 @@ body {
     min-height: 100%;
     font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
     background: var(--bg);
-    color: #202124;
+    color: #1F2937;
 }
 
 .muted {
@@ -36,8 +36,8 @@ body {
     z-index: 1200;
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 14px 18px;
+    gap: 10px;
+    padding: 8px 12px;
     background: var(--card);
     border-bottom: 1px solid var(--border);
 }
@@ -114,12 +114,12 @@ body {
 .cert-page {
     width: min(100%, 1100px);
     margin: 0 auto;
-    padding: 18px 18px 30px;
+    padding: 10px 10px 18px;
 }
 
 .cert-shell {
     display: grid;
-    gap: 14px;
+    gap: 10px;
 }
 
 .status-box {
@@ -140,9 +140,9 @@ body {
 .cert-paper {
     background: #ffffff;
     border: 1px solid var(--border);
-    border-radius: 22px;
-    padding: 34px 30px;
-    box-shadow: 0 18px 34px rgba(11, 31, 58, 0.10);
+    border-radius: 14px;
+    padding: 22px 18px;
+    box-shadow: 0 10px 22px rgba(11, 31, 58, 0.08);
     position: relative;
     overflow: hidden;
 }
@@ -151,7 +151,7 @@ body {
     content: "";
     position: absolute;
     inset: -2px;
-    border-radius: 22px;
+    border-radius: 14px;
     background: linear-gradient(135deg, rgba(215, 181, 93, 0.55), rgba(26, 115, 232, 0.28), rgba(11, 31, 58, 0));
     pointer-events: none;
     opacity: 0.35;
@@ -360,4 +360,3 @@ body {
         border: 2px solid rgba(11, 31, 58, 0.24);
     }
 }
-

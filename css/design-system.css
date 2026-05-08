@@ -1,0 +1,79 @@
+:root {
+    --primary: #0F4C81;
+    --secondary: #1E88E5;
+    --accent: #4CAF50;
+    --background: #F5F9FC;
+    --surface: #ffffff;
+    --text: #1F2937;
+    --muted: #667085;
+    --border: #DDE8F0;
+    --shadow: 0 14px 30px rgba(15, 76, 129, 0.10);
+    --radius: 10px;
+}
+
+.gnp-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+.gnp-grid {
+    display: grid;
+    gap: 12px;
+}
+
+.gnp-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 10px 15px;
+    border-radius: 999px;
+    border: 0;
+    background: var(--primary);
+    color: #ffffff;
+    font-weight: 800;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.gnp-button.secondary {
+    background: #EAF4FC;
+    color: var(--primary);
+    border: 1px solid rgba(15, 76, 129, 0.12);
+}
+
+.gnp-button:hover {
+    transform: translateY(-1px);
+    filter: brightness(0.98);
+}
+
+.gnp-toast {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 999;
+    max-width: 320px;
+    padding: 12px 14px;
+    border-radius: var(--radius);
+    background: var(--primary);
+    color: #ffffff;
+    box-shadow: var(--shadow);
+    font-weight: 800;
+}
+
+.gnp-spinner {
+    width: 28px;
+    height: 28px;
+    border: 3px solid rgba(30, 136, 229, 0.18);
+    border-top-color: var(--secondary);
+    border-radius: 50%;
+    animation: gnp-spin 0.8s linear infinite;
+}
+
+@keyframes gnp-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

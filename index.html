@@ -1,16 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Global NursePrep</title>
-        <meta http-equiv="refresh" content="0; url=login.html">
-        <link rel="canonical" href="login.html">
-        <script>
-            window.location.replace("login.html");
-        </script>
-    </head>
-    <body>
-        <p>If you are not redirected, <a href="login.html">open the login page</a>.</p>
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global NursePrep | Nursing E-Learning</title>
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="dashboard-public.css">
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand" href="#home" aria-label="Global NursePrep home">
+            <span class="brand-logo">
+                <img src="logo/Screenshot_20260421-123818.jpg" alt="Global NursePrep logo">
+            </span>
+            <span>Global <span class="brand-nurse">Nurse</span>Prep</span>
+        </a>
+
+        <button type="button" class="site-nav-toggle" data-nav-toggle="publicNav" aria-expanded="false" aria-label="Toggle navigation">Menu</button>
+        <nav class="site-nav" id="publicNav" aria-label="Primary navigation">
+            <a href="#home">Home</a>
+            <a href="about.html">About Us</a>
+            <a href="contact.html">Contact Us</a>
+            <a class="nav-cta" href="register.html">Sign Up</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" id="home">
+            <div class="hero-copy">
+                <p class="eyebrow">Online nursing learning and NCLEX preparation</p>
+                <h1>Prepare for nursing exams with guided courses, mock tests, and certificates.</h1>
+                <p>
+                    Global NursePrep is a flexible e-learning platform for nursing students preparing for
+                    NCLEX-style exams, clinical assessments, certification, and continuous professional growth.
+                </p>
+                <div class="hero-actions">
+                    <a class="primary-button" href="register.html">Start Learning</a>
+                    <a class="secondary-button" href="register.html">Join Now</a>
+                </div>
+            </div>
+
+            <div class="hero-media" aria-label="Nursing students practicing clinical skills">
+                <img src="https://images.pexels.com/photos/35645530/pexels-photo-35645530.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Nursing students practicing clinical skills" loading="eager">
+            </div>
+        </section>
+
+        <section class="features-section" aria-label="Platform features">
+            <div class="section-heading">
+                <p class="eyebrow">Features</p>
+                <h2>Everything a nursing student needs to stay organized.</h2>
+            </div>
+            <div class="course-list">
+                <article>
+                    <strong>Online nursing courses</strong>
+                    <p>Study fundamentals, pharmacology, med-surg, pediatrics, emergency care, and clinical procedures.</p>
+                </article>
+                <article>
+                    <strong>Mock exams</strong>
+                    <p>Practice timed exam sets with categories, instructions, scoring, and results summaries.</p>
+                </article>
+                <article>
+                    <strong>Progress tracking</strong>
+                    <p>Students can save course progress, monitor activity, and return to unfinished learning.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="courses-section" aria-label="Popular nursing courses">
+            <div class="section-heading">
+                <p class="eyebrow">Popular courses</p>
+                <h2>Start with high-impact nursing topics.</h2>
+            </div>
+            <div class="course-list">
+                <article>
+                    <strong>Fundamentals of Nursing</strong>
+                    <p>Vitals, infection control, documentation, patient safety, communication, and bedside care.</p>
+                    <a class="mini-link" href="login.html?next=EXAMINATION%20PREP%20SITE/courses.html">Open course</a>
+                </article>
+                <article>
+                    <strong>NCLEX Preparation</strong>
+                    <p>NCLEX-style questions, prioritization, clinical judgment, test strategy, and rationales.</p>
+                    <a class="mini-link" href="login.html?next=EXAMINATION%20PREP%20SITE/exam-lobby/exam-lobby.html">Start prep</a>
+                </article>
+                <article>
+                    <strong>Clinical Procedures</strong>
+                    <p>OSCE skills, patient assessment, medication safety, wound care, and simulation practice.</p>
+                    <a class="mini-link" href="login.html?next=EXAMINATION%20PREP%20SITE/courses.html">View skills</a>
+                </article>
+            </div>
+        </section>
+
+        <section class="exam-prep-section">
+            <div>
+                <p class="eyebrow">Examination preparation</p>
+                <h2>Mock exams, clear instructions, results, and certificates.</h2>
+                <p>
+                    Students can prepare with structured exam categories, timed practice, score summaries,
+                    revision feedback, and completion certificates as they progress through learning.
+                </p>
+            </div>
+        </section>
+
+        <section class="stats" aria-label="Site statistics">
+            <article>
+                <strong>6</strong>
+                <span>Total Courses</span>
+            </article>
+            <article>
+                <strong>5,480</strong>
+                <span>Practice Questions</span>
+            </article>
+            <article>
+                <strong>42</strong>
+                <span>Mock Exam Sets</span>
+            </article>
+            <article>
+                <strong>Global</strong>
+                <span>Flexible learning worldwide</span>
+            </article>
+        </section>
+
+        <section class="testimonials-section">
+            <div class="section-heading">
+                <p class="eyebrow">Testimonials</p>
+                <h2>Built around nursing student confidence.</h2>
+            </div>
+            <div class="faq-grid">
+                <article>
+                    <strong>“The questions helped me revise weak areas.”</strong>
+                    <p>Mock tests make it easier to know what to study next.</p>
+                </article>
+                <article>
+                    <strong>“The courses are clear and practical.”</strong>
+                    <p>Short course sections support busy nursing students.</p>
+                </article>
+                <article>
+                    <strong>“Progress tracking keeps me consistent.”</strong>
+                    <p>Students can return to learning without losing their place.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div>© <span data-year></span> Global NursePrep - Nursing education &amp; community.</div>
+        <div class="powered-by">Powered by Teams Technologies</div>
+    </footer>
+
+    <script src="js/app-shell.js"></script>
+</body>
 </html>

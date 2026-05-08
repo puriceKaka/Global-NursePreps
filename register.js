@@ -123,9 +123,15 @@
             const passwordHash = await sha256Hex(password);
             const user = {
                 id: uid('user'),
-                name,
+                name: window.GnpUtils?.sanitizeText?.(name) || name,
                 email,
                 passwordHash,
+                role: 'student',
+                profile: {
+                    displayName: window.GnpUtils?.sanitizeText?.(name) || name,
+                    learningGoal: 'Nursing exam preparation',
+                    createdFrom: 'register'
+                },
                 createdAt: new Date().toISOString()
             };
 
@@ -156,4 +162,3 @@
 
     document.addEventListener('DOMContentLoaded', main);
 })();
-

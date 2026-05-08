@@ -123,7 +123,7 @@
                         Open the Courses catalog, enroll in a course, then come back here to continue learning and track progress.
                     </p>
                     <div style="margin-top: 12px;">
-                        <a class="primary-button" href="EXAMINATION%20PREP%20SITE/courses.html" target="_blank" rel="noopener">Open Courses</a>
+                        <a class="primary-button" href="EXAMINATION%20PREP%20SITE/courses.html">Open Courses</a>
                     </div>
                 </div>
             `;
@@ -189,8 +189,6 @@
             const continueLink = document.createElement("a");
             continueLink.className = "primary-button";
             continueLink.href = `EXAMINATION%20PREP%20SITE/exam-lobby/anatomy.html?course=${encodeURIComponent(course.id)}`;
-            continueLink.target = "_blank";
-            continueLink.rel = "noopener";
             continueLink.textContent = percent > 0 ? "Continue" : "Start learning";
 
             const cancelBtn = document.createElement("button");
@@ -215,8 +213,6 @@
                     certId: progress.certificate.id
                 });
                 certBtn.href = `certificate.html?${query.toString()}`;
-                certBtn.target = "_blank";
-                certBtn.rel = "noopener";
             } else {
                 certBtn.href = "#";
                 certBtn.setAttribute("aria-disabled", "true");
@@ -265,4 +261,3 @@
 
     document.addEventListener("DOMContentLoaded", main);
 })();
-

@@ -14,7 +14,7 @@ body.drawer-open {
     border-radius: 999px;
     border: 1px solid rgba(11, 31, 58, 0.18);
     background: #ffffff;
-    color: var(--navy, #0b1f3a);
+    color: var(--navy, #0F4C81);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
@@ -47,7 +47,7 @@ body.drawer-open {
 .hamburger {
     width: 18px;
     height: 2px;
-    background: var(--navy, #0b1f3a);
+    background: var(--navy, #0F4C81);
     display: inline-block;
     border-radius: 999px;
     position: relative;
@@ -58,7 +58,7 @@ body.drawer-open {
     content: "";
     width: 18px;
     height: 2px;
-    background: var(--navy, #0b1f3a);
+    background: var(--navy, #0F4C81);
     position: absolute;
     left: 0;
     border-radius: 999px;
@@ -92,10 +92,11 @@ body.drawer-open {
     z-index: 2001;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .drawer-header {
-    padding: 14px;
+    padding: 10px;
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
@@ -116,7 +117,7 @@ body.drawer-open {
     border-radius: 50%;
     overflow: hidden;
     background: rgba(26, 115, 232, 0.12);
-    color: var(--navy, #0b1f3a);
+    color: var(--navy, #0F4C81);
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -132,19 +133,23 @@ body.drawer-open {
 }
 
 .drawer-nav {
-    padding: 10px 10px 0;
+    padding: 8px 8px 0;
     display: grid;
-    gap: 8px;
+    gap: 6px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    max-height: calc(100vh - 154px);
+    scrollbar-width: thin;
 }
 
 .drawer-link {
     width: 100%;
     text-align: left;
-    padding: 12px;
-    border-radius: 16px;
+    padding: 10px;
+    border-radius: 10px;
     background: #ffffff;
     border: 1px solid rgba(11, 31, 58, 0.12);
-    color: var(--navy, #0b1f3a);
+    color: var(--navy, #0F4C81);
     font-weight: 800;
     cursor: pointer;
     text-decoration: none;
@@ -158,9 +163,11 @@ body.drawer-open {
 
 .drawer-footer {
     margin-top: auto;
-    padding: 14px 12px 18px;
+    padding: 10px;
     display: grid;
     gap: 10px;
+    border-top: 1px solid rgba(11, 31, 58, 0.12);
+    background: #ffffff;
 }
 
 .drawer .muted {

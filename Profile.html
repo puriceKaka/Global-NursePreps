@@ -21,7 +21,7 @@
                 <img src="logo/Screenshot_20260421-123818.jpg" alt="">
             </span>
             <div>
-                <h1>Global NursePrep</h1>
+                <h1>Global <span class="brand-nurse">Nurse</span>Prep</h1>
                 <p>Profile • Learning summary • Membership</p>
             </div>
         </div>
@@ -48,17 +48,16 @@
         </div>
 
         <nav class="drawer-nav" aria-label="Navigation">
-            <a class="drawer-link" href="homepage.html" target="_blank" rel="noopener">Home</a>
-            <a class="drawer-link" href="homepage.html#career" target="_blank" rel="noopener">Career Paths</a>
-            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/courses.html" target="_blank" rel="noopener">Courses</a>
-            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/exam-interface/exam-interface.html" target="_blank" rel="noopener">Exams</a>
-            <a class="drawer-link" href="questions.html" target="_blank" rel="noopener">Questions</a>
-            <a class="drawer-link" href="my-learnings.html" target="_blank" rel="noopener">My Learnings</a>
+            <a class="drawer-link" href="homepage.html">Home</a>
+            <a class="drawer-link" href="homepage.html#career">Career Paths</a>
+            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/courses.html">Courses</a>
+            <a class="drawer-link" href="questions.html">Questions</a>
+            <a class="drawer-link" href="my-learnings.html">My Learnings</a>
             <a class="drawer-link" href="Profile.html">Profile</a>
-            <a class="drawer-link" href="Membership.html" target="_blank" rel="noopener">Membership</a>
-            <a class="drawer-link" href="Dashboard.html" target="_blank" rel="noopener">Meeting and Lecturese</a>
-            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/landing.html" target="_blank" rel="noopener">Examamination</a>
-            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/exam-lobby/exam-lobby.html" target="_blank" rel="noopener">Examiniation</a>
+            <a class="drawer-link" href="Membership.html">Membership</a>
+            <a class="drawer-link" href="meetings.html">Meetings and Lectures</a>
+            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/landing.html">Exam Prep</a>
+            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/exam-lobby/exam-lobby.html">Exam Lobby</a>
         </nav>
 
         <div class="drawer-footer">
@@ -70,34 +69,34 @@
         <section class="card">
             <div class="card-head">
                 <div>
-                    <h2 id="profileName">Member</h2>
-                    <div class="muted" id="profileEmail">—</div>
+                    <h2 id="profileName">Purice mweo</h2>
+                    <div class="muted" id="profileEmail">puricekaka@gmail.com</div>
                 </div>
                 <div class="card-actions">
-                    <a class="pill-button" href="Membership.html" target="_blank" rel="noopener">Manage membership</a>
+                    <a class="pill-button" href="Membership.html">Manage membership</a>
                 </div>
             </div>
 
             <div class="meta-grid">
                 <div class="meta-card">
                     <strong>Membership</strong>
-                    <div class="metric" id="membershipLabel">Not selected</div>
-                    <div class="muted small" id="membershipHint">Choose a plan to unlock the full experience.</div>
+                    <div class="metric" id="membershipLabel">Professional Membership</div>
+                    <div class="muted small" id="membershipHint">Membership active.</div>
                 </div>
                 <div class="meta-card">
                     <strong>Courses</strong>
-                    <div class="metric" id="coursesLabel">0</div>
+                    <div class="metric" id="coursesLabel">3</div>
                     <div class="muted small">Enrolled courses</div>
                 </div>
                 <div class="meta-card">
-                    <strong>Completed</strong>
-                    <div class="metric" id="completedLabel">0</div>
-                    <div class="muted small">Courses at 100%</div>
+                    <strong>Goals</strong>
+                    <div class="metric" id="goalsLabel">0</div>
+                    <div class="muted small">Study goals</div>
                 </div>
                 <div class="meta-card">
-                    <strong>Certificates</strong>
-                    <div class="metric" id="certificatesLabel">0</div>
-                    <div class="muted small">Ready to print</div>
+                    <strong>Questions</strong>
+                    <div class="metric" id="questionsLabel">0</div>
+                    <div class="muted small">Questions asked</div>
                 </div>
             </div>
 
@@ -108,12 +107,23 @@
         </section>
 
         <section class="card">
+            <h3>Notifications and goals</h3>
+            <p class="muted">Keep track of study reminders, exam preparation, and clinical skill goals.</p>
+            <form class="profile-goal-form" id="profileGoalForm">
+                <input type="text" id="profileGoalInput" placeholder="Add a goal or reminder">
+                <input type="date" id="profileGoalDate">
+                <button type="submit" class="primary-button">Add goal</button>
+            </form>
+            <div class="profile-goals" id="profileGoalsList"></div>
+        </section>
+
+        <section class="card">
             <h3>Quick actions</h3>
             <div class="action-row">
-                <a class="primary-button" href="EXAMINATION%20PREP%20SITE/courses.html" target="_blank" rel="noopener">Open Courses</a>
+                <a class="primary-button" href="EXAMINATION%20PREP%20SITE/courses.html">Open Courses</a>
                 <a class="pill-button" href="my-learnings.html">My Learnings</a>
-                <a class="pill-button" href="questions.html" target="_blank" rel="noopener">Questions</a>
-                <a class="pill-button" href="Dashboard.html" target="_blank" rel="noopener">Meetings</a>
+                <a class="pill-button" href="questions.html">Questions</a>
+                <a class="pill-button" href="meetings.html">Meetings</a>
             </div>
         </section>
 
@@ -123,4 +133,3 @@
     </main>
 </body>
 </html>
-

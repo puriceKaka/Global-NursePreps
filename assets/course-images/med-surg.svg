@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="Med-surg readiness course">
+  <rect width="800" height="450" fill="#0F4C81"/><path d="M0 290 C130 220 260 360 400 285 S650 180 800 250 V450 H0Z" fill="#4CAF50"/>
+  <rect x="95" y="86" width="610" height="190" rx="28" fill="#fff" opacity=".92"/><path d="M145 185h120l35-55 58 110 50-80h245" fill="none" stroke="#1E88E5" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="70" y="398" fill="#fff" font-family="Arial" font-size="40" font-weight="700">Med-Surg Readiness</text>
+</svg>

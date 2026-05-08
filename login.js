@@ -64,7 +64,7 @@
     function redirectIfLoggedIn() {
         const session = getSession();
         if (session && session.userId) {
-            window.location.replace('homepage.html');
+            window.location.replace(window.GnpUtils?.getNextUrl?.('homepage.html') || 'homepage.html');
         }
     }
 
@@ -118,7 +118,7 @@
                 loginAt: new Date().toISOString()
             });
 
-            window.location.replace('homepage.html');
+            window.location.replace(window.GnpUtils?.getNextUrl?.('homepage.html') || 'homepage.html');
         } finally {
             if (btn) {
                 btn.disabled = false;
@@ -135,4 +135,3 @@
 
     document.addEventListener('DOMContentLoaded', main);
 })();
-

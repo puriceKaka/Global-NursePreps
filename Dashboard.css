@@ -8,8 +8,12 @@ html, body {
     margin: 0;
     min-height: 100%;
     font-family: Inter, Arial, sans-serif;
-    background: #f3f5f8;
-    color: #202124;
+    background: #F5F9FC;
+    color: #1F2937;
+}
+
+.brand-nurse {
+    color: #d7b55d;
 }
 body {
     display: flex;
@@ -20,10 +24,10 @@ body {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    gap: 18px;
-    padding: 20px 32px;
+    gap: 10px;
+    padding: 8px 12px;
     background: #ffffff;
-    border-bottom: 1px solid #e8eaed;
+    border-bottom: 1px solid #DDE8F0;
 }
 .brand {
     display: flex;
@@ -37,7 +41,7 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: #1a73e8;
+    background: #1E88E5;
     color: white;
     font-weight: 700;
     font-size: 20px;
@@ -55,7 +59,7 @@ body {
 }
 .header p {
     margin: 4px 0 0;
-    color: #5f6368;
+    color: #667085;
     font-size: 14px;
 }
 .header-actions {
@@ -75,19 +79,19 @@ body {
     font-weight: 600;
 }
 .pill-button {
-    padding: 12px 18px;
-    background: #e8f0fe;
-    color: #1a73e8;
+    padding: 9px 13px;
+    background: #EAF4FC;
+    color: #1E88E5;
 }
 .primary-button {
-    padding: 12px 18px;
-    background: #1a73e8;
+    padding: 9px 13px;
+    background: #1E88E5;
     color: white;
 }
 .secondary-button {
-    padding: 14px 22px;
+    padding: 9px 13px;
     background: white;
-    color: #202124;
+    color: #1F2937;
     border: 1px solid #dfe1e5;
 }
 .icon-button {
@@ -97,19 +101,19 @@ body {
     align-items: center;
     justify-content: center;
     background: #f1f3f4;
-    color: #202124;
+    color: #1F2937;
     font-size: 20px;
 }
 .hero-card {
-    margin: 24px 32px 0;
-    padding: 20px 22px;
+    margin: 10px 12px 0;
+    padding: 12px;
     background: #ffffff;
-    border: 1px solid #e8eaed;
-    border-radius: 24px;
+    border: 1px solid #DDE8F0;
+    border-radius: 14px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 20px;
+    gap: 10px;
     flex-wrap: wrap;
 }
 .hero-card h2 {
@@ -118,8 +122,29 @@ body {
 }
 .hero-card p {
     margin: 10px 0 0;
-    color: #5f6368;
+    color: #667085;
     max-width: 520px;
+}
+.meeting-notice {
+    flex-basis: 100%;
+    margin-top: 8px;
+    padding: 10px 12px;
+    border: 1px solid rgba(15, 76, 129, 0.14);
+    border-radius: 14px;
+    background: #eef7ff;
+    color: #0F4C81;
+    font-size: 14px;
+    font-weight: 700;
+}
+.meeting-notice.success {
+    border-color: rgba(76, 175, 80, 0.25);
+    background: #ecf8ee;
+    color: #166534;
+}
+.meeting-notice.error {
+    border-color: rgba(180, 35, 24, 0.25);
+    background: #fff1f0;
+    color: #b42318;
 }
 .hero-actions {
     display: flex;
@@ -152,27 +177,27 @@ body {
 .schedule-chip span {
     display: block;
     font-size: 12px;
-    color: #5f6368;
+    color: #667085;
     margin-bottom: 6px;
 }
 .schedule-chip strong {
     font-size: 14px;
-    color: #202124;
+    color: #1F2937;
 }
 .main {
     flex: 1;
-    padding: 0 32px 32px;
+    padding: 0 12px 18px;
 }
 .meeting-layout {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 24px;
-    margin-top: 24px;
+    gap: 12px;
+    margin-top: 12px;
 }
 .meeting-workspace {
     display: grid;
     grid-template-columns: minmax(0, 1.7fr) minmax(320px, 0.9fr);
-    gap: 20px;
+    gap: 12px;
     align-items: start;
 }
 .video-stage {
@@ -191,13 +216,13 @@ body {
     padding: 8px 14px;
     border-radius: 999px;
     background: #eceff3;
-    color: #5f6368;
+    color: #667085;
     font-size: 13px;
     font-weight: 600;
 }
 #meetingTimeLabel {
-    background: #eef4ff;
-    color: #1a73e8;
+    background: #F0F7FC;
+    color: #1E88E5;
 }
 
 .network-status {
@@ -224,7 +249,7 @@ body {
 }
 .tool-section {
     background: #ffffff;
-    border: 1px solid #e8eaed;
+    border: 1px solid #DDE8F0;
     border-radius: 24px;
     padding: 18px;
     min-height: 220px;
@@ -247,7 +272,7 @@ body {
 }
 .tool-header p {
     margin: 6px 0 0;
-    color: #5f6368;
+    color: #667085;
     font-size: 14px;
 }
 .tool-close-button {
@@ -256,7 +281,7 @@ body {
     border: none;
     border-radius: 50%;
     background: #f1f3f4;
-    color: #5f6368;
+    color: #667085;
     font-size: 18px;
     cursor: pointer;
     display: inline-flex;
@@ -267,7 +292,7 @@ body {
     padding: 18px;
     border-radius: 16px;
     background: #f7f9fc;
-    color: #5f6368;
+    color: #667085;
     font-size: 14px;
 }
 .chat-messages {
@@ -290,12 +315,12 @@ body {
 .chat-message p {
     margin: 0;
     line-height: 1.5;
-    color: #202124;
+    color: #1F2937;
     font-size: 14px;
 }
 .chat-message-meta {
     margin-top: 8px;
-    color: #5f6368;
+    color: #667085;
     font-size: 12px;
 }
 .chat-compose {
@@ -323,18 +348,18 @@ body {
     padding: 12px 14px;
     border-radius: 16px;
     background: #f7f9fc;
-    color: #202124;
+    color: #1F2937;
     font-size: 14px;
 }
 .record-status {
     margin-top: 14px;
-    color: #5f6368;
+    color: #667085;
     font-size: 14px;
 }
 .record-download {
     display: inline-flex;
     margin-top: 14px;
-    color: #1a73e8;
+    color: #1E88E5;
     font-weight: 600;
     text-decoration: none;
 }
@@ -342,8 +367,8 @@ body {
     min-width: 36px;
     height: 36px;
     border-radius: 999px;
-    background: #eef4ff;
-    color: #1a73e8;
+    background: #F0F7FC;
+    color: #1E88E5;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -363,7 +388,7 @@ body {
     font-size: 14px;
 }
 .participant-item span {
-    color: #5f6368;
+    color: #667085;
     font-size: 12px;
 }
 .participant-hand-status {
@@ -446,7 +471,7 @@ body {
 }
 
 .video-card.placeholder {
-    background: linear-gradient(180deg, #1a73e8 0%, #185abc 100%);
+    background: linear-gradient(180deg, #1E88E5 0%, #185abc 100%);
 }
 
 .video-card.placeholder .video-preview {
@@ -477,7 +502,7 @@ body {
     padding: 22px;
     background: #ffffff;
     border-radius: 20px;
-    border: 1px solid #e8eaed;
+    border: 1px solid #DDE8F0;
 }
 .meeting-summary h2 {
     margin: 0 0 8px;
@@ -485,18 +510,18 @@ body {
 }
 .meeting-summary p {
     margin: 0;
-    color: #5f6368;
+    color: #667085;
 }
 .summary-pill {
     padding: 10px 16px;
     border-radius: 999px;
-    background: #e8f0fe;
-    color: #1a73e8;
+    background: #EAF4FC;
+    color: #1E88E5;
     font-weight: 600;
 }
 .chat-panel {
     background: #ffffff;
-    border: 1px solid #e8eaed;
+    border: 1px solid #DDE8F0;
     border-radius: 20px;
     overflow: hidden;
 }
@@ -505,14 +530,14 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 18px 20px;
-    border-bottom: 1px solid #e8eaed;
+    border-bottom: 1px solid #DDE8F0;
 }
 .chat-header h2 {
     margin: 0;
     font-size: 18px;
 }
 .chat-header span {
-    color: #5f6368;
+    color: #667085;
     font-size: 14px;
 }
 .chat-box {
@@ -531,7 +556,7 @@ body {
     gap: 10px;
     padding: 18px 20px;
     background: #ffffff;
-    border-top: 1px solid #e8eaed;
+    border-top: 1px solid #DDE8F0;
 }
 .chat-input input {
     flex: 1;
@@ -543,12 +568,12 @@ body {
 .chat-input button {
     padding: 14px 18px;
     border-radius: 12px;
-    background: #1a73e8;
+    background: #1E88E5;
     color: white;
 }
 .footer {
     padding: 8px 12px;
-    background: linear-gradient(to right, #14171c, #202124);
+    background: linear-gradient(to right, #14171c, #1F2937);
     border-top: 2px solid #3c4043;
 }
 .footer .powered-by {
@@ -603,7 +628,7 @@ body {
 
 #micButton.active .control-icon,
 #cameraButton.active .control-icon {
-    color: #1a73e8;
+    color: #1E88E5;
 }
 
 #micButton.active .control-icon::before,
@@ -629,15 +654,15 @@ body {
 }
 
 .control-button:hover:not(:disabled) .control-icon {
-    color: #1a73e8;
+    color: #1E88E5;
 }
 
 .control-button.active {
-    color: #1a73e8;
+    color: #1E88E5;
 }
 
 .control-button.active .control-icon {
-    color: #1a73e8;
+    color: #1E88E5;
 }
 .tool-toggle-button.active .control-icon {
     background: rgba(26, 115, 232, 0.18);
@@ -666,7 +691,7 @@ body {
     bottom: calc(100% + 10px);
     min-width: 220px;
     background: #ffffff;
-    border: 1px solid #e8eaed;
+    border: 1px solid #DDE8F0;
     border-radius: 16px;
     padding: 8px;
     display: grid;
@@ -680,7 +705,7 @@ body {
     gap: 10px;
     border: none;
     background: #ffffff;
-    color: #202124;
+    color: #1F2937;
     border-radius: 12px;
     padding: 12px 14px;
     text-align: left;
@@ -692,8 +717,8 @@ body {
     text-align: center;
 }
 .menu-popup-item.active {
-    background: #e8f0fe;
-    color: #1a73e8;
+    background: #EAF4FC;
+    color: #1E88E5;
 }
 
 .leave-call-button {
@@ -751,7 +776,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 18px 24px;
-    border-bottom: 1px solid #e8eaed;
+    border-bottom: 1px solid #DDE8F0;
 }
 .modal-header h2 {
     margin: 0;
@@ -767,7 +792,7 @@ body {
     display: grid;
     gap: 6px;
     font-size: 14px;
-    color: #202124;
+    color: #1F2937;
 }
 .modal-body input,
 .modal-body select,

@@ -1,17 +1,19 @@
 (() => {
     const LEGACY_STORAGE_KEY = "gnp-learning-state-v2";
     const STORAGE_KEY_PREFIX = "gnp-learning-state-v2";
+    const ADMIN_COURSES_KEY = "nurseprep_admin_courses";
 
     const COURSE_IMAGES = {
-        nurseTablet: "https://images.unsplash.com/photo-1580281657527-47c57d5a0b8b?auto=format&fit=crop&q=80&w=1200",
+        nurseTablet: "https://images.unsplash.com/photo-1666214280557-f1b5022eb634?auto=format&fit=crop&q=80&w=1200",
         simulationLab: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&q=80&w=1200",
         lectureRoom: "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=1200",
         medicationTray: "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&q=80&w=1200",
         pediatricCare: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=1200",
-        criticalCare: "https://images.unsplash.com/photo-1550831107-1553da8c8464?auto=format&fit=crop&q=80&w=1200"
+        criticalCare: "https://images.unsplash.com/photo-1550831107-1553da8c8464?auto=format&fit=crop&q=80&w=1200",
+        defaultCourse: "assets/course-images/default.jpg"
     };
 
-    const COURSE_META = [
+    const DEFAULT_COURSES = [
         {
             id: "nck-masterclass",
             title: "NCK Licensing Exam Masterclass",
@@ -105,7 +107,7 @@
     ];
 
     const DEFAULT_STATE = {
-        selectedCourseId: COURSE_META[0]?.id || "",
+        selectedCourseId: DEFAULT_COURSES[0]?.id || "",
         enrolledCourseIds: [],
         progress: {}
     };
@@ -117,6 +119,89 @@
         } catch {
             return fallback;
         }
+    }
+
+    function slugify(value) {
+        return String(value || "course")
+            .trim()
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-+|-+$/g, "")
+            .slice(0, 60) || "course";
+    }
+
+    function normalizeCourse(course, fallback = {}) {
+        const title = String(course?.title || fallback.title || "Untitled Course").trim();
+        const id = String(course?.id || fallback.id || slugify(title)).trim();
+        return {
+            id,
+            title,
+            category: String(course?.category || fallback.category || "Nursing").trim(),
+            difficulty: String(course?.difficulty || fallback.difficulty || "Beginner").trim(),
+            badge: String(course?.badge || fallback.badge || "New").trim(),
+            durationHours: Number(course?.durationHours || fallback.durationHours || 0),
+            questions: Number(course?.questions || fallback.questions || 0),
+            exams: Number(course?.exams || fallback.exams || 0),
+            format: String(course?.format || fallback.format || "Self-paced").trim(),
+            summary: String(course?.summary || fallback.summary || "Nursing learning course.").trim(),
+            image: String(course?.image || fallback.image || COURSE_IMAGES.defaultCourse).trim(),
+            moduleCount: Number(course?.moduleCount || fallback.moduleCount || 1),
+            source: String(course?.source || fallback.source || "admin").trim()
+        };
+    }
+
+    function loadAdminCourses() {
+        const saved = safeJsonParse(localStorage.getItem(ADMIN_COURSES_KEY), null);
+        if (!Array.isArray(saved)) {
+            const seeded = DEFAULT_COURSES.map((course) => normalizeCourse({ ...course, source: "default" }));
+            localStorage.setItem(ADMIN_COURSES_KEY, JSON.stringify(seeded));
+            return seeded;
+        }
+        const defaultImagesById = Object.fromEntries(DEFAULT_COURSES.map((course) => [course.id, course.image]));
+        const normalized = saved.map((course) => {
+            const next = normalizeCourse(course);
+            if (next.source === "default" && defaultImagesById[next.id]) {
+                next.image = defaultImagesById[next.id];
+            }
+            return next;
+        });
+        localStorage.setItem(ADMIN_COURSES_KEY, JSON.stringify(normalized));
+        return normalized;
+    }
+
+    let COURSE_META = loadAdminCourses();
+
+    function saveCourseCatalog(courses) {
+        COURSE_META = courses.map((course) => normalizeCourse(course));
+        localStorage.setItem(ADMIN_COURSES_KEY, JSON.stringify(COURSE_META));
+        if (window.GnpLearning) {
+            window.GnpLearning.COURSE_META = COURSE_META;
+        }
+        return COURSE_META;
+    }
+
+    function getCourses() {
+        COURSE_META = loadAdminCourses();
+        return COURSE_META;
+    }
+
+    function addCourse(course) {
+        const courses = getCourses();
+        const normalized = normalizeCourse({
+            ...course,
+            id: course?.id || `${slugify(course?.title)}-${Date.now().toString(36)}`
+        });
+        return saveCourseCatalog([normalized, ...courses]);
+    }
+
+    function updateCourse(courseId, patch) {
+        return saveCourseCatalog(getCourses().map((course) => (
+            course.id === courseId ? normalizeCourse({ ...course, ...patch, id: course.id }, course) : course
+        )));
+    }
+
+    function deleteCourse(courseId) {
+        return saveCourseCatalog(getCourses().filter((course) => course.id !== courseId));
     }
 
     function getSession() {
@@ -162,7 +247,7 @@
     }
 
     function getCourseMeta(courseId) {
-        return COURSE_META.find((c) => c.id === courseId) || null;
+        return getCourses().find((c) => c.id === courseId) || null;
     }
 
     function ensureCourseProgress(state, courseId, meta = null) {
@@ -245,9 +330,14 @@
     window.GnpLearning = {
         COURSE_IMAGES,
         COURSE_META,
+        DEFAULT_COURSES,
         getSession,
         getUserId,
         getStorageKey,
+        getCourses,
+        addCourse,
+        updateCourse,
+        deleteCourse,
         loadState,
         saveState,
         getCourseMeta,
@@ -257,4 +347,3 @@
         cancelEnrollment
     };
 })();
-

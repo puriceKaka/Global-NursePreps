@@ -1,260 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Global Meet | Global NursePrep</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-        <link rel="stylesheet" href="Dashboard.css">
-        <link rel="stylesheet" href="drawer.css">
-    </head>
-    <body>
-        <section class="header">
-            <button type="button" id="menuToggle" aria-label="Open menu">
-                <span class="hamburger" aria-hidden="true"></span>
-            </button>
-            <div class="brand">
-                <span class="logo">
-                    <img src="logo/Screenshot_20260421-123818.jpg" alt="Global NursePrep logo" class="logo-image">
-                </span>
-                <div>
-                <h1>Global NursePrep</h1>
-                <p>Secure healthcare video meetings</p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global NursePrep | Nursing E-Learning</title>
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="dashboard-public.css">
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand" href="#home" aria-label="Global NursePrep home">
+            <span class="brand-logo">
+                <img src="logo/Screenshot_20260421-123818.jpg" alt="Global NursePrep logo">
+            </span>
+            <span>Global <span class="brand-nurse">Nurse</span>Prep</span>
+        </a>
+
+        <button type="button" class="site-nav-toggle" data-nav-toggle="publicNav" aria-expanded="false" aria-label="Toggle navigation">Menu</button>
+        <nav class="site-nav" id="publicNav" aria-label="Primary navigation">
+            <a href="#home">Home</a>
+            <a href="about.html">About Us</a>
+            <a href="contact.html">Contact Us</a>
+            <a class="nav-cta" href="register.html">Sign Up</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" id="home">
+            <div class="hero-copy">
+                <p class="eyebrow">Online nursing learning and NCLEX preparation</p>
+                <h1>Prepare for nursing exams with guided courses, mock tests, and certificates.</h1>
+                <p>
+                    Global NursePrep is a flexible e-learning platform for nursing students preparing for
+                    NCLEX-style exams, clinical assessments, certification, and continuous professional growth.
+                </p>
+                <div class="hero-actions">
+                    <a class="primary-button" href="register.html">Start Learning</a>
+                    <a class="secondary-button" href="register.html">Join Now</a>
+                </div>
             </div>
-        </div>
-            <div class="header-actions">
-                <button type="button" class="pill-button" id="joinMeetingBtn">Join meeting</button>
-                <button type="button" class="pill-button" id="newMeetingOpenBtn">New meeting</button>
+
+            <div class="hero-media" aria-label="Nursing students practicing clinical skills">
+                <img src="https://images.pexels.com/photos/35645530/pexels-photo-35645530.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Nursing students practicing clinical skills" loading="eager">
             </div>
         </section>
 
-        <div class="drawer-overlay hidden" id="drawerOverlay" tabindex="-1" aria-hidden="true"></div>
-
-        <aside class="drawer hidden" id="drawer" aria-label="Side menu">
-            <div class="drawer-header">
-                <div class="drawer-user">
-                    <div class="avatar" id="drawerAvatar" aria-hidden="true">N</div>
-                    <div>
-                        <strong id="drawerName">Member</strong>
-                        <div class="muted small" id="drawerEmail">—</div>
-                    </div>
-                </div>
-                <button type="button" id="drawerClose" aria-label="Close menu">×</button>
+        <section class="features-section" aria-label="Platform features">
+            <div class="section-heading">
+                <p class="eyebrow">Features</p>
+                <h2>Everything a nursing student needs to stay organized.</h2>
             </div>
-
-            <nav class="drawer-nav" aria-label="Navigation">
-                <a class="drawer-link" href="homepage.html" target="_blank" rel="noopener">Home</a>
-                <a class="drawer-link" href="homepage.html#career" target="_blank" rel="noopener">Career Paths</a>
-                <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/courses.html" target="_blank" rel="noopener">Courses</a>
-                <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/exam-interface/exam-interface.html" target="_blank" rel="noopener">Exams</a>
-                <a class="drawer-link" href="questions.html" target="_blank" rel="noopener">Questions</a>
-                <a class="drawer-link" href="my-learnings.html" target="_blank" rel="noopener">My Learnings</a>
-                <a class="drawer-link" href="Profile.html" target="_blank" rel="noopener">Profile</a>
-                <a class="drawer-link" href="Membership.html" target="_blank" rel="noopener">Membership</a>
-                <a class="drawer-link" href="Dashboard.html" target="_blank" rel="noopener">Meeting and Lecturese</a>
-                <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/landing.html" target="_blank" rel="noopener">Examamination</a>
-                <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/exam-lobby/exam-lobby.html" target="_blank" rel="noopener">Examiniation</a>
-            </nav>
-
-            <div class="drawer-footer">
-                <div class="muted small">Tip: Use “Meetings” to host or join your group lecture sessions.</div>
+            <div class="course-list">
+                <article>
+                    <strong>Online nursing courses</strong>
+                    <p>Study fundamentals, pharmacology, med-surg, pediatrics, emergency care, and clinical procedures.</p>
+                </article>
+                <article>
+                    <strong>Mock exams</strong>
+                    <p>Practice timed exam sets with categories, instructions, scoring, and results summaries.</p>
+                </article>
+                <article>
+                    <strong>Progress tracking</strong>
+                    <p>Students can save course progress, monitor activity, and return to unfinished learning.</p>
+                </article>
             </div>
-        </aside>
+        </section>
 
-        <section class="main">
-            <div class="hero-card">
-                <div id="heroIntro">
-                    <h2 id="meetingTitle">Create a live meeting</h2>
-                    <p id="meetingSubtitle">Start a new call, invite participants, and use real meeting controls.</p>
+        <section class="courses-section" aria-label="Popular nursing courses">
+            <div class="section-heading">
+                <p class="eyebrow">Popular courses</p>
+                <h2>Start with high-impact nursing topics.</h2>
             </div>
-            <div class="hero-actions">
-                <button type="button" class="primary-button" id="newMeetingBtn">Create meeting</button>
+            <div class="course-list">
+                <article>
+                    <strong>Fundamentals of Nursing</strong>
+                    <p>Vitals, infection control, documentation, patient safety, communication, and bedside care.</p>
+                    <a class="mini-link" href="login.html?next=EXAMINATION%20PREP%20SITE/courses.html">Open course</a>
+                </article>
+                <article>
+                    <strong>NCLEX Preparation</strong>
+                    <p>NCLEX-style questions, prioritization, clinical judgment, test strategy, and rationales.</p>
+                    <a class="mini-link" href="login.html?next=EXAMINATION%20PREP%20SITE/exam-lobby/exam-lobby.html">Start prep</a>
+                </article>
+                <article>
+                    <strong>Clinical Procedures</strong>
+                    <p>OSCE skills, patient assessment, medication safety, wound care, and simulation practice.</p>
+                    <a class="mini-link" href="login.html?next=EXAMINATION%20PREP%20SITE/courses.html">View skills</a>
+                </article>
             </div>
-            <div class="active-meeting-bar hidden" id="activeMeetingBar">
-                <div>
-                    <strong id="roomLabel">Ready to start</strong>
-                </div>
-                <div class="status-indicators">
-                    <div class="status-pill" id="meetingTimeLabel">No time set</div>
-                    <div class="status-pill" id="meetingStatus">Offline</div>
-                    <div class="network-status disconnected" id="networkQualityLabel">Connection: Offline</div>
-                </div>
-            </div>
-            <div class="meeting-schedule-row hidden" id="meetingScheduleRow" hidden>
-                <div class="schedule-chip">
-                    <span>Starts</span>
-                    <strong id="meetingStartDisplay"></strong>
-                </div>
-                <div class="schedule-chip">
-                    <span>Ends</span>
-                    <strong id="meetingEndDisplay"></strong>
-                </div>
-            </div>
-        </div>
+        </section>
 
-        <div class="meeting-layout">
-            <div class="video-stage hidden" id="videoStage">
-                <div class="meeting-workspace">
-                    <div class="video-grid" id="videoGrid">
-                        <div class="empty-state" id="emptyState">Start or join a meeting to show video.</div>
-                    </div>
-                    <aside class="tool-panel hidden" id="meetingToolsPanel">
-                        <section class="tool-section hidden" id="chatPanel">
-                            <div class="tool-header">
-                                <div>
-                                    <h3>Live chat</h3>
-                                    <p></p>
-                                </div>
-                                <button type="button" class="tool-close-button" data-close-tool="chat" aria-label="Close chat">×</button>
-                            </div>
-                            <div class="chat-messages" id="chatMessages">
-                                <div class="tool-empty">Messages will appear here once the meeting starts.</div>
-                            </div>
-                            <form class="chat-compose" id="chatForm">
-                                <input type="text" id="chatInput" placeholder="Type a message">
-                                <button type="submit" class="primary-button small-button">Send</button>
-                            </form>
-                        </section>
-
-                        <section class="tool-section hidden" id="recordPanel">
-                            <div class="tool-header">
-                                <div>
-                                    <h3>Recording</h3>
-                                    <p>Choose what to capture before you start recording.</p>
-                                </div>
-                                <button type="button" class="tool-close-button" data-close-tool="record" aria-label="Close recording">×</button>
-                            </div>
-                            <div class="record-options">
-                                <label class="toggle-row">
-                                    <input type="checkbox" id="recordVideoToggle" checked>
-                                    <span>Record video</span>
-                                </label>
-                                <label class="toggle-row">
-                                    <input type="checkbox" id="recordAudioToggle" checked>
-                                    <span>Record audio</span>
-                                </label>
-                            </div>
-                            <div class="record-actions">
-                                <button type="button" class="primary-button small-button" id="startRecordBtn">Start recording</button>
-                                <button type="button" class="secondary-button small-button" id="stopRecordBtn" disabled>Stop recording</button>
-                            </div>
-                            <div class="record-status" id="recordStatusText">Recorder idle.</div>
-                            <a class="record-download hidden" id="recordDownloadLink" download="meeting-recording.webm">Download latest recording</a>
-                        </section>
-
-                        <section class="tool-section hidden" id="participantsPanel">
-                            <div class="tool-header">
-                                <div>
-                                    <h3>Participants</h3>
-                                    <p>Everyone currently in this meeting.</p>
-                                </div>
-                                <div class="tool-header-actions">
-                                    <span class="participant-count" id="participantsCount">0</span>
-                                    <button type="button" class="tool-close-button" data-close-tool="participants" aria-label="Close participants">×</button>
-                                </div>
-                            </div>
-                            <div class="participant-list" id="participantsList">
-                                <div class="tool-empty">Join a meeting to see participants.</div>
-                            </div>
-                        </section>
-                    </aside>
-                </div>
+        <section class="exam-prep-section">
+            <div>
+                <p class="eyebrow">Examination preparation</p>
+                <h2>Mock exams, clear instructions, results, and certificates.</h2>
+                <p>
+                    Students can prepare with structured exam categories, timed practice, score summaries,
+                    revision feedback, and completion certificates as they progress through learning.
+                </p>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="footer">
-        <div class="control-row">
-            <button type="button" class="control-button active" id="micButton" disabled>
-                <span class="control-icon"><i class="fas fa-microphone"></i></span>
-            </button>
-            <button type="button" class="control-button active" id="cameraButton" disabled>
-                <span class="control-icon"><i class="fas fa-video"></i></span>
-            </button>
-            <button type="button" class="control-button" id="screenButton" disabled>
-                <span class="control-icon"><i class="fas fa-desktop"></i></span>
-            </button>
-            <button type="button" class="leave-call-button" id="leaveCallButton" disabled>
-                <span class="control-icon"><i class="fas fa-phone-slash"></i></span>
-                <span>Leave call</span>
-            </button>
-            <div class="menu-container">
-                <button type="button" class="control-button" id="menuButton">
-                    <span class="control-icon"><i class="fas fa-ellipsis-h"></i></span>
-                </button>
-                <div class="menu-popup hidden" id="menuPopup">
-                    <button type="button" class="menu-popup-item" id="chatToggleButton"><i class="fas fa-comments"></i><span>Messages</span></button>
-                    <button type="button" class="menu-popup-item" id="recordToggleButton"><i class="fas fa-circle-dot"></i><span>Record</span></button>
-                    <button type="button" class="menu-popup-item" id="participantsToggleButton"><i class="fas fa-users"></i><span>Participants</span></button>
-                    <button type="button" class="menu-popup-item" id="raiseHandButton"><i class="fas fa-hand"></i><span>Raise hand</span></button>
-                    <button type="button" class="menu-popup-item" id="copyLinkButton"><i class="fas fa-link"></i><span>Copy link</span></button>
-                    <button type="button" class="menu-popup-item" id="floatVideoButton"><i class="fas fa-up-right-and-down-left-from-center"></i><span>Float video</span></button>
-                </div>
+        <section class="stats" aria-label="Site statistics">
+            <article>
+                <strong>6</strong>
+                <span>Total Courses</span>
+            </article>
+            <article>
+                <strong>5,480</strong>
+                <span>Practice Questions</span>
+            </article>
+            <article>
+                <strong>42</strong>
+                <span>Mock Exam Sets</span>
+            </article>
+            <article>
+                <strong>Global</strong>
+                <span>Flexible learning worldwide</span>
+            </article>
+        </section>
+
+        <section class="testimonials-section">
+            <div class="section-heading">
+                <p class="eyebrow">Testimonials</p>
+                <h2>Built around nursing student confidence.</h2>
             </div>
-        </div>
+            <div class="faq-grid">
+                <article>
+                    <strong>“The questions helped me revise weak areas.”</strong>
+                    <p>Mock tests make it easier to know what to study next.</p>
+                </article>
+                <article>
+                    <strong>“The courses are clear and practical.”</strong>
+                    <p>Short course sections support busy nursing students.</p>
+                </article>
+                <article>
+                    <strong>“Progress tracking keeps me consistent.”</strong>
+                    <p>Students can return to learning without losing their place.</p>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div>© <span data-year></span> Global NursePrep - Nursing education &amp; community.</div>
         <div class="powered-by">Powered by Teams Technologies</div>
-    </section>
+    </footer>
 
-    <div class="modal-overlay hidden" id="newMeetingModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h2>New meeting</h2>
-                <button type="button" class="icon-button" id="closeModal">×</button>
-            </div>
-            <div class="modal-body">
-                <label>
-                    Meeting title
-                    <input type="text" id="meetingNameInput" placeholder="Enter meeting name">
-                </label>
-                <label>
-                    Start date
-                    <input type="date" id="meetingStartDateInput">
-                </label>
-                <label>
-                    Start time
-                    <input type="time" id="meetingStartTimeInput">
-                </label>
-                <label>
-                    End date
-                    <input type="date" id="meetingEndDateInput">
-                </label>
-                <label>
-                    End time
-                    <input type="time" id="meetingEndTimeInput">
-                </label>
-            </div>
-            <div class="modal-actions">
-                <button type="button" class="secondary-button" id="cancelMeetingBtn">Cancel</button>
-                <button type="button" class="primary-button" id="createMeetingBtn">Start meeting</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-overlay hidden" id="joinMeetingModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h2>Join meeting</h2>
-                <button type="button" class="icon-button" id="closeJoinModal">×</button>
-            </div>
-            <div class="modal-body">
-                <label>
-                    Meeting code or link
-                    <input type="text" id="joinCodeInput" placeholder="Enter meeting code or paste link">
-                </label>
-                <label>
-                    Your name
-                    <input type="text" id="userNameInput" placeholder="Enter your name" value="Guest">
-                </label>
-            </div>
-            <div class="modal-actions">
-                <button type="button" class="secondary-button" id="cancelJoinBtn">Cancel</button>
-                <button type="button" class="primary-button" id="confirmJoinMeetingBtn">Join</button>
-            </div>
-        </div>
-    </div>
-
-    <script src="drawer.js"></script>
-    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-    <script src="Dashboard.js"></script>
+    <script src="js/app-shell.js"></script>
 </body>
 </html>
