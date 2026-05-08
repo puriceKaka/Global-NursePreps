@@ -969,7 +969,7 @@
         const select = $('#practiceCourseSelect');
         const generateBtn = $('#generatePracticeBtn');
         const card = $('#practiceQuestionCard');
-        const path = $('#practiceCoursePath');
+        const countInput = $('#practiceQuestionCount');
         const scoreCard = $('#practiceScoreCard');
         if (!select || !generateBtn || !card) return;
 
@@ -986,64 +986,46 @@
             select.appendChild(option);
         });
 
-        let questionNumber = 0;
         let activeCourseId = '';
+        let session = null;
 
-        function getWeakAreaText(stats) {
-            const weakEntries = Object.entries(stats.weakAreas || {}).sort((a, b) => b[1] - a[1]);
-            if (stats.attempted === 0) {
-                return 'Start with 5 questions to unlock weak-area feedback.';
-            }
-            if (weakEntries.length === 0) {
-                return 'Good start. Keep practicing mixed questions to confirm consistency.';
-            }
-            const [topic] = weakEntries[0];
-            return `Weak area: ${topic}. Practice this topic again before moving to a mock exam.`;
-        }
-
-        function renderScore(courseId) {
-            if (!scoreCard || !courseId) return;
-            const stats = getCoursePracticeStats(courseId);
-            const percentage = stats.attempted === 0 ? 0 : Math.round((stats.correct / stats.attempted) * 100);
+        function renderSessionScore(message = '') {
+            if (!scoreCard || !session) return;
+            const answered = session.answers.filter(Boolean).length;
+            const percentage = answered === 0 ? 0 : Math.round((session.correct / answered) * 100);
+            const complete = answered === session.total;
+            const weakTopics = Object.entries(session.weakAreas).sort((a, b) => b[1] - a[1]);
+            const weakText = weakTopics.length
+                ? `Weak area: ${weakTopics[0][0]}. Revise this topic before the main exam.`
+                : answered > 0
+                    ? 'No weak area yet. Keep answering until the set is complete.'
+                    : 'Answer the first question to start scoring.';
             scoreCard.classList.remove('hidden');
             scoreCard.innerHTML = `
                 <div>
-                    <span class="panel-kicker">Practice score</span>
+                    <span class="panel-kicker">${complete ? 'Final score' : 'Live score'}</span>
                     <strong>${percentage}%</strong>
-                    <p class="muted small">${stats.correct} correct out of ${stats.attempted} questions.</p>
+                    <p class="muted small">${session.correct} correct out of ${answered} answered. Set size: ${session.total} questions.</p>
                 </div>
                 <div class="practice-meter" aria-label="Practice percentage">
                     <span style="width: ${percentage}%"></span>
                 </div>
-                <div class="practice-weakness">${getWeakAreaText(stats)}</div>
+                <div class="practice-weakness">${message || weakText}</div>
             `;
         }
 
-        function renderCoursePath(course) {
-            if (!path || !course) return;
-            const template = getPracticeTemplate(course);
-            path.classList.remove('hidden');
-            path.innerHTML = `
-                <div>
-                    <span class="panel-kicker">Study path</span>
-                    <h4>${course.title}</h4>
-                    <p class="muted small">${course.description || course.summary || 'Practice questions, review rationales, and repeat weak topics.'}</p>
-                </div>
-                <ol class="practice-path-list">
-                    <li><span>1</span><strong>Review:</strong> ${course.category || 'Course'} basics</li>
-                    <li><span>2</span><strong>Practice:</strong> ${template.topic}</li>
-                    <li><span>3</span><strong>Improve:</strong> Use your score and weak-area feedback</li>
-                </ol>
-            `;
+        function getQuestionCount() {
+            const raw = Number(countInput?.value || 10);
+            if (!Number.isFinite(raw)) return 10;
+            return Math.max(1, Math.min(100, Math.round(raw)));
         }
 
         function showSelectPrompt() {
             generateBtn.disabled = true;
             generateBtn.textContent = 'Start practice';
-            path?.classList.add('hidden');
             scoreCard?.classList.add('hidden');
             card.classList.add('hidden');
-            card.innerHTML = '<div class="muted small">Select a course to unlock practice questions.</div>';
+            card.innerHTML = '<div class="muted small">Select a course and enter how many questions you want.</div>';
         }
 
         function activateSelectedCourse() {
@@ -1053,35 +1035,60 @@
                 showSelectPrompt();
                 return;
             }
-            questionNumber = 0;
+            session = null;
             generateBtn.disabled = false;
-            generateBtn.textContent = 'Generate question';
+            generateBtn.textContent = 'Generate questions';
             card.classList.add('hidden');
-            renderCoursePath(course);
-            renderScore(course.id);
+            scoreCard?.classList.add('hidden');
+            card.innerHTML = '<div class="muted small">Enter how many questions you want, then start practice.</div>';
         }
 
-        function renderPracticeQuestion() {
+        function buildQuestionSet(course, total) {
+            return Array.from({ length: total }, (_, index) => {
+                const template = getPracticeTemplate(course);
+                return {
+                    ...template,
+                    number: index + 1,
+                    stem: index === 0 ? template.stem : `${template.stem} (Practice round ${index + 1})`
+                };
+            });
+        }
+
+        function startPracticeSet() {
             const course = courses.find((item) => item.id === activeCourseId || item.id === select.value);
             if (!course) return;
             activeCourseId = course.id;
-            questionNumber += 1;
-            const template = getPracticeTemplate(course);
-            const stem = `${template.stem}`;
+            const total = getQuestionCount();
+            if (countInput) countInput.value = String(total);
+            session = {
+                course,
+                total,
+                currentIndex: 0,
+                correct: 0,
+                answers: Array(total).fill(null),
+                weakAreas: {},
+                questions: buildQuestionSet(course, total)
+            };
+            renderSessionScore('Answer each question. Your percentage updates automatically.');
+            renderCurrentQuestion();
+        }
 
+        function renderCurrentQuestion() {
+            if (!session) return;
+            const template = session.questions[session.currentIndex];
             card.innerHTML = '';
             card.classList.remove('hidden');
 
             const meta = document.createElement('div');
             meta.className = 'badge-row';
             meta.innerHTML = `
-                <span class="badge">${course.category || 'Course'}</span>
-                <span class="badge alt">Question ${questionNumber}</span>
+                <span class="badge">${session.course.category || 'Course'}</span>
+                <span class="badge alt">Question ${template.number} of ${session.total}</span>
                 <span class="badge">${template.topic}</span>
             `;
 
             const title = document.createElement('h4');
-            title.textContent = stem;
+            title.textContent = template.stem;
 
             const optionsWrap = document.createElement('div');
             optionsWrap.className = 'practice-option-list';
@@ -1089,47 +1096,78 @@
             const feedback = document.createElement('div');
             feedback.className = 'practice-feedback hidden';
             let answered = false;
+            let next = null;
 
             template.options.forEach((optionText, index) => {
-                const option = document.createElement('button');
-                option.type = 'button';
+                const option = document.createElement('label');
                 option.className = 'practice-option';
-                option.textContent = optionText;
+                option.innerHTML = `
+                    <input type="checkbox" value="${index}">
+                    <span>${optionText}</span>
+                `;
                 option.addEventListener('click', () => {
                     if (answered) return;
                     answered = true;
                     const isCorrect = index === template.correct;
+                    const checkbox = option.querySelector('input');
+                    if (checkbox) checkbox.checked = true;
                     Array.from(optionsWrap.children).forEach((child) => {
-                        child.disabled = true;
+                        const input = child.querySelector('input');
+                        if (input) input.disabled = true;
                     });
                     option.classList.add(isCorrect ? 'is-correct' : 'is-wrong');
                     if (!isCorrect) {
                         optionsWrap.children[template.correct]?.classList.add('is-correct');
                     }
-                    const stats = saveCoursePracticeResult(course.id, template.topic, isCorrect);
-                    const percentage = Math.round((stats.correct / stats.attempted) * 100);
+                    session.answers[session.currentIndex] = isCorrect;
+                    if (isCorrect) {
+                        session.correct += 1;
+                    } else {
+                        session.weakAreas[template.topic] = (session.weakAreas[template.topic] || 0) + 1;
+                    }
+                    saveCoursePracticeResult(session.course.id, template.topic, isCorrect);
+                    const answeredCount = session.answers.filter(Boolean).length + session.answers.filter((item) => item === false).length;
+                    const percentage = Math.round((session.correct / answeredCount) * 100);
                     feedback.innerHTML = `
                         <strong>${isCorrect ? 'Correct' : 'Needs review'} - ${percentage}%</strong>
-                        <span>${stats.correct} correct out of ${stats.attempted} questions. ${template.rationale}</span>
-                        <span>${getWeakAreaText(stats)}</span>
+                        <span>${template.rationale}</span>
                     `;
                     feedback.classList.remove('hidden');
-                    renderScore(course.id);
+                    renderSessionScore();
+                    if (next) next.disabled = false;
                 });
                 optionsWrap.appendChild(option);
             });
 
-            const next = document.createElement('button');
+            next = document.createElement('button');
             next.type = 'button';
             next.className = 'pill-button';
-            next.textContent = 'Generate another question';
-            next.addEventListener('click', renderPracticeQuestion);
+            next.textContent = session.currentIndex === session.total - 1 ? 'Finish and show percentage' : 'Next question';
+            next.disabled = true;
+            next.addEventListener('click', () => {
+                if (session.currentIndex < session.total - 1) {
+                    session.currentIndex += 1;
+                    renderCurrentQuestion();
+                    return;
+                }
+                const percentage = session.total === 0 ? 0 : Math.round((session.correct / session.total) * 100);
+                card.innerHTML = `
+                    <div class="practice-finished">
+                        <span class="panel-kicker">Practice complete</span>
+                        <h4>${percentage}% final score</h4>
+                        <p>${session.correct} correct out of ${session.total} questions.</p>
+                        <button type="button" class="primary-button" id="restartPracticeBtn">Start another set</button>
+                    </div>
+                `;
+                renderSessionScore('Practice complete. Use the weak-area note before starting the next set.');
+                $('#restartPracticeBtn')?.addEventListener('click', startPracticeSet);
+            });
 
             card.append(meta, title, optionsWrap, feedback, next);
         }
 
         select.addEventListener('change', activateSelectedCourse);
-        generateBtn.addEventListener('click', renderPracticeQuestion);
+        generateBtn.addEventListener('click', startPracticeSet);
         showSelectPrompt();
     }
 

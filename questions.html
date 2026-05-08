@@ -65,7 +65,7 @@
             <header class="section-header">
                 <div>
                     <h3>Questions</h3>
-                    <p class="muted">Choose a course, follow the study path, answer practice questions, and see your score with weak-area guidance.</p>
+                    <p class="muted">Choose a course, enter how many questions you want, answer them, and get your percentage automatically.</p>
                 </div>
             </header>
 
@@ -75,10 +75,12 @@
                         <span>Choose course</span>
                         <select id="practiceCourseSelect"></select>
                     </label>
+                    <label class="field">
+                        <span>How many questions?</span>
+                        <input type="number" id="practiceQuestionCount" min="1" max="100" value="10">
+                    </label>
                     <button type="button" class="primary-button" id="generatePracticeBtn" disabled>Start practice</button>
                 </div>
-
-                <div class="practice-course-path hidden" id="practiceCoursePath"></div>
 
                 <div class="practice-score-card hidden" id="practiceScoreCard" aria-live="polite"></div>
 
