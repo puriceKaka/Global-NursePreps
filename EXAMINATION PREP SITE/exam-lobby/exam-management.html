@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Management | GlobalNursePrep</title>
+    <link rel="stylesheet" href="exam-lobby.css">
+    <link rel="stylesheet" href="../../drawer.css">
+    <script defer src="exam-lobby.js"></script>
+    <script defer src="../../drawer.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo-container">
+            <button type="button" id="menuToggle" aria-label="Open menu">
+                <span class="hamburger" aria-hidden="true"></span>
+            </button>
+            <span class="brand-logo">
+                <img src="../../logo/Screenshot_20260421-123818.jpg" alt="Global NursePrep logo">
+            </span>
+            <span class="logo-text">Global <span class="highlight">Nurse</span>Prep</span>
+        </div>
+        <ul>
+            <li><a href="../../homepage.html">Main Homepage</a></li>
+            <li><a href="../landing.html">Exam Prep Home</a></li>
+            <li><a href="../courses.html">Courses</a></li>
+            <li><a href="exam-lobby.html">Exam Center</a></li>
+            <li><a href="exam-management.html" aria-current="page">Exam Management</a></li>
+        </ul>
+    </nav>
+
+    <div class="drawer-overlay hidden" id="drawerOverlay" tabindex="-1" aria-hidden="true"></div>
+
+    <aside class="drawer hidden" id="drawer" aria-label="Side menu">
+        <div class="drawer-header">
+            <div class="drawer-user">
+                <div class="avatar" id="drawerAvatar" aria-hidden="true">N</div>
+                <div>
+                    <strong id="drawerName">Member</strong>
+                    <div class="muted small" id="drawerEmail">-</div>
+                </div>
+            </div>
+            <button type="button" id="drawerClose" aria-label="Close menu">x</button>
+        </div>
+
+        <nav class="drawer-nav" aria-label="Navigation">
+            <a class="drawer-link" href="../../homepage.html" target="_blank" rel="noopener">Home</a>
+            <a class="drawer-link" href="../courses.html" target="_blank" rel="noopener">Courses</a>
+            <a class="drawer-link" href="../landing.html" target="_blank" rel="noopener">Exam Prep Home</a>
+            <a class="drawer-link" href="exam-lobby.html" target="_blank" rel="noopener">Exam Center</a>
+            <a class="drawer-link" href="exam-management.html" target="_blank" rel="noopener">Exam Management</a>
+        </nav>
+
+        <div class="drawer-footer">
+            <div class="muted small">Tip: Lecturer and admin exam tools live here, away from the student exam center.</div>
+        </div>
+    </aside>
+
+    <main class="lobby-container">
+        <section class="lobby-hero">
+            <div>
+                <p class="section-kicker">Exam Management</p>
+                <h1>Lecturer and admin controls.</h1>
+                <p class="proctoring-notice">
+                    Create assigned exams, generate lecturer drafts, review submissions, approve schedules, and monitor security logs in this separate management area.
+                </p>
+            </div>
+            <div class="hero-security-stack">
+                <div><strong>18</strong><span>Lecturers</span></div>
+                <div><strong>5</strong><span>Assigned exams</span></div>
+                <div><strong>27</strong><span>Security logs</span></div>
+            </div>
+        </section>
+
+        <section class="management-grid">
+            <section class="card">
+                <div class="card-head">
+                    <div>
+                        <p class="section-kicker">Lecturer Tools</p>
+                        <h2>Create and Assign Exams</h2>
+                    </div>
+                </div>
+                <form class="exam-builder-form" id="exam-builder-form">
+                    <label>Exam title <input type="text" id="builder-title" value="Maternal Health Supervised Test"></label>
+                    <label>Assign to <select id="builder-audience"><option>Class: NCK Cohort A</option><option>Course: Pharmacology Intensive</option><option>Selected students</option></select></label>
+                    <label>Duration <input type="number" id="builder-duration" value="60" min="10"></label>
+                    <label>Schedule <input type="datetime-local" id="builder-schedule"></label>
+                    <label>Question mode <select id="builder-mode"><option>Randomized questions and options</option><option>Fixed order</option><option>Practice mode</option></select></label>
+                    <button class="btn-primary" type="submit">Publish Draft Assignment</button>
+                </form>
+            </section>
+
+            <section class="card">
+                <div class="card-head">
+                    <div>
+                        <p class="section-kicker">AI Quiz Creation</p>
+                        <h2>Upload Learning Materials</h2>
+                    </div>
+                </div>
+                <div class="upload-box" id="drop-area">
+                    <input type="file" id="fileElem" accept=".pdf,.doc,.docx,.ppt,.pptx,application/pdf" style="display:none">
+                    <label class="btn-secondary" for="fileElem">Upload PDF, DOCX, or PPT</label>
+                    <p id="file-name">No file selected</p>
+                    <button id="generate-btn" class="btn-primary" disabled>Generate Lecturer Draft</button>
+                </div>
+                <div id="generated-questions-preview" class="generated-questions-preview"></div>
+            </section>
+
+            <section class="card">
+                <div class="card-head">
+                    <div>
+                        <p class="section-kicker">Review and Marking</p>
+                        <h2>Submissions Requiring Action</h2>
+                    </div>
+                </div>
+                <div id="lecturer-review-list" class="review-list"></div>
+            </section>
+        </section>
+
+        <section class="management-grid">
+            <section class="card">
+                <div class="card-head">
+                    <div>
+                        <p class="section-kicker">Admin Controls</p>
+                        <h2>System Overview</h2>
+                    </div>
+                </div>
+                <div class="admin-metrics" id="admin-metrics"></div>
+            </section>
+            <section class="card">
+                <div class="card-head">
+                    <div>
+                        <p class="section-kicker">Approvals</p>
+                        <h2>Lecturer Exam Approval Queue</h2>
+                    </div>
+                </div>
+                <div id="approval-list" class="review-list"></div>
+            </section>
+            <section class="card">
+                <div class="card-head">
+                    <div>
+                        <p class="section-kicker">Security Logs</p>
+                        <h2>Monitoring and Violations</h2>
+                    </div>
+                </div>
+                <div id="security-log-list" class="review-list"></div>
+            </section>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>&copy; 2026 GlobalNursePrep. All rights reserved. | <a href="#">Privacy Policy</a></p>
+        <p class="powered-by">Powered by Teams Technologies</p>
+    </footer>
+</body>
+</html>

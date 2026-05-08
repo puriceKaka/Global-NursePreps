@@ -1,0 +1,95 @@
+<!-- Dashboard HTML for GlobalNursePrep -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard | GlobalNursePrep</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="../../drawer.css">
+    <script defer src="dashboard.js"></script>
+    <script defer src="../../drawer.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo-container">
+            <button type="button" id="menuToggle" aria-label="Open menu">
+                <span class="hamburger" aria-hidden="true"></span>
+            </button>
+            <span class="brand-logo">
+                <img src="../../logo/Screenshot_20260421-123818.jpg" alt="Global NursePrep logo">
+            </span>
+            <span class="logo-text">Global <span class="highlight">Nurse</span>Prep</span>
+        </div>
+        <ul>
+            <li><a href="../../homepage.html">Main Homepage</a></li>
+            <li><a href="../landing.html">Home</a></li>
+            <li><a href="../courses.html">Courses</a></li>
+            <li><a href="../exam-lobby/exam-lobby.html">Exam Lobby</a></li>
+            <li><a href="../results/results.html">Results</a></li>
+        </ul>
+    </nav>
+
+    <div class="drawer-overlay hidden" id="drawerOverlay" tabindex="-1" aria-hidden="true"></div>
+
+    <aside class="drawer hidden" id="drawer" aria-label="Side menu">
+        <div class="drawer-header">
+            <div class="drawer-user">
+                <div class="avatar" id="drawerAvatar" aria-hidden="true">N</div>
+                <div>
+                    <strong id="drawerName">Member</strong>
+                    <div class="muted small" id="drawerEmail">-</div>
+                </div>
+            </div>
+            <button type="button" id="drawerClose" aria-label="Close menu">x</button>
+        </div>
+
+        <nav class="drawer-nav" aria-label="Navigation">
+            <a class="drawer-link" href="../../homepage.html" target="_blank" rel="noopener">Home</a>
+            <a class="drawer-link" href="../../homepage.html#career" target="_blank" rel="noopener">Career Paths</a>
+            <a class="drawer-link" href="../courses.html" target="_blank" rel="noopener">Courses</a>
+            <a class="drawer-link" href="../../questions.html" target="_blank" rel="noopener">Questions</a>
+            <a class="drawer-link" href="../../my-learnings.html" target="_blank" rel="noopener">My Learnings</a>
+            <a class="drawer-link" href="../../Profile.html" target="_blank" rel="noopener">Profile</a>
+            <a class="drawer-link" href="../../Membership.html" target="_blank" rel="noopener">Membership</a>
+            <a class="drawer-link" href="../landing.html" target="_blank" rel="noopener">Exam Prep Home</a>
+            <a class="drawer-link" href="../exam-lobby/exam-lobby.html" target="_blank" rel="noopener">Exam Center</a>
+        </nav>
+
+        <div class="drawer-footer">
+            <div class="muted small">Tip: Use Courses to resume your learning workspace.</div>
+        </div>
+    </aside>
+    <main class="dashboard-main">
+        <section class="welcome-section">
+            <h1>Welcome back, Future RN</h1>
+            <p class="welcome-copy">Track your revision pace, jump back into course modules, and keep your next exam session in view.</p>
+            <div class="quick-stats">
+                <div class="stat-card">Exams Completed: <span id="exams-completed">0</span></div>
+                <div class="stat-card">Average Score: <span id="average-score">0%</span></div>
+                <div class="stat-card">Upcoming Exams: <span id="upcoming-exams">0</span></div>
+            </div>
+        </section>
+        <section class="upcoming-exams">
+            <h2>Upcoming Exams</h2>
+            <div id="exam-cards"></div>
+        </section>
+        <section class="practice-questions">
+            <h2>Continue Course Practice</h2>
+            <div class="practice-buttons">
+                <button>Anatomy</button>
+                <button>Pharmacology</button>
+                <button>Pediatrics</button>
+            </div>
+        </section>
+        <section class="recent-activity">
+            <h2>Recent Activity</h2>
+            <div id="recent-activity-list"></div>
+        </section>
+    </main>
+
+    <footer class="simple-footer">
+        <div>Powered by Teams Technologies</div>
+    </footer>
+</body>
+</html>

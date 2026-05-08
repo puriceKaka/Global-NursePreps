@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Courses | GlobalNursePrep</title>
+        <link rel="stylesheet" href="landing.css">
+        <link rel="stylesheet" href="courses.css">
+        <link rel="stylesheet" href="../drawer.css">
+        <script defer src="../learning-core.js"></script>
+        <script defer src="exam-prep-core.js"></script>
+        <script defer src="courses.js"></script>
+        <script defer src="../drawer.js"></script>
+    </head>
+    <body data-page="catalog">
+        <nav class="navbar">
+            <div class="logo-container">
+                <button type="button" id="menuToggle" aria-label="Open menu">
+                    <span class="hamburger" aria-hidden="true"></span>
+                </button>
+                <span class="brand-logo">
+                    <img src="../logo/Screenshot_20260421-123818.jpg" alt="Global NursePrep logo">
+                </span>
+                <span class="logo-text">Global <span class="highlight">Nurse</span>Prep</span>
+            </div>
+            <ul>
+                <li><a href="../homepage.html">Main Homepage</a></li>
+                <li><a href="landing.html">Home</a></li>
+                <li><a href="courses.html" aria-current="page">Courses</a></li>
+                <li><a href="exam-lobby/exam-lobby.html">Exam Center</a></li>
+            </ul>
+        </nav>
+
+        <div class="drawer-overlay hidden" id="drawerOverlay" tabindex="-1" aria-hidden="true"></div>
+
+        <aside class="drawer hidden" id="drawer" aria-label="Side menu">
+            <div class="drawer-header">
+                <div class="drawer-user">
+                    <div class="avatar" id="drawerAvatar" aria-hidden="true">N</div>
+                    <div>
+                        <strong id="drawerName">Member</strong>
+                        <div class="muted small" id="drawerEmail">-</div>
+                    </div>
+                </div>
+                <button type="button" id="drawerClose" aria-label="Close menu">x</button>
+            </div>
+
+            <nav class="drawer-nav" aria-label="Navigation">
+                <a class="drawer-link" href="../homepage.html" target="_blank" rel="noopener">Home</a>
+                <a class="drawer-link" href="../homepage.html#career" target="_blank" rel="noopener">Career Paths</a>
+                <a class="drawer-link" href="courses.html" target="_blank" rel="noopener">Courses</a>
+                <a class="drawer-link" href="../questions.html" target="_blank" rel="noopener">Questions</a>
+                <a class="drawer-link" href="../my-learnings.html" target="_blank" rel="noopener">My Learnings</a>
+                <a class="drawer-link" href="../Profile.html" target="_blank" rel="noopener">Profile</a>
+                <a class="drawer-link" href="../Membership.html" target="_blank" rel="noopener">Membership</a>
+                <a class="drawer-link" href="landing.html" target="_blank" rel="noopener">Exam Prep Home</a>
+                <a class="drawer-link" href="exam-lobby/exam-lobby.html" target="_blank" rel="noopener">Exam Center</a>
+            </nav>
+
+            <div class="drawer-footer">
+                <div class="muted small">Tip: Enroll then open the learning workspace.</div>
+            </div>
+        </aside>
+
+        <main class="courses-page">
+            <section class="catalog-hero reveal-on-scroll">
+                <div class="catalog-hero-copy">
+                <p class="eyebrow" id="catalog-hero-eyebrow">Academy Course Catalog</p>
+                <h1 id="catalog-hero-title">Choose a structured course pathway.</h1>
+                <p class="hero-description" id="catalog-hero-description">
+                    Browse courses, open modules, complete timed checks, sit final tests, and review strengths and weak areas.
+                </p>
+                <div class="hero-actions">
+                    <a class="btn-primary" href="#selected-program">Open Course Workspace</a>
+                    <a class="btn-secondary courses-secondary-btn" href="exam-lobby/exam-lobby.html">Open Exam Center</a>
+                </div>
+                <div class="hero-proof-grid">
+                    <div>
+                        <strong id="hero-active-count">0</strong>
+                        <span>Active courses</span>
+                    </div>
+                    <div>
+                        <strong id="hero-hours-count">0</strong>
+                        <span>Guided study hours</span>
+                    </div>
+                    <div>
+                        <strong id="hero-question-count">0</strong>
+                        <span>Practice questions</span>
+                    </div>
+                </div>
+            </div>
+            <div class="catalog-hero-media">
+                <div class="media-frame">
+                    <img id="hero-course-image" src="" alt="Selected course preview" class="fit-image" loading="lazy" decoding="async">
+                </div>
+            </div>
+        </section>
+
+        <section class="academy-overview reveal-on-scroll" aria-label="Course pathway overview">
+            <article>
+                <span>01</span>
+                <strong>Course Offering</strong>
+                <p>Select a nursing exam track from the catalog.</p>
+            </article>
+            <article>
+                <span>02</span>
+                <strong>Modules</strong>
+                <p>Open intro lessons, guided units, flashcards, and resources.</p>
+            </article>
+            <article>
+                <span>03</span>
+                <strong>Module Tests</strong>
+                <p>Pass timed checks before moving through the pathway.</p>
+            </article>
+            <article>
+                <span>04</span>
+                <strong>Final Result</strong>
+                <p>Review strengths, weaknesses, and next study steps.</p>
+            </article>
+        </section>
+
+        <section class="learning-layout">
+            <aside class="discovery-rail reveal-on-scroll">
+                <div class="rail-card academy-discover-card">
+                    <div class="rail-heading">
+                        <span class="rail-heading-icon">01</span>
+                        <div>
+                            <p class="section-kicker">Discover</p>
+                            <h2>Find Your Course</h2>
+                        </div>
+                    </div>
+                    <label class="search-label" for="course-search">Search courses</label>
+                    <input id="course-search" class="search-input" type="search" placeholder="Search by title, skill, or exam type">
+                    <div class="quick-discovery">
+                        <span>Course</span>
+                        <span>Modules</span>
+                        <span>Tests</span>
+                        <span>Results</span>
+                    </div>
+                </div>
+
+                <div class="rail-card academy-category-card">
+                    <div class="rail-heading compact">
+                        <span class="rail-heading-icon">02</span>
+                        <div>
+                            <p class="section-kicker">Categories</p>
+                            <h3>Learning Tracks</h3>
+                        </div>
+                    </div>
+                    <div class="filter-list" id="category-filters" role="tablist" aria-label="Course categories"></div>
+                </div>
+
+                <div class="rail-card academy-difficulty-card">
+                    <div class="rail-heading compact">
+                        <span class="rail-heading-icon">03</span>
+                        <div>
+                            <p class="section-kicker">Level</p>
+                            <h3>Difficulty</h3>
+                        </div>
+                    </div>
+                    <div class="difficulty-list academy-difficulty-list">
+                        <label><input type="checkbox" value="Beginner" class="difficulty-filter"><span>Beginner</span></label>
+                        <label><input type="checkbox" value="Intermediate" class="difficulty-filter"><span>Intermediate</span></label>
+                        <label><input type="checkbox" value="Advanced" class="difficulty-filter"><span>Advanced</span></label>
+                    </div>
+                </div>
+
+                <div class="rail-card">
+                    <h3>Course Structure</h3>
+                    <div class="structure-stack">
+                        <span>1. Choose course</span>
+                        <span>2. Open modules</span>
+                        <span>3. Pass between-module tests</span>
+                        <span>4. Complete final course test</span>
+                    </div>
+                </div>
+
+                <div class="rail-card">
+                    <h3>Test Categories</h3>
+                    <div id="test-category-list" class="test-category-list"></div>
+                </div>
+
+                <div class="rail-card">
+                    <h3>My Learning</h3>
+                    <div id="learner-rail-list" class="learner-rail-list"></div>
+                </div>
+
+                <div class="rail-card" id="catalog-announcement-card">
+                    <h3>Platform Update</h3>
+                    <p id="catalog-announcement-message">AI weak-area coaching, timed quizzes, and theme switching are now live in the learning workspace.</p>
+                    <a class="text-link" id="catalog-announcement-link" href="course-workspace.html">Open Workspace</a>
+                </div>
+            </aside>
+
+            <section class="catalog-stage">
+                <section class="selected-program reveal-on-scroll" id="selected-program">
+                    <div class="selected-program-copy">
+                        <p class="section-kicker">Selected Course</p>
+                        <h2 id="selected-title">Course title</h2>
+                        <p id="selected-summary" class="selected-summary"></p>
+                        <div class="selected-facts" id="selected-facts"></div>
+                        <div class="selected-module-preview" id="selected-module-preview"></div>
+                        <div class="selected-actions">
+                            <button class="btn-primary" id="selected-enroll-btn">Enroll</button>
+                            <a class="btn-outline" id="selected-open-btn" href="course-workspace.html">Open Workspace</a>
+                            <a class="btn-outline" id="selected-final-test-btn" href="course-workspace.html#course-final-test">Course Final Test</a>
+                        </div>
+                    </div>
+                    <div class="selected-program-media">
+                        <div class="media-frame large-frame">
+                            <img id="selected-image" src="" alt="" class="fit-image">
+                        </div>
+                        <div class="selected-status-panel">
+                            <div class="status-row">
+                                <span>Enrollment</span>
+                                <strong id="selected-enrollment-status">Not enrolled</strong>
+                            </div>
+                            <div class="status-row">
+                                <span>Progress</span>
+                                <strong id="selected-progress-status">0%</strong>
+                            </div>
+                            <div class="progress-bar">
+                                <span id="selected-progress-bar"></span>
+                            </div>
+                            <p id="selected-last-activity" class="status-note">No activity yet.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="catalog-toolbar reveal-on-scroll">
+                    <div>
+                        <p class="section-kicker">Course Catalog</p>
+                        <h2>Courses</h2>
+                    </div>
+                    <div class="catalog-controls">
+                        <p id="catalog-results" class="results-count">0 courses</p>
+                        <select class="sort-dropdown" id="sort-select" aria-label="Sort courses">
+                            <option value="featured">Sort by: Featured</option>
+                            <option value="questions">Sort by: Questions</option>
+                            <option value="duration">Sort by: Duration</option>
+                            <option value="title">Sort by: Title</option>
+                        </select>
+                    </div>
+                </section>
+
+                <section class="course-grid" id="course-grid">
+                    <div class="empty-state">
+                        <h3>Loading courses...</h3>
+                        <p>Opening the catalog, one pathway at a time.</p>
+                    </div>
+                </section>
+            </section>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>&copy; 2026 GlobalNursePrep. All rights reserved. | <a href="#">Privacy Policy</a></p>
+        <p class="powered-by">Powered by Teams Technologies</p>
+    </footer>
+</body>
+</html>

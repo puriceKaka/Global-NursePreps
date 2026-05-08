@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>GlobalNursePrep</title>
+        <link rel="stylesheet" href="landing.css">
+        <link rel="stylesheet" href="../drawer.css">
+        <script defer src="landing.js"></script>
+        <script defer src="../drawer.js"></script>
+    </head>
+    <body>
+        <nav class="navbar">
+            <div class="logo-container">
+                <button type="button" id="menuToggle" aria-label="Open menu">
+                    <span class="hamburger" aria-hidden="true"></span>
+                </button>
+                <span class="brand-logo">
+                    <img src="../logo/Screenshot_20260421-123818.jpg" alt="Global NursePrep logo">
+                </span>
+                <span class="logo-text">Global <span class="highlight">Nurse</span>Prep</span>
+            </div>
+            <ul>
+                <li><a href="../homepage.html">Main Homepage</a></li>
+                <li><a href="courses.html">Courses</a></li>
+                <li><a href="exam-lobby/exam-lobby.html">Exam Lobby</a></li>
+                <li><a href="exam-interface/exam-interface.html">Exams</a></li>
+            </ul>
+        </nav>
+
+        <div class="drawer-overlay hidden" id="drawerOverlay" tabindex="-1" aria-hidden="true"></div>
+
+        <aside class="drawer hidden" id="drawer" aria-label="Side menu">
+            <div class="drawer-header">
+                <div class="drawer-user">
+                    <div class="avatar" id="drawerAvatar" aria-hidden="true">N</div>
+                    <div>
+                        <strong id="drawerName">Member</strong>
+                        <div class="muted small" id="drawerEmail">—</div>
+                    </div>
+                </div>
+                <button type="button" id="drawerClose" aria-label="Close menu">×</button>
+            </div>
+
+            <nav class="drawer-nav" aria-label="Navigation">
+                <a class="drawer-link" href="../homepage.html" target="_blank" rel="noopener">Home</a>
+                <a class="drawer-link" href="../homepage.html#career" target="_blank" rel="noopener">Career Paths</a>
+                <a class="drawer-link" href="courses.html" target="_blank" rel="noopener">Courses</a>
+                <a class="drawer-link" href="exam-interface/exam-interface.html" target="_blank" rel="noopener">Exams</a>
+                <a class="drawer-link" href="../questions.html" target="_blank" rel="noopener">Questions</a>
+                <a class="drawer-link" href="../my-learnings.html" target="_blank" rel="noopener">My Learnings</a>
+                <a class="drawer-link" href="../Profile.html" target="_blank" rel="noopener">Profile</a>
+                <a class="drawer-link" href="../Membership.html" target="_blank" rel="noopener">Membership</a>
+                <a class="drawer-link" href="../Dashboard.html" target="_blank" rel="noopener">Meeting and Lecturese</a>
+                <a class="drawer-link" href="landing.html" target="_blank" rel="noopener">Examamination</a>
+                <a class="drawer-link" href="exam-lobby/exam-lobby.html" target="_blank" rel="noopener">Examiniation</a>
+            </nav>
+
+            <div class="drawer-footer">
+                <div class="muted small">Tip: Use Courses to open the learning workspace.</div>
+            </div>
+        </aside>
+
+        <main id="main-content">
+            <section class="hero-section">
+                <div class="hero-image-wrap">
+                    <img
+                    class="hero-image"
+                    src="https://images.unsplash.com/photo-1576765607924-b0e5c0f7eb82?auto=format&fit=crop&q=80&w=1400"
+                    alt="Nurse reviewing digital learning materials in a clinical setting"
+                >
+            </div>
+            <div class="hero-content">
+                <p class="section-label">Global Nurse Training and Exam Prep</p>
+                <h1>GlobalNursePrep</h1>
+                <p class="hero-lead">
+                    Become a globally competitive nurse with expert-led NCK and NCLEX preparation, professional nursing lectures, practice questions, and AI-supported exam delivery.
+                </p>
+                <div class="hero-actions">
+                    <button class="btn-primary" id="go-courses">Explore Courses</button>
+                    <button class="btn-secondary" id="go-lobby">Exam Lobby</button>
+                </div>
+                <div class="hero-proof">
+                    <div><strong>1,500+</strong><span>NCK questions</span></div>
+                    <div><strong>2,000+</strong><span>NCLEX drills</span></div>
+                    <div><strong>40+</strong><span>Video lectures</span></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats-band">
+            <div class="stat-item"><strong>3</strong><span>Flagship programs</span></div>
+            <div class="stat-item"><strong>3,500+</strong><span>Practice questions</span></div>
+            <div class="stat-item"><strong>40+</strong><span>Lessons</span></div>
+            <div class="stat-item"><strong>Saved</strong><span>Progress</span></div>
+        </section>
+
+        <section class="featured-programs">
+            <div class="section-heading">
+                <p class="section-label">Featured Programs</p>
+                <h2>Choose the path that matches your exam goal.</h2>
+            </div>
+            <div class="program-grid">
+                <article class="program-card">
+                    <img src="https://images.unsplash.com/photo-1666214280557-f1b5022eb634?auto=format&fit=crop&q=80&w=900" alt="Nursing learners studying cardiovascular materials" class="program-image">
+                    <div class="program-body">
+                        <span class="program-tag">Licensing Prep</span>
+                        <h3>NCK Licensing Exam Masterclass</h3>
+                        <p>Structured revision, mocks, and practice questions.</p>
+                        <a href="courses.html" class="text-link">View program</a>
+                    </div>
+                </article>
+                <article class="program-card">
+                    <img src="https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&q=80&w=900" alt="Learner preparing for an advanced nursing exam" class="program-image">
+                    <div class="program-body">
+                        <span class="program-tag">NCLEX Prep</span>
+                        <h3>NCLEX-RN Comprehensive Prep</h3>
+                        <p>Case-based practice, CAT strategy, and coaching.</p>
+                        <a href="exam-lobby/exam-lobby.html" class="text-link">Open exam prep</a>
+                    </div>
+                </article>
+                <article class="program-card">
+                    <img src="https://images.unsplash.com/photo-1576765608866-5b51046452be?auto=format&fit=crop&q=80&w=900" alt="Professional lecture and clinical study environment" class="program-image">
+                    <div class="program-body">
+                        <span class="program-tag">Lecture Series</span>
+                        <h3>Global Nursing Lecture Series</h3>
+                        <p>Core nursing topics for guided self-paced review.</p>
+                        <a href="exam-lobby/anatomy.html" class="text-link">Preview lectures</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="how-it-works">
+            <div class="section-heading">
+                <p class="section-label">How It Works</p>
+                <h2>Study. Practice. Sit exams.</h2>
+            </div>
+            <div class="steps-grid">
+                <article class="step">
+                    <div class="step-num">1</div>
+                    <h3>Choose a track</h3>
+                    <p>Select the program that matches your exam.</p>
+                </article>
+                <article class="step">
+                    <div class="step-num">2</div>
+                    <h3>Continue learning</h3>
+                    <p>Resume lessons and saved progress anytime.</p>
+                </article>
+                <article class="step">
+                    <div class="step-num">3</div>
+                    <h3>Take exams</h3>
+                    <p>Use the lobby for checks, mocks, and live sessions.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <p class="section-label">Ready to Start</p>
+            <h2>Start learning.</h2>
+            <div class="cta-actions">
+                <button class="btn-primary" id="cta-courses">Explore Courses</button>
+                <button class="btn-secondary cta-secondary" id="cta-lobby">Go to Exam Lobby</button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>&copy; 2026 GlobalNursePrep. All rights reserved. | <a href="#">Privacy Policy</a></p>
+        <p class="powered-by">Powered by Teams Technologies</p>
+    </footer>
+</body>
+</html>

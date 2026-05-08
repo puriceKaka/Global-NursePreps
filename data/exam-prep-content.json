@@ -1,0 +1,1017 @@
+{
+  "version": 2,
+  "updatedAt": "2026-05-08T19:30:00.000Z",
+  "settings": {
+    "hero": {
+      "eyebrow": "Global Nurse Training and Exam Prep",
+      "title": "Professional nursing exam learning platform for NCK, NCLEX, and clinical revision.",
+      "lead": "Study inside a Cisco Networking Academy-style workspace with guided lessons, timed checks, flashcards, progress tracking, certificates, and admin-managed content updates.",
+      "image": "https://images.unsplash.com/photo-1576765607924-b0e5c0f7eb82?auto=format&fit=crop&q=80&w=1400",
+      "primaryCtaLabel": "Explore Courses",
+      "secondaryCtaLabel": "Open Exam Center"
+    },
+    "announcement": {
+      "label": "Platform Update",
+      "message": "The course workspace now supports timed module quizzes, flashcards, dark mode, and stronger saved progress tracking.",
+      "actionLabel": "Open Course Workspace",
+      "actionHref": "courses.html#selected-program"
+    },
+    "stats": [
+      {
+        "value": "6",
+        "label": "Learning tracks"
+      },
+      {
+        "value": "5,480+",
+        "label": "Practice questions"
+      },
+      {
+        "value": "15",
+        "label": "Guided modules"
+      },
+      {
+        "value": "Auto",
+        "label": "Progress sync"
+      }
+    ],
+    "featuredCourseIds": [
+      "nck-masterclass",
+      "nclex-comprehensive",
+      "pharmacology-intensive"
+    ],
+    "workspaceGuidance": [
+      "Start with the embedded lesson summary before answering questions.",
+      "Use the flashcards to lock in cues, rationales, and nursing priorities.",
+      "Pass the timed module knowledge check before the next module unlocks.",
+      "Finish every module to unlock your certificate and course completion badge."
+    ],
+    "studentHighlights": [
+      {
+        "title": "Structured pathways",
+        "description": "Clear course tracks for NCK, NCLEX, med-surg, pharmacology, and pediatrics."
+      },
+      {
+        "title": "Cisco-style workspace",
+        "description": "Sidebar navigation, module locking, saved notes, and progress bars built for repeat study."
+      },
+      {
+        "title": "Smart study feedback",
+        "description": "Weak-area recommendations appear automatically after missed questions and incomplete modules."
+      }
+    ],
+    "adminTips": [
+      "You can paste YouTube embed links or standard video URLs and the platform will normalize them.",
+      "Edit module arrays in the admin manager to update lessons, flashcards, and quizzes without opening the JS files.",
+      "Keep course ids stable when updating published courses so learner progress continues to map correctly."
+    ]
+  },
+  "courses": [
+    {
+      "id": "nck-masterclass",
+      "title": "NCK Licensing Exam Masterclass",
+      "category": "Licensing Prep (NCK)",
+      "difficulty": "Intermediate",
+      "badge": "Flagship",
+      "durationHours": 40,
+      "questions": 1500,
+      "exams": 8,
+      "format": "Live + Recorded",
+      "summary": "Complete syllabus coverage, guided revision, and mock readiness for learners preparing for the NCK pathway.",
+      "image": "https://images.unsplash.com/photo-1580281657527-47c57d5a0b8b?auto=format&fit=crop&q=80&w=1200",
+      "outcomes": [
+        "End-to-end syllabus roadmap",
+        "Priority-based question strategy",
+        "Weekly readiness checkpoints"
+      ],
+      "facts": [
+        "Mentor-led",
+        "Revision plans",
+        "Course tests"
+      ],
+      "keywords": [
+        "nck",
+        "licensing",
+        "course tests",
+        "study plan"
+      ],
+      "practiceExam": {
+        "title": "NCK Full Mock Practice",
+        "durationMinutes": 90,
+        "questionCount": 75,
+        "passMark": 70,
+        "instructions": "Use this after completing all modules. Review the weak-area coach afterward and repeat the lowest scoring topic first."
+      },
+      "modules": [
+        {
+          "id": "nck-cardiovascular-assessment",
+          "title": "Cardiovascular Assessment and Monitoring",
+          "objective": "Recognize unstable findings early and connect assessment cues with safe first nursing actions.",
+          "body": "Build a reliable cardiovascular routine for exam stems and real clinical reasoning. Focus on symptoms, perfusion trends, blood pressure changes, urine output, and mentation. Questions in this area usually test recognition of poor perfusion, escalation timing, and the safest assessment or intervention sequence.",
+          "videoSummary": "Watch how to pull priority clues from chest pain, dyspnea, hypotension, and reduced urine output scenarios before you answer the knowledge check.",
+          "videoEmbedUrl": "",
+          "videoResourceUrl": "https://www.youtube.com/results?search_query=cardiovascular+assessment+nursing",
+          "image": "https://images.unsplash.com/photo-1666214280557-f1b5022eb634?auto=format&fit=crop&q=80&w=1200",
+          "structures": [
+            "Focused chest pain assessment sequence",
+            "Perfusion monitoring and fluid balance trends",
+            "When to escalate unstable cardiovascular findings"
+          ],
+          "flashcards": [
+            {
+              "front": "Reduced cardiac output clue",
+              "back": "Hypotension with cool extremities points to poor perfusion and reduced output."
+            },
+            {
+              "front": "Priority assessment pattern",
+              "back": "Compare symptoms, timing, vitals, and mental status together instead of isolating one number."
+            },
+            {
+              "front": "Early escalation trigger",
+              "back": "Worsening blood pressure, urine output, or consciousness after intervention needs rapid reassessment and escalation."
+            }
+          ],
+          "recommendedFocus": [
+            "Differentiate stable versus unstable perfusion findings",
+            "Link cardiovascular symptoms to priority nursing action",
+            "Review trend-based reasoning instead of isolated values"
+          ],
+          "quiz": {
+            "prompt": "Which finding most strongly suggests reduced cardiac output?",
+            "timeLimitSeconds": 90,
+            "options": [
+              "Warm dry skin",
+              "Bounding pulses",
+              "Hypotension with cool extremities",
+              "Mild thirst"
+            ],
+            "correctOption": 2,
+            "success": "Correct. Cool extremities with hypotension point toward poor perfusion.",
+            "failure": "Focus on the option that most directly reflects low perfusion and circulatory compromise.",
+            "rationale": "Low cardiac output commonly presents with hypotension, cool extremities, weak pulses, poor urine output, and altered mental status."
+          }
+        },
+        {
+          "id": "nck-medication-safety",
+          "title": "Medication Safety in Adult Care",
+          "objective": "Prioritize safe administration, monitoring, and patient teaching in common adult care questions.",
+          "body": "Medication items are safety items. Practice the full sequence: verify the order, identify allergies, check the key vital sign or lab, confirm route and timing, then plan monitoring and teaching. Questions often test what to hold, what to clarify, and what to document after administration.",
+          "videoSummary": "Review a medication-safety workflow that moves from verification to monitoring so you do not miss the nursing priority hidden in the stem.",
+          "videoEmbedUrl": "",
+          "videoResourceUrl": "https://www.youtube.com/results?search_query=medication+safety+nursing",
+          "image": "https://images.unsplash.com/photo-1628771065518-0d82f1938462?auto=format&fit=crop&q=80&w=1200",
+          "structures": [
+            "High-alert medication checks",
+            "Contraindication patterns and do-not-give cues",
+            "Monitoring and teaching after administration"
+          ],
+          "flashcards": [
+            {
+              "front": "Medication question sequence",
+              "back": "Verify, assess, give, monitor, and teach."
+            },
+            {
+              "front": "Digoxin safety check",
+              "back": "Check the apical pulse before administration and hold if the pulse is below the safe parameter."
+            },
+            {
+              "front": "Safety clue in the stem",
+              "back": "Critical labs and abnormal vitals often signal the safest answer is to hold and reassess."
+            }
+          ],
+          "recommendedFocus": [
+            "High-alert medications and pre-administration checks",
+            "Contraindications linked to vital signs or lab values",
+            "Monitoring responsibilities after giving medication"
+          ],
+          "quiz": {
+            "prompt": "Before giving digoxin, which action is prioritized?",
+            "timeLimitSeconds": 90,
+            "options": [
+              "Check apical pulse",
+              "Offer food",
+              "Encourage walking",
+              "Give with milk"
+            ],
+            "correctOption": 0,
+            "success": "Correct. Digoxin should be checked against the apical pulse before administration.",
+            "failure": "Look for the answer that protects the patient before the drug is given.",
+            "rationale": "Digoxin can worsen bradycardia. The nurse should assess the apical pulse before administration and follow hold parameters."
+          }
+        },
+        {
+          "id": "nck-mock-strategy",
+          "title": "Mock Strategy and Rationales",
+          "objective": "Convert practice scores into targeted revision using timing, elimination, and rationale review.",
+          "body": "Mock exams are not only for scoring. They show where your decision process breaks down. Build a repeatable review method: label the topic, explain why you missed it, identify the correct rule, and turn it into a revision card. Score growth usually comes from pattern correction, not volume alone.",
+          "videoSummary": "Use this module to learn how to review mocks, build an error log, and schedule targeted repeats before the final practice exam.",
+          "videoEmbedUrl": "",
+          "videoResourceUrl": "https://www.youtube.com/results?search_query=nursing+test+taking+strategies",
+          "image": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=1200",
+          "structures": [
+            "Timed answer strategy",
+            "Elimination under pressure",
+            "Turning rationales into revision cards"
+          ],
+          "flashcards": [
+            {
+              "front": "Best use of a wrong answer",
+              "back": "Review the rationale, identify the weak concept, and schedule that topic again."
+            },
+            {
+              "front": "Priority frameworks",
+              "back": "ABCs, safety, infection control, and unstable-versus-stable reasoning guide elimination."
+            },
+            {
+              "front": "Error log purpose",
+              "back": "It converts repeated mistakes into focused revision rather than random question practice."
+            }
+          ],
+          "recommendedFocus": [
+            "Review why elimination failed on missed questions",
+            "Create targeted flashcards from rationales",
+            "Practice timed pacing without panic changes"
+          ],
+          "quiz": {
+            "prompt": "What is the strongest use of an incorrect mock answer?",
+            "timeLimitSeconds": 75,
+            "options": [
+              "Ignore it and move on",
+              "Memorize only the right option",
+              "Review the rationale and identify the weak concept",
+              "Retake immediately without review"
+            ],
+            "correctOption": 2,
+            "success": "Correct. Rationales turn mistakes into targeted revision.",
+            "failure": "Use incorrect answers as a map to weak concepts, not as marks lost.",
+            "rationale": "Meaningful review links the missed question to the concept or decision rule that needs more repetition."
+          }
+        }
+      ]
+    },
+    {
+      "id": "nclex-comprehensive",
+      "title": "NCLEX-RN Comprehensive Prep",
+      "category": "NCLEX Preparation",
+      "difficulty": "Advanced",
+      "badge": "High Demand",
+      "durationHours": 52,
+      "questions": 2000,
+      "exams": 12,
+      "format": "Live Coaching",
+      "summary": "Case-based practice, CAT-style endurance, and next-generation reasoning for serious NCLEX preparation.",
+      "image": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&q=80&w=1200",
+      "outcomes": [
+        "NGN case-style reasoning",
+        "Delegation and prioritization mastery",
+        "CAT readiness habits"
+      ],
+      "facts": [
+        "Advanced track",
+        "Case simulations",
+        "Coach feedback"
+      ],
+      "keywords": [
+        "nclex",
+        "ngn",
+        "cat",
+        "coaching"
+      ],
+      "practiceExam": {
+        "title": "NCLEX Readiness Exam",
+        "durationMinutes": 110,
+        "questionCount": 85,
+        "passMark": 72,
+        "instructions": "Sit this after completing all modules. Review your weakest domain and rebuild your flashcards before the second attempt."
+      },
+      "modules": [
+        {
+          "id": "nclex-ngn-framing",
+          "title": "NGN Case Framing",
+          "objective": "Break down client cases into cues, hypotheses, and the safest priority response.",
+          "body": "Next Generation case studies test how you process data, not how much you can memorize. Practice noticing what changed from baseline, naming the patient problem, and linking each action to assessment, intervention, or evaluation. The goal is to build a repeatable case-reading routine.",
+          "videoSummary": "This lesson shows how to extract cues, form nursing hypotheses, and avoid jumping to interventions too early in NGN cases.",
+          "videoEmbedUrl": "",
+          "videoResourceUrl": "https://www.youtube.com/results?search_query=NGN+NCLEX+nursing+judgment",
+          "image": "https://images.unsplash.com/photo-1576765608866-5b51046452be?auto=format&fit=crop&q=80&w=1200",
+          "structures": [
+            "Cue recognition",
+            "Hypothesis formation",
+            "Priority response selection"
+          ],
+          "flashcards": [
+            {
+              "front": "First step in NGN",
+              "back": "Identify the main patient problem before selecting actions."
+            },
+            {
+              "front": "Useful NGN cue question",
+              "back": "What changed from baseline and why does it matter now?"
+            },
+            {
+              "front": "Common NGN trap",
+              "back": "Rushing to interventions before interpreting the available cues."
+            }
+          ],
+          "recommendedFocus": [
+            "Cue recognition before intervention",
+            "Linking symptoms to hypotheses",
+            "Choosing actions that match the patient problem"
+          ],
+          "quiz": {
+            "prompt": "What should be identified first in an NGN case?",
+            "timeLimitSeconds": 90,
+            "options": [
+              "The nurse's shift schedule",
+              "The main patient problem",
+              "The discharge date",
+              "The room number"
+            ],
+            "correctOption": 1,
+            "success": "Correct. The main problem anchors every later decision.",
+            "failure": "Start with the patient problem before choosing interventions.",
+            "rationale": "The nursing judgment model begins with recognizing and analyzing the patient's most important cues and needs."
+          }
+        },
+        {
+          "id": "nclex-prioritization-delegation",
+          "title": "Prioritization and Delegation",
+          "objective": "Strengthen judgment in who to see first, what to delegate, and what cannot wait.",
+          "body": "Prioritization and delegation questions reward safety, scope awareness, and recognition of instability. Sort patients by acuity, keep teaching and assessment with the RN, and delegate predictable routine tasks with follow-up. Avoid answers that place unstable patients or nursing judgment outside the RN role.",
+          "videoSummary": "Use this lesson to sharpen unstable-versus-stable reasoning and separate delegable tasks from RN-only responsibilities.",
+          "videoEmbedUrl": "",
+          "videoResourceUrl": "https://www.youtube.com/results?search_query=nclex+prioritization+delegation+nursing",
+          "image": "https://images.unsplash.com/photo-1584433144859-1fc3ab64a957?auto=format&fit=crop&q=80&w=1200",
+          "structures": [
+            "Stable versus unstable sorting",
+            "Delegation boundaries",
+            "Urgent reassessment patterns"
+          ],
+          "flashcards": [
+            {
+              "front": "RN keeps",
+              "back": "Initial assessment, teaching, triage, unstable patients, and evaluation of responses."
+            },
+            {
+              "front": "Safe delegation rule",
+              "back": "Delegate predictable routine tasks with clear instructions and expected outcomes."
+            },
+            {
+              "front": "First-to-see clue",
+              "back": "Acute change always outranks stable chronic status."
+            }
+          ],
+          "recommendedFocus": [
+            "RN scope versus delegated routine care",
+            "Recognizing acute change faster",
+            "Sorting unstable patients before stable chronic issues"
+          ],
+          "quiz": {
+            "prompt": "Which task should stay with the RN?",
+            "timeLimitSeconds": 90,
+            "options": [
+              "Routine bed making",
+              "Stable vital signs on a recovering patient",
+              "Initial assessment of chest pain",
+              "Transport to imaging"
+            ],
+            "correctOption": 2,
+            "success": "Correct. Initial assessment of chest pain belongs to the RN.",
+            "failure": "Think about instability and tasks that require nursing judgment.",
+            "rationale": "Initial assessment of an unstable or potentially unstable complaint requires RN-level judgment."
+          }
+        },
+        {
+          "id": "nclex-cat-endurance",
+          "title": "CAT Exam Endurance",
+          "objective": "Develop pacing and emotional control for adaptive testing conditions.",
+          "body": "Adaptive testing can feel unpredictable, which is exactly why pacing matters. Use checkpoints, a reset routine after difficult questions, and a one-question-at-a-time mindset. Protect answer quality instead of trying to guess whether the exam is going well.",
+          "videoSummary": "This module focuses on calm pacing, emotional resets, and high-quality answer habits under CAT pressure.",
+          "videoEmbedUrl": "",
+          "videoResourceUrl": "https://www.youtube.com/results?search_query=NCLEX+CAT+strategy",
+          "image": "https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&q=80&w=1200",
+          "structures": [
+            "Pacing checkpoints",
+            "Reset routine after difficult items",
+            "Adaptive test mindset"
+          ],
+          "flashcards": [
+            {
+              "front": "Best CAT mindset",
+              "back": "Focus on one high-quality answer at a time."
+            },
+            {
+              "front": "Reset routine",
+              "back": "Pause, breathe, reread the stem, and reapply a familiar framework."
+            },
+            {
+              "front": "Avoid in CAT",
+              "back": "Emotionally scoring yourself or changing answers without a clear reason."
+            }
+          ],
+          "recommendedFocus": [
+            "Maintain pacing without panic",
+            "Use a reset routine instead of emotional reacting",
+            "Avoid random answer changes under fatigue"
+          ],
+          "quiz": {
+            "prompt": "What is the best mindset in CAT testing?",
+            "timeLimitSeconds": 75,
+            "options": [
+              "Guess faster to save time",
+              "Focus on one high-quality answer at a time",
+              "Track every difficult item emotionally",
+              "Change strategy every five questions"
+            ],
+            "correctOption": 1,
+            "success": "Correct. CAT rewards consistent answer quality more than emotional reacting.",
+            "failure": "Adaptive exams need calm consistency rather than panic pacing.",
+            "rationale": "A stable decision framework and consistent pacing protect performance better than trying to interpret the exam emotionally."
+          }
+        }
+      ]
+    },
+    {
+      "id": "lecture-series",
+      "title": "Global Nursing Lecture Series",
+      "category": "Professional Courses",
+      "difficulty": "Beginner",
+      "badge": "Core Track",
+      "durationHours": 36,
+      "questions": 600,
+      "exams": 6,
+      "format": "Recorded",
+      "summary": "Foundational anatomy, physiology, and clinical refreshers for guided self-paced revision.",
+      "image": "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&q=80&w=1200",
+      "outcomes": [
+        "Foundational theory refresh",
+        "Concept linking for practice questions",
+        "Flexible self-paced revision"
+      ],
+      "facts": [
+        "Recorded lessons",
+        "Core sciences",
+        "Lecture notes"
+      ],
+      "keywords": [
+        "anatomy",
+        "med surg",
+        "pediatrics",
+        "lectures"
+      ],
+      "practiceExam": {
+        "title": "Foundations Consolidation Check",
+        "durationMinutes": 60,
+        "questionCount": 45,
+        "passMark": 68,
+        "instructions": "Use this to check how well you can connect foundational science to bedside nursing reasoning."
+      },
+      "modules": [
+        {
+          "id": "lecture-cardiovascular",
+          "title": "Cardiovascular System",
+          "objective": "Connect heart anatomy and circulation to clinical signs of poor perfusion.",
+          "body": "Refresh the relationship between cardiac output, blood pressure, preload, afterload, and tissue perfusion. This module helps learners see why edema, mental status changes, and urine output all connect to heart function and not only to isolated symptoms.",
+          "videoSummary": "Review the cardiovascular system as a functional map: flow, pressure, perfusion, and early clinical change.",
+          "videoEmbedUrl": "",
+          "videoResourceUrl": "https://www.youtube.com/results?search_query=cardiovascular+system+nursing+lecture",
+          "image": "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?auto=format&fit=crop&q=80&w=1200",
+          "structures": [
+            "Systemic circulation and oxygen delivery",
+            "Pulmonary circulation and gas exchange",
+            "Perfusion signs in bedside assessment"
+          ],
+          "flashcards": [
+            {
+              "front": "Cardiac output formula",
+              "back": "Cardiac output equals heart rate multiplied by stroke volume."
+            },
+            {
+              "front": "Left ventricle role",
+              "back": "It pumps oxygenated blood into the aorta for systemic circulation."
+            },
+            {
+              "front": "Perfusion clue",
+              "back": "Urine output, mentation, and skin temperature help you judge tissue perfusion."
+            }
+          ],
+          "recommendedFocus": [
+            "Connect physiology to bedside assessment",
+            "Review preload, afterload, and contractility",
+            "Strengthen interpretation of perfusion signs"
+          ],
+          "quiz": {
+            "prompt": "Which chamber pumps oxygenated blood into the aorta?",
+            "timeLimitSeconds": 60,
+            "options": [
+              "Right atrium",
+              "Right ventricle",
+              "Left ventricle",
+              "Left atrium"
+            ],
+            "correctOption": 2,
+            "success": "Correct. The left ventricle drives systemic circulation.",
+            "failure": "Review the flow of blood from the lungs through the left side of the heart.",
+            "rationale": "Oxygenated blood leaves the lungs, enters the left side of the heart, and is pumped into the systemic circulation by the left ventricle."
+          }
+        },
+        {
+          "id": "lecture-skeletal",
+          "title": "Skeletal System",
+          "objective": "Connect bone structure, support, and mineral balance to clinical assessment.",
+          "body": "Understand bones as living tissue that supports movement, protects organs, stores minerals, and supports blood-cell production. Questions in this area often connect anatomy to fracture risk, neurovascular assessment, and hematopoiesis.",
+          "videoSummary": "Review the axial and appendicular skeleton and connect bone health to nursing assessment after trauma or prolonged immobility.",
+          "videoEmbedUrl": "",
+          "videoResourceUrl": "https://www.youtube.com/results?search_query=skeletal+system+nursing+lecture",
+          "image": "https://images.unsplash.com/photo-1530497610245-94d3c16cda28?auto=format&fit=crop&q=80&w=1200",
+          "structures": [
+            "Axial skeleton protection role",
+            "Appendicular skeleton and movement",
+            "Red bone marrow and hematopoiesis"
+          ],
+          "flashcards": [
+            {
+              "front": "Axial skeleton",
+              "back": "Protects the brain, spinal cord, and thoracic organs."
+            },
+            {
+              "front": "Appendicular skeleton",
+              "back": "Supports mobility, weight transfer, and limb movement."
+            },
+            {
+              "front": "Adult hematopoiesis site",
+              "back": "Red bone marrow is the primary site of blood cell production."
+            }
+          ],
+          "recommendedFocus": [
+            "Review bone function beyond support alone",
+            "Strengthen fracture and neurovascular assessment links",
+            "Revise hematopoiesis basics"
+          ],
+          "quiz": {
+            "prompt": "Where does hematopoiesis primarily occur in adults?",
+            "timeLimitSeconds": 60,
+            "options": [
+              "Ligaments",
+              "Bone marrow",
+              "Cartilage",
+              "Synovial fluid"
+            ],
+            "correctOption": 1,
+            "success": "Correct. Adult blood cell production mainly occurs in red bone marrow.",
+            "failure": "Think about the skeletal structure responsible for producing blood cells.",
+            "rationale": "Red bone marrow is the primary location for hematopoiesis in adults."
+          }
+        },
+        {
+          "id": "lecture-respiratory",
+          "title": "Respiratory Mechanics",
+          "objective": "Explain how ventilation, diffusion, and perfusion work together to maintain oxygenation.",
+          "body": "Respiratory questions often test early recognition of deterioration. This module connects respiratory rate, work of breathing, gas exchange, and perfusion mismatch so you can recognize when positioning, oxygen, or escalation is needed first.",
+          "videoSummary": "Use this lesson to connect respiratory physiology to rapid bedside reassessment in hypoxic or distressed patients.",
+          "videoEmbedUrl": "",
+          "videoResourceUrl": "https://www.youtube.com/results?search_query=respiratory+mechanics+nursing+lecture",
+          "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80&w=1200",
+          "structures": [
+            "Ventilation and air movement",
+            "Diffusion across the alveolar membrane",
+            "Perfusion and oxygen delivery"
+          ],
+          "flashcards": [
+            {
+              "front": "Primary gas exchange site",
+              "back": "Gas exchange occurs across the alveolar-capillary membrane."
+            },
+            {
+              "front": "Early deterioration clue",
+              "back": "A rising respiratory rate often appears before oxygen saturation falls."
+            },
+            {
+              "front": "First safe action",
+              "back": "Position the patient, support oxygenation, and reassess quickly."
+            }
+          ],
+          "recommendedFocus": [
+            "Recognize early respiratory deterioration faster",
+            "Review ventilation versus perfusion mismatch",
+            "Practice safe first responses to hypoxia"
+          ],
+          "quiz": {
+            "prompt": "Which structure is the primary site of gas exchange?",
+            "timeLimitSeconds": 60,
+            "options": [
+              "Bronchi",
+              "Trachea",
+              "Alveoli",
+              "Pleura"
+            ],
+            "correctOption": 2,
+            "success": "Correct. Gas exchange happens in the alveoli.",
+            "failure": "Review where oxygen and carbon dioxide cross between air and blood.",
+            "rationale": "The alveoli provide the surface area where oxygen and carbon dioxide diffuse between air and capillary blood."
+          }
+        }
+      ]
+    },
+    {
+      "id": "pharmacology-intensive",
+      "title": "Pharmacology Intensive",
+      "category": "Pharmacology",
+      "difficulty": "Advanced",
+      "badge": "Calculation Lab",
+      "durationHours": 28,
+      "questions": 480,
+      "exams": 5,
+      "format": "Recorded + Quiz Bank",
+      "summary": "Drug classes, dosage calculations, and medication safety drills for high-stakes pharmacology questions.",
+      "image": "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&q=80&w=1200",
+      "outcomes": [
+        "Dosage confidence",
+        "Medication class recall",
+        "Safer answer choices under pressure"
+      ],
+      "facts": [
+        "Quiz bank",
+        "Safety emphasis",
+        "Drug tables"
+      ],
+      "keywords": [
+        "drugs",
+        "dosage",
+        "medication safety"
+      ],
+      "practiceExam": {
+        "title": "Pharmacology Speed Check",
+        "durationMinutes": 55,
+        "questionCount": 40,
+        "passMark": 75,
+        "instructions": "Complete this after the calculations module and review every medication class you still confuse."
+      },
+      "modules": [
+        {
+          "id": "pharm-drug-class-recognition",
+          "title": "Drug Class Recognition",
+          "objective": "Recognize medications by name pattern, likely action, and major nursing precautions.",
+          "body": "Stop memorizing medications one by one. Learn the class signals, common uses, predictable adverse effects, and the nursing checks that appear most often in pharmacology questions. Build comparisons so similar medications stop blending together.",
+          "videoSummary": "This lesson focuses on suffix patterns, high-yield side effects, and pre-administration checks that exam stems repeatedly test.",
+          "videoEmbedUrl": "",
+          "videoResourceUrl": "https://www.youtube.com/results?search_query=pharmacology+nursing+drug+classes",
+          "image": "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?auto=format&fit=crop&q=80&w=1200",
+          "structures": [
+            "Class naming patterns",
+            "High-yield adverse effects",
+            "Nursing implications before administration"
+          ],
+          "flashcards": [
+            {
+              "front": "Quick class clue",
+              "back": "Drug suffix patterns often identify the medication class quickly."
+            },
+            {
+              "front": "Study table format",
+              "back": "Name pattern, action, key adverse effects, and required checks."
+            },
+            {
+              "front": "Nursing implication",
+              "back": "Know what vital sign or lab to review before giving the medication."
+            }
+          ],
+          "recommendedFocus": [
+            "Learn suffix patterns with adverse effects",
+            "Separate look-alike drug classes using comparison charts",
+            "Review nursing checks before administration"
+          ],
+          "quiz": {
+            "prompt": "What is the quickest clue to identify a medication class in many exam questions?",
+            "timeLimitSeconds": 75,
+            "options": [
+              "Patient age",
+              "Drug suffix pattern",
+              "Room location",
+              "Nurse shift"
+            ],
+            "correctOption": 1,
+            "success": "Correct. Suffix patterns are often the fastest clue to class recognition.",
+            "failure": "Look for the clue built into the medication name itself.",
+            "rationale": "Many medication classes share naming patterns that help identify the action and likely side effects."
+          }
+        },
+        {
+          "id": "pharm-dose-calculations",
+          "title": "Dosage Calculations and Safe Administration",
+          "objective": "Build accuracy in medication math while keeping safety checks central.",
+          "body": "Calculation questions are only half math. They also test whether the dose makes sense for the patient. Work through unit conversions, dose formulas, infusion basics, and red flags that tell you to stop and recheck. Always connect the number back to route, concentration, and patient safety.",
+          "videoSummary": "Use this lesson to revise dosage formulas, infusion logic, and the safety pause that should happen before every calculated medication answer.",
+          "videoEmbedUrl": "",
+          "videoResourceUrl": "https://www.youtube.com/results?search_query=dosage+calculation+nursing",
+          "image": "https://images.unsplash.com/photo-1576671414121-aa0c81c86931?auto=format&fit=crop&q=80&w=1200",
+          "structures": [
+            "Dimensional analysis basics",
+            "Dose and concentration checking",
+            "Safe administration pause before final answer"
+          ],
+          "flashcards": [
+            {
+              "front": "Safe math habit",
+              "back": "Write units at every step so they cancel correctly."
+            },
+            {
+              "front": "Final safety question",
+              "back": "Does this dose make clinical sense for the patient and route?"
+            },
+            {
+              "front": "Calculation trap",
+              "back": "Correct arithmetic with the wrong concentration still produces an unsafe answer."
+            }
+          ],
+          "recommendedFocus": [
+            "Strengthen unit conversion accuracy",
+            "Recheck concentration and route every time",
+            "Pause to judge if the final dose is realistic"
+          ],
+          "quiz": {
+            "prompt": "What should the nurse do after calculating a medication dose?",
+            "timeLimitSeconds": 75,
+            "options": [
+              "Administer immediately without review",
+              "Check whether the dose makes clinical sense",
+              "Ignore the route",
+              "Ask the patient to verify the math"
+            ],
+            "correctOption": 1,
+            "success": "Correct. Safety requires checking whether the calculated dose is clinically reasonable.",
+            "failure": "Medication math always ends with a safety review, not only a number.",
+            "rationale": "A correct equation can still produce an unsafe answer if the wrong concentration or unreasonable dose is used."
+          }
+        }
+      ]
+    },
+    {
+      "id": "pediatrics-clinical",
+      "title": "Pediatrics Clinical Review",
+      "category": "Pediatrics",
+      "difficulty": "Intermediate",
+      "badge": "Clinical Focus",
+      "durationHours": 24,
+      "questions": 360,
+      "exams": 4,
+      "format": "Live Review",
+      "summary": "Growth and development, emergencies, medication safety, and family-centered care for pediatric revision.",
+      "image": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=1200",
+      "outcomes": [
+        "Age-based prioritization",
+        "Safer pediatric escalation",
+        "Better family-centered communication"
+      ],
+      "facts": [
+        "Scenario-based",
+        "Growth milestones",
+        "Emergency review"
+      ],
+      "keywords": [
+        "pediatrics",
+        "children",
+        "growth",
+        "family care"
+      ],
+      "practiceExam": {
+        "title": "Pediatrics Scenario Check",
+        "durationMinutes": 50,
+        "questionCount": 35,
+        "passMark": 72,
+        "instructions": "Use the exam after completing both modules so you can connect milestones with emergency priorities."
+      },
+      "modules": [
+        {
+          "id": "peds-growth-development",
+          "title": "Growth, Development, and Communication",
+          "objective": "Apply age-appropriate expectations when assessing pediatric clients and teaching families.",
+          "body": "Pediatric questions often reward developmental awareness. Think about age-appropriate behavior, communication style, safety risks, and how family-centered care changes teaching. The nurse must often adapt the approach more than the content.",
+          "videoSummary": "Review developmental expectations and how they affect assessment, teaching, and emotional support in pediatric care.",
+          "videoEmbedUrl": "",
+          "videoResourceUrl": "https://www.youtube.com/results?search_query=pediatric+growth+and+development+nursing",
+          "image": "https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?auto=format&fit=crop&q=80&w=1200",
+          "structures": [
+            "Age-appropriate communication",
+            "Developmental milestones and safety",
+            "Family-centered teaching principles"
+          ],
+          "flashcards": [
+            {
+              "front": "Preschool teaching style",
+              "back": "Use short explanations, play, and concrete language."
+            },
+            {
+              "front": "Family-centered care",
+              "back": "Include caregivers as partners in planning, teaching, and comfort measures."
+            },
+            {
+              "front": "Milestone clue",
+              "back": "Developmental stage changes how the child expresses fear, pain, and understanding."
+            }
+          ],
+          "recommendedFocus": [
+            "Review age-based communication strategies",
+            "Match safety teaching to developmental stage",
+            "Include caregivers in plans and explanations"
+          ],
+          "quiz": {
+            "prompt": "What is most important when teaching a preschool child?",
+            "timeLimitSeconds": 60,
+            "options": [
+              "Use abstract explanations only",
+              "Use short concrete language and play",
+              "Teach only the caregiver",
+              "Avoid visual aids"
+            ],
+            "correctOption": 1,
+            "success": "Correct. Preschool learners respond best to simple concrete language and play-based support.",
+            "failure": "Think about how developmental stage affects attention and understanding.",
+            "rationale": "Preschool children learn best through concrete language, short explanations, and play-based approaches."
+          }
+        },
+        {
+          "id": "peds-emergency-family-care",
+          "title": "Pediatric Emergencies and Family-Centered Care",
+          "objective": "Recognize early deterioration in children and respond while supporting the family.",
+          "body": "Children can compensate well and then deteriorate quickly. Focus on respiratory changes, hydration status, fever risk, and caregiver observations. Pediatric emergency stems often expect the nurse to act on subtle change before collapse occurs.",
+          "videoSummary": "Use this module to connect early respiratory distress, dehydration signs, and safe family communication in urgent pediatric scenarios.",
+          "videoEmbedUrl": "",
+          "videoResourceUrl": "https://www.youtube.com/results?search_query=pediatric+emergency+nursing",
+          "image": "https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&q=80&w=1200",
+          "structures": [
+            "Early respiratory distress clues",
+            "Hydration and perfusion cues in children",
+            "Reassurance and communication with caregivers"
+          ],
+          "flashcards": [
+            {
+              "front": "Early respiratory distress",
+              "back": "Increased respiratory rate, nasal flaring, and retractions may appear before saturation drops."
+            },
+            {
+              "front": "Dehydration clue",
+              "back": "Reduced urine output, dry mucosa, and lethargy suggest worsening fluid deficit."
+            },
+            {
+              "front": "Family-centered emergency care",
+              "back": "Explain what is happening, what you are doing, and what the caregiver can do to help."
+            }
+          ],
+          "recommendedFocus": [
+            "Catch pediatric deterioration early",
+            "Review hydration and perfusion assessment",
+            "Practice calm family communication during escalation"
+          ],
+          "quiz": {
+            "prompt": "Which finding is an early sign of respiratory distress in a child?",
+            "timeLimitSeconds": 60,
+            "options": [
+              "Nasal flaring and retractions",
+              "Pink lips with easy breathing",
+              "Normal play behavior",
+              "Warm dry skin only"
+            ],
+            "correctOption": 0,
+            "success": "Correct. Nasal flaring and retractions are early distress cues.",
+            "failure": "Look for the answer that reflects increased work of breathing.",
+            "rationale": "Children often show increased work of breathing before oxygen saturation falls significantly."
+          }
+        }
+      ]
+    },
+    {
+      "id": "med-surg-bootcamp",
+      "title": "Med-Surg Readiness Bootcamp",
+      "category": "Clinical Practice",
+      "difficulty": "Intermediate",
+      "badge": "Mock Ready",
+      "durationHours": 32,
+      "questions": 540,
+      "exams": 7,
+      "format": "Live + Recorded",
+      "summary": "Adult health systems review, prioritization practice, and readiness checkpoints for med-surg confidence.",
+      "image": "https://images.unsplash.com/photo-1550831107-1553da8c8464?auto=format&fit=crop&q=80&w=1200",
+      "outcomes": [
+        "Stronger med-surg prioritization",
+        "Improved deterioration recognition",
+        "Readiness for timed mock exams"
+      ],
+      "facts": [
+        "Clinical priorities",
+        "Escalation cues",
+        "Mock checkpoints"
+      ],
+      "keywords": [
+        "med surg",
+        "adult health",
+        "deterioration",
+        "priorities"
+      ],
+      "practiceExam": {
+        "title": "Med-Surg Readiness Test",
+        "durationMinutes": 70,
+        "questionCount": 50,
+        "passMark": 70,
+        "instructions": "Take this after completing both modules and review respiratory or sepsis topics first if your score is below target."
+      },
+      "modules": [
+        {
+          "id": "medsurg-respiratory-deterioration",
+          "title": "Respiratory Deterioration and Oxygenation",
+          "objective": "Recognize early respiratory decline and respond with safe first actions.",
+          "body": "Many med-surg questions test recognition of worsening oxygenation, increased work of breathing, and priority interventions. Positioning, oxygen support, reassessment, and escalation often matter more than memorizing the diagnosis alone.",
+          "videoSummary": "This lesson focuses on early warning signs, bedside reassessment, and the first-line nursing responses to respiratory decline.",
+          "videoEmbedUrl": "",
+          "videoResourceUrl": "https://www.youtube.com/results?search_query=respiratory+deterioration+nursing",
+          "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&q=80&w=1200",
+          "structures": [
+            "Early warning signs",
+            "Positioning and oxygen support",
+            "Escalation after failed initial response"
+          ],
+          "flashcards": [
+            {
+              "front": "Early sign",
+              "back": "A rising respiratory rate is often one of the first clues to deterioration."
+            },
+            {
+              "front": "First response",
+              "back": "Position the patient, support oxygenation, and reassess immediately."
+            },
+            {
+              "front": "Escalation rule",
+              "back": "If distress worsens or does not improve after intervention, notify and escalate quickly."
+            }
+          ],
+          "recommendedFocus": [
+            "Recognize early deterioration before saturation crashes",
+            "Review first-line oxygenation support steps",
+            "Practice priority escalation logic"
+          ],
+          "quiz": {
+            "prompt": "Which sign often appears early in respiratory deterioration?",
+            "timeLimitSeconds": 60,
+            "options": [
+              "Rising respiratory rate",
+              "Silence in the room",
+              "Improved appetite",
+              "Lower anxiety after exertion"
+            ],
+            "correctOption": 0,
+            "success": "Correct. Increased respiratory rate is an early deterioration clue.",
+            "failure": "Look for the earliest bedside sign of worsening breathing effort.",
+            "rationale": "Respiratory rate and work of breathing often change before oxygen saturation falls dramatically."
+          }
+        },
+        {
+          "id": "medsurg-fluid-sepsis",
+          "title": "Fluid Balance, Sepsis, and Early Escalation",
+          "objective": "Use perfusion clues to recognize worsening fluid imbalance and possible sepsis.",
+          "body": "Sepsis and fluid balance questions reward trend reading. Think about temperature, blood pressure, heart rate, urine output, mental status, and skin findings together. The exam often expects the nurse to identify when the patient has moved from concern to urgent instability.",
+          "videoSummary": "Review sepsis clues, perfusion changes, and why urine output and mental status are so valuable during reassessment.",
+          "videoEmbedUrl": "",
+          "videoResourceUrl": "https://www.youtube.com/results?search_query=sepsis+nursing+assessment",
+          "image": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&q=80&w=1200",
+          "structures": [
+            "Perfusion and urine output trends",
+            "Sepsis red flags",
+            "Escalation timing for instability"
+          ],
+          "flashcards": [
+            {
+              "front": "Sepsis clue cluster",
+              "back": "Fever or low temperature, tachycardia, hypotension, altered mentation, and low urine output together are high risk."
+            },
+            {
+              "front": "Perfusion trend",
+              "back": "Cool skin, confusion, and falling urine output suggest worsening tissue perfusion."
+            },
+            {
+              "front": "Escalation timing",
+              "back": "Do not wait for collapse when multiple instability signs are already trending in the wrong direction."
+            }
+          ],
+          "recommendedFocus": [
+            "Review sepsis recognition patterns",
+            "Use urine output as a perfusion marker",
+            "Strengthen early escalation judgment"
+          ],
+          "quiz": {
+            "prompt": "Which finding best suggests worsening perfusion in possible sepsis?",
+            "timeLimitSeconds": 75,
+            "options": [
+              "Warm hands with stable vitals",
+              "Falling urine output and confusion",
+              "Normal appetite",
+              "Improved mobility"
+            ],
+            "correctOption": 1,
+            "success": "Correct. Falling urine output with confusion signals worsening perfusion.",
+            "failure": "Choose the answer that most clearly reflects systemic instability.",
+            "rationale": "Reduced urine output and altered mental status are key signs that organ perfusion may be worsening."
+          }
+        }
+      ]
+    }
+  ]
+}

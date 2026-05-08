@@ -1,0 +1,234 @@
+/* Results Page CSS for GlobalNursePrep */
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f8fafc;
+    color: #1a2a3a;
+    margin: 0;
+    padding: 0;
+}
+.results-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    padding: 1rem 2rem;
+    background: #0a2342;
+    color: #ffffff;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 14px rgba(10, 35, 66, 0.16);
+}
+.results-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    min-width: 0;
+}
+.brand-logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex: 0 0 auto;
+    background: #ffffff;
+}
+.brand-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.results-brand-text {
+    font-weight: 800;
+    font-size: 1.05rem;
+    letter-spacing: 0.02em;
+}
+.results-actions {
+    display: flex;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+}
+.results-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+}
+.results-link:hover {
+    color: #ffd700;
+}
+.results-container {
+    width: min(100% - 3rem, 1100px);
+    margin: 3rem auto;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 18px 36px rgba(10,35,66,0.08);
+    padding: 2rem;
+    text-align: center;
+}
+.score-section {
+    margin-bottom: 2rem;
+}
+#score {
+    color: #009ca6;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+.review-section {
+    margin-bottom: 2rem;
+}
+
+.result-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.8rem;
+    margin: -0.5rem 0 2rem;
+}
+
+.result-action-link {
+    display: inline-block;
+    padding: 0.75rem 1rem;
+    border: 1px solid #009ca6;
+    border-radius: 999px;
+    color: #009ca6;
+    text-decoration: none;
+    font-weight: 800;
+}
+#review-answers-btn {
+    background: #ffd700;
+    color: #1a2a3a;
+    border: none;
+    border-radius: 5px;
+    padding: 0.7rem 1.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+#review-answers-btn:hover {
+    background: #009ca6;
+    color: #fff;
+}
+.analytics-section, .audit-section {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+.metric-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0;
+    display: grid;
+    gap: 0.8rem;
+}
+.metric-list li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1rem;
+    align-items: start;
+    padding: 0.95rem 1rem;
+    background: #f8fbff;
+    border: 1px solid #d9e2ec;
+    border-radius: 8px;
+}
+.metric-list li div {
+    grid-column: 1 / -1;
+    color: #5d6b7b;
+}
+.insight-block,
+.answer-review-panel {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #f8fbff;
+    border: 1px solid #d9e2ec;
+    border-radius: 8px;
+}
+
+.insight-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.insight-block strong {
+    display: block;
+    color: #0a2342;
+    font-size: 1.05rem;
+}
+
+.insight-block ul {
+    margin: 0.8rem 0 0;
+    padding-left: 1.15rem;
+    display: grid;
+    gap: 0.45rem;
+    color: #5d6b7b;
+}
+
+.strength-block {
+    border-color: rgba(32, 130, 95, 0.35);
+}
+
+.weakness-block {
+    border-color: rgba(197, 68, 68, 0.35);
+}
+
+.study-plan-card {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 156, 166, 0.3);
+    background: #eefafa;
+}
+
+.study-plan-card h3,
+.study-plan-card p {
+    margin: 0;
+}
+
+.study-plan-card p {
+    margin-top: 0.45rem;
+    color: #5d6b7b;
+    line-height: 1.6;
+}
+.answer-review-panel {
+    text-align: left;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.answer-review-panel.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.review-placeholder {
+    color: #5d6b7b;
+}
+.answer-review-list {
+    max-height: 620px;
+    overflow: auto;
+    padding-right: 0.35rem;
+}
+.review-correct {
+    color: #20825f;
+}
+.review-missed {
+    color: #8c1f1f;
+}
+
+@media (max-width: 720px) {
+    .results-container {
+        width: min(100% - 1.25rem, 1100px);
+        padding: 1.35rem;
+    }
+
+    .insight-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.simple-footer {
+    padding: 0 1.25rem 2rem;
+    text-align: center;
+    color: #5d6b7b;
+    font-weight: 700;
+    font-size: 0.9rem;
+}

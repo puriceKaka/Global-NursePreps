@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Workspace | GlobalNursePrep</title>
+    <link rel="stylesheet" href="landing.css">
+    <link rel="stylesheet" href="courses.css">
+    <link rel="stylesheet" href="../drawer.css">
+    <script defer src="../learning-core.js"></script>
+    <script defer src="exam-prep-core.js"></script>
+    <script defer src="courses.js"></script>
+    <script defer src="../drawer.js"></script>
+</head>
+<body data-page="course-detail">
+    <nav class="navbar">
+        <div class="logo-container">
+            <button type="button" id="menuToggle" aria-label="Open menu">
+                <span class="hamburger" aria-hidden="true"></span>
+            </button>
+            <span class="brand-logo">
+                <img src="../logo/Screenshot_20260421-123818.jpg" alt="Global NursePrep logo">
+            </span>
+            <span class="logo-text">Global <span class="highlight">Nurse</span>Prep</span>
+        </div>
+        <ul>
+            <li><a href="../homepage.html">Main Homepage</a></li>
+            <li><a href="landing.html">Exam Prep Home</a></li>
+            <li><a href="courses.html">Courses</a></li>
+            <li><a href="exam-lobby/exam-lobby.html">Exam Center</a></li>
+        </ul>
+    </nav>
+
+    <div class="drawer-overlay hidden" id="drawerOverlay" tabindex="-1" aria-hidden="true"></div>
+
+    <aside class="drawer hidden" id="drawer" aria-label="Side menu">
+        <div class="drawer-header">
+            <div class="drawer-user">
+                <div class="avatar" id="drawerAvatar" aria-hidden="true">N</div>
+                <div>
+                    <strong id="drawerName">Member</strong>
+                    <div class="muted small" id="drawerEmail">-</div>
+                </div>
+            </div>
+            <button type="button" id="drawerClose" aria-label="Close menu">x</button>
+        </div>
+
+        <nav class="drawer-nav" aria-label="Navigation">
+            <a class="drawer-link" href="../homepage.html" target="_blank" rel="noopener">Home</a>
+            <a class="drawer-link" href="../homepage.html#career" target="_blank" rel="noopener">Career Paths</a>
+            <a class="drawer-link" href="courses.html" target="_blank" rel="noopener">Courses</a>
+            <a class="drawer-link" href="../questions.html" target="_blank" rel="noopener">Questions</a>
+            <a class="drawer-link" href="../my-learnings.html" target="_blank" rel="noopener">My Learnings</a>
+            <a class="drawer-link" href="../Profile.html" target="_blank" rel="noopener">Profile</a>
+            <a class="drawer-link" href="../Membership.html" target="_blank" rel="noopener">Membership</a>
+            <a class="drawer-link" href="landing.html" target="_blank" rel="noopener">Exam Prep Home</a>
+            <a class="drawer-link" href="exam-lobby/exam-lobby.html" target="_blank" rel="noopener">Exam Center</a>
+        </nav>
+
+        <div class="drawer-footer">
+            <div class="muted small">Tip: Course tests and notes stay inside the course workspace.</div>
+        </div>
+    </aside>
+
+    <main class="courses-page course-workspace-page">
+        <section class="workspace-hero reveal-on-scroll">
+            <div class="workspace-hero-copy">
+                <p class="section-kicker">Learning Workspace</p>
+                <h1 id="workspace-course-title">Course Title</h1>
+                <p id="workspace-course-summary" class="workspace-summary"></p>
+                <div class="workspace-meta hero-proof-grid" id="workspace-meta"></div>
+                <div class="hero-actions">
+                    <a class="btn-primary" id="workspace-open-module-btn" href="#start-video-btn">Continue module</a>
+                    <a class="btn-outline" id="workspace-open-final-btn" href="#course-final-test">Open final test</a>
+                </div>
+                <div class="progress-strip">
+                    <div class="progress-strip-head">
+                        <span id="workspace-progress-label">0% complete</span>
+                        <span id="workspace-save-state">Synced</span>
+                    </div>
+                    <div class="progress-bar">
+                        <span id="workspace-progress-bar"></span>
+                    </div>
+                </div>
+                <div class="workspace-certificate">
+                    <a class="btn-outline is-disabled" id="view-certificate-link" href="#" aria-disabled="true">Certificate locked</a>
+                </div>
+            </div>
+            <div class="workspace-hero-media">
+                <div class="media-frame large-frame">
+                    <img id="workspace-course-image" src="" alt="" class="fit-image">
+                </div>
+            </div>
+        </section>
+
+        <section class="workspace-layout">
+            <aside class="workspace-sidebar reveal-on-scroll">
+                <div class="rail-card">
+                    <h3>Course Guidance</h3>
+                    <ol class="guidance-list" id="course-guidance-list"></ol>
+                </div>
+                <div class="rail-card">
+                    <h3>Student Progress</h3>
+                    <div class="workspace-scoreboard">
+                        <div class="score-pill">
+                            <span>Points</span>
+                            <strong id="workspace-points">0 XP</strong>
+                        </div>
+                        <div class="score-pill">
+                            <span>Badge</span>
+                            <strong id="workspace-badge">Starter</strong>
+                        </div>
+                        <div class="score-pill">
+                            <span>Study streak</span>
+                            <strong id="workspace-streak">0 days</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="rail-card">
+                    <h3>AI Study Coach</h3>
+                    <div class="ai-coach-list" id="workspace-ai-recommendations"></div>
+                </div>
+                <div class="rail-card">
+                    <h3>My Programs</h3>
+                    <div id="workspace-course-switcher" class="workspace-course-switcher"></div>
+                </div>
+                <div class="rail-card">
+                    <h3>Modules</h3>
+                    <ul class="outline-list" id="workspace-outline-list"></ul>
+                </div>
+            </aside>
+
+            <article class="workspace-main reveal-on-scroll">
+                <div class="workspace-section">
+                    <div class="module-header">
+                        <div>
+                            <p class="section-kicker">Current Module</p>
+                            <h2 id="module-title">Module title</h2>
+                        </div>
+                        <button class="btn-outline" id="mark-complete-btn">Mark Complete</button>
+                    </div>
+                    <p class="workspace-status-message" id="workspace-status-message" aria-live="polite"></p>
+
+                    <div class="module-grid">
+                        <div class="module-copy-panel">
+                            <div class="learning-objective">
+                                <strong>Objective</strong>
+                                <span id="module-objective"></span>
+                            </div>
+                            <p id="module-body" class="module-copy"></p>
+                            <div class="clinical-pearl">
+                                <h4 id="module-pearl-title">Clinical Pearl</h4>
+                                <p id="module-pearl-body"></p>
+                            </div>
+                            <h3>Key Structures</h3>
+                            <ul id="module-structures"></ul>
+                        </div>
+
+                        <div class="module-media-panel">
+                            <div class="video-lesson-card">
+                                <div>
+                                    <p class="section-kicker">Video Lesson</p>
+                                    <h3 id="module-video-title">Module video</h3>
+                                    <p id="module-video-summary"></p>
+                                </div>
+                                <button class="btn-outline" id="start-video-btn" type="button">Mark Video Watched</button>
+                                <div class="video-player-shell">
+                                    <iframe id="module-video-frame" class="module-video-frame hidden" title="Module video lesson" loading="lazy" allowfullscreen></iframe>
+                                    <img id="module-image" src="" alt="" class="fit-image">
+                                    <div class="video-play-badge" id="video-placeholder-badge">Embedded video support ready</div>
+                                </div>
+                                <a class="text-link" id="module-video-resource" href="#" target="_blank" rel="noopener">Open lesson resource</a>
+                            </div>
+                            <div class="sample-quiz">
+                                <p class="section-kicker">Between-Module Test</p>
+                                <h4>Module Knowledge Check</h4>
+                                <div class="quiz-toolbar">
+                                    <span class="quiz-timer" id="quiz-timer">Timed quiz: 00:00</span>
+                                </div>
+                                <p id="quiz-prompt"></p>
+                                <div class="quiz-options"></div>
+                                <button class="btn-primary check-answer-btn">Check My Understanding</button>
+                                <div class="quiz-feedback"></div>
+                            </div>
+                            <div class="flashcard-panel">
+                                <div class="flashcard-header">
+                                    <div>
+                                        <p class="section-kicker">Flashcards</p>
+                                        <h4>Rapid Revision Deck</h4>
+                                    </div>
+                                    <span id="flashcard-progress">Card 1 of 1</span>
+                                </div>
+                                <button class="flashcard-card" id="flashcard-card" type="button">
+                                    <span class="flashcard-face flashcard-front" id="flashcard-front">Question</span>
+                                    <span class="flashcard-face flashcard-back" id="flashcard-back">Answer</span>
+                                </button>
+                                <div class="flashcard-actions">
+                                    <button class="btn-secondary" id="flashcard-prev-btn" type="button">Previous Card</button>
+                                    <button class="btn-outline" id="flashcard-flip-btn" type="button">Flip Card</button>
+                                    <button class="btn-primary" id="flashcard-next-btn" type="button">Next Card</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="workspace-section final-test-section">
+                    <div class="module-header">
+                        <div>
+                            <p class="section-kicker">Course Final Test</p>
+                            <h3>Complete the course assessment inside this workspace</h3>
+                        </div>
+                    </div>
+                    <div id="course-final-test" class="course-final-test"></div>
+                </div>
+
+                <div class="workspace-section">
+                    <div class="notes-header">
+                        <div>
+                            <p class="section-kicker">Saved Notes</p>
+                            <h3>Keep your study thoughts inside the course</h3>
+                        </div>
+                    </div>
+                    <textarea id="module-notes" class="module-notes" placeholder="Write revision points, safety reminders, lecturer tips, or weak areas to revisit."></textarea>
+                </div>
+
+                <div class="workspace-section workspace-support-grid">
+                    <div class="support-card">
+                        <p class="section-kicker">Practice Exam</p>
+                        <h3 id="practice-exam-title">Course Practice Exam</h3>
+                        <p id="practice-exam-summary"></p>
+                        <div id="practice-exam-meta" class="selected-facts support-meta"></div>
+                        <a class="btn-outline" href="#course-final-test">Open Course Final Test</a>
+                    </div>
+                    <div class="support-card">
+                        <p class="section-kicker">Lesson Resources</p>
+                        <h3>Linked materials</h3>
+                        <div class="resource-list" id="workspace-resource-list"></div>
+                    </div>
+                </div>
+
+                <div class="navigation-buttons">
+                    <button class="btn-secondary" id="prev-module-btn">Previous Module</button>
+                    <button class="btn-primary" id="next-module-btn">Next Module</button>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>&copy; 2026 GlobalNursePrep. All rights reserved.</p>
+        <p class="powered-by">Powered by Teams Technologies</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="Career icon">
+  <rect x="12" y="12" width="104" height="104" rx="28" fill="#eef4ff"/>
+  <path d="M34 84l18-20 16 16 28-34" fill="none" stroke="#0b1f3a" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M94 46v28H66" fill="none" stroke="#1a73e8" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="96" cy="44" r="7" fill="#1a73e8"/>
+</svg>
+

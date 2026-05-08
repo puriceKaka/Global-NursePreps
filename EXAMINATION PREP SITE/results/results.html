@@ -1,0 +1,91 @@
+<!-- Results Page HTML for GlobalNursePrep -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Results | GlobalNursePrep</title>
+    <link rel="stylesheet" href="results.css">
+    <link rel="stylesheet" href="../../drawer.css">
+    <script defer src="results.js"></script>
+    <script defer src="../../drawer.js"></script>
+</head>
+<body>
+    <nav class="results-top-bar">
+        <div class="results-brand">
+            <button type="button" id="menuToggle" aria-label="Open menu">
+                <span class="hamburger" aria-hidden="true"></span>
+            </button>
+            <span class="brand-logo">
+                <img src="../../logo/Screenshot_20260421-123818.jpg" alt="Global NursePrep logo">
+            </span>
+            <span class="results-brand-text">Global NursePrep</span>
+        </div>
+        <div class="results-actions">
+            <a class="results-link" href="../../homepage.html">Main Homepage</a>
+            <a class="results-link" href="../landing.html">Home</a>
+            <a class="results-link" href="../courses.html">Courses</a>
+            <a class="results-link" href="../exam-lobby/exam-lobby.html">Exam Lobby</a>
+        </div>
+    </nav>
+
+    <div class="drawer-overlay hidden" id="drawerOverlay" tabindex="-1" aria-hidden="true"></div>
+
+    <aside class="drawer hidden" id="drawer" aria-label="Side menu">
+        <div class="drawer-header">
+            <div class="drawer-user">
+                <div class="avatar" id="drawerAvatar" aria-hidden="true">N</div>
+                <div>
+                    <strong id="drawerName">Member</strong>
+                    <div class="muted small" id="drawerEmail">-</div>
+                </div>
+            </div>
+            <button type="button" id="drawerClose" aria-label="Close menu">x</button>
+        </div>
+
+        <nav class="drawer-nav" aria-label="Navigation">
+            <a class="drawer-link" href="../../homepage.html" target="_blank" rel="noopener">Home</a>
+            <a class="drawer-link" href="../../homepage.html#career" target="_blank" rel="noopener">Career Paths</a>
+            <a class="drawer-link" href="../courses.html" target="_blank" rel="noopener">Courses</a>
+            <a class="drawer-link" href="../exam-lobby/exam-lobby.html" target="_blank" rel="noopener">Exam Center</a>
+            <a class="drawer-link" href="../../questions.html" target="_blank" rel="noopener">Questions</a>
+            <a class="drawer-link" href="../../my-learnings.html" target="_blank" rel="noopener">My Learnings</a>
+            <a class="drawer-link" href="../../Profile.html" target="_blank" rel="noopener">Profile</a>
+            <a class="drawer-link" href="../../Membership.html" target="_blank" rel="noopener">Membership</a>
+            <a class="drawer-link" href="../landing.html" target="_blank" rel="noopener">Exam Prep Home</a>
+            <a class="drawer-link" href="../exam-lobby/exam-lobby.html" target="_blank" rel="noopener">Exam Lobby</a>
+        </nav>
+
+        <div class="drawer-footer">
+            <div class="muted small">Tip: Review your weak areas and retry timed practice.</div>
+        </div>
+    </aside>
+    <div class="results-container">
+        <h1>Exam Completed!</h1>
+        <div class="score-section">
+            <h2>Your Score: <span id="score">0%</span></h2>
+            <div id="performance-breakdown"></div>
+        </div>
+        <div class="result-actions">
+            <a class="result-action-link" href="../courses.html">Back to Courses</a>
+            <a class="result-action-link" href="../courses.html#selected-program">Open Course Modules</a>
+        </div>
+        <div class="review-section">
+            <button id="review-answers-btn">Review Answers</button>
+        </div>
+        <div class="analytics-section">
+            <h3>Strengths & Weak Areas</h3>
+            <div id="analytics"></div>
+            <div id="study-plan"></div>
+        </div>
+        <div class="audit-section">
+            <h3>Proctoring Events</h3>
+            <div id="proctoring-events"></div>
+        </div>
+    </div>
+
+    <footer class="simple-footer">
+        <div>Powered by Teams Technologies</div>
+    </footer>
+</body>
+</html>

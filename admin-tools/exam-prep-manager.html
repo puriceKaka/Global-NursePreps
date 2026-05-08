@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Prep Manager | GlobalNursePrep</title>
+    <link rel="stylesheet" href="../EXAMINATION PREP SITE/landing.css">
+    <link rel="stylesheet" href="exam-prep-manager.css">
+    <script defer src="../EXAMINATION PREP SITE/exam-prep-core.js"></script>
+    <script defer src="exam-prep-manager.js"></script>
+</head>
+<body data-page="admin-exam-prep">
+    <nav class="navbar">
+        <div class="logo-container">
+            <span class="brand-logo">
+                <img src="../logo/Screenshot_20260421-123818.jpg" alt="Global NursePrep logo">
+            </span>
+            <span class="logo-text">Global <span class="highlight">Nurse</span>Prep</span>
+        </div>
+        <ul>
+            <li><a href="../homepage.html">Main Homepage</a></li>
+            <li><a href="../EXAMINATION PREP SITE/landing.html">Exam Prep Home</a></li>
+            <li><a href="../EXAMINATION PREP SITE/courses.html">Courses</a></li>
+        </ul>
+    </nav>
+
+    <main class="admin-shell">
+        <section class="admin-hero reveal-on-scroll">
+            <div>
+                <p class="section-label">Separate Admin Tool</p>
+                <h1>Exam Prep Content Manager</h1>
+                <p>
+                    Update public exam prep content here without exposing admin controls inside the learner-facing workspace.
+                    This page manages hero copy, announcements, course details, modules, flashcards, and quizzes through the backend API.
+                </p>
+            </div>
+            <div class="admin-hero-actions">
+                <button class="btn-primary" id="refresh-content-btn" type="button">Refresh Content</button>
+                <button class="btn-secondary" id="save-all-btn" type="button">Save Full Content</button>
+            </div>
+        </section>
+
+        <section class="status-banner hidden" id="admin-status-banner" aria-live="polite"></section>
+
+        <section class="admin-grid">
+            <article class="admin-panel reveal-on-scroll">
+                <div class="panel-header">
+                    <div>
+                        <p class="section-label">Site Settings</p>
+                        <h2>Landing and catalog messaging</h2>
+                    </div>
+                    <button class="btn-outline" id="save-settings-btn" type="button">Save Settings</button>
+                </div>
+
+                <div class="admin-form two-column">
+                    <label>
+                        Hero Eyebrow
+                        <input id="hero-eyebrow-input" type="text">
+                    </label>
+                    <label>
+                        Hero Title
+                        <input id="hero-title-input" type="text">
+                    </label>
+                    <label class="full-span">
+                        Hero Lead
+                        <textarea id="hero-lead-input"></textarea>
+                    </label>
+                    <label class="full-span">
+                        Hero Image URL
+                        <input id="hero-image-input" type="url">
+                    </label>
+                    <label>
+                        Primary CTA Label
+                        <input id="hero-primary-cta-input" type="text">
+                    </label>
+                    <label>
+                        Secondary CTA Label
+                        <input id="hero-secondary-cta-input" type="text">
+                    </label>
+                    <label>
+                        Announcement Label
+                        <input id="announcement-label-input" type="text">
+                    </label>
+                    <label>
+                        Announcement Action Label
+                        <input id="announcement-action-label-input" type="text">
+                    </label>
+                    <label class="full-span">
+                        Announcement Message
+                        <textarea id="announcement-message-input"></textarea>
+                    </label>
+                    <label class="full-span">
+                        Announcement Action Link
+                        <input id="announcement-action-href-input" type="text">
+                    </label>
+                </div>
+            </article>
+
+            <article class="admin-panel reveal-on-scroll">
+                <div class="panel-header">
+                    <div>
+                        <p class="section-label">Course Editor</p>
+                        <h2>Course metadata and modules</h2>
+                    </div>
+                    <button class="btn-outline" id="save-course-btn" type="button">Save Selected Course</button>
+                </div>
+
+                <div class="admin-form two-column">
+                    <label class="full-span">
+                        Select Course
+                        <select id="course-select"></select>
+                    </label>
+                    <label>
+                        Title
+                        <input id="course-title-input" type="text">
+                    </label>
+                    <label>
+                        Category
+                        <input id="course-category-input" type="text">
+                    </label>
+                    <label>
+                        Difficulty
+                        <input id="course-difficulty-input" type="text">
+                    </label>
+                    <label>
+                        Badge
+                        <input id="course-badge-input" type="text">
+                    </label>
+                    <label>
+                        Duration Hours
+                        <input id="course-duration-input" type="number" min="1">
+                    </label>
+                    <label>
+                        Question Count
+                        <input id="course-questions-input" type="number" min="0">
+                    </label>
+                    <label>
+                        Practice Exams
+                        <input id="course-exams-input" type="number" min="0">
+                    </label>
+                    <label>
+                        Delivery Format
+                        <input id="course-format-input" type="text">
+                    </label>
+                    <label class="full-span">
+                        Summary
+                        <textarea id="course-summary-input"></textarea>
+                    </label>
+                    <label class="full-span">
+                        Image URL
+                        <input id="course-image-input" type="url">
+                    </label>
+                    <label class="full-span">
+                        Practice Exam JSON
+                        <textarea id="practice-exam-json-input" class="json-editor" spellcheck="false"></textarea>
+                    </label>
+                    <label class="full-span">
+                        Modules JSON
+                        <textarea id="modules-json-input" class="json-editor tall-editor" spellcheck="false"></textarea>
+                    </label>
+                </div>
+            </article>
+        </section>
+
+        <section class="admin-panel reveal-on-scroll">
+            <div class="panel-header">
+                <div>
+                    <p class="section-label">Full Content</p>
+                    <h2>Direct JSON editor</h2>
+                </div>
+                <button class="btn-outline" id="save-json-btn" type="button">Save JSON</button>
+            </div>
+            <p class="panel-note">
+                Use this when you want to update featured course ids, stats, student highlights, or multiple courses at once.
+                The page saves to the same backend content store used by the learner pages.
+            </p>
+            <textarea id="full-content-json" class="json-editor giant-editor" spellcheck="false"></textarea>
+        </section>
+    </main>
+</body>
+</html>
