@@ -1193,6 +1193,7 @@ function renderCourseCard(course, state) {
                         <p>${course.summary}</p>
                     </div>
                     <span class="course-badge">${course.badge}</span>
+                    ${enrolled ? `<span class="course-chip enrolled-chip">Enrolled</span>` : ""}
                 </div>
                 <div class="course-meta">
                     ${createMetaPill("Track", course.category)}
@@ -1211,7 +1212,7 @@ function renderCourseCard(course, state) {
                 <div class="course-actions">
                     <button class="btn-outline" data-select-course="${course.id}">Details</button>
                     <a class="btn-primary" href="${workspaceHref}" target="_blank" rel="noopener">Open Course</a>
-                    <button class="${enrolled ? "btn-outline" : "btn-primary"}" data-enroll-course="${course.id}">${enrolled ? "Continue" : "Enroll"}</button>
+                    <button class="btn-primary" data-enroll-course="${course.id}">${enrolled ? "Continue learning" : "Enroll"}</button>
                     <a class="btn-outline" href="${workspaceHref}#course-final-test" target="_blank" rel="noopener">Final Test</a>
                 </div>
             </div>
