@@ -361,6 +361,24 @@ body[data-page="course-detail"] .navbar a[aria-current="page"] {
     flex: 0 0 auto;
 }
 
+.filter-heading h3 {
+    font-size: 1rem;
+    white-space: nowrap;
+}
+
+.filter-toggle {
+    display: none;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    background: #ffffff;
+    color: var(--navy);
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 800;
+    padding: 0.45rem 0.7rem;
+}
+
 .filter-chip,
 .learner-chip,
 .workspace-course-link {
@@ -412,18 +430,22 @@ body[data-page="course-detail"] .navbar a[aria-current="page"] {
     flex-wrap: wrap;
     gap: 0.45rem;
     color: var(--text-muted);
+    justify-content: flex-end;
+    min-width: 0;
 }
 
 .difficulty-list label {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    padding: 0.45rem 0.65rem;
+    padding: 0.38rem 0.56rem;
     border: 1px solid var(--border-color);
     border-radius: 999px;
     background: #ffffff;
     color: var(--navy);
     font-weight: 700;
+    font-size: 0.82rem;
+    white-space: nowrap;
 }
 
 .catalog-stage {
@@ -1289,7 +1311,7 @@ body[data-page="catalog"] .catalog-stage {
 
 body[data-page="catalog"] .filter-list {
     display: flex;
-    gap: 0.65rem;
+    gap: 0.45rem;
     overflow-x: auto;
     overflow-y: hidden;
     padding: 0.05rem 0 0.25rem;
@@ -1299,13 +1321,13 @@ body[data-page="catalog"] .filter-list {
 }
 
 body[data-page="catalog"] .academy-category-chip {
-    width: min(240px, 72vw);
+    width: min(176px, 34vw);
     flex: 0 0 auto;
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
-    gap: 0.7rem;
+    gap: 0.45rem;
     align-items: center;
-    padding: 0.78rem;
+    padding: 0.58rem 0.65rem;
     white-space: normal;
     background: #ffffff;
     scroll-snap-align: start;
@@ -1323,8 +1345,8 @@ body[data-page="catalog"] .academy-category-chip.active {
 }
 
 .category-marker {
-    width: 10px;
-    height: 38px;
+    width: 7px;
+    height: 30px;
     border-radius: 999px;
     background: #d9e2ec;
 }
@@ -1341,23 +1363,24 @@ body[data-page="catalog"] .academy-category-chip.active {
 
 .category-copy strong {
     color: var(--navy);
-    font-size: 0.92rem;
+    font-size: 0.82rem;
     line-height: 1.25;
     overflow-wrap: anywhere;
 }
 
 .category-copy small {
     color: var(--text-muted);
-    font-size: 0.76rem;
+    display: none;
+    font-size: 0.72rem;
     line-height: 1.25;
 }
 
 .category-count {
-    padding: 0.32rem 0.48rem;
+    padding: 0.24rem 0.42rem;
     border-radius: 999px;
     background: var(--gray-surface);
     color: var(--text-muted);
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     font-weight: 800;
     white-space: nowrap;
 }
@@ -1469,7 +1492,7 @@ body[data-page="catalog"] .course-actions .btn-outline {
     }
 
     body[data-page="catalog"] .filter-heading {
-        align-items: flex-start;
+        align-items: center;
     }
 
     body[data-page="catalog"] .difficulty-list {
@@ -1514,7 +1537,40 @@ body[data-page="catalog"] .course-actions .btn-outline {
     }
 
     body[data-page="catalog"] .filter-rail-card {
+        display: block;
+        padding: 0.65rem;
+    }
+
+    body[data-page="catalog"] .filter-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: auto;
+    }
+
+    body[data-page="catalog"] .filter-heading {
+        margin-bottom: 0;
+    }
+
+    body[data-page="catalog"] .filter-heading h3 {
+        font-size: 0.95rem;
+    }
+
+    body[data-page="catalog"] .difficulty-list,
+    body[data-page="catalog"] .catalog-filter-panel {
         display: none;
+    }
+
+    body[data-page="catalog"] .filter-rail-card.filters-open .difficulty-list {
+        display: flex;
+        flex-basis: 100%;
+        justify-content: flex-start;
+        margin-top: 0.65rem;
+    }
+
+    body[data-page="catalog"] .catalog-filter-panel.is-open {
+        display: block;
+        margin-top: 0.65rem;
     }
 
     body[data-page="catalog"] .course-card-image {
@@ -1537,7 +1593,7 @@ body[data-page="catalog"] .course-actions .btn-outline {
     }
 
     body[data-page="catalog"] .academy-category-chip {
-        width: min(210px, 68vw);
+        width: min(190px, 66vw);
         grid-template-columns: minmax(0, 1fr) auto;
         padding: 0.7rem;
     }
@@ -1555,7 +1611,7 @@ body[data-page="catalog"] .course-actions .btn-outline {
     }
 
     body[data-page="catalog"] .academy-category-chip {
-        width: 74vw;
+        width: 70vw;
     }
 
     body[data-page="catalog"] .category-copy small {

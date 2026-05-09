@@ -84,13 +84,16 @@
                 <div class="rail-card filter-rail-card">
                     <div class="filter-heading">
                         <h3>Categories</h3>
+                        <button type="button" class="filter-toggle" id="filter-toggle" aria-expanded="false" aria-controls="catalog-filter-panel">Show filters</button>
                         <div class="difficulty-list" aria-label="Difficulty filters">
                             <label><input type="checkbox" value="Beginner" class="difficulty-filter"> Beginner</label>
                             <label><input type="checkbox" value="Intermediate" class="difficulty-filter"> Intermediate</label>
                             <label><input type="checkbox" value="Advanced" class="difficulty-filter"> Advanced</label>
                         </div>
                     </div>
-                    <div class="filter-list" id="category-filters" role="tablist" aria-label="Course categories"></div>
+                    <div class="catalog-filter-panel" id="catalog-filter-panel">
+                        <div class="filter-list" id="category-filters" role="tablist" aria-label="Course categories"></div>
+                    </div>
                 </div>
             </aside>
 

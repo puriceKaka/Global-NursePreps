@@ -691,6 +691,9 @@ function initializeCatalogPage() {
 
     const grid = document.getElementById("course-grid");
     const categoryContainer = document.getElementById("category-filters");
+    const filterPanel = document.getElementById("catalog-filter-panel");
+    const filterToggle = document.getElementById("filter-toggle");
+    const filterCard = filterToggle?.closest(".filter-rail-card");
     const searchInput = document.getElementById("course-search");
     const sortSelect = document.getElementById("sort-select");
     const resultCount = document.getElementById("catalog-results");
@@ -706,6 +709,13 @@ function initializeCatalogPage() {
         sort: "featured",
         selectedCourseId: state.selectedCourseId || courseCatalog[0].id
     };
+
+    filterToggle?.addEventListener("click", () => {
+        const isOpen = filterPanel?.classList.toggle("is-open") === true;
+        filterCard?.classList.toggle("filters-open", isOpen);
+        filterToggle.setAttribute("aria-expanded", String(isOpen));
+        filterToggle.textContent = isOpen ? "Hide filters" : "Show filters";
+    });
 
     categoryContainer.innerHTML = categories
         .map((category) => renderCategoryFilter(category, category === view.category))
