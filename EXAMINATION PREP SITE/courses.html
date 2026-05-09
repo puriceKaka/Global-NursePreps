@@ -72,6 +72,10 @@
                 <div class="catalog-hero-copy">
                     <p class="eyebrow">Learning Paths</p>
                     <h1>Choose one course, then study it step by step.</h1>
+                    <div class="hero-filter-panel">
+                        <label class="search-label" for="category-select">Category</label>
+                        <select id="category-select" class="search-input category-dropdown" aria-label="Choose course category"></select>
+                    </div>
                     <div class="hero-search-panel">
                         <label class="search-label" for="course-search">Search programs</label>
                         <input id="course-search" class="search-input" type="search" placeholder="Search by title, skill, or exam type">
@@ -83,15 +87,15 @@
             <aside class="discovery-rail reveal-on-scroll">
                 <div class="rail-card filter-rail-card">
                     <div class="filter-heading">
-                        <h3>Categories</h3>
-                        <button type="button" class="filter-toggle" id="filter-toggle" aria-expanded="false" aria-controls="catalog-filter-panel">Show filters</button>
-                        <div class="difficulty-list" aria-label="Difficulty filters">
+                        <h3>Difficulty</h3>
+                        <button type="button" class="filter-toggle" id="filter-toggle" aria-expanded="false" aria-controls="difficulty-filters">Show filters</button>
+                        <div class="difficulty-list" id="difficulty-filters" aria-label="Difficulty filters">
                             <label><input type="checkbox" value="Beginner" class="difficulty-filter"> Beginner</label>
                             <label><input type="checkbox" value="Intermediate" class="difficulty-filter"> Intermediate</label>
                             <label><input type="checkbox" value="Advanced" class="difficulty-filter"> Advanced</label>
                         </div>
                     </div>
-                    <div class="catalog-filter-panel" id="catalog-filter-panel">
+                    <div class="catalog-filter-panel category-chip-sync" id="catalog-filter-panel" aria-hidden="true">
                         <div class="filter-list" id="category-filters" role="tablist" aria-label="Course categories"></div>
                     </div>
                 </div>

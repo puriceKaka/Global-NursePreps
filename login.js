@@ -70,6 +70,11 @@
         btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
     }
 
+    function handleSocialLogin(event) {
+        const provider = event.currentTarget?.dataset?.provider || 'this provider';
+        showError(`${provider} sign-in is ready in the UI. Connect OAuth/Firebase provider keys before enabling live sign-in.`);
+    }
+
     async function onSubmit(event) {
         event.preventDefault();
         clearError();
@@ -136,6 +141,9 @@
         }
         $('#togglePasswordBtn')?.addEventListener('click', togglePassword);
         $('#loginForm')?.addEventListener('submit', onSubmit);
+        document.querySelectorAll('[data-provider]').forEach((button) => {
+            button.addEventListener('click', handleSocialLogin);
+        });
     }
 
     document.addEventListener('DOMContentLoaded', main);

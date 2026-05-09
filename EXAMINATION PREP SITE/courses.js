@@ -684,6 +684,15 @@ function uid(prefix = "id") {
     return `${prefix}_${Math.random().toString(16).slice(2)}_${Date.now().toString(16)}`;
 }
 
+function escapeHtml(value) {
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
 function initializeCatalogPage() {
     if (document.body.dataset.page !== "catalog") {
         return;
@@ -691,6 +700,7 @@ function initializeCatalogPage() {
 
     const grid = document.getElementById("course-grid");
     const categoryContainer = document.getElementById("category-filters");
+    const categorySelect = document.getElementById("category-select");
     const filterPanel = document.getElementById("catalog-filter-panel");
     const filterToggle = document.getElementById("filter-toggle");
     const filterCard = filterToggle?.closest(".filter-rail-card");
@@ -720,6 +730,17 @@ function initializeCatalogPage() {
     categoryContainer.innerHTML = categories
         .map((category) => renderCategoryFilter(category, category === view.category))
         .join("");
+    if (categorySelect) {
+        categorySelect.innerHTML = categories
+            .map((category) => `<option value="${escapeHtml(category)}">${escapeHtml(category)}</option>`)
+            .join("");
+        categorySelect.value = view.category;
+        categorySelect.addEventListener("change", (event) => {
+            view.category = event.target.value;
+            syncCategoryControls();
+            renderCatalog();
+        });
+    }
 
     categoryContainer.addEventListener("click", (event) => {
         const target = event.target.closest(".filter-chip");
@@ -728,9 +749,7 @@ function initializeCatalogPage() {
         }
 
         view.category = target.dataset.category;
-        categoryContainer.querySelectorAll(".filter-chip").forEach((chip) => {
-            chip.classList.toggle("active", chip === target);
-        });
+        syncCategoryControls();
         renderCatalog();
     });
 
@@ -772,6 +791,15 @@ function initializeCatalogPage() {
     });
 
     renderCatalog();
+
+    function syncCategoryControls() {
+        if (categorySelect) {
+            categorySelect.value = view.category;
+        }
+        categoryContainer.querySelectorAll(".filter-chip").forEach((chip) => {
+            chip.classList.toggle("active", chip.dataset.category === view.category);
+        });
+    }
 
     function renderCatalog() {
         const latestState = getLearningState();

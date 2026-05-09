@@ -325,6 +325,23 @@ body[data-page="course-detail"] .navbar a[aria-current="page"] {
     font-weight: 700;
 }
 
+.hero-filter-panel {
+    width: min(360px, 100%);
+    margin-top: 0.9rem;
+    animation: filter-rise 0.65s ease both;
+}
+
+.category-dropdown {
+    min-height: 44px;
+    background:
+        linear-gradient(180deg, #ffffff, #f8fbff);
+    cursor: pointer;
+}
+
+.category-chip-sync {
+    display: none !important;
+}
+
 .search-input,
 .sort-dropdown {
     width: 100%;
@@ -359,6 +376,7 @@ body[data-page="course-detail"] .navbar a[aria-current="page"] {
     gap: 0.75rem;
     margin-bottom: 0.7rem;
     flex: 0 0 auto;
+    margin-bottom: 0;
 }
 
 .filter-heading h3 {
@@ -432,6 +450,7 @@ body[data-page="course-detail"] .navbar a[aria-current="page"] {
     color: var(--text-muted);
     justify-content: flex-end;
     min-width: 0;
+    flex: 1 1 auto;
 }
 
 .difficulty-list label {
@@ -459,6 +478,7 @@ body[data-page="course-detail"] .navbar a[aria-current="page"] {
     gap: 1.2rem;
     padding: 1.35rem;
     box-shadow: var(--shadow-panel);
+    animation: panel-rise 0.7s ease both;
 }
 
 .selected-program-media {
@@ -1397,6 +1417,7 @@ body[data-page="catalog"] .course-card.homepage-style-course-card {
     padding: 14px;
     min-height: 100%;
     background: rgba(255, 255, 255, 0.9);
+    animation: panel-rise 0.65s ease both;
 }
 
 body[data-page="catalog"] .course-card-image {
@@ -1408,6 +1429,33 @@ body[data-page="catalog"] .course-card-image {
     border-radius: 12px;
     border: 1px solid var(--border-color);
     background: var(--gray-surface);
+    transition: transform 0.35s ease;
+}
+
+body[data-page="catalog"] .course-card:hover .course-card-image {
+    transform: scale(1.025);
+}
+
+@keyframes filter-rise {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes panel-rise {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 body[data-page="catalog"] .course-card-body {

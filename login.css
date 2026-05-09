@@ -90,6 +90,7 @@ html, body {
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
     overflow: hidden;
     box-shadow: var(--shadow);
+    animation: auth-rise 0.65s ease both;
 }
 
 .auth-left {
@@ -186,6 +187,10 @@ html, body {
     object-fit: cover;
 }
 
+.preview {
+    animation: image-float 5s ease-in-out infinite;
+}
+
 .auth-right {
     padding: 34px 30px;
     display: grid;
@@ -267,6 +272,109 @@ input:focus {
     display: none !important;
 }
 
+.auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+    content: "";
+    height: 1px;
+    flex: 1;
+    background: var(--border);
+}
+
+.social-login-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.social-button {
+    min-height: 44px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: #ffffff;
+    color: var(--navy);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font: inherit;
+    font-weight: 900;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.social-button:hover {
+    transform: translateY(-2px);
+    border-color: rgba(30, 136, 229, 0.38);
+    box-shadow: 0 10px 18px rgba(11, 31, 58, 0.08);
+}
+
+.social-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    display: inline-grid;
+    place-items: center;
+    flex: 0 0 auto;
+    font-size: 13px;
+    font-weight: 900;
+}
+
+.google-icon {
+    color: #ffffff;
+    background: linear-gradient(135deg, #4285f4, #34a853 45%, #fbbc05 70%, #ea4335);
+}
+
+.microsoft-icon {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    border-radius: 4px;
+}
+
+.microsoft-icon span:nth-child(1) { background: #f35325; }
+.microsoft-icon span:nth-child(2) { background: #81bc06; }
+.microsoft-icon span:nth-child(3) { background: #05a6f0; }
+.microsoft-icon span:nth-child(4) { background: #ffba08; }
+
+.apple-icon {
+    background: #111827;
+}
+
+.apple-icon svg {
+    width: 16px;
+    height: 16px;
+    fill: #ffffff;
+}
+
+@keyframes auth-rise {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes image-float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-6px);
+    }
+}
+
 .links {
     margin-top: 18px;
     display: flex;
@@ -335,6 +443,9 @@ input:focus {
         border-radius: 14px;
     }
     .password-row {
+        grid-template-columns: 1fr;
+    }
+    .social-login-row {
         grid-template-columns: 1fr;
     }
 }
