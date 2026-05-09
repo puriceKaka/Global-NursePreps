@@ -1000,3 +1000,239 @@
 .learning-card:has(.card-media)::before {
     display: none;
 }
+
+/* Academy catalog workspace flow */
+body[data-page="catalog"] .learning-layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    flex-wrap: nowrap;
+}
+
+body[data-page="catalog"] .learning-layout .discovery-rail {
+    flex: 0 0 320px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+    position: sticky;
+    top: 94px;
+}
+
+body[data-page="catalog"] .catalog-stage {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+body[data-page="catalog"] .filter-list {
+    display: grid;
+    gap: 0.65rem;
+    overflow: visible;
+    padding-bottom: 0;
+}
+
+body[data-page="catalog"] .academy-category-chip {
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 0.7rem;
+    align-items: center;
+    padding: 0.78rem;
+    white-space: normal;
+    background: #ffffff;
+}
+
+body[data-page="catalog"] .academy-category-chip:hover {
+    border-color: rgba(0, 156, 166, 0.45);
+    background: #f7fcfd;
+}
+
+body[data-page="catalog"] .academy-category-chip.active {
+    border-color: var(--teal);
+    background: rgba(0, 156, 166, 0.08);
+    box-shadow: inset 0 0 0 1px rgba(0, 156, 166, 0.16);
+}
+
+.category-marker {
+    width: 10px;
+    height: 38px;
+    border-radius: 999px;
+    background: #d9e2ec;
+}
+
+.academy-category-chip.active .category-marker {
+    background: var(--teal);
+}
+
+.category-copy {
+    display: grid;
+    gap: 0.2rem;
+    min-width: 0;
+}
+
+.category-copy strong {
+    color: var(--navy);
+    font-size: 0.92rem;
+    line-height: 1.25;
+}
+
+.category-copy small {
+    color: var(--text-muted);
+    font-size: 0.76rem;
+    line-height: 1.25;
+}
+
+.category-count {
+    padding: 0.32rem 0.48rem;
+    border-radius: 999px;
+    background: var(--gray-surface);
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+body[data-page="catalog"] .course-grid {
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+}
+
+body[data-page="catalog"] .course-card.netacad-course-card {
+    display: grid;
+    grid-template-columns: 132px minmax(0, 1fr);
+    gap: 0;
+    padding: 0;
+    min-height: 0;
+    background: #ffffff;
+}
+
+body[data-page="catalog"] .netacad-card-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    border-right: 1px solid var(--border-color);
+    background: #f8fbff;
+    overflow: hidden;
+    min-height: 100%;
+}
+
+body[data-page="catalog"] .netacad-card-icon img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.22;
+}
+
+body[data-page="catalog"] .netacad-card-icon span {
+    width: 48px;
+    height: 48px;
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    border-radius: 8px;
+    background: #e8f5f7;
+    color: var(--teal);
+    font-weight: 900;
+    font-size: 0.9rem;
+}
+
+body[data-page="catalog"] .course-card-body {
+    gap: 0.82rem;
+    padding: 1rem 1.1rem;
+}
+
+body[data-page="catalog"] .course-card h3 {
+    margin-top: 0.25rem;
+    font-size: 1.18rem;
+}
+
+body[data-page="catalog"] .course-card-top {
+    align-items: center;
+}
+
+body[data-page="catalog"] .course-card-top p {
+    max-width: 760px;
+}
+
+.learning-type {
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+body[data-page="catalog"] .course-meta,
+body[data-page="catalog"] .course-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+body[data-page="catalog"] .course-actions {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(104px, 1fr));
+    gap: 0.55rem;
+}
+
+body[data-page="catalog"] .course-actions .btn-primary,
+body[data-page="catalog"] .course-actions .btn-outline {
+    flex-basis: auto;
+    padding: 0.62rem 0.7rem;
+    min-height: 38px;
+    font-size: 0.84rem;
+}
+
+.course-progress-inline {
+    display: grid;
+    gap: 0.45rem;
+}
+
+.course-progress-inline small {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+@media (max-width: 1180px) {
+    body[data-page="catalog"] .learning-layout {
+        flex-wrap: wrap;
+    }
+
+    body[data-page="catalog"] .learning-layout .discovery-rail {
+        flex: 1 1 100%;
+        position: static;
+    }
+
+    body[data-page="catalog"] .catalog-stage {
+        flex-basis: 100%;
+    }
+
+    body[data-page="catalog"] .course-card.netacad-course-card {
+        grid-template-columns: 1fr;
+    }
+
+    body[data-page="catalog"] .netacad-card-icon {
+        min-height: 120px;
+        border-right: 0;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    body[data-page="catalog"] .course-actions {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 720px) {
+    body[data-page="catalog"] .course-meta,
+    body[data-page="catalog"] .course-stats,
+    body[data-page="catalog"] .course-actions {
+        grid-template-columns: 1fr;
+    }
+
+    body[data-page="catalog"] .catalog-toolbar,
+    body[data-page="catalog"] .course-card-top {
+        align-items: stretch;
+    }
+}

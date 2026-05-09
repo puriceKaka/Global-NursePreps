@@ -682,7 +682,7 @@ function initializeCatalogPage() {
     };
 
     categoryContainer.innerHTML = categories
-        .map((category) => `<button class="filter-chip${category === view.category ? " active" : ""}" data-category="${category}">${category}</button>`)
+        .map((category) => renderCategoryFilter(category, category === view.category))
         .join("");
 
     categoryContainer.addEventListener("click", (event) => {
@@ -727,7 +727,7 @@ function initializeCatalogPage() {
             latest.enrolledCourseIds.push(selectedCourse.id);
             ensureCourseProgress(latest, selectedCourse.id);
         } else {
-            window.location.href = `exam-lobby/anatomy.html?course=${selectedCourse.id}`;
+            window.location.href = `course-workspace.html?course=${encodeURIComponent(selectedCourse.id)}`;
             return;
         }
         latest.selectedCourseId = selectedCourse.id;
@@ -793,7 +793,7 @@ function initializeCatalogPage() {
                     latest.enrolledCourseIds.push(courseId);
                     ensureCourseProgress(latest, courseId);
                 } else {
-                    window.location.href = `exam-lobby/anatomy.html?course=${courseId}`;
+                    window.location.href = `course-workspace.html?course=${encodeURIComponent(courseId)}`;
                     return;
                 }
 
@@ -806,6 +806,26 @@ function initializeCatalogPage() {
 
         revealElements(document.querySelectorAll(".reveal-on-scroll"));
     }
+
+    function renderCategoryFilter(category, isActive) {
+        const source = category === "All Courses"
+            ? courseCatalog
+            : courseCatalog.filter((course) => course.category === category);
+        const moduleCount = source.reduce((sum, course) => sum + Number(course.modules?.length || 0), 0);
+        const questionCount = source.reduce((sum, course) => sum + Number(course.questions || 0), 0);
+        const label = category === "All Courses" ? "Full catalog" : category;
+
+        return `
+            <button class="filter-chip academy-category-chip${isActive ? " active" : ""}" data-category="${category}">
+                <span class="category-marker" aria-hidden="true"></span>
+                <span class="category-copy">
+                    <strong>${label}</strong>
+                    <small>${moduleCount} modules, ${questionCount.toLocaleString()} questions</small>
+                </span>
+                <span class="category-count">${source.length}</span>
+            </button>
+        `;
+    }
 }
 
 function initializeCourseDetailPage() {
@@ -814,18 +834,20 @@ function initializeCourseDetailPage() {
     }
 
     const state = getLearningState();
-    const requestedCourseId = new URLSearchParams(window.location.search).get("course");
+    const params = new URLSearchParams(window.location.search);
+    const requestedCourseId = params.get("course");
+    const requestedModuleIndex = Number(params.get("module"));
     const currentCourse = getCourseById(requestedCourseId) || getCourseById(state.selectedCourseId) || courseCatalog[0];
 
     state.selectedCourseId = currentCourse.id;
-    ensureCourseProgress(state, currentCourse.id);
-    saveLearningState(state);
-
+    const currentProgress = ensureCourseProgress(state, currentCourse.id);
     if (!state.enrolledCourseIds.includes(currentCourse.id)) {
-        window.alert("Enroll in this course first to open the learning workspace.");
-        window.location.replace(`../courses.html#selected-program`);
-        return;
+        state.enrolledCourseIds.push(currentCourse.id);
     }
+    currentProgress.currentModuleIndex = Number.isInteger(requestedModuleIndex)
+        ? clampModuleIndex(requestedModuleIndex, currentCourse.modules.length)
+        : clampModuleIndex(currentProgress.currentModuleIndex, currentCourse.modules.length);
+    saveLearningState(state);
 
     const elements = {
         workspaceTitle: document.getElementById("workspace-course-title"),
@@ -978,7 +1000,7 @@ function initializeCourseDetailPage() {
             .map((course) => {
                 const percent = getProgressPercent(course.id);
                 return `
-                    <a class="workspace-course-link${course.id === activeCourse.id ? " active" : ""}" href="anatomy.html?course=${course.id}">
+                    <a class="workspace-course-link${course.id === activeCourse.id ? " active" : ""}" href="course-workspace.html?course=${encodeURIComponent(course.id)}">
                         <strong>${course.title}</strong>
                         <span>${percent}% complete</span>
                     </a>
@@ -1060,33 +1082,44 @@ function initializeCourseDetailPage() {
 }
 
 function renderCourseCard(course, state) {
-    const isEnrolled = state.enrolledCourseIds.includes(course.id);
+    const enrolled = state.enrolledCourseIds.includes(course.id);
     const percent = getProgressPercent(course.id, state);
-    const workspaceHref = isEnrolled ? `exam-lobby/anatomy.html?course=${course.id}` : `#selected-program`;
+    const workspaceHref = `course-workspace.html?course=${encodeURIComponent(course.id)}`;
+    const courseImage = course.image || "../assets/nursing-hero.svg";
     return `
-        <article class="course-card reveal-on-scroll">
-            <div class="course-card-media">
-                <img src="${course.image}" alt="${course.title}" class="fit-image">
+        <article class="course-card netacad-course-card reveal-on-scroll">
+            <div class="netacad-card-icon" aria-hidden="true">
+                <img src="${courseImage}" alt="" loading="lazy">
+                <span>${course.title.slice(0, 2).toUpperCase()}</span>
             </div>
             <div class="course-card-body">
-                <div class="badge-row">
+                <div class="course-card-top">
+                    <div>
+                        <span class="learning-type">${course.format || "Self-paced"}</span>
+                        <h3>${course.title}</h3>
+                        <p>${course.summary}</p>
+                    </div>
                     <span class="course-badge">${course.badge}</span>
-                    <span class="course-chip">${course.difficulty}</span>
-                    <span class="course-chip">${course.modules.length} units</span>
                 </div>
-                <h3>${course.title}</h3>
-                <p>${course.summary}</p>
-                <div class="course-quick-row">
-                    <span>${course.category}</span>
-                    <span>${course.questions}+ questions</span>
+                <div class="course-meta">
+                    ${createMetaPill("Track", course.category)}
+                    ${createMetaPill("Level", course.difficulty)}
+                    ${createMetaPill("Modules", `${course.modules.length}`)}
                 </div>
-                <div class="course-progress-line">
-                    <span style="width: ${percent}%"></span>
+                <div class="course-stats">
+                    <div><strong>${Number(course.questions || 0).toLocaleString()}+</strong><span>Questions</span></div>
+                    <div><strong>${Number(course.durationHours || 0)}h</strong><span>Guided hours</span></div>
+                    <div><strong>${Number(course.exams || 0)}</strong><span>Assessments</span></div>
+                </div>
+                <div class="course-progress-inline">
+                    <div class="progress-bar"><span style="width:${percent}%"></span></div>
+                    <small>${percent}% complete</small>
                 </div>
                 <div class="course-actions">
-                    <button class="btn-outline" data-select-course="${course.id}">View structure</button>
-                    <button class="${isEnrolled ? "btn-outline" : "btn-primary"}" data-enroll-course="${course.id}">${isEnrolled ? "Continue learning" : "Enroll"}</button>
-                    <a class="btn-outline${isEnrolled ? "" : " is-disabled"}" href="${workspaceHref}">${isEnrolled ? "Open course" : "Enroll to open"}</a>
+                    <button class="btn-outline" data-select-course="${course.id}">Details</button>
+                    <a class="btn-primary" href="${workspaceHref}" target="_blank" rel="noopener">Open Course</a>
+                    <button class="${enrolled ? "btn-outline" : "btn-primary"}" data-enroll-course="${course.id}">${enrolled ? "Continue" : "Enroll"}</button>
+                    <a class="btn-outline" href="${workspaceHref}#course-final-test" target="_blank" rel="noopener">Final Test</a>
                 </div>
             </div>
         </article>
@@ -1127,9 +1160,11 @@ function renderSelectedProgram(course, state) {
     }
     const openBtn = document.getElementById("selected-open-btn");
     if (openBtn) {
-        openBtn.href = enrolled ? `exam-lobby/anatomy.html?course=${course.id}` : "#selected-program";
-        openBtn.textContent = enrolled ? "Open Workspace" : "Enroll to open";
-        openBtn.classList.toggle("is-disabled", !enrolled);
+        openBtn.href = `course-workspace.html?course=${encodeURIComponent(course.id)}`;
+        openBtn.target = "_blank";
+        openBtn.rel = "noopener";
+        openBtn.textContent = enrolled ? "Open Workspace" : "Preview Workspace";
+        openBtn.classList.remove("is-disabled");
     }
     const enrollBtn = document.getElementById("selected-enroll-btn");
     if (enrollBtn) {

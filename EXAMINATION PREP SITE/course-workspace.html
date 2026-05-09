@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Workspace | GlobalNursePrep</title>
+    <link rel="stylesheet" href="../css/design-system.css">
+    <link rel="stylesheet" href="landing.css">
+    <link rel="stylesheet" href="courses.css">
+    <link rel="stylesheet" href="../css/exam-prep-theme.css">
+    <link rel="stylesheet" href="../drawer.css">
+    <script defer src="../learning-core.js"></script>
+    <script defer src="../js/auth-guard.js" data-login="../login.html"></script>
+    <script defer src="courses.js"></script>
+    <script defer src="../drawer.js"></script>
+</head>
+<body data-page="course-detail">
+    <nav class="navbar">
+        <div class="logo-container">
+            <button type="button" id="menuToggle" aria-label="Open menu">
+                <span class="hamburger" aria-hidden="true"></span>
+            </button>
+            <span class="brand-logo">
+                <img src="../logo/Screenshot_20260421-123818.jpg" alt="Global NursePrep logo">
+            </span>
+            <span class="logo-text">Global <span class="highlight">Nurse</span>Prep</span>
+        </div>
+        <ul>
+            <li><a href="../homepage.html">Main Homepage</a></li>
+            <li><a href="landing.html">Home</a></li>
+            <li><a href="courses.html">Courses</a></li>
+            <li><a href="exam-lobby/exam-lobby.html">Exam Lobby</a></li>
+        </ul>
+    </nav>
+
+    <div class="drawer-overlay hidden" id="drawerOverlay" tabindex="-1" aria-hidden="true"></div>
+
+    <aside class="drawer hidden" id="drawer" aria-label="Side menu">
+        <div class="drawer-header">
+            <div class="drawer-user">
+                <div class="avatar" id="drawerAvatar" aria-hidden="true">N</div>
+                <div>
+                    <strong id="drawerName">Member</strong>
+                    <div class="muted small" id="drawerEmail">-</div>
+                </div>
+            </div>
+            <button type="button" id="drawerClose" aria-label="Close menu">x</button>
+        </div>
+
+        <nav class="drawer-nav" aria-label="Navigation">
+            <a class="drawer-link" href="../homepage.html">Home</a>
+            <a class="drawer-link" href="../homepage.html#career">Career Paths</a>
+            <a class="drawer-link" href="courses.html">Courses</a>
+            <a class="drawer-link" href="exam-interface/exam-interface.html">Exams</a>
+            <a class="drawer-link" href="../questions.html">Questions</a>
+            <a class="drawer-link" href="../my-learnings.html">My Learnings</a>
+            <a class="drawer-link" href="../Profile.html">Profile</a>
+            <a class="drawer-link" href="../Membership.html">Membership</a>
+            <a class="drawer-link" href="../meetings.html">Meetings and Lectures</a>
+            <a class="drawer-link" href="landing.html">Exam Prep</a>
+            <a class="drawer-link" href="exam-lobby/exam-lobby.html">Exam Lobby</a>
+        </nav>
+
+        <div class="drawer-footer">
+            <div class="muted small">Tip: Complete each module before moving to final practice.</div>
+        </div>
+    </aside>
+
+    <main class="courses-page course-workspace-page">
+        <section class="workspace-hero reveal-on-scroll">
+            <div class="workspace-hero-copy">
+                <p class="section-kicker">Learning Workspace</p>
+                <h1 id="workspace-course-title">Course Title</h1>
+                <p id="workspace-course-summary" class="workspace-summary"></p>
+                <div class="workspace-meta" id="workspace-meta"></div>
+                <div class="progress-strip">
+                    <div class="progress-strip-head">
+                        <span id="workspace-progress-label">0% complete</span>
+                        <span id="workspace-save-state">Synced</span>
+                    </div>
+                    <div class="progress-bar">
+                        <span id="workspace-progress-bar"></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="workspace-layout">
+            <aside class="workspace-sidebar reveal-on-scroll">
+                <div class="rail-card">
+                    <h3>My Programs</h3>
+                    <div id="workspace-course-switcher" class="workspace-course-switcher"></div>
+                </div>
+                <div class="rail-card">
+                    <h3>Modules</h3>
+                    <ul class="outline-list" id="workspace-outline-list"></ul>
+                </div>
+            </aside>
+
+            <article class="workspace-main reveal-on-scroll">
+                <div class="workspace-section">
+                    <div class="module-header">
+                        <div>
+                            <p class="section-kicker">Current Module</p>
+                            <h2 id="module-title">Module title</h2>
+                        </div>
+                        <button class="btn-outline" id="mark-complete-btn">Mark Complete</button>
+                    </div>
+
+                    <div class="module-grid">
+                        <div class="module-copy-panel">
+                            <div class="learning-objective">
+                                <strong>Objective</strong>
+                                <span id="module-objective"></span>
+                            </div>
+                            <p id="module-body" class="module-copy"></p>
+                            <div class="clinical-pearl">
+                                <h4 id="module-pearl-title">Clinical Pearl</h4>
+                                <p id="module-pearl-body"></p>
+                            </div>
+                            <h3>Key Structures</h3>
+                            <ul id="module-structures"></ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="workspace-section">
+                    <div class="notes-header">
+                        <div>
+                            <p class="section-kicker">Last Step</p>
+                            <h3>Module questions</h3>
+                        </div>
+                        <button type="button" class="btn-outline" id="toggle-quiz-btn" aria-expanded="false">Show questions</button>
+                    </div>
+                    <div class="sample-quiz hidden" id="module-quiz-panel">
+                        <h4>Module Knowledge Check</h4>
+                        <p id="quiz-prompt"></p>
+                        <div class="quiz-options"></div>
+                        <button class="btn-primary check-answer-btn">Check My Understanding</button>
+                        <div class="quiz-feedback"></div>
+                    </div>
+                </div>
+
+                <div class="navigation-buttons">
+                    <button class="btn-secondary" id="prev-module-btn">Previous Module</button>
+                    <button class="btn-primary" id="next-module-btn">Next Module</button>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <p>&copy; 2026 GlobalNursePrep. All rights reserved.</p>
+        <p class="powered-by">Powered by Teams Technologies</p>
+    </footer>
+</body>
+</html>
