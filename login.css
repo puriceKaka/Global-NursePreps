@@ -31,6 +31,7 @@ html, body {
     padding: 12px clamp(16px, 4vw, 56px);
     background: #0F4C81;
     color: #ffffff;
+    min-width: 0;
 }
 
 .public-brand,
@@ -44,6 +45,8 @@ html, body {
     display: inline-flex;
     align-items: center;
     gap: 10px;
+    min-width: 0;
+    overflow-wrap: anywhere;
 }
 
 .brand-nurse {
@@ -56,6 +59,7 @@ html, body {
     justify-content: flex-end;
     gap: 8px;
     flex-wrap: wrap;
+    min-width: 0;
 }
 
 .public-nav nav a {
@@ -73,6 +77,8 @@ html, body {
     align-items: center;
     justify-content: center;
     padding: clamp(32px, 6vw, 70px);
+    width: 100%;
+    overflow-x: hidden;
 }
 
 .auth-card {
@@ -296,9 +302,40 @@ input:focus {
     .public-nav {
         align-items: flex-start;
         flex-direction: column;
+        gap: 8px;
+        padding: 10px 12px;
     }
     .public-nav nav {
         justify-content: flex-start;
+        width: 100%;
+        gap: 6px;
+    }
+    .public-nav nav a {
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+    .auth-shell {
+        align-items: flex-start;
+        padding: 14px 10px 22px;
+        min-height: auto;
+    }
+    .auth-card {
+        border-radius: 16px;
+    }
+    .auth-left {
+        padding: 16px 14px 0;
+    }
+    .auth-right {
+        padding: 20px 14px;
+    }
+    .left-content h2 {
+        font-size: 24px;
+    }
+    .preview {
+        border-radius: 14px;
+    }
+    .password-row {
+        grid-template-columns: 1fr;
     }
 }
 

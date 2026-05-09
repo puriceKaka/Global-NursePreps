@@ -25,7 +25,14 @@
         return "";
     }
 
+    function syncDrawerOffset() {
+        const header = document.querySelector(".topbar, .navbar, .header, .public-nav");
+        const headerHeight = header ? Math.ceil(header.getBoundingClientRect().height) : 0;
+        document.documentElement.style.setProperty("--drawer-top", `${headerHeight}px`);
+    }
+
     function openDrawer() {
+        syncDrawerOffset();
         $('#drawer')?.classList.remove('hidden');
         $('#drawerOverlay')?.classList.remove('hidden');
         $('#drawerOverlay')?.setAttribute('aria-hidden', 'false');
@@ -106,6 +113,10 @@
                 closeDrawer();
             });
         });
+
+        window.addEventListener('resize', syncDrawerOffset);
+        window.addEventListener('orientationchange', syncDrawerOffset);
+        syncDrawerOffset();
     }
 
     document.addEventListener('DOMContentLoaded', () => {

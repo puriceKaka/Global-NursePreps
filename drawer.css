@@ -90,21 +90,24 @@ body.drawer-open {
 /* Drawer */
 .drawer-overlay {
     position: fixed;
-    inset: 0;
+    top: var(--drawer-top, 56px);
+    right: 0;
+    bottom: 0;
+    left: 0;
     background: rgba(11, 31, 58, 0.42);
-    z-index: 2000;
+    z-index: 45;
 }
 
 .drawer {
     position: fixed;
-    top: 0;
+    top: var(--drawer-top, 56px);
     left: 0;
-    height: 100%;
+    height: calc(100dvh - var(--drawer-top, 56px));
     width: 300px;
     max-width: 86vw;
     background: #ffffff;
     border-right: 1px solid rgba(11, 31, 58, 0.12);
-    z-index: 2001;
+    z-index: 46;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -153,7 +156,7 @@ body.drawer-open {
     gap: 6px;
     overflow-y: auto;
     overscroll-behavior: contain;
-    max-height: calc(100vh - 154px);
+    max-height: calc(100dvh - var(--drawer-top, 56px) - 154px);
     scrollbar-width: thin;
 }
 
