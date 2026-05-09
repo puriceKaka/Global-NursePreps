@@ -30,14 +30,6 @@
         return `${prefix}_${Math.random().toString(16).slice(2)}_${Date.now().toString(16)}`;
     }
 
-    async function sha256Hex(text) {
-        if (!window.crypto || !window.crypto.subtle) return text;
-        const data = new TextEncoder().encode(text);
-        const hash = await window.crypto.subtle.digest('SHA-256', data);
-        const bytes = Array.from(new Uint8Array(hash));
-        return bytes.map((b) => b.toString(16).padStart(2, '0')).join('');
-    }
-
     function showError(message) {
         const box = $('#errorBox');
         if (!box) return;
@@ -104,17 +96,22 @@
                 return;
             }
 
-            const passwordHash = await sha256Hex(password);
-            if (user.passwordHash !== passwordHash) {
+            const passwordOk = await window.GnpAuthSecurity.verifyPassword(password, user);
+            if (!passwordOk) {
                 showError('Incorrect password. Try again.');
                 return;
             }
+
+            await window.GnpAuthSecurity.upgradePasswordIfNeeded(password, user, (upgradedUser) => {
+                saveJson(STORAGE_KEYS.users, users.map((item) => item.id === user.id ? upgradedUser : item));
+            });
 
             saveJson(STORAGE_KEYS.session, {
                 id: uid('session'),
                 userId: user.id,
                 name: user.name,
                 email: user.email,
+                role: user.role || 'student',
                 loginAt: new Date().toISOString()
             });
 
@@ -129,6 +126,14 @@
 
     function main() {
         redirectIfLoggedIn();
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('registered') === '1') {
+            showError('Account created. Please login with your email and password.');
+            const email = params.get('email');
+            if (email && $('#emailInput')) {
+                $('#emailInput').value = email;
+            }
+        }
         $('#togglePasswordBtn')?.addEventListener('click', togglePassword);
         $('#loginForm')?.addEventListener('submit', onSubmit);
     }

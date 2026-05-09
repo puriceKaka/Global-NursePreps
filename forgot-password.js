@@ -20,13 +20,6 @@
         localStorage.setItem(USERS_KEY, JSON.stringify(users));
     }
 
-    async function sha256Hex(text) {
-        if (!window.crypto || !window.crypto.subtle) return text;
-        const data = new TextEncoder().encode(text);
-        const hash = await window.crypto.subtle.digest("SHA-256", data);
-        return Array.from(new Uint8Array(hash)).map((b) => b.toString(16).padStart(2, "0")).join("");
-    }
-
     function showMessage(text, type) {
         const box = $("#messageBox");
         if (!box) return;
@@ -38,8 +31,8 @@
         event.preventDefault();
 
         const email = ($("#emailInput")?.value || "").trim().toLowerCase();
-        const password = ($("#passwordInput")?.value || "").trim();
-        const confirm = ($("#confirmPasswordInput")?.value || "").trim();
+        const password = $("#passwordInput")?.value || "";
+        const confirm = $("#confirmPasswordInput")?.value || "";
         const btn = $("#resetBtn");
 
         if (!email || !password || !confirm) {
@@ -47,8 +40,9 @@
             return;
         }
 
-        if (password.length < 6) {
-            showMessage("Password must be at least 6 characters.", "error");
+        const passwordCheck = window.GnpAuthSecurity?.validatePassword(password);
+        if (!passwordCheck?.ok) {
+            showMessage(passwordCheck?.message || "Use a stronger password.", "error");
             return;
         }
 
@@ -71,9 +65,10 @@
                 return;
             }
 
+            const passwordRecord = await window.GnpAuthSecurity.createPasswordRecord(password);
             users[index] = {
                 ...users[index],
-                passwordHash: await sha256Hex(password),
+                ...passwordRecord,
                 passwordUpdatedAt: new Date().toISOString()
             };
 

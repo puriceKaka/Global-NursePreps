@@ -24,13 +24,6 @@
         localStorage.setItem(key, JSON.stringify(value));
     }
 
-    async function sha256Hex(text) {
-        if (!window.crypto?.subtle) return text;
-        const data = new TextEncoder().encode(text);
-        const hash = await window.crypto.subtle.digest("SHA-256", data);
-        return Array.from(new Uint8Array(hash)).map((byte) => byte.toString(16).padStart(2, "0")).join("");
-    }
-
     function uid(prefix) {
         return `${prefix}_${Date.now().toString(36)}_${Math.random().toString(16).slice(2, 8)}`;
     }
@@ -110,17 +103,17 @@
         const password = $("#adminPassword")?.value || "";
         const message = $("#adminLoginMessage");
 
-        if (!email || password.length < 6) {
+        const passwordCheck = window.GnpAuthSecurity?.validatePassword(password);
+        if (!email || !passwordCheck?.ok) {
             if (message) {
-                message.textContent = "Enter an admin email and a password with at least 6 characters.";
+                message.textContent = !email ? "Enter an admin email." : passwordCheck.message;
                 message.className = "form-message error";
             }
             return;
         }
 
-        const passwordHash = await sha256Hex(password);
         const profile = readJson(KEYS.adminProfile, null);
-        if (profile?.email && (profile.email !== email || profile.passwordHash !== passwordHash)) {
+        if (profile?.email && profile.email !== email) {
             if (message) {
                 message.textContent = "The admin email or password is incorrect.";
                 message.className = "form-message error";
@@ -128,10 +121,25 @@
             return;
         }
 
+        if (profile?.email) {
+            const passwordOk = await window.GnpAuthSecurity.verifyPassword(password, profile);
+            if (!passwordOk) {
+                if (message) {
+                    message.textContent = "The admin email or password is incorrect.";
+                    message.className = "form-message error";
+                }
+                return;
+            }
+            await window.GnpAuthSecurity.upgradePasswordIfNeeded(password, profile, (upgradedProfile) => {
+                writeJson(KEYS.adminProfile, upgradedProfile);
+            });
+        }
+
         if (!profile?.email) {
+            const passwordRecord = await window.GnpAuthSecurity.createPasswordRecord(password);
             writeJson(KEYS.adminProfile, {
                 email,
-                passwordHash,
+                ...passwordRecord,
                 createdAt: new Date().toISOString()
             });
         }

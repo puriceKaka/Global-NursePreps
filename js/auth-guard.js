@@ -1,13 +1,23 @@
 (() => {
     const raw = localStorage.getItem("nurseprep_session");
+    const usersRaw = localStorage.getItem("nurseprep_users");
     let session = null;
+    let users = [];
     try {
         session = raw ? JSON.parse(raw) : null;
     } catch {
         session = null;
     }
+    try {
+        const parsed = usersRaw ? JSON.parse(usersRaw) : [];
+        users = Array.isArray(parsed) ? parsed : [];
+    } catch {
+        users = [];
+    }
 
-    if (session?.userId) return;
+    const account = users.find((user) => user.id === session?.userId);
+    if (session?.userId && account?.role === "student") return;
+    localStorage.removeItem("nurseprep_session");
 
     const script = document.currentScript;
     const loginPath = script?.dataset?.login || "login.html";

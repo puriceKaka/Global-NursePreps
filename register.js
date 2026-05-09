@@ -30,14 +30,6 @@
         return `${prefix}_${Math.random().toString(16).slice(2)}_${Date.now().toString(16)}`;
     }
 
-    async function sha256Hex(text) {
-        if (!window.crypto || !window.crypto.subtle) return text;
-        const data = new TextEncoder().encode(text);
-        const hash = await window.crypto.subtle.digest('SHA-256', data);
-        const bytes = Array.from(new Uint8Array(hash));
-        return bytes.map((b) => b.toString(16).padStart(2, '0')).join('');
-    }
-
     function showError(message) {
         const box = $('#errorBox');
         if (!box) return;
@@ -88,8 +80,8 @@
 
         const name = ($('#nameInput')?.value || '').trim();
         const email = ($('#emailInput')?.value || '').trim().toLowerCase();
-        const password = ($('#passwordInput')?.value || '').trim();
-        const confirm = ($('#confirmInput')?.value || '').trim();
+        const password = $('#passwordInput')?.value || '';
+        const confirm = $('#confirmInput')?.value || '';
         const btn = $('#registerBtn');
 
         if (!name || !email || !password || !confirm) {
@@ -97,8 +89,9 @@
             return;
         }
 
-        if (password.length < 6) {
-            showError('Password must be at least 6 characters.');
+        const passwordCheck = window.GnpAuthSecurity?.validatePassword(password);
+        if (!passwordCheck?.ok) {
+            showError(passwordCheck?.message || 'Use a stronger password.');
             return;
         }
 
@@ -120,12 +113,12 @@
                 return;
             }
 
-            const passwordHash = await sha256Hex(password);
+            const passwordRecord = await window.GnpAuthSecurity.createPasswordRecord(password);
             const user = {
                 id: uid('user'),
                 name: window.GnpUtils?.sanitizeText?.(name) || name,
                 email,
-                passwordHash,
+                ...passwordRecord,
                 role: 'student',
                 profile: {
                     displayName: window.GnpUtils?.sanitizeText?.(name) || name,
@@ -136,16 +129,8 @@
             };
 
             setUsers([user, ...users]);
-
-            saveJson(STORAGE_KEYS.session, {
-                id: uid('session'),
-                userId: user.id,
-                name: user.name,
-                email: user.email,
-                loginAt: new Date().toISOString()
-            });
-
-            window.location.replace('homepage.html');
+            localStorage.removeItem(STORAGE_KEYS.session);
+            window.location.replace(`login.html?registered=1&email=${encodeURIComponent(email)}`);
         } finally {
             if (btn) {
                 btn.disabled = false;
@@ -156,6 +141,10 @@
 
     function main() {
         redirectIfLoggedIn();
+        const policy = $('#passwordPolicy');
+        if (policy && window.GnpAuthSecurity?.PASSWORD_POLICY_TEXT) {
+            policy.textContent = window.GnpAuthSecurity.PASSWORD_POLICY_TEXT;
+        }
         $('#togglePasswordBtn')?.addEventListener('click', togglePassword);
         $('#registerForm')?.addEventListener('submit', onSubmit);
     }

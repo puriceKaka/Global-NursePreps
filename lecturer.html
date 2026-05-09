@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="homepage.css">
     <link rel="stylesheet" href="lecturer.css">
     <script defer src="learning-core.js"></script>
+    <script defer src="js/auth-security.js"></script>
     <script defer src="lecturer.js"></script>
 </head>
 <body>
@@ -32,9 +33,9 @@
             <form class="lecturer-form" id="lecturerLoginForm">
                 <label><span>Lecturer name</span><input id="lecturerName" autocomplete="name" required></label>
                 <label><span>Email</span><input type="email" id="lecturerEmail" autocomplete="username" required></label>
-                <label><span>Password</span><input type="password" id="lecturerPassword" autocomplete="current-password" required></label>
+                <label><span>Password</span><input type="password" id="lecturerPassword" autocomplete="current-password" required minlength="10"></label>
                 <button class="primary-button" type="submit">Enter lecturer portal</button>
-                <p class="hint">Use your lecturer account to continue. New lecturer records are sent to admin for approval.</p>
+                <p class="hint">Use your lecturer account to continue. New lecturer records are sent to admin for approval. Passwords need uppercase, lowercase, number, and special character.</p>
                 <p class="form-message" id="lecturerLoginMessage" aria-live="polite"></p>
             </form>
         </section>

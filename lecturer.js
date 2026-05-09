@@ -67,22 +67,20 @@
         writeJson(key, [item, ...all]);
     }
 
-    function registerLecturer(session) {
+    function saveLecturerAccount(account) {
         const lecturers = readJson(KEYS.lecturers, []);
-        const email = session.email.toLowerCase();
+        const email = account.email.toLowerCase();
         const existing = lecturers.find((lecturer) => String(lecturer.email || "").toLowerCase() === email);
         if (existing) {
             writeJson(KEYS.lecturers, lecturers.map((lecturer) => (
                 String(lecturer.email || "").toLowerCase() === email
-                    ? { ...lecturer, id: session.id, name: session.name, email: session.email }
+                    ? { ...lecturer, ...account, id: lecturer.id || account.id, status: lecturer.status || "pending", subscription: lecturer.subscription || "Not paid" }
                     : lecturer
             )));
             return;
         }
         writeJson(KEYS.lecturers, [{
-            id: session.id,
-            name: session.name,
-            email: session.email,
+            ...account,
             status: "pending",
             subscription: "Not paid",
             createdAt: new Date().toISOString()
@@ -107,7 +105,7 @@
         $("#lecturerLogout")?.classList.add("hidden");
     }
 
-    function handleLogin(event) {
+    async function handleLogin(event) {
         event.preventDefault();
         const name = ($("#lecturerName")?.value || "").trim();
         const email = ($("#lecturerEmail")?.value || "").trim().toLowerCase();
@@ -122,23 +120,41 @@
             return;
         }
 
-        if (password.length < 6) {
+        const passwordCheck = window.GnpAuthSecurity?.validatePassword(password);
+        if (!passwordCheck?.ok) {
             if (message) {
-                message.textContent = "Use a password with at least 6 characters.";
+                message.textContent = passwordCheck?.message || "Use a stronger password.";
                 message.className = "form-message error";
             }
             return;
         }
 
+        const lecturers = readJson(KEYS.lecturers, []);
+        const existing = lecturers.find((lecturer) => String(lecturer.email || "").toLowerCase() === email);
+        if (existing?.passwordHash) {
+            const ok = await window.GnpAuthSecurity.verifyPassword(password, existing);
+            if (!ok) {
+                if (message) {
+                    message.textContent = "The lecturer email or password is incorrect.";
+                    message.className = "form-message error";
+                }
+                return;
+            }
+            await window.GnpAuthSecurity.upgradePasswordIfNeeded(password, existing, (upgraded) => {
+                writeJson(KEYS.lecturers, lecturers.map((lecturer) => lecturer.id === existing.id ? upgraded : lecturer));
+            });
+        }
+
+        const passwordRecord = existing?.passwordHash ? {} : await window.GnpAuthSecurity.createPasswordRecord(password);
         const session = {
-            id: `lecturer_${email.replace(/[^a-z0-9]/g, "_")}`,
+            id: existing?.id || `lecturer_${email.replace(/[^a-z0-9]/g, "_")}`,
             role: "lecturer",
             name,
             email,
             loginAt: new Date().toISOString()
         };
         writeJson(KEYS.session, session);
-        registerLecturer(session);
+        saveLecturerAccount({ ...session, ...passwordRecord });
         showApp();
     }
 
