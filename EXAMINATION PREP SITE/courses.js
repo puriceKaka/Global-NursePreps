@@ -856,9 +856,15 @@ function initializeCourseDetailPage() {
         workspaceProgressLabel: document.getElementById("workspace-progress-label"),
         workspaceProgressBar: document.getElementById("workspace-progress-bar"),
         workspaceSaveState: document.getElementById("workspace-save-state"),
+        completedCount: document.getElementById("workspace-completed-count"),
+        nextStep: document.getElementById("workspace-next-step"),
         switcher: document.getElementById("workspace-course-switcher"),
         outlineList: document.getElementById("workspace-outline-list"),
+        modulePositionLabel: document.getElementById("module-position-label"),
         moduleTitle: document.getElementById("module-title"),
+        moduleLessonType: document.getElementById("module-lesson-type"),
+        moduleStatusLabel: document.getElementById("module-status-label"),
+        moduleCheckLabel: document.getElementById("module-check-label"),
         moduleObjective: document.getElementById("module-objective"),
         moduleBody: document.getElementById("module-body"),
         modulePearlTitle: document.getElementById("module-pearl-title"),
@@ -869,6 +875,8 @@ function initializeCourseDetailPage() {
         quizPrompt: document.getElementById("quiz-prompt"),
         quizOptions: document.querySelector(".quiz-options"),
         quizFeedback: document.querySelector(".quiz-feedback"),
+        finalReadinessPanel: document.getElementById("final-readiness-panel"),
+        resourceList: document.getElementById("workspace-resource-list"),
         prevButton: document.getElementById("prev-module-btn"),
         nextButton: document.getElementById("next-module-btn"),
         markCompleteButton: document.getElementById("mark-complete-btn")
@@ -988,9 +996,17 @@ function initializeCourseDetailPage() {
         const percent = getProgressPercent(activeCourse.id, latest);
         elements.workspaceProgressLabel.textContent = `${percent}% complete`;
         elements.workspaceProgressBar.style.width = `${percent}%`;
+        if (elements.completedCount) {
+            elements.completedCount.textContent = `${progress.completedModules.length} of ${activeCourse.modules.length} modules`;
+        }
+        if (elements.nextStep) {
+            elements.nextStep.textContent = getNextStepLabel(progress);
+        }
         renderSwitcher(latest);
         renderOutline(progress);
         renderModule(progress);
+        renderFinalReadiness(progress);
+        renderResources(progress);
         revealElements(document.querySelectorAll(".reveal-on-scroll"));
     }
 
@@ -1011,11 +1027,16 @@ function initializeCourseDetailPage() {
 
     function renderOutline(progress) {
         elements.outlineList.innerHTML = activeCourse.modules
-            .map((module, index) => `
-                <li class="outline-item${index === activeModuleIndex ? " active" : ""}${progress.completedModules.includes(index) ? " completed" : ""}" data-module-index="${index}">
-                    ${module.title}
+            .map((module, index) => {
+                const completed = progress.completedModules.includes(index);
+                const checked = progress.quizChecked?.[index] === true;
+                return `
+                <li class="outline-item${index === activeModuleIndex ? " active" : ""}${completed ? " completed" : ""}" data-module-index="${index}">
+                    <span>${module.title}</span>
+                    <small>${completed ? "Complete" : checked ? "Quiz checked" : "Lesson"}</small>
                 </li>
-            `)
+            `;
+            })
             .join("");
 
         elements.outlineList.querySelectorAll("[data-module-index]").forEach((item) => {
@@ -1034,12 +1055,26 @@ function initializeCourseDetailPage() {
         const checked = progress.quizChecked?.[activeModuleIndex] === true;
         const completed = progress.completedModules.includes(activeModuleIndex);
 
+        if (elements.modulePositionLabel) {
+            elements.modulePositionLabel.textContent = `Module ${activeModuleIndex + 1} of ${activeCourse.modules.length}`;
+        }
         elements.moduleTitle.textContent = module.title;
+        if (elements.moduleLessonType) {
+            elements.moduleLessonType.textContent = activeCourse.format || "Guided lesson";
+        }
+        if (elements.moduleStatusLabel) {
+            elements.moduleStatusLabel.textContent = completed ? "Completed" : "In progress";
+        }
+        if (elements.moduleCheckLabel) {
+            elements.moduleCheckLabel.textContent = passed ? "Passed" : checked ? "Retry needed" : "Pending";
+        }
         elements.moduleObjective.textContent = module.objective;
         elements.moduleBody.textContent = module.body;
         elements.modulePearlTitle.textContent = module.pearlTitle;
         elements.modulePearlBody.textContent = module.pearl;
-        elements.structureList.innerHTML = module.structures.map((item) => `<li>${item}</li>`).join("");
+        elements.structureList.innerHTML = module.structures
+            .map((item, index) => `<li><span>${index + 1}</span><strong>${item}</strong></li>`)
+            .join("");
         elements.quizPanel?.classList.add("hidden");
         if (elements.quizToggle) {
             elements.quizToggle.setAttribute("aria-expanded", "false");
@@ -1068,6 +1103,64 @@ function initializeCourseDetailPage() {
         elements.markCompleteButton.textContent = completed ? "Completed" : passed ? "Mark Complete" : "Answer quiz to complete";
         elements.workspaceProgressBar.style.width = `${getProgressPercent(activeCourse.id)}%`;
         elements.workspaceProgressLabel.textContent = `${getProgressPercent(activeCourse.id)}% complete`;
+    }
+
+    function getNextStepLabel(progress) {
+        const completed = progress.completedModules.includes(activeModuleIndex);
+        const passed = progress.quizPassed?.[activeModuleIndex] === true;
+        if (progress.completedModules.length === activeCourse.modules.length) {
+            return "All modules complete. Open the final assessment.";
+        }
+        if (!passed) {
+            return "Pass the current module knowledge check.";
+        }
+        if (!completed) {
+            return "Mark this module complete to save progress.";
+        }
+        return "Move to the next module.";
+    }
+
+    function renderFinalReadiness(progress) {
+        if (!elements.finalReadinessPanel) {
+            return;
+        }
+
+        const completedCount = progress.completedModules.length;
+        const remaining = Math.max(0, activeCourse.modules.length - completedCount);
+        const ready = remaining === 0;
+        elements.finalReadinessPanel.innerHTML = `
+            <div class="readiness-score ${ready ? "ready" : ""}">
+                <strong>${ready ? "Ready" : `${remaining} modules left`}</strong>
+                <span>${ready ? "You have completed the learning pathway." : "Complete every module before attempting a final exam."}</span>
+            </div>
+            <div class="readiness-checks">
+                <span class="${completedCount > 0 ? "done" : ""}">Started course</span>
+                <span class="${completedCount >= Math.ceil(activeCourse.modules.length / 2) ? "done" : ""}">Halfway checkpoint</span>
+                <span class="${ready ? "done" : ""}">Final assessment ready</span>
+            </div>
+        `;
+    }
+
+    function renderResources(progress) {
+        if (!elements.resourceList) {
+            return;
+        }
+
+        const module = activeCourse.modules[activeModuleIndex];
+        elements.resourceList.innerHTML = `
+            <a class="resource-item" href="#lesson-viewer">
+                <strong>Current lesson</strong>
+                <span>${module.title}</span>
+            </a>
+            <a class="resource-item" href="#course-final-test">
+                <strong>Module knowledge check</strong>
+                <span>${progress.quizPassed?.[activeModuleIndex] ? "Passed" : "Complete this before marking the module done."}</span>
+            </a>
+            <a class="resource-item" href="exam-interface/exam-interface.html">
+                <strong>Exam center</strong>
+                <span>Use the exam center after you complete your course modules.</span>
+            </a>
+        `;
     }
 
     function persistModulePosition() {

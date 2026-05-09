@@ -73,6 +73,10 @@
                 <h1 id="workspace-course-title">Course Title</h1>
                 <p id="workspace-course-summary" class="workspace-summary"></p>
                 <div class="workspace-meta" id="workspace-meta"></div>
+                <div class="workspace-hero-actions">
+                    <a class="btn-primary" href="#lesson-viewer">Continue Lesson</a>
+                    <a class="btn-outline" href="#course-final-test">Final Assessment</a>
+                </div>
                 <div class="progress-strip">
                     <div class="progress-strip-head">
                         <span id="workspace-progress-label">0% complete</span>
@@ -87,6 +91,13 @@
 
         <section class="workspace-layout">
             <aside class="workspace-sidebar reveal-on-scroll">
+                <div class="rail-card workspace-plan-card">
+                    <p class="section-kicker">Course Plan</p>
+                    <div class="workspace-progress-summary">
+                        <strong id="workspace-completed-count">0 of 0 modules</strong>
+                        <span id="workspace-next-step">Open the first lesson to begin.</span>
+                    </div>
+                </div>
                 <div class="rail-card">
                     <h3>My Programs</h3>
                     <div id="workspace-course-switcher" class="workspace-course-switcher"></div>
@@ -95,16 +106,40 @@
                     <h3>Modules</h3>
                     <ul class="outline-list" id="workspace-outline-list"></ul>
                 </div>
+                <div class="rail-card workspace-rhythm-card">
+                    <h3>Study Rhythm</h3>
+                    <div class="study-rhythm-list">
+                        <span>1. Read the lesson</span>
+                        <span>2. Review key structures</span>
+                        <span>3. Pass the knowledge check</span>
+                        <span>4. Mark the module complete</span>
+                    </div>
+                </div>
             </aside>
 
             <article class="workspace-main reveal-on-scroll">
-                <div class="workspace-section">
+                <div class="workspace-section lesson-viewer" id="lesson-viewer">
                     <div class="module-header">
                         <div>
-                            <p class="section-kicker">Current Module</p>
+                            <p class="section-kicker" id="module-position-label">Current Module</p>
                             <h2 id="module-title">Module title</h2>
                         </div>
                         <button class="btn-outline" id="mark-complete-btn">Mark Complete</button>
+                    </div>
+
+                    <div class="lesson-status-grid">
+                        <div>
+                            <span>Lesson Type</span>
+                            <strong id="module-lesson-type">Guided reading</strong>
+                        </div>
+                        <div>
+                            <span>Status</span>
+                            <strong id="module-status-label">Not started</strong>
+                        </div>
+                        <div>
+                            <span>Check</span>
+                            <strong id="module-check-label">Pending</strong>
+                        </div>
                     </div>
 
                     <div class="module-grid">
@@ -119,15 +154,15 @@
                                 <p id="module-pearl-body"></p>
                             </div>
                             <h3>Key Structures</h3>
-                            <ul id="module-structures"></ul>
+                            <ul id="module-structures" class="structure-card-list"></ul>
                         </div>
                     </div>
                 </div>
 
-                <div class="workspace-section">
+                <div class="workspace-section assessment-workspace" id="course-final-test">
                     <div class="notes-header">
                         <div>
-                            <p class="section-kicker">Last Step</p>
+                            <p class="section-kicker">Assessment</p>
                             <h3>Module questions</h3>
                         </div>
                         <button type="button" class="btn-outline" id="toggle-quiz-btn" aria-expanded="false">Show questions</button>
@@ -139,6 +174,27 @@
                         <button class="btn-primary check-answer-btn">Check My Understanding</button>
                         <div class="quiz-feedback"></div>
                     </div>
+                </div>
+
+                <div class="workspace-section final-assessment-card">
+                    <div class="module-header">
+                        <div>
+                            <p class="section-kicker">Final Assessment</p>
+                            <h3>Course readiness checkpoint</h3>
+                        </div>
+                        <a class="btn-outline" href="exam-interface/exam-interface.html">Open Exam Center</a>
+                    </div>
+                    <div class="final-readiness-panel" id="final-readiness-panel"></div>
+                </div>
+
+                <div class="workspace-section resource-workspace">
+                    <div class="module-header">
+                        <div>
+                            <p class="section-kicker">Resources</p>
+                            <h3>Lesson support</h3>
+                        </div>
+                    </div>
+                    <div class="resource-list" id="workspace-resource-list"></div>
                 </div>
 
                 <div class="navigation-buttons">
