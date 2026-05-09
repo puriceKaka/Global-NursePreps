@@ -1372,7 +1372,7 @@ body[data-page="catalog"] .academy-category-chip.active {
 }
 
 body[data-page="catalog"] .course-grid {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 10px;
 }
 
@@ -1436,17 +1436,19 @@ body[data-page="catalog"] .badge.alt {
 }
 
 body[data-page="catalog"] .course-actions {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 10px;
+    align-items: center;
 }
 
 body[data-page="catalog"] .course-actions .btn-primary,
 body[data-page="catalog"] .course-actions .btn-outline {
-    flex-basis: auto;
-    padding: 0.65rem 0.85rem;
-    min-height: 38px;
-    font-size: 0.84rem;
+    flex: 0 1 auto;
+    padding: 10px 14px;
+    min-height: 40px;
+    font-size: 0.9rem;
+    white-space: nowrap;
 }
 
 .course-progress-inline {
@@ -1468,6 +1470,21 @@ body[data-page="catalog"] .course-actions .btn-outline {
         flex-basis: 100%;
     }
 
+}
+
+@media (max-width: 960px) {
+    body[data-page="catalog"] .course-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    body[data-page="catalog"] .filter-heading {
+        align-items: flex-start;
+    }
+
+    body[data-page="catalog"] .difficulty-list {
+        justify-content: flex-end;
+        min-width: 0;
+    }
 }
 
 @media (max-width: 720px) {
@@ -1506,14 +1523,26 @@ body[data-page="catalog"] .course-actions .btn-outline {
         aspect-ratio: 16 / 10;
     }
 
+    body[data-page="catalog"] .course-grid,
     body[data-page="catalog"] .course-meta,
-    body[data-page="catalog"] .course-stats,
-    body[data-page="catalog"] .course-actions {
-        display: grid;
+    body[data-page="catalog"] .course-stats {
         grid-template-columns: 1fr;
+    }
+
+    body[data-page="catalog"] .course-actions {
+        display: flex;
+        flex-wrap: wrap;
     }
 
     body[data-page="catalog"] .catalog-toolbar {
         align-items: stretch;
+    }
+}
+
+@media (max-width: 420px) {
+    body[data-page="catalog"] .course-actions .btn-primary,
+    body[data-page="catalog"] .course-actions .btn-outline {
+        flex: 1 1 100%;
+        width: 100%;
     }
 }

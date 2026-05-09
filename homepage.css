@@ -693,6 +693,7 @@ body.text-large {
     flex-wrap: wrap;
     gap: 10px;
     align-items: center;
+    min-width: 0;
 }
 
 .section-tools input,
@@ -708,6 +709,7 @@ body.text-large {
     outline: none;
     background: #ffffff;
     min-width: 200px;
+    max-width: 100%;
 }
 
 .section-tools input:focus,
@@ -1478,6 +1480,7 @@ body.reduce-motion * {
     .section-tools input,
     .section-tools select {
         min-width: 160px;
+        flex: 1 1 180px;
     }
 }
 
@@ -1514,6 +1517,16 @@ body.reduce-motion * {
     .dashboard-stats,
     .card-grid {
         grid-template-columns: 1fr;
+    }
+    .section-tools {
+        width: 100%;
+        align-items: stretch;
+    }
+    .section-tools input,
+    .section-tools select {
+        width: 100%;
+        min-width: 0;
+        flex: 1 1 100%;
     }
     .study-flow {
         display: grid;
