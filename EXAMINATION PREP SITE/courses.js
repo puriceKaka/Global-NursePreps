@@ -804,6 +804,29 @@ function initializeCatalogPage() {
             });
         });
 
+        grid.querySelectorAll("[data-cancel-course]").forEach((button) => {
+            button.addEventListener("click", () => {
+                const latest = getLearningState();
+                const courseId = button.dataset.cancelCourse;
+                const course = getCourseById(courseId);
+                if (!course) {
+                    return;
+                }
+
+                const ok = window.confirm(`Cancel enrollment in "${course.title}"?`);
+                if (!ok) {
+                    return;
+                }
+
+                latest.enrolledCourseIds = latest.enrolledCourseIds.filter((id) => id !== courseId);
+                if (latest.selectedCourseId === courseId) {
+                    latest.selectedCourseId = courseCatalog[0]?.id || "";
+                }
+                saveLearningState(latest);
+                renderCatalog();
+            });
+        });
+
         revealElements(document.querySelectorAll(".reveal-on-scroll"));
     }
 
@@ -1180,40 +1203,28 @@ function renderCourseCard(course, state) {
     const workspaceHref = `course-workspace.html?course=${encodeURIComponent(course.id)}`;
     const courseImage = course.image || "../assets/nursing-hero.svg";
     return `
-        <article class="course-card netacad-course-card reveal-on-scroll">
-            <div class="netacad-card-icon" aria-hidden="true">
-                <img src="${courseImage}" alt="" loading="lazy">
-                <span>${course.title.slice(0, 2).toUpperCase()}</span>
-            </div>
+        <article class="course-card homepage-style-course-card reveal-on-scroll">
+            <img class="course-card-image" src="${courseImage}" alt="${course.title} course image" loading="lazy">
             <div class="course-card-body">
-                <div class="course-card-top">
-                    <div>
-                        <span class="learning-type">${course.format || "Self-paced"}</span>
-                        <h3>${course.title}</h3>
-                        <p>${course.summary}</p>
-                    </div>
-                    <span class="course-badge">${course.badge}</span>
+                <div class="badge-row">
+                    <span class="badge">${course.category}</span>
+                    <span class="badge alt">${course.difficulty}</span>
+                    <span class="badge alt">${course.modules.length} units</span>
+                    <span class="badge alt">${Number(course.price || 0) > 0 ? `KES ${Number(course.price).toLocaleString()}` : "Free"}</span>
                     ${enrolled ? `<span class="course-chip enrolled-chip">Enrolled</span>` : ""}
                 </div>
-                <div class="course-meta">
-                    ${createMetaPill("Track", course.category)}
-                    ${createMetaPill("Level", course.difficulty)}
-                    ${createMetaPill("Modules", `${course.modules.length}`)}
-                </div>
-                <div class="course-stats">
-                    <div><strong>${Number(course.questions || 0).toLocaleString()}+</strong><span>Questions</span></div>
-                    <div><strong>${Number(course.durationHours || 0)}h</strong><span>Guided hours</span></div>
-                    <div><strong>${Number(course.exams || 0)}</strong><span>Assessments</span></div>
-                </div>
+                <h4>${course.title}</h4>
+                <p>${course.summary}</p>
+                <div class="muted small">${Number(course.questions || 0).toLocaleString()}+ questions • ${Number(course.durationHours || 0)}h guided study • ${Number(course.exams || 0)} assessments</div>
                 <div class="course-progress-inline">
                     <div class="progress-bar"><span style="width:${percent}%"></span></div>
                     <small>${percent}% complete</small>
                 </div>
-                <div class="course-actions">
-                    <button class="btn-outline" data-select-course="${course.id}">Details</button>
-                    <a class="btn-primary" href="${workspaceHref}" target="_blank" rel="noopener">Open Course</a>
+                <div class="course-actions card-actions">
                     <button class="btn-primary" data-enroll-course="${course.id}">${enrolled ? "Continue learning" : "Enroll"}</button>
-                    <a class="btn-outline" href="${workspaceHref}#course-final-test" target="_blank" rel="noopener">Final Test</a>
+                    <button class="btn-outline" data-select-course="${course.id}">View structure</button>
+                    <a class="btn-outline${enrolled ? "" : " is-disabled"}" href="${enrolled ? workspaceHref : "#selected-program"}">${enrolled ? "Open course" : "Enroll to open"}</a>
+                    ${enrolled ? `<button class="btn-outline" data-cancel-course="${course.id}">Cancel</button>` : ""}
                 </div>
             </div>
         </article>
