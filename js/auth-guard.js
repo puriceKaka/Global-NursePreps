@@ -16,7 +16,7 @@
     }
 
     const account = users.find((user) => user.id === session?.userId);
-    if (session?.userId && account?.role === "student") return;
+    if (session?.userId && account && (!account.role || account.role === "student")) return;
     localStorage.removeItem("nurseprep_session");
 
     const script = document.currentScript;

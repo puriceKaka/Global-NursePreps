@@ -303,7 +303,7 @@
     function requireSession() {
         const session = getSession();
         const user = getUsers().find((item) => item.id === session?.userId);
-        if (!session?.userId || user?.role !== 'student') {
+        if (!session?.userId || !user || (user.role && user.role !== 'student')) {
             localStorage.removeItem(STORAGE_KEYS.session);
             window.location.replace('login.html');
             return null;

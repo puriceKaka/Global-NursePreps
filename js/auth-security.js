@@ -1,5 +1,5 @@
 window.GnpAuthSecurity = (() => {
-    const PASSWORD_POLICY_TEXT = "Use at least 10 characters with uppercase, lowercase, number, and special character.";
+    const PASSWORD_POLICY_TEXT = "Use at least 6 characters.";
     const encoder = new TextEncoder();
 
     function bytesToHex(bytes) {
@@ -38,11 +38,7 @@ window.GnpAuthSecurity = (() => {
     function validatePassword(password) {
         const value = String(password || "");
         const missing = [];
-        if (value.length < 10) missing.push("10 characters");
-        if (!/[A-Z]/.test(value)) missing.push("uppercase letter");
-        if (!/[a-z]/.test(value)) missing.push("lowercase letter");
-        if (!/[0-9]/.test(value)) missing.push("number");
-        if (!/[^A-Za-z0-9]/.test(value)) missing.push("special character");
+        if (value.length < 6) missing.push("6 characters");
 
         return {
             ok: missing.length === 0,
