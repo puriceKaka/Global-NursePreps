@@ -771,14 +771,6 @@ function initializeCatalogPage() {
             .map((course) => renderCourseCard(course, latestState))
             .join("");
 
-        grid.querySelectorAll("[data-select-course]").forEach((button) => {
-            button.addEventListener("click", () => {
-                view.selectedCourseId = button.dataset.selectCourse;
-                renderCatalog();
-                document.getElementById("selected-program")?.scrollIntoView({ behavior: "smooth", block: "start" });
-            });
-        });
-
         grid.querySelectorAll("[data-enroll-course]").forEach((button) => {
             button.addEventListener("click", () => {
                 const latest = getLearningState();
@@ -1222,7 +1214,6 @@ function renderCourseCard(course, state) {
                 </div>
                 <div class="course-actions card-actions">
                     <button class="btn-primary" data-enroll-course="${course.id}">${enrolled ? "Continue learning" : "Enroll"}</button>
-                    <button class="btn-outline" data-select-course="${course.id}">View structure</button>
                     <a class="btn-outline${enrolled ? "" : " is-disabled"}" href="${enrolled ? workspaceHref : "#selected-program"}">${enrolled ? "Open course" : "Enroll to open"}</a>
                     ${enrolled ? `<button class="btn-outline" data-cancel-course="${course.id}">Cancel</button>` : ""}
                 </div>
