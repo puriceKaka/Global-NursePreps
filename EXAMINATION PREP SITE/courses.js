@@ -1286,7 +1286,7 @@ function renderCourseCard(course, state) {
                     <small>${percent}% complete</small>
                 </div>
                 <div class="muted small">${percent >= 100 ? "Certificate unlocked" : "Certificate locked until course completion"}</div>
-                <div class="course-actions card-actions">
+                <div class="course-actions card-actions${enrolled ? " enrolled-actions" : " unenrolled-actions"}">
                     <button class="btn-primary" data-enroll-course="${course.id}">${enrolled ? "Continue learning" : "Enroll"}</button>
                     <a class="btn-outline${enrolled ? "" : " is-disabled"}" href="${enrolled ? workspaceHref : "#selected-program"}">${enrolled ? "Open course" : "Enroll to open"}</a>
                     ${enrolled ? `<button class="btn-outline" data-cancel-course="${course.id}">Cancel</button>` : ""}
