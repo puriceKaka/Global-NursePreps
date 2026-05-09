@@ -689,16 +689,32 @@
                 window.location.href = `EXAMINATION%20PREP%20SITE/exam-lobby/anatomy.html?course=${encodeURIComponent(course.id)}`;
             });
 
-            const cancelBtn = document.createElement('button');
-            cancelBtn.type = 'button';
-            cancelBtn.className = 'pill-button';
-            cancelBtn.textContent = enrolled.has(course.id) ? 'Open catalog' : 'View catalog';
-            cancelBtn.addEventListener('click', () => {
+            const catalogBtn = document.createElement('button');
+            catalogBtn.type = 'button';
+            catalogBtn.className = 'pill-button';
+            catalogBtn.textContent = enrolled.has(course.id) ? 'Open catalog' : 'View catalog';
+            catalogBtn.addEventListener('click', () => {
                 window.location.href = 'EXAMINATION%20PREP%20SITE/courses.html';
             });
 
             actions.appendChild(startBtn);
-            actions.appendChild(cancelBtn);
+            actions.appendChild(catalogBtn);
+
+            if (enrolled.has(course.id)) {
+                const cancelBtn = document.createElement('button');
+                cancelBtn.type = 'button';
+                cancelBtn.className = 'secondary-button';
+                cancelBtn.textContent = 'Cancel';
+                cancelBtn.addEventListener('click', () => {
+                    if (!core) return;
+                    const ok = window.confirm(`Cancel enrollment in "${course.title}"?`);
+                    if (!ok) return;
+                    core.cancelEnrollment(course.id);
+                    renderCourses(userId);
+                    renderProfileCounts(userId);
+                });
+                actions.appendChild(cancelBtn);
+            }
 
             card.appendChild(badges);
             card.appendChild(title);
