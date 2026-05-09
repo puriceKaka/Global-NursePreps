@@ -830,18 +830,15 @@ function initializeCourseDetailPage() {
     const elements = {
         workspaceTitle: document.getElementById("workspace-course-title"),
         workspaceSummary: document.getElementById("workspace-course-summary"),
-        workspaceImage: document.getElementById("workspace-course-image"),
         workspaceMeta: document.getElementById("workspace-meta"),
         workspaceProgressLabel: document.getElementById("workspace-progress-label"),
         workspaceProgressBar: document.getElementById("workspace-progress-bar"),
         workspaceSaveState: document.getElementById("workspace-save-state"),
-        certificateLink: document.getElementById("view-certificate-link"),
         switcher: document.getElementById("workspace-course-switcher"),
         outlineList: document.getElementById("workspace-outline-list"),
         moduleTitle: document.getElementById("module-title"),
         moduleObjective: document.getElementById("module-objective"),
         moduleBody: document.getElementById("module-body"),
-        moduleImage: document.getElementById("module-image"),
         modulePearlTitle: document.getElementById("module-pearl-title"),
         modulePearlBody: document.getElementById("module-pearl-body"),
         structureList: document.getElementById("module-structures"),
@@ -850,13 +847,11 @@ function initializeCourseDetailPage() {
         quizPrompt: document.getElementById("quiz-prompt"),
         quizOptions: document.querySelector(".quiz-options"),
         quizFeedback: document.querySelector(".quiz-feedback"),
-        notes: document.getElementById("module-notes"),
         prevButton: document.getElementById("prev-module-btn"),
         nextButton: document.getElementById("next-module-btn"),
         markCompleteButton: document.getElementById("mark-complete-btn")
     };
 
-    let saveTimer = null;
     let activeCourse = currentCourse;
     let activeModuleIndex = clampModuleIndex(state.progress[activeCourse.id].currentModuleIndex, activeCourse.modules.length);
 
@@ -954,20 +949,6 @@ function initializeCourseDetailPage() {
         renderWorkspace();
     });
 
-    elements.notes.addEventListener("input", () => {
-        elements.workspaceSaveState.textContent = "Saving...";
-        clearTimeout(saveTimer);
-        saveTimer = setTimeout(() => {
-            const latest = getLearningState();
-            const progress = ensureCourseProgress(latest, activeCourse.id);
-            progress.notes[activeModuleIndex] = elements.notes.value;
-            progress.currentModuleIndex = activeModuleIndex;
-            progress.lastVisited = new Date().toISOString();
-            saveLearningState(latest);
-            elements.workspaceSaveState.textContent = "Synced";
-        }, 250);
-    });
-
     renderWorkspace();
 
     function renderWorkspace() {
@@ -976,8 +957,6 @@ function initializeCourseDetailPage() {
 
         elements.workspaceTitle.textContent = activeCourse.title;
         elements.workspaceSummary.textContent = activeCourse.summary;
-        elements.workspaceImage.src = activeCourse.image;
-        elements.workspaceImage.alt = activeCourse.title;
         elements.workspaceMeta.innerHTML = [
             createMetaPill("Track", activeCourse.category),
             createMetaPill("Level", activeCourse.difficulty),
@@ -987,47 +966,10 @@ function initializeCourseDetailPage() {
         const percent = getProgressPercent(activeCourse.id, latest);
         elements.workspaceProgressLabel.textContent = `${percent}% complete`;
         elements.workspaceProgressBar.style.width = `${percent}%`;
-        renderCertificateLink(latest, progress, percent);
         renderSwitcher(latest);
         renderOutline(progress);
         renderModule(progress);
         revealElements(document.querySelectorAll(".reveal-on-scroll"));
-    }
-
-    function renderCertificateLink(latestState, progress, percent) {
-        const link = elements.certificateLink;
-        if (!link) return;
-
-        if (percent === 100) {
-            if (!progress.certificate?.id) {
-                progress.certificate = {
-                    id: uid("cert"),
-                    issuedAt: new Date().toISOString()
-                };
-                saveLearningState(latestState);
-            }
-
-            const params = new URLSearchParams({
-                source: "exam",
-                courseId: activeCourse.id,
-                title: activeCourse.title,
-                certId: progress.certificate.id
-            });
-            link.href = `../../certificate.html?${params.toString()}`;
-            link.target = "_blank";
-            link.rel = "noopener";
-            link.textContent = "View Certificate";
-            link.classList.remove("is-disabled");
-            link.setAttribute("aria-disabled", "false");
-            return;
-        }
-
-        link.href = "#";
-        link.target = "";
-        link.rel = "";
-        link.textContent = "Certificate locked";
-        link.classList.add("is-disabled");
-        link.setAttribute("aria-disabled", "true");
     }
 
     function renderSwitcher(latest) {
@@ -1073,8 +1015,6 @@ function initializeCourseDetailPage() {
         elements.moduleTitle.textContent = module.title;
         elements.moduleObjective.textContent = module.objective;
         elements.moduleBody.textContent = module.body;
-        elements.moduleImage.src = module.image;
-        elements.moduleImage.alt = module.title;
         elements.modulePearlTitle.textContent = module.pearlTitle;
         elements.modulePearlBody.textContent = module.pearl;
         elements.structureList.innerHTML = module.structures.map((item) => `<li>${item}</li>`).join("");
@@ -1099,7 +1039,6 @@ function initializeCourseDetailPage() {
             elements.quizFeedback.textContent = "";
             elements.quizFeedback.className = "quiz-feedback";
         }
-        elements.notes.value = progress.notes[activeModuleIndex] || "";
         elements.prevButton.disabled = activeModuleIndex === 0;
         elements.nextButton.disabled = activeModuleIndex === activeCourse.modules.length - 1;
         elements.nextButton.textContent = activeModuleIndex === activeCourse.modules.length - 1 ? "Stay on Final Module" : "Next Module";

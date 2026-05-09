@@ -114,13 +114,6 @@
     margin-top: 1.4rem;
 }
 
-.workspace-certificate {
-    margin-top: 1rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.9rem;
-}
-
 .progress-strip-head {
     display: flex;
     justify-content: space-between;
@@ -163,8 +156,7 @@
     line-height: 1.5;
 }
 
-.catalog-hero-media,
-.workspace-hero-media {
+.catalog-hero-media {
     display: flex;
 }
 
@@ -182,10 +174,6 @@
 
 .large-frame {
     min-height: 100%;
-}
-
-.module-frame {
-    min-height: 240px;
 }
 
 .fit-image {
@@ -249,8 +237,7 @@
 }
 
 .search-input,
-.sort-dropdown,
-.module-notes {
+.sort-dropdown {
     width: 100%;
     border: 1px solid var(--border-color);
     border-radius: 8px;
@@ -258,12 +245,6 @@
     font: inherit;
     color: var(--text-dark);
     background: #fbfdff;
-}
-
-.module-notes {
-    min-height: 125px;
-    resize: vertical;
-    line-height: 1.7;
 }
 
 .filter-list,
@@ -746,7 +727,7 @@
 
 .module-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+    grid-template-columns: 1fr;
     gap: 0.8rem;
     margin-top: 0.75rem;
 }
@@ -754,8 +735,7 @@
 .learning-objective,
 .clinical-pearl,
 .sample-quiz,
-.module-copy-panel,
-.module-media-panel {
+.module-copy-panel {
     border-radius: 8px;
 }
 
