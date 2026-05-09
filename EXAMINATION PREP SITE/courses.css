@@ -998,8 +998,7 @@ body[data-page="course-detail"] .navbar a[aria-current="page"] {
     line-height: 1.45;
 }
 
-.final-readiness-panel,
-.resource-list {
+.final-readiness-panel {
     display: grid;
     gap: 0.8rem;
     margin-top: 1rem;
@@ -1038,27 +1037,6 @@ body[data-page="course-detail"] .navbar a[aria-current="page"] {
     background: rgba(32, 130, 95, 0.08);
 }
 
-.resource-item {
-    display: block;
-    padding: 0.9rem 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    background: #fbfdff;
-    text-decoration: none;
-}
-
-.resource-item strong {
-    display: block;
-    color: var(--navy);
-}
-
-.resource-item span {
-    display: block;
-    margin-top: 0.3rem;
-    color: var(--text-muted);
-    line-height: 1.5;
-}
-
 .sample-quiz {
     margin-top: 0.75rem;
     padding: 0.85rem;
@@ -1079,6 +1057,14 @@ body[data-page="course-detail"] .navbar a[aria-current="page"] {
     background: var(--white);
     border: 1px solid var(--border-color);
     border-radius: 8px;
+}
+
+.quiz-options input {
+    width: 18px;
+    height: 18px;
+    margin-top: 0.15rem;
+    accent-color: var(--teal);
+    flex: 0 0 auto;
 }
 
 .quiz-feedback {

@@ -12,6 +12,12 @@ html, body {
     color: #1F2937;
 }
 
+img,
+video,
+canvas {
+    max-width: 100%;
+}
+
 .brand-nurse {
     color: #d7b55d;
 }
@@ -26,8 +32,10 @@ body {
     align-items: center;
     gap: 10px;
     padding: 8px 12px;
-    background: #ffffff;
-    border-bottom: 1px solid #DDE8F0;
+    background: #0F4C81;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    color: #ffffff;
+    box-shadow: 0 10px 24px rgba(11, 31, 58, 0.12);
 }
 .brand {
     display: flex;
@@ -56,10 +64,11 @@ body {
 .header h1 {
     margin: 0;
     font-size: 20px;
+    color: #ffffff;
 }
 .header p {
     margin: 4px 0 0;
-    color: #667085;
+    color: rgba(255, 255, 255, 0.76);
     font-size: 14px;
 }
 .header-actions {
@@ -81,7 +90,7 @@ body {
 .pill-button {
     padding: 9px 13px;
     background: #EAF4FC;
-    color: #1E88E5;
+    color: #0F4C81;
 }
 .primary-button {
     padding: 9px 13px;
@@ -90,9 +99,9 @@ body {
 }
 .secondary-button {
     padding: 9px 13px;
-    background: white;
-    color: #1F2937;
-    border: 1px solid #dfe1e5;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.32);
 }
 .icon-button {
     width: 36px;
@@ -242,6 +251,7 @@ body {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 18px;
+    min-width: 0;
 }
 .tool-panel {
     display: grid;
@@ -838,6 +848,12 @@ body {
         width: 100%;
         justify-content: space-between;
         margin-top: 16px;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    .header-actions > * {
+        flex: 1 1 auto;
+        min-width: max-content;
     }
     .hero-card {
         flex-direction: column;
@@ -853,5 +869,4 @@ body {
     .chat-compose {
         flex-direction: column;
     }
-}
 }

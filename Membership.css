@@ -26,6 +26,12 @@ html, body {
     color: var(--text);
 }
 
+img,
+video,
+canvas {
+    max-width: 100%;
+}
+
 .muted {
     color: var(--muted);
 }
@@ -36,8 +42,10 @@ html, body {
     justify-content: flex-start;
     gap: 10px;
     padding: 8px 12px;
-    background: #ffffff;
-    border-bottom: 1px solid var(--border);
+    background: var(--navy);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    color: #ffffff;
+    box-shadow: 0 10px 24px rgba(11, 31, 58, 0.12);
     position: sticky;
     top: 0;
     z-index: 50;
@@ -70,7 +78,7 @@ html, body {
     margin: 0;
     font-size: 18px;
     line-height: 1.1;
-    color: var(--navy);
+    color: #ffffff;
 }
 
 .brand-nurse {
@@ -80,7 +88,7 @@ html, body {
 .brand p {
     margin: 6px 0 0;
     font-size: 13px;
-    color: var(--muted);
+    color: rgba(255, 255, 255, 0.76);
 }
 
 .actions {
@@ -113,9 +121,9 @@ html, body {
 
 .secondary-button {
     padding: 9px 13px;
-    background: #ffffff;
-    border: 1px solid var(--border);
-    color: var(--navy);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    color: #ffffff;
 }
 
 .primary-button {
@@ -303,6 +311,17 @@ html, body {
 }
 
 @media (max-width: 560px) {
+    .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+    .actions {
+        width: 100%;
+        margin-left: 0;
+    }
+    .actions > * {
+        flex: 1 1 auto;
+    }
     .card-grid,
     .group-grid {
         grid-template-columns: 1fr;

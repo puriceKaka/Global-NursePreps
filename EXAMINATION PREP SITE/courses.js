@@ -546,7 +546,7 @@ function createTextbookModule(course, topic, index) {
     const phase = index === 0 ? "Introduction" : `Unit ${index + 1}`;
     const lecturerNotes = String(course.contentNotes || "").trim();
     const noteExcerpt = lecturerNotes
-        ? `\n\nLecturer notes:\n${lecturerNotes.slice(0, 1800)}${lecturerNotes.length > 1800 ? "\n\nContinue with the uploaded notes and class guidance in your saved resources." : ""}`
+        ? `\n\nLecturer notes:\n${lecturerNotes.slice(0, 1800)}${lecturerNotes.length > 1800 ? "\n\nContinue with the uploaded notes and class guidance from your lecturer." : ""}`
         : "";
     const body = `${topic} gives the student a structured textbook-style lesson for ${course.title}. Start by reading the key idea, then connect it to patient assessment, nursing priorities, exam wording, and safe clinical action.
 
@@ -555,7 +555,33 @@ Study content:
 - Assessment cues: identify symptoms, vital-sign trends, risk factors, and patient statements that matter.
 - Nursing action: decide what to assess first, what to report, what to teach, and what to document.
 - Exam focus: watch for priority words such as first, best, most important, immediate, unstable, and teaching.
-- Clinical link: connect the topic to patient safety, infection prevention, medication safety, communication, and escalation.${noteExcerpt}`;
+- Clinical link: connect the topic to patient safety, infection prevention, medication safety, communication, and escalation.
+
+Textbook notes:
+The first step in this topic is to understand the normal finding before studying the abnormal finding. A nursing student should ask: what should I expect in a stable patient, what has changed, and which change can harm the patient first? This habit improves clinical judgement because it forces you to compare baseline, current findings, and risk.
+
+Assessment guide:
+Collect subjective data, objective data, vital signs, medication history, allergies, pain level, mental status, hydration, mobility, and safety risks. Group the findings into urgent, important, and routine. Urgent findings usually affect airway, breathing, circulation, neurological status, severe pain, bleeding, infection risk, medication safety, or rapid deterioration.
+
+Nursing priorities:
+Use ABCs, safety, Maslow, infection control, medication rights, and scope of practice. If a question asks what to do first, choose the option that assesses instability, protects life, prevents harm, or escalates urgent findings. If the patient is stable, teaching, comfort, documentation, and planning become more appropriate.
+
+Patient teaching:
+Explain the condition in simple language, confirm understanding, include warning signs, medication safety, follow-up, diet or activity guidance where relevant, and when to seek urgent help. Good teaching is specific and checks understanding rather than only giving information.
+
+Common exam traps:
+Avoid answers that delay assessment, ignore abnormal vital signs, provide teaching during an emergency, delegate nursing judgement, document before intervening, or focus on a less urgent symptom. Long answers are not always correct; safe and timely answers are correct.
+
+Revision checklist:
+- Define the topic in your own words.
+- List three important assessment cues.
+- Identify the safest first nursing action.
+- Write one patient teaching point.
+- Explain why one wrong answer is unsafe.
+- Connect the topic to medication safety, infection prevention, and escalation.
+
+Clinical example:
+A patient with a change in breathing, confusion, low blood pressure, chest pain, new weakness, uncontrolled bleeding, severe allergic reaction, or sudden deterioration should be treated as a priority. A stable patient needing teaching or routine documentation can usually wait while unstable cues are addressed.${noteExcerpt}`;
 
     return {
         title: `${phase}: ${topic}`,
@@ -857,7 +883,9 @@ function initializeCourseDetailPage() {
     state.selectedCourseId = currentCourse.id;
     const currentProgress = ensureCourseProgress(state, currentCourse.id);
     if (!state.enrolledCourseIds.includes(currentCourse.id)) {
-        state.enrolledCourseIds.push(currentCourse.id);
+        saveLearningState(state);
+        window.location.href = "courses.html";
+        return;
     }
     currentProgress.currentModuleIndex = Number.isInteger(requestedModuleIndex)
         ? clampModuleIndex(requestedModuleIndex, currentCourse.modules.length)
@@ -891,7 +919,7 @@ function initializeCourseDetailPage() {
         quizOptions: document.querySelector(".quiz-options"),
         quizFeedback: document.querySelector(".quiz-feedback"),
         finalReadinessPanel: document.getElementById("final-readiness-panel"),
-        resourceList: document.getElementById("workspace-resource-list"),
+        certificateLink: document.getElementById("course-certificate-link"),
         prevButton: document.getElementById("prev-module-btn"),
         nextButton: document.getElementById("next-module-btn"),
         markCompleteButton: document.getElementById("mark-complete-btn")
@@ -910,9 +938,16 @@ function initializeCourseDetailPage() {
 
     elements.quizToggle?.addEventListener("click", () => {
         if (!elements.quizPanel) return;
+        const latest = getLearningState();
+        const progress = ensureCourseProgress(latest, activeCourse.id);
+        if (!isCourseLearningComplete(progress)) {
+            elements.quizFeedback.textContent = "Finish all learning modules before opening course questions.";
+            elements.quizFeedback.className = "quiz-feedback";
+            return;
+        }
         const isHidden = elements.quizPanel.classList.toggle("hidden");
         elements.quizToggle.setAttribute("aria-expanded", String(!isHidden));
-        elements.quizToggle.textContent = isHidden ? "Show questions" : "Hide questions";
+        elements.quizToggle.textContent = isHidden ? "Show final questions" : "Hide final questions";
     });
 
     elements.nextButton.addEventListener("click", () => {
@@ -927,18 +962,6 @@ function initializeCourseDetailPage() {
         const latest = getLearningState();
         const progress = ensureCourseProgress(latest, activeCourse.id);
         if (progress.completedModules.includes(activeModuleIndex)) {
-            return;
-        }
-
-        const passed = progress.quizPassed?.[activeModuleIndex] === true;
-        if (!passed) {
-            elements.quizPanel?.classList.remove("hidden");
-            if (elements.quizToggle) {
-                elements.quizToggle.setAttribute("aria-expanded", "true");
-                elements.quizToggle.textContent = "Hide questions";
-            }
-            elements.quizFeedback.textContent = "Answer the knowledge check correctly before marking this module complete.";
-            elements.quizFeedback.className = "quiz-feedback incorrect";
             return;
         }
 
@@ -1021,7 +1044,6 @@ function initializeCourseDetailPage() {
         renderOutline(progress);
         renderModule(progress);
         renderFinalReadiness(progress);
-        renderResources(progress);
         revealElements(document.querySelectorAll(".reveal-on-scroll"));
     }
 
@@ -1044,11 +1066,10 @@ function initializeCourseDetailPage() {
         elements.outlineList.innerHTML = activeCourse.modules
             .map((module, index) => {
                 const completed = progress.completedModules.includes(index);
-                const checked = progress.quizChecked?.[index] === true;
                 return `
                 <li class="outline-item${index === activeModuleIndex ? " active" : ""}${completed ? " completed" : ""}" data-module-index="${index}">
                     <span>${module.title}</span>
-                    <small>${completed ? "Complete" : checked ? "Quiz checked" : "Lesson"}</small>
+                    <small>${completed ? "Complete" : "Learning"}</small>
                 </li>
             `;
             })
@@ -1069,6 +1090,7 @@ function initializeCourseDetailPage() {
         const passed = progress.quizPassed?.[activeModuleIndex] === true;
         const checked = progress.quizChecked?.[activeModuleIndex] === true;
         const completed = progress.completedModules.includes(activeModuleIndex);
+        const learningComplete = isCourseLearningComplete(progress);
 
         if (elements.modulePositionLabel) {
             elements.modulePositionLabel.textContent = `Module ${activeModuleIndex + 1} of ${activeCourse.modules.length}`;
@@ -1081,7 +1103,7 @@ function initializeCourseDetailPage() {
             elements.moduleStatusLabel.textContent = completed ? "Completed" : "In progress";
         }
         if (elements.moduleCheckLabel) {
-            elements.moduleCheckLabel.textContent = passed ? "Passed" : checked ? "Retry needed" : "Pending";
+            elements.moduleCheckLabel.textContent = learningComplete ? "Questions unlocked" : "Learning";
         }
         elements.moduleObjective.textContent = module.objective;
         elements.moduleBody.textContent = module.body;
@@ -1093,7 +1115,9 @@ function initializeCourseDetailPage() {
         elements.quizPanel?.classList.add("hidden");
         if (elements.quizToggle) {
             elements.quizToggle.setAttribute("aria-expanded", "false");
-            elements.quizToggle.textContent = "Show questions";
+            elements.quizToggle.textContent = learningComplete ? "Show final questions" : "Complete lessons first";
+            elements.quizToggle.disabled = !learningComplete;
+            elements.quizToggle.classList.toggle("is-disabled", !learningComplete);
         }
         elements.quizPrompt.textContent = module.quiz.prompt;
         elements.quizOptions.innerHTML = module.quiz.options
@@ -1114,25 +1138,25 @@ function initializeCourseDetailPage() {
         elements.prevButton.disabled = activeModuleIndex === 0;
         elements.nextButton.disabled = activeModuleIndex === activeCourse.modules.length - 1;
         elements.nextButton.textContent = activeModuleIndex === activeCourse.modules.length - 1 ? "Stay on Final Module" : "Next Module";
-        elements.markCompleteButton.disabled = completed || !passed;
-        elements.markCompleteButton.textContent = completed ? "Completed" : passed ? "Mark Complete" : "Answer quiz to complete";
+        elements.markCompleteButton.disabled = completed;
+        elements.markCompleteButton.textContent = completed ? "Completed" : "Mark Lesson Complete";
         elements.workspaceProgressBar.style.width = `${getProgressPercent(activeCourse.id)}%`;
         elements.workspaceProgressLabel.textContent = `${getProgressPercent(activeCourse.id)}% complete`;
     }
 
     function getNextStepLabel(progress) {
         const completed = progress.completedModules.includes(activeModuleIndex);
-        const passed = progress.quizPassed?.[activeModuleIndex] === true;
-        if (progress.completedModules.length === activeCourse.modules.length) {
-            return "All modules complete. Open the final assessment.";
-        }
-        if (!passed) {
-            return "Pass the current module knowledge check.";
+        if (isCourseLearningComplete(progress)) {
+            return "Learning complete. Open final questions and certificate readiness.";
         }
         if (!completed) {
-            return "Mark this module complete to save progress.";
+            return "Read this lesson and mark it complete when finished.";
         }
         return "Move to the next module.";
+    }
+
+    function isCourseLearningComplete(progress) {
+        return progress.completedModules.length >= activeCourse.modules.length;
     }
 
     function renderFinalReadiness(progress) {
@@ -1142,40 +1166,51 @@ function initializeCourseDetailPage() {
 
         const completedCount = progress.completedModules.length;
         const remaining = Math.max(0, activeCourse.modules.length - completedCount);
-        const ready = remaining === 0;
+        const ready = isCourseLearningComplete(progress);
+        renderCertificateLink(progress, ready);
         elements.finalReadinessPanel.innerHTML = `
             <div class="readiness-score ${ready ? "ready" : ""}">
-                <strong>${ready ? "Ready" : `${remaining} modules left`}</strong>
-                <span>${ready ? "You have completed the learning pathway." : "Complete every module before attempting a final exam."}</span>
+                <strong>${ready ? "Certificate unlocked" : `${remaining} lessons left`}</strong>
+                <span>${ready ? "You have completed the learning pathway. Final questions are now available." : "Complete every lesson before answering final questions or opening a certificate."}</span>
             </div>
             <div class="readiness-checks">
                 <span class="${completedCount > 0 ? "done" : ""}">Started course</span>
                 <span class="${completedCount >= Math.ceil(activeCourse.modules.length / 2) ? "done" : ""}">Halfway checkpoint</span>
-                <span class="${ready ? "done" : ""}">Final assessment ready</span>
+                <span class="${ready ? "done" : ""}">Certificate ready</span>
             </div>
         `;
     }
 
-    function renderResources(progress) {
-        if (!elements.resourceList) {
+    function renderCertificateLink(progress, ready) {
+        if (!elements.certificateLink) return;
+        if (!ready) {
+            elements.certificateLink.href = "#";
+            elements.certificateLink.textContent = "Certificate locked";
+            elements.certificateLink.classList.add("is-disabled");
+            elements.certificateLink.setAttribute("aria-disabled", "true");
             return;
         }
 
-        const module = activeCourse.modules[activeModuleIndex];
-        elements.resourceList.innerHTML = `
-            <a class="resource-item" href="#lesson-viewer">
-                <strong>Current lesson</strong>
-                <span>${module.title}</span>
-            </a>
-            <a class="resource-item" href="#course-final-test">
-                <strong>Module knowledge check</strong>
-                <span>${progress.quizPassed?.[activeModuleIndex] ? "Passed" : "Complete this before marking the module done."}</span>
-            </a>
-            <a class="resource-item" href="exam-interface/exam-interface.html">
-                <strong>Exam center</strong>
-                <span>Use the exam center after you complete your course modules.</span>
-            </a>
-        `;
+        if (!progress.certificate?.id) {
+            progress.certificate = {
+                id: uid("cert"),
+                issuedAt: new Date().toISOString()
+            };
+            const latest = getLearningState();
+            latest.progress[activeCourse.id] = progress;
+            saveLearningState(latest);
+        }
+
+        const params = new URLSearchParams({
+            source: "course",
+            courseId: activeCourse.id,
+            title: activeCourse.title,
+            certId: progress.certificate.id
+        });
+        elements.certificateLink.href = `../certificate.html?${params.toString()}`;
+        elements.certificateLink.textContent = "View Certificate";
+        elements.certificateLink.classList.remove("is-disabled");
+        elements.certificateLink.setAttribute("aria-disabled", "false");
     }
 
     function persistModulePosition() {
@@ -1212,6 +1247,7 @@ function renderCourseCard(course, state) {
                     <div class="progress-bar"><span style="width:${percent}%"></span></div>
                     <small>${percent}% complete</small>
                 </div>
+                <div class="muted small">${percent >= 100 ? "Certificate unlocked" : "Certificate locked until course completion"}</div>
                 <div class="course-actions card-actions">
                     <button class="btn-primary" data-enroll-course="${course.id}">${enrolled ? "Continue learning" : "Enroll"}</button>
                     <a class="btn-outline${enrolled ? "" : " is-disabled"}" href="${enrolled ? workspaceHref : "#selected-program"}">${enrolled ? "Open course" : "Enroll to open"}</a>
@@ -1256,11 +1292,12 @@ function renderSelectedProgram(course, state) {
     }
     const openBtn = document.getElementById("selected-open-btn");
     if (openBtn) {
-        openBtn.href = `course-workspace.html?course=${encodeURIComponent(course.id)}`;
-        openBtn.target = "_blank";
-        openBtn.rel = "noopener";
-        openBtn.textContent = enrolled ? "Open Workspace" : "Preview Workspace";
-        openBtn.classList.remove("is-disabled");
+        openBtn.href = enrolled ? `course-workspace.html?course=${encodeURIComponent(course.id)}` : "#selected-program";
+        openBtn.removeAttribute("target");
+        openBtn.removeAttribute("rel");
+        openBtn.textContent = enrolled ? "Open Workspace" : "Enroll to open";
+        openBtn.classList.toggle("is-disabled", !enrolled);
+        openBtn.setAttribute("aria-disabled", String(!enrolled));
     }
     const enrollBtn = document.getElementById("selected-enroll-btn");
     if (enrollBtn) {

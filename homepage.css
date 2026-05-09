@@ -37,6 +37,12 @@ body.text-large {
     font-size: 18px;
 }
 
+img,
+video,
+canvas {
+    max-width: 100%;
+}
+
 .hidden {
     display: none !important;
 }

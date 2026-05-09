@@ -1,5 +1,4 @@
 (() => {
-    const LEGACY_STORAGE_KEY = "gnp-learning-state-v2";
     const STORAGE_KEY_PREFIX = "gnp-learning-state-v2";
     const ADMIN_COURSES_KEY = "nurseprep_admin_courses";
 
@@ -235,13 +234,6 @@
         const fromKey = safeJsonParse(localStorage.getItem(key), null);
         if (fromKey) {
             return normalizeState(fromKey);
-        }
-
-        const legacy = safeJsonParse(localStorage.getItem(LEGACY_STORAGE_KEY), null);
-        if (legacy && typeof legacy === "object") {
-            const migrated = normalizeState(legacy);
-            localStorage.setItem(key, JSON.stringify(migrated));
-            return migrated;
         }
 
         return normalizeState({ ...DEFAULT_STATE });

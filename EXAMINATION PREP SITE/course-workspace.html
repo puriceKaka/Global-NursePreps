@@ -75,7 +75,8 @@
                 <div class="workspace-meta" id="workspace-meta"></div>
                 <div class="workspace-hero-actions">
                     <a class="btn-primary" href="#lesson-viewer">Continue Lesson</a>
-                    <a class="btn-outline" href="#course-final-test">Final Assessment</a>
+                    <a class="btn-outline" href="#course-final-test">Final Questions</a>
+                    <a class="btn-outline is-disabled" id="course-certificate-link" href="#" aria-disabled="true">Certificate locked</a>
                 </div>
                 <div class="progress-strip">
                     <div class="progress-strip-head">
@@ -111,8 +112,8 @@
                     <div class="study-rhythm-list">
                         <span>1. Read the lesson</span>
                         <span>2. Review key structures</span>
-                        <span>3. Pass the knowledge check</span>
-                        <span>4. Mark the module complete</span>
+                        <span>3. Move through every topic</span>
+                        <span>4. Answer questions after learning</span>
                     </div>
                 </div>
             </aside>
@@ -137,8 +138,8 @@
                             <strong id="module-status-label">Not started</strong>
                         </div>
                         <div>
-                            <span>Check</span>
-                            <strong id="module-check-label">Pending</strong>
+                            <span>Course</span>
+                            <strong id="module-check-label">Learning</strong>
                         </div>
                     </div>
 
@@ -163,12 +164,12 @@
                     <div class="notes-header">
                         <div>
                             <p class="section-kicker">Assessment</p>
-                            <h3>Module questions</h3>
+                            <h3>Course questions</h3>
                         </div>
-                        <button type="button" class="btn-outline" id="toggle-quiz-btn" aria-expanded="false">Show questions</button>
+                        <button type="button" class="btn-outline" id="toggle-quiz-btn" aria-expanded="false">Complete lessons first</button>
                     </div>
                     <div class="sample-quiz hidden" id="module-quiz-panel">
-                        <h4>Module Knowledge Check</h4>
+                        <h4>Final Knowledge Check</h4>
                         <p id="quiz-prompt"></p>
                         <div class="quiz-options"></div>
                         <button class="btn-primary check-answer-btn">Check My Understanding</button>
@@ -180,21 +181,11 @@
                     <div class="module-header">
                         <div>
                             <p class="section-kicker">Final Assessment</p>
-                            <h3>Course readiness checkpoint</h3>
+                            <h3>Certificate readiness</h3>
                         </div>
                         <a class="btn-outline" href="exam-interface/exam-interface.html">Open Exam Center</a>
                     </div>
                     <div class="final-readiness-panel" id="final-readiness-panel"></div>
-                </div>
-
-                <div class="workspace-section resource-workspace">
-                    <div class="module-header">
-                        <div>
-                            <p class="section-kicker">Resources</p>
-                            <h3>Lesson support</h3>
-                        </div>
-                    </div>
-                    <div class="resource-list" id="workspace-resource-list"></div>
                 </div>
 
                 <div class="navigation-buttons">
