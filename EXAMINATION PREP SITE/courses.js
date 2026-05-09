@@ -232,6 +232,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const searchInput = document.getElementById("course-search");
         const sortSelect = document.getElementById("sort-select");
         const resultCount = document.getElementById("catalog-results");
+        const enrollButton = document.getElementById("selected-enroll-btn");
         const difficultyInputs = Array.from(document.querySelectorAll(".difficulty-filter"));
 
         const state = getLearningState(courseList);
@@ -293,6 +294,21 @@ document.addEventListener("DOMContentLoaded", async () => {
             renderCatalog();
         });
 
+        if (enrollButton) {
+            enrollButton.addEventListener("click", () => {
+                const latest = getLearningState(courseList);
+                const selectedCourse = getCourseById(courseList, view.selectedCourseId);
+                if (!selectedCourse) {
+                    return;
+                }
+
+                toggleEnrollment(latest, selectedCourse);
+                latest.selectedCourseId = selectedCourse.id;
+                saveLearningState(latest);
+                renderCatalog();
+            });
+        }
+
         renderCatalog();
 
         function renderCatalog() {
@@ -314,6 +330,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             resultCount.textContent = `${filteredCourses.length} ${filteredCourses.length === 1 ? "course" : "courses"}`;
             renderHeroStats(latestState);
+            renderSelectedProgram(selectedCourse, latestState);
 
             if (!filteredCourses.length) {
                 grid.innerHTML = `
@@ -367,8 +384,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             return `
                 <button class="filter-chip academy-category-chip${isActive ? " active" : ""}" data-category="${escapeHtml(category)}">
-                    <span class="cat-label">${escapeHtml(label)}</span>
-                    <span class="cat-meta">${source.length}</span>
+                    <span class="category-marker" aria-hidden="true"></span>
+                    <span class="category-copy">
+                        <strong>${escapeHtml(label)}</strong>
+                        <small>${moduleCount} modules, ${questionCount.toLocaleString()} questions</small>
+                    </span>
+                    <span class="category-count">${source.length}</span>
                 </button>
             `;
         }
@@ -383,41 +404,44 @@ document.addEventListener("DOMContentLoaded", async () => {
             document.getElementById("hero-hours-count").textContent = `${totalHours}h`;
             document.getElementById("hero-question-count").textContent = `${totalQuestions.toLocaleString()}+`;
         }
-
         function renderSelectedProgram(course, state) {
             const progress = ensureCourseProgress(state, course);
             const percent = getProgressPercent(course, state);
             const enrolled = state.enrolledCourseIds.includes(course.id);
-        const workspaceHref = `course-workspace.html?course=${encodeURIComponent(course.id)}`;
+            const workspaceHref = `course-workspace.html?course=${encodeURIComponent(course.id)}`;
 
-        document.getElementById("selected-title").textContent = course.title;
-        document.getElementById("selected-summary").textContent = course.summary;
-        document.getElementById("selected-image").src = course.image || "../assets/nursing-hero.svg";
-        document.getElementById("selected-image").alt = course.title;
-        document.getElementById("selected-facts").innerHTML = [
-            createMetaPill("Duration", `${course.durationHours} hours`),
-            createMetaPill("Format", course.format),
-            createMetaPill("Modules", `${course.modules.length} modules`)
-        ].join("");
-        renderSelectedModulePreview(course);
-        renderTestCategories(courseList, course);
+            document.getElementById("selected-title").textContent = course.title;
+            document.getElementById("selected-summary").textContent = course.summary;
+            document.getElementById("selected-image").src = course.image || "../assets/nursing-hero.svg";
+            document.getElementById("selected-image").alt = course.title;
+            document.getElementById("selected-facts").innerHTML = [
+                createMetaPill("Duration", `${course.durationHours} hours`),
+                createMetaPill("Format", course.format),
+                createMetaPill("Modules", `${course.modules.length} modules`)
+            ].join("");
+            renderSelectedModulePreview(course);
+            renderTestCategories(courseList, course);
 
-        const openBtn = document.getElementById("selected-open-btn");
-        if (openBtn) {
-            openBtn.href = enrolled ? workspaceHref : "#selected-program";
-            openBtn.target = enrolled ? "_blank" : "";
-            openBtn.rel = enrolled ? "noopener" : "";
-            openBtn.textContent = enrolled ? "Open Workspace" : "Enroll to open";
-            openBtn.classList.toggle("is-disabled", !enrolled);
-        }
+            const openBtn = document.getElementById("selected-open-btn");
+            if (openBtn) {
+                openBtn.href = workspaceHref;
+                openBtn.target = "_blank";
+                openBtn.rel = "noopener";
+                openBtn.textContent = enrolled ? "Open Workspace" : "Preview Workspace";
+                openBtn.classList.remove("is-disabled");
+            }
 
-        const finalTestBtn = document.getElementById("selected-final-test-btn");
-        if (finalTestBtn) {
-            finalTestBtn.href = enrolled ? `${workspaceHref}#course-final-test` : "#selected-program";
-            finalTestBtn.target = enrolled ? "_blank" : "";
-            finalTestBtn.rel = enrolled ? "noopener" : "";
+            const finalTestBtn = document.getElementById("selected-final-test-btn");
+            if (finalTestBtn) {
+                finalTestBtn.href = enrolled ? `${workspaceHref}#course-final-test` : workspaceHref;
+                finalTestBtn.target = "_blank";
+                finalTestBtn.rel = "noopener";
+                finalTestBtn.textContent = enrolled ? "Course Final Test" : "Preview Course";
+                finalTestBtn.classList.remove("is-disabled");
+            }
+
             if (enrollButton) {
-                enrollButton.textContent = enrolled ? "Cancel" : "Enroll";
+                enrollButton.textContent = enrolled ? "Cancel Enrollment" : "Enroll";
                 enrollButton.classList.toggle("btn-outline", enrolled);
                 enrollButton.classList.toggle("btn-primary", !enrolled);
             }
@@ -427,12 +451,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             document.getElementById("selected-progress-bar").style.width = `${percent}%`;
             document.getElementById("selected-last-activity").textContent = progress.lastVisited
                 ? `Last activity: ${formatDate(progress.lastVisited)}`
-                : "No activity yet. Enroll to begin tracking your progress.";
+                : "No activity yet. Open the workspace to begin tracking your progress.";
 
-            document.getElementById("hero-course-image").src = course.image;
+            document.getElementById("hero-course-image").src = course.image || "../assets/nursing-hero.svg";
             document.getElementById("hero-course-image").alt = course.title;
         }
-    }
 
         function renderSelectedModulePreview(course) {
             const container = document.getElementById("selected-module-preview");
@@ -447,7 +470,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
                 <div class="module-preview-list">
                     ${course.modules.slice(0, 4).map((module, index) => `
-                        <a href="course-workspace.html?course=${encodeURIComponent(course.id)}&module=${index}" class="module-preview-item">
+                        <a href="course-workspace.html?course=${encodeURIComponent(course.id)}&module=${index}" class="module-preview-item" target="_blank" rel="noopener">
                             <span>${index + 1}</span>
                             <strong>${escapeHtml(module.title)}</strong>
                             <small>${index === 0 ? "Intro, structure, test path" : "Lesson, flashcards, timed check"}</small>
@@ -458,6 +481,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         function renderTestCategories(courseList, selectedCourse) {
+            const testCategoryList = document.getElementById("test-category-list");
             if (!testCategoryList) {
                 return;
             }
@@ -509,18 +533,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     function initializeCourseDetailPage(currentSettings, courseList) {
         const state = getLearningState(courseList);
-        const requestedCourseId = new URLSearchParams(window.location.search).get("course");
+        const params = new URLSearchParams(window.location.search);
+        const requestedCourseId = params.get("course");
+        const requestedModuleIndex = Number(params.get("module"));
         const currentCourse = getCourseById(courseList, requestedCourseId) || getCourseById(courseList, state.selectedCourseId) || courseList[0];
 
         state.selectedCourseId = currentCourse.id;
         const currentProgress = ensureCourseProgress(state, currentCourse);
-        currentProgress.currentModuleIndex = clampModuleIndex(currentProgress.currentModuleIndex, currentCourse.modules.length);
+        currentProgress.currentModuleIndex = Number.isInteger(requestedModuleIndex)
+            ? clampModuleIndex(requestedModuleIndex, currentCourse.modules.length)
+            : clampModuleIndex(currentProgress.currentModuleIndex, currentCourse.modules.length);
         saveLearningState(state);
 
         if (!state.enrolledCourseIds.includes(currentCourse.id)) {
-            window.alert("Enroll in this course first to open the learning workspace.");
-            window.location.replace(`courses.html?course=${encodeURIComponent(currentCourse.id)}#selected-program`);
-            return;
+            state.enrolledCourseIds.push(currentCourse.id);
+            ensureCourseProgress(state, currentCourse);
+            saveLearningState(state);
         }
 
         const elements = {
@@ -1326,10 +1354,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         return `
             <article class="course-card netacad-course-card reveal-on-scroll">
-                <div class="course-card-media">
-                    <div class="card-frame">
-                        <img src="${courseImage}" alt="${escapeHtml(course.title)} image" loading="lazy">
-                    </div>
+                <div class="netacad-card-icon" aria-hidden="true">
+                    <img src="${courseImage}" alt="" loading="lazy">
+                    <span>${escapeHtml(course.title.slice(0, 2).toUpperCase())}</span>
                 </div>
                 <div class="course-card-body">
                     <div class="course-card-top">
@@ -1355,10 +1382,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                         <small>${percent}% complete</small>
                     </div>
                     <div class="course-actions">
-                        <button class="btn-primary" data-select-course="${escapeHtml(course.id)}">Learn More</button>
+                        <button class="btn-outline" data-select-course="${escapeHtml(course.id)}">Details</button>
+                        <a class="btn-primary" href="${workspaceHref}" target="_blank" rel="noopener">Open Course</a>
                         <button class="${enrolled ? "btn-outline" : "btn-primary"}" data-enroll-course="${escapeHtml(course.id)}">${enrolled ? "Cancel" : "Enroll"}</button>
-                        <a class="btn-outline${enrolled ? "" : " is-disabled"}" href="${enrolled ? workspaceHref : "#selected-program"}"${enrolled ? " target=\"_blank\" rel=\"noopener\"" : ""}>${enrolled ? "Resume" : "Enroll to open"}</a>
-                        <a class="btn-outline${enrolled ? "" : " is-disabled"}" href="${enrolled ? `${workspaceHref}#course-final-test` : "#selected-program"}"${enrolled ? " target=\"_blank\" rel=\"noopener\"" : ""}>Final Test</a>
+                        <a class="btn-outline" href="${workspaceHref}#course-final-test" target="_blank" rel="noopener">Final Test</a>
                     </div>
                 </div>
             </article>
