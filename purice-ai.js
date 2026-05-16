@@ -12,6 +12,7 @@ const typing = document.getElementById("puriceTyping");
 
 let recognition = null;
 let chatHistory = [];
+let voiceActive = false;
 
 const knowledgeBase = [
     {
@@ -301,7 +302,10 @@ function toggleTheme() {
 
 function initVoice() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) return;
+    if (!SpeechRecognition) {
+        actionButton.dataset.voiceUnsupported = "true";
+        return;
+    }
 
     recognition = new SpeechRecognition();
     recognition.lang = "en-US";
@@ -309,6 +313,7 @@ function initVoice() {
     recognition.maxAlternatives = 1;
 
     recognition.addEventListener("start", () => {
+        voiceActive = true;
         actionButton.classList.add("listening");
         actionButton.setAttribute("aria-label", "Listening");
     });
@@ -321,7 +326,18 @@ function initVoice() {
         input.focus();
     });
 
+    recognition.addEventListener("error", (event) => {
+        voiceActive = false;
+        actionButton.classList.remove("listening");
+        updateActionButton();
+        const reason = event.error === "not-allowed"
+            ? "Microphone permission was blocked. Please allow microphone access in your browser, then try again."
+            : "I could not hear that clearly. Please try the mic again or type your question.";
+        appendMessage({ role: "bot", text: reason });
+    });
+
     recognition.addEventListener("end", () => {
+        voiceActive = false;
         actionButton.classList.remove("listening");
         updateActionButton();
     });
@@ -369,10 +385,22 @@ actionButton.addEventListener("click", () => {
     }
 
     if (recognition) {
-        recognition.start();
+        if (voiceActive) {
+            recognition.stop();
+            return;
+        }
+        try {
+            recognition.start();
+        } catch {
+            appendMessage({ role: "bot", text: "The microphone is already starting. Wait a moment, then try again." });
+        }
         return;
     }
 
+    appendMessage({
+        role: "bot",
+        text: "Voice input is not supported in this browser. You can still type your question and I will answer."
+    });
     input.focus();
 });
 

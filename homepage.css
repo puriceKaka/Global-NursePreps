@@ -1432,7 +1432,18 @@ canvas {
 .card-actions {
     display: flex;
     gap: 10px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    align-items: center;
+    min-width: 0;
+}
+
+.card-actions .primary-button,
+.card-actions .pill-button,
+.card-actions .secondary-button {
+    flex: 1 1 0;
+    min-width: 0;
+    padding-inline: 10px;
+    font-size: 0.86rem;
 }
 
 /* Reduce motion */
