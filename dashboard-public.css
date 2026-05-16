@@ -2211,4 +2211,24 @@ p {
     .site-footer {
         padding-bottom: 86px;
     }
+
+    .stats-grid {
+        grid-template-columns: repeat(4, minmax(118px, 1fr));
+        overflow-x: auto;
+        padding-bottom: 4px;
+    }
+
+    .stat-card {
+        min-width: 118px;
+        padding: 14px 12px;
+    }
+
+    .stat-card strong {
+        font-size: 26px;
+    }
+
+    .stat-card span {
+        font-size: 12px;
+        line-height: 1.35;
+    }
 }
