@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecturer Dashboard | GlobalNursePrep</title>
+    <link rel="stylesheet" href="../css/design-system.css">
+    <link rel="stylesheet" href="../drawer.css">
+    <link rel="stylesheet" href="lecturer.css">
+    <script defer src="../learning-core.js"></script>
+    <script defer src="lecturer.js"></script>
+    <script defer src="../drawer.js"></script>
+    <link rel="stylesheet" href="../css/site-loader.css">
+    <script src="../js/site-loader.js"></script>
+</head>
+<body data-page="lecturer-dashboard">
+    <nav class="navbar">
+        <div class="logo-container">
+            <button type="button" id="menuToggle" aria-label="Open menu">
+                <span class="hamburger" aria-hidden="true"></span>
+            </button>
+            <span class="brand-logo">
+                <img src="../logo/Screenshot_20260421-123818.jpg" alt="Global NursePrep logo">
+            </span>
+            <span class="logo-text">Global <span class="highlight">Nurse</span>Prep <span class="badge">Lecturer</span></span>
+        </div>
+        <ul>
+            <li><a href="lecturer-dashboard.html" aria-current="page">Dashboard</a></li>
+            <li><a href="lecturer-students.html">Students</a></li>
+            <li><a href="lecturer-courses.html">Courses</a></li>
+            <li><a href="lecturer-exams.html">Exams</a></li>
+            <li><a href="lecturer-results.html">Results</a></li>
+        </ul>
+        <div class="nav-actions">
+            <span class="user-name" id="lecturerName">Dr. Name</span>
+            <a class="logout-button" href="../login.html" id="logoutBtn">Logout</a>
+        </div>
+    </nav>
+
+    <div class="drawer-overlay hidden" id="drawerOverlay" tabindex="-1" aria-hidden="true"></div>
+
+    <aside class="drawer hidden" id="drawer" aria-label="Side menu">
+        <div class="drawer-header">
+            <div class="drawer-user">
+                <div class="avatar lecturer-avatar" id="drawerAvatar" aria-hidden="true">L</div>
+                <div>
+                    <strong id="drawerName">Lecturer</strong>
+                    <div class="muted small" id="drawerEmail">—</div>
+                </div>
+            </div>
+            <button type="button" id="drawerClose" aria-label="Close menu">×</button>
+        </div>
+
+        <nav class="drawer-nav" aria-label="Navigation">
+            <a class="drawer-link" href="lecturer-dashboard.html">Dashboard</a>
+            <a class="drawer-link" href="lecturer-students.html">Students</a>
+            <a class="drawer-link" href="lecturer-courses.html">Courses</a>
+            <a class="drawer-link" href="lecturer-exams.html">Exams</a>
+            <a class="drawer-link" href="lecturer-results.html">Results</a>
+            <a class="drawer-link" href="../homepage.html">Main Site</a>
+        </nav>
+    </aside>
+
+    <main class="lecturer-dashboard-page">
+        <section class="dashboard-hero">
+            <div class="hero-content">
+                <h1>Welcome back, <span id="welcomeName">Lecturer</span></h1>
+                <p>Manage your courses, students, and examinations from one dashboard.</p>
+            </div>
+            <div class="quick-actions">
+                <a class="action-btn primary" href="lecturer-exams.html">
+                    <span class="icon">📝</span>
+                    Create Exam
+                </a>
+                <a class="action-btn" href="lecturer-students.html">
+                    <span class="icon">👥</span>
+                    Add Students
+                </a>
+            </div>
+        </section>
+
+        <section class="stats-grid">
+            <article class="stat-card">
+                <div class="stat-icon">📚</div>
+                <div class="stat-content">
+                    <strong id="totalCourses">0</strong>
+                    <span>Active Courses</span>
+                </div>
+            </article>
+            <article class="stat-card">
+                <div class="stat-icon">👨‍🎓</div>
+                <div class="stat-content">
+                    <strong id="totalStudents">0</strong>
+                    <span>Enrolled Students</span>
+                </div>
+            </article>
+            <article class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-content">
+                    <strong id="pendingExams">0</strong>
+                    <span>Upcoming Exams</span>
+                </div>
+            </article>
+            <article class="stat-card">
+                <div class="stat-icon">✅</div>
+                <div class="stat-content">
+                    <strong id="gradedExams">0</strong>
+                    <span>Graded This Month</span>
+                </div>
+            </article>
+        </section>
+
+        <section class="dashboard-grid">
+            <div class="dashboard-panel">
+                <div class="panel-header">
+                    <h2>Upcoming Exams</h2>
+                    <a href="lecturer-exams.html" class="view-all">View All</a>
+                </div>
+                <div class="panel-content">
+                    <div class="exam-list" id="upcomingExamsList">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-panel">
+                <div class="panel-header">
+                    <h2>Recent Student Activity</h2>
+                    <a href="lecturer-students.html" class="view-all">View All</a>
+                </div>
+                <div class="panel-content">
+                    <div class="activity-list" id="recentActivityList">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-panel full-width">
+                <div class="panel-header">
+                    <h2>Course Performance Overview</h2>
+                    <select id="coursePerformanceSelect" class="panel-select">
+                        <option value="all">All Courses</option>
+                    </select>
+                </div>
+                <div class="panel-content">
+                    <div class="performance-chart" id="performanceChart">
+                        <div class="chart-placeholder">
+                            <p>Select a course to view performance analytics</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="dashboard-panel">
+            <div class="panel-header">
+                <h2>Students Requiring Attention</h2>
+                <span class="badge warning" id="attentionCount">0</span>
+            </div>
+            <div class="panel-content">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Course</th>
+                            <th>Current Progress</th>
+                            <th>Avg Score</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attentionTableBody">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div>&copy; 2026 Global NursePrep - Lecturer Portal</div>
+        <div class="powered-by">Powered by Teams Technologies</div>
+    </footer>
+</body>
+</html>

@@ -6,6 +6,7 @@ const modalClose = document.getElementById('modalClose');
 const modalCourse = document.getElementById('modalCourse');
 const year = document.getElementById('year');
 const chatButton = document.getElementById('chatButton');
+const freeStudyResource = document.getElementById('freeStudyResource');
 const siteFooter = document.getElementById('siteFooter');
 
 function renderSiteFooter() {
@@ -61,6 +62,7 @@ function renderSiteFooter() {
                 <a href="terms-of-use.html">Terms of Use</a>
                 <a href="cookie-policy.html">Cookie Policy</a>
                 <a href="platform-architecture.html">Platform Architecture</a>
+                <a href="https://openwho.org/" target="_blank" rel="noopener">Free Global Study: OpenWHO</a>
                 <a href="accessibility-assistance.html">Accessibility Assistance</a>
             </div>
         </div>
@@ -69,9 +71,9 @@ function renderSiteFooter() {
             <div class="footer-support-links">
                 <a href="EXAMINATION%20PREP%20SITE/courses.html">Course selection</a>
                 <a href="licensing.html">Licensing exam prep</a>
-                <a href="contact.html#payment-help">Payment help</a>
+                <a href="https://wa.me/254726105087?text=Hello%2C%20I%20need%20payment%20help.">Payment help</a>
                 <a href="login.html">Student account access</a>
-                <a href="contact.html#research-consultation">Research consultation</a>
+                <a href="https://wa.me/254726105087?text=Hello%2C%20I%20need%20research%20consultation.">Research consultation</a>
                 <a href="meetings.html">Live class guidance</a>
             </div>
         </div>
@@ -94,17 +96,11 @@ function renderSiteFooter() {
 
 renderSiteFooter();
 
-function hidePageLoader() {
+window.addEventListener('load', () => {
     window.setTimeout(() => {
         loader?.classList.add('hidden');
-    }, 100);
-}
-
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', hidePageLoader, { once: true });
-} else {
-    hidePageLoader();
-}
+    }, 450);
+});
 
 if (year) {
     year.textContent = new Date().getFullYear();
@@ -133,28 +129,13 @@ siteNav?.addEventListener('click', (event) => {
     const dropdownTrigger = event.target.closest('.dropdown-trigger');
     if (dropdownTrigger && isMobileNav()) {
         event.preventDefault();
-        const dropdown = dropdownTrigger.closest('.nav-dropdown');
-        document.querySelectorAll('.nav-dropdown.open').forEach((openDropdown) => {
-            if (openDropdown !== dropdown) {
-                openDropdown.classList.remove('open');
-            }
-        });
-        dropdown?.classList.toggle('open');
+        dropdownTrigger.closest('.nav-dropdown')?.classList.toggle('open');
         return;
     }
 
     const link = event.target.closest('a');
     if (!link) return;
     closeMobileNav();
-});
-
-document.addEventListener('click', (event) => {
-    if (!isMobileNav() || !siteNav?.classList.contains('open')) return;
-    const clickedInsideNav = event.target.closest('#siteNav');
-    const clickedToggle = event.target.closest('#navToggle');
-    if (!clickedInsideNav && !clickedToggle) {
-        closeMobileNav();
-    }
 });
 
 window.addEventListener('resize', () => {
@@ -222,6 +203,56 @@ document.querySelectorAll('form').forEach((form) => {
 chatButton?.addEventListener('click', () => {
     window.location.href = 'https://wa.me/254726105087?text=Hello%20Global%20NursePrep%2C%20I%20need%20support.';
 });
+
+async function loadFreeStudyResource() {
+    if (!freeStudyResource) return;
+
+    const title = freeStudyResource.querySelector('h2');
+    const description = freeStudyResource.querySelector('p');
+    const link = freeStudyResource.querySelector('a');
+
+    freeStudyResource.classList.add('loading');
+
+    try {
+        const response = await fetch('data/global-study-resources.json', {
+            headers: { Accept: 'application/json' }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Resource request failed with status ${response.status}`);
+        }
+
+        const data = await response.json();
+        const resource = data.featured;
+
+        if (!resource?.title || !resource?.url) {
+            throw new Error('Free study resource data is incomplete');
+        }
+
+        if (title) title.textContent = resource.title;
+        if (description) {
+            description.textContent = `${resource.provider}: ${resource.description}`;
+        }
+        if (link) {
+            link.href = resource.url;
+            link.textContent = resource.cta || 'Open resource';
+        }
+    } catch (error) {
+        console.error('Unable to load free study resource:', error);
+        freeStudyResource.classList.add('error');
+        if (description) {
+            description.textContent = 'Free global study resource is available through OpenWHO. Use the link to open it directly.';
+        }
+        if (link) {
+            link.href = 'https://openwho.org/';
+            link.textContent = 'Open OpenWHO';
+        }
+    } finally {
+        freeStudyResource.classList.remove('loading');
+    }
+}
+
+loadFreeStudyResource();
 
 const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {

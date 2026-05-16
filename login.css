@@ -72,22 +72,22 @@ html, body {
 }
 
 .auth-shell {
-    min-height: calc(100vh - 120px);
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 14px 22px;
+    padding: clamp(32px, 6vw, 70px);
     width: 100%;
     overflow-x: hidden;
 }
 
 .auth-card {
-    width: min(880px, 100%);
+    width: min(1120px, 100%);
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 28px;
     display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
     overflow: hidden;
     box-shadow: var(--shadow);
     animation: auth-rise 0.65s ease both;
@@ -95,7 +95,7 @@ html, body {
 
 .auth-left {
     background: linear-gradient(160deg, var(--ice-2), #ffffff);
-    padding: 22px 24px;
+    padding: 22px 22px 0;
     border-right: 1px solid var(--border);
 }
 
@@ -135,12 +135,12 @@ html, body {
 }
 
 .left-content {
-    padding: 12px 2px 0;
+    padding: 18px 2px 0;
 }
 
 .left-content h2 {
-    margin: 8px 0;
-    font-size: 30px;
+    margin: 10px 0 10px;
+    font-size: 34px;
     line-height: 1.12;
     color: var(--navy);
 }
@@ -150,9 +150,9 @@ html, body {
 }
 
 .feature-list {
-    margin-top: 10px;
+    margin-top: 14px;
     display: grid;
-    gap: 8px;
+    gap: 10px;
 }
 
 .feature {
@@ -172,7 +172,7 @@ html, body {
 }
 
 .preview {
-    margin-top: 12px;
+    margin-top: 18px;
     border-radius: 22px;
     border: 1px solid var(--border);
     background: var(--ice-2);
@@ -192,10 +192,10 @@ html, body {
 }
 
 .auth-right {
-    padding: 22px 22px;
+    padding: 34px 30px;
     display: grid;
     align-content: start;
-    gap: 6px;
+    gap: 14px;
 }
 
 .auth-right h2 {
@@ -204,14 +204,10 @@ html, body {
     color: var(--navy);
 }
 
-.auth-right > .muted {
-    margin: 0;
-}
-
 .form {
-    margin-top: 4px;
+    margin-top: 16px;
     display: grid;
-    gap: 12px;
+    gap: 18px;
 }
 
 .field span {
@@ -236,15 +232,14 @@ input:focus {
 }
 
 .password-row {
-    position: relative;
-}
-
-.password-row input {
-    padding-right: 48px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    align-items: center;
 }
 
 .primary-button,
-.password-toggle {
+.pill-button {
     border: none;
     cursor: pointer;
     border-radius: 999px;
@@ -257,36 +252,11 @@ input:focus {
     color: #ffffff;
 }
 
-.password-toggle {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    display: grid;
-    place-items: center;
-    width: 34px;
-    height: 34px;
-    padding: 0;
-    background: transparent;
+.pill-button {
+    padding: 10px 14px;
+    background: var(--ice);
     color: var(--navy);
-    transform: translateY(-50%);
-}
-
-.password-toggle svg {
-    width: 21px;
-    height: 21px;
-    fill: currentColor;
-}
-
-.password-toggle .eye-closed {
-    display: none;
-}
-
-.password-toggle[aria-pressed="true"] .eye-open {
-    display: none;
-}
-
-.password-toggle[aria-pressed="true"] .eye-closed {
-    display: block;
+    border: 1px solid rgba(11, 31, 58, 0.10);
 }
 
 .error {
@@ -351,6 +321,7 @@ input:focus {
 .social-icon {
     width: 22px;
     height: 22px;
+    border-radius: 999px;
     display: inline-grid;
     place-items: center;
     flex: 0 0 auto;
@@ -358,18 +329,31 @@ input:focus {
     font-weight: 900;
 }
 
-.social-icon svg {
-    width: 20px;
-    height: 20px;
-    display: block;
+.google-icon {
+    color: #ffffff;
+    background: linear-gradient(135deg, #4285f4, #34a853 45%, #fbbc05 70%, #ea4335);
 }
 
+.microsoft-icon {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px;
+    border-radius: 4px;
+}
+
+.microsoft-icon span:nth-child(1) { background: #f35325; }
+.microsoft-icon span:nth-child(2) { background: #81bc06; }
+.microsoft-icon span:nth-child(3) { background: #05a6f0; }
+.microsoft-icon span:nth-child(4) { background: #ffba08; }
+
 .apple-icon {
-    color: #111827;
+    background: #111827;
 }
 
 .apple-icon svg {
-    fill: currentColor;
+    width: 16px;
+    height: 16px;
+    fill: #ffffff;
 }
 
 @keyframes auth-rise {
@@ -393,7 +377,7 @@ input:focus {
 }
 
 .links {
-    margin-top: 10px;
+    margin-top: 18px;
     display: flex;
     justify-content: flex-start;
     gap: 18px;
@@ -404,11 +388,6 @@ input:focus {
 .links a {
     color: var(--navy);
     text-decoration: none;
-}
-
-.links a:last-child {
-    margin-left: auto;
-    text-align: right;
 }
 
 .links a:hover {
@@ -463,6 +442,9 @@ input:focus {
     }
     .preview {
         border-radius: 14px;
+    }
+    .password-row {
+        grid-template-columns: 1fr;
     }
     .social-login-row {
         grid-template-columns: repeat(3, minmax(0, 1fr));

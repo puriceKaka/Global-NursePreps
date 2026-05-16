@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management | GlobalNursePrep Lecturer</title>
+    <link rel="stylesheet" href="../css/design-system.css">
+    <link rel="stylesheet" href="../drawer.css">
+    <link rel="stylesheet" href="lecturer.css">
+    <link rel="stylesheet" href="lecturer-students.css">
+    <script defer src="../learning-core.js"></script>
+    <script defer src="lecturer.js"></script>
+    <script defer src="lecturer-students.js"></script>
+    <script defer src="../drawer.js"></script>
+    <link rel="stylesheet" href="../css/site-loader.css">
+    <script src="../js/site-loader.js"></script>
+</head>
+<body data-page="lecturer-students">
+    <nav class="navbar">
+        <div class="logo-container">
+            <button type="button" id="menuToggle" aria-label="Open menu">
+                <span class="hamburger" aria-hidden="true"></span>
+            </button>
+            <span class="brand-logo">
+                <img src="../logo/Screenshot_20260421-123818.jpg" alt="Global NursePrep logo">
+            </span>
+            <span class="logo-text">Global <span class="highlight">Nurse</span>Prep <span class="badge">Lecturer</span></span>
+        </div>
+        <ul>
+            <li><a href="lecturer-dashboard.html">Dashboard</a></li>
+            <li><a href="lecturer-students.html" aria-current="page">Students</a></li>
+            <li><a href="lecturer-courses.html">Courses</a></li>
+            <li><a href="lecturer-exams.html">Exams</a></li>
+            <li><a href="lecturer-results.html">Results</a></li>
+        </ul>
+        <div class="nav-actions">
+            <span class="user-name" id="lecturerName">Dr. Name</span>
+            <a class="logout-button" href="../login.html" id="logoutBtn">Logout</a>
+        </div>
+    </nav>
+
+    <div class="drawer-overlay hidden" id="drawerOverlay" tabindex="-1" aria-hidden="true"></div>
+
+    <aside class="drawer hidden" id="drawer" aria-label="Side menu">
+        <div class="drawer-header">
+            <div class="drawer-user">
+                <div class="avatar lecturer-avatar" id="drawerAvatar" aria-hidden="true">L</div>
+                <div>
+                    <strong id="drawerName">Lecturer</strong>
+                    <div class="muted small" id="drawerEmail">—</div>
+                </div>
+            </div>
+            <button type="button" id="drawerClose" aria-label="Close menu">×</button>
+        </div>
+
+        <nav class="drawer-nav" aria-label="Navigation">
+            <a class="drawer-link" href="lecturer-dashboard.html">Dashboard</a>
+            <a class="drawer-link" href="lecturer-students.html">Students</a>
+            <a class="drawer-link" href="lecturer-courses.html">Courses</a>
+            <a class="drawer-link" href="lecturer-exams.html">Exams</a>
+            <a class="drawer-link" href="lecturer-results.html">Results</a>
+            <a class="drawer-link" href="../homepage.html">Main Site</a>
+        </nav>
+    </aside>
+
+    <main class="lecturer-students-page">
+        <section class="page-header">
+            <div class="header-content">
+                <h1>Student Management</h1>
+                <p>Add students to membership, manage access, and monitor progress.</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn-primary" id="addStudentBtn">
+                    <span>+</span> Add Student to Membership
+                </button>
+            </div>
+        </section>
+
+        <section class="filters-section">
+            <div class="filter-group">
+                <label>Course</label>
+                <select id="courseFilter" class="filter-select">
+                    <option value="all">All Courses</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Status</label>
+                <select id="statusFilter" class="filter-select">
+                    <option value="all">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="at-risk">At Risk</option>
+                    <option value="completed">Completed</option>
+                </select>
+            </div>
+            <div class="search-group">
+                <input type="search" id="studentSearch" placeholder="Search students..." class="search-input">
+            </div>
+        </section>
+
+        <section class="students-table-section">
+            <div class="table-header">
+                <div class="table-info">
+                    <span id="studentCount">0</span> students found
+                </div>
+                <div class="table-actions">
+                    <button class="btn-outline" id="exportBtn">Export CSV</button>
+                </div>
+            </div>
+            <table class="data-table students-table">
+                <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" id="selectAll">
+                        </th>
+                        <th>Student</th>
+                        <th>Email</th>
+                        <th>Course</th>
+                        <th>Progress</th>
+                        <th>Avg Score</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="studentsTableBody">
+                    <!-- Populated by JavaScript -->
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Add Student Modal -->
+        <div class="modal-overlay hidden" id="addStudentModal">
+            <div class="modal">
+                <div class="modal-header">
+                    <h2>Add Student to Membership</h2>
+                    <button class="modal-close" id="closeModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="addStudentForm">
+                        <div class="form-group">
+                            <label for="studentName">Full Name *</label>
+                            <input type="text" id="studentName" required placeholder="Enter student's full name">
+                        </div>
+                        <div class="form-group">
+                            <label for="studentEmail">Email Address *</label>
+                            <input type="email" id="studentEmail" required placeholder="student@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="studentCourse">Assign Course *</label>
+                            <select id="studentCourse" required>
+                                <option value="">Select a course...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="membershipType">Membership Type</label>
+                            <select id="membershipType">
+                                <option value="free">Free Access</option>
+                                <option value="trial">Trial (7 days)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="studentNotes">Notes</label>
+                            <textarea id="studentNotes" rows="3" placeholder="Optional notes about this student..."></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn-outline" id="cancelAdd">Cancel</button>
+                            <button type="submit" class="btn-primary">Add Student</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student Detail Modal -->
+        <div class="modal-overlay hidden" id="studentDetailModal">
+            <div class="modal modal-large">
+                <div class="modal-header">
+                    <h2>Student Details</h2>
+                    <button class="modal-close" id="closeDetailModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="student-detail-grid">
+                        <div class="detail-section">
+                            <h3>Student Information</h3>
+                            <div id="studentInfo"></div>
+                        </div>
+                        <div class="detail-section">
+                            <h3>Course Progress</h3>
+                            <div id="studentProgress"></div>
+                        </div>
+                        <div class="detail-section full-width">
+                            <h3>Recent Activity</h3>
+                            <div id="studentActivity"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div>&copy; 2026 Global NursePrep - Lecturer Portal</div>
+        <div class="powered-by">Powered by Teams Technologies</div>
+    </footer>
+</body>
+</html>

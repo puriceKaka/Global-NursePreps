@@ -1,0 +1,431 @@
+/* Lecturer Portal Styles */
+
+.lecturer-dashboard-page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Dashboard Hero */
+.dashboard-hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #102c4d 0%, #16314f 100%);
+    color: white;
+    padding: 2.5rem;
+    border-radius: 16px;
+    margin-bottom: 2rem;
+}
+
+.dashboard-hero .hero-content h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-hero .hero-content p {
+    opacity: 0.9;
+    font-size: 1.1rem;
+}
+
+.quick-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.action-btn.primary {
+    background: #0f86a6;
+    color: white;
+}
+
+.action-btn.primary:hover {
+    background: #0d6d8a;
+    transform: translateY(-2px);
+}
+
+.action-btn {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.action-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+}
+
+.action-btn .icon {
+    font-size: 1.25rem;
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(16, 44, 77, 0.08);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.stat-icon {
+    font-size: 2.5rem;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0f7ff;
+    border-radius: 12px;
+}
+
+.stat-content strong {
+    display: block;
+    font-size: 2rem;
+    color: #102c4d;
+    line-height: 1.2;
+}
+
+.stat-content span {
+    color: #5a6b7e;
+    font-size: 0.9rem;
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.dashboard-panel {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(16, 44, 77, 0.08);
+    overflow: hidden;
+}
+
+.dashboard-panel.full-width {
+    grid-column: 1 / -1;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid #e8eef4;
+}
+
+.panel-header h2 {
+    font-size: 1.125rem;
+    color: #102c4d;
+    margin: 0;
+}
+
+.panel-header .view-all {
+    color: #0f86a6;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.panel-header .view-all:hover {
+    text-decoration: underline;
+}
+
+.panel-select {
+    padding: 0.5rem 1rem;
+    border: 1px solid #d6e2ee;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    color: #16314f;
+    background: white;
+    cursor: pointer;
+}
+
+.panel-content {
+    padding: 1.5rem;
+}
+
+/* Exam List */
+.exam-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.exam-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: #f7fafc;
+    border-radius: 8px;
+    border-left: 4px solid #0f86a6;
+}
+
+.exam-item .exam-info h4 {
+    margin: 0 0 0.25rem;
+    color: #102c4d;
+    font-size: 0.95rem;
+}
+
+.exam-item .exam-info span {
+    font-size: 0.8rem;
+    color: #5a6b7e;
+}
+
+.exam-item .exam-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.exam-item .exam-actions button {
+    padding: 0.375rem 0.75rem;
+    border: 1px solid #d6e2ee;
+    background: white;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.exam-item .exam-actions button:hover {
+    border-color: #0f86a6;
+    color: #0f86a6;
+}
+
+.exam-item .exam-actions button.primary {
+    background: #0f86a6;
+    color: white;
+    border-color: #0f86a6;
+}
+
+/* Activity List */
+.activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    background: #f7fafc;
+    border-radius: 8px;
+}
+
+.activity-item .activity-icon {
+    width: 36px;
+    height: 36px;
+    background: #e7f6ec;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.activity-item .activity-info {
+    flex: 1;
+}
+
+.activity-item .activity-info strong {
+    display: block;
+    font-size: 0.875rem;
+    color: #102c4d;
+}
+
+.activity-item .activity-info span {
+    font-size: 0.75rem;
+    color: #5a6b7e;
+}
+
+.activity-item .activity-time {
+    font-size: 0.75rem;
+    color: #8a9bb0;
+}
+
+/* Performance Chart */
+.performance-chart {
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chart-placeholder {
+    text-align: center;
+    color: #8a9bb0;
+}
+
+/* Data Table */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+    padding: 0.875rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e8eef4;
+}
+
+.data-table th {
+    background: #f7fafc;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #5a6b7e;
+}
+
+.data-table td {
+    font-size: 0.875rem;
+    color: #16314f;
+}
+
+.data-table tbody tr:hover {
+    background: #f7fafc;
+}
+
+/* Badge */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.625rem;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge.warning {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.badge.success {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.badge.danger {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* Progress Bar */
+.progress-mini {
+    width: 100px;
+    height: 6px;
+    background: #e8eef4;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-mini span {
+    display: block;
+    height: 100%;
+    background: #0f86a6;
+    border-radius: 3px;
+}
+
+/* Nav Actions */
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-name {
+    color: white;
+    font-weight: 500;
+}
+
+.logout-button {
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: background 0.2s ease;
+}
+
+.logout-button:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+/* Lecturer Badge in Nav */
+.logo-text .badge {
+    background: #0f86a6;
+    color: white;
+    padding: 0.125rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    margin-left: 0.5rem;
+    text-transform: uppercase;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-hero {
+        flex-direction: column;
+        text-align: center;
+        gap: 1.5rem;
+    }
+    
+    .quick-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .action-btn {
+        justify-content: center;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .data-table {
+        display: block;
+        overflow-x: auto;
+    }
+}
