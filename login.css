@@ -76,7 +76,7 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 22px;
+    padding: 14px 22px;
     width: 100%;
     overflow-x: hidden;
 }
@@ -95,7 +95,7 @@ html, body {
 
 .auth-left {
     background: linear-gradient(160deg, var(--ice-2), #ffffff);
-    padding: 28px;
+    padding: 22px 24px;
     border-right: 1px solid var(--border);
 }
 
@@ -135,12 +135,12 @@ html, body {
 }
 
 .left-content {
-    padding: 18px 2px 0;
+    padding: 12px 2px 0;
 }
 
 .left-content h2 {
-    margin: 10px 0 10px;
-    font-size: 34px;
+    margin: 8px 0;
+    font-size: 30px;
     line-height: 1.12;
     color: var(--navy);
 }
@@ -150,9 +150,9 @@ html, body {
 }
 
 .feature-list {
-    margin-top: 14px;
+    margin-top: 10px;
     display: grid;
-    gap: 10px;
+    gap: 8px;
 }
 
 .feature {
@@ -172,7 +172,7 @@ html, body {
 }
 
 .preview {
-    margin-top: 18px;
+    margin-top: 12px;
     border-radius: 22px;
     border: 1px solid var(--border);
     background: var(--ice-2);
@@ -192,10 +192,10 @@ html, body {
 }
 
 .auth-right {
-    padding: 28px 24px;
+    padding: 22px 22px;
     display: grid;
     align-content: start;
-    gap: 14px;
+    gap: 10px;
 }
 
 .auth-right h2 {
@@ -205,9 +205,9 @@ html, body {
 }
 
 .form {
-    margin-top: 16px;
+    margin-top: 10px;
     display: grid;
-    gap: 18px;
+    gap: 12px;
 }
 
 .field span {
@@ -363,7 +363,7 @@ input:focus {
 }
 
 .links {
-    margin-top: 18px;
+    margin-top: 10px;
     display: flex;
     justify-content: flex-start;
     gap: 18px;
