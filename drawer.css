@@ -232,8 +232,14 @@ body.drawer-open {
     .chat-button {
         right: 12px;
         bottom: 12px;
-        min-height: 39px;
-        padding: 0 13px;
+        min-height: 42px;
+        padding: 0 14px 0 8px;
+        gap: 7px;
         font-size: 12px;
+    }
+
+    .chat-button img {
+        width: 30px;
+        height: 30px;
     }
 }
