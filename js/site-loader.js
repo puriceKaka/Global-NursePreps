@@ -5,7 +5,7 @@
     var slowTimer;
     var visible = false;
     var scriptUrl = document.currentScript ? document.currentScript.src : window.location.href;
-    var logoUrl = new URL('../logo/global-nurseprep-logo.svg', scriptUrl).href;
+    var logoUrl = new URL('../logo/finalLogo.jpg', scriptUrl).href;
 
     function createLoader() {
         if (loader) return loader;

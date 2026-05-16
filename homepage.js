@@ -264,7 +264,7 @@
     }
 
     function getBrandLogoSrc() {
-        const bySrc = document.querySelector("img[src*='global-nurseprep-logo']");
+        const bySrc = document.querySelector("img[src*='finalLogo']");
         if (bySrc?.getAttribute("src")) return bySrc.getAttribute("src");
 
         const byAlt = document.querySelector("img[alt*='logo' i]");
