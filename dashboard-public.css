@@ -2912,6 +2912,49 @@ p {
         font-size: 0.95rem;
     }
 
+    .hero-trust {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 6px;
+        width: 100%;
+        margin-top: 14px;
+    }
+
+    .hero-trust span {
+        justify-content: center;
+        min-height: 28px;
+        padding: 0 5px;
+        font-size: 0.62rem;
+        line-height: 1.15;
+        text-align: center;
+        white-space: normal;
+    }
+
+    .stats-grid.section-shell {
+        width: calc(100% - 16px);
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 6px;
+    }
+
+    .stat-card {
+        padding: 8px 4px;
+        min-width: 0;
+    }
+
+    .stat-card strong {
+        font-size: clamp(15px, 6.8vw, 24px);
+    }
+
+    .stat-card span {
+        font-size: 0.58rem;
+        line-height: 1.1;
+        overflow-wrap: anywhere;
+    }
+
     .payments-strip {
         gap: 6px;
         display: flex;
