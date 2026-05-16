@@ -3,10 +3,14 @@
         session: "gnp_admin_session",
         lecturers: "gnp_lecturers",
         groups: "gnp_membership_groups",
+        meetings: "gnp_lecturer_meetings",
         exams: "gnp_lecturer_exams",
+        resources: "gnp_lecturer_resources",
         payments: "gnp_payments",
         adminProfile: "gnp_admin_profile"
     };
+    const STUDENT_SESSION_KEY = "nurseprep_session";
+    const LECTURER_SESSION_KEY = "gnp_lecturer_session";
 
     const $ = (selector) => document.querySelector(selector);
     const $$ = (selector) => Array.from(document.querySelectorAll(selector));
@@ -22,10 +26,6 @@
 
     function writeJson(key, value) {
         localStorage.setItem(key, JSON.stringify(value));
-    }
-
-    function uid(prefix) {
-        return `${prefix}_${Date.now().toString(36)}_${Math.random().toString(16).slice(2, 8)}`;
     }
 
     function escapeHtml(value) {
@@ -95,6 +95,59 @@
         $("#adminAuth")?.classList.remove("hidden");
         $("#adminApp")?.classList.add("hidden");
         $("#adminLogout")?.classList.add("hidden");
+        setAuthMode("login");
+    }
+
+    function hasAdminProfile() {
+        const profile = readJson(KEYS.adminProfile, null);
+        return Boolean(profile?.email);
+    }
+
+    function setAuthMode(mode) {
+        $("#adminLoginForm")?.classList.toggle("hidden", mode !== "login");
+        $("#adminSetupForm")?.classList.toggle("hidden", mode !== "setup");
+    }
+
+    async function handleSetup(event) {
+        event.preventDefault();
+        const email = ($("#adminSetupEmail")?.value || "").trim().toLowerCase();
+        const password = $("#adminSetupPassword")?.value || "";
+        const message = $("#adminSetupMessage");
+
+        if (hasAdminProfile()) {
+            setAuthMode("login");
+            const loginMessage = $("#adminLoginMessage");
+            if (loginMessage) {
+                loginMessage.textContent = "An admin account already exists. Login with that email and password.";
+                loginMessage.className = "form-message";
+            }
+            return;
+        }
+
+        const passwordCheck = window.GnpAuthSecurity?.validatePassword(password);
+        if (!email || !passwordCheck?.ok) {
+            if (message) {
+                message.textContent = !email ? "Enter an admin email." : passwordCheck.message;
+                message.className = "form-message error";
+            }
+            return;
+        }
+
+        const passwordRecord = await window.GnpAuthSecurity.createPasswordRecord(password);
+        writeJson(KEYS.adminProfile, {
+            email,
+            ...passwordRecord,
+            createdAt: new Date().toISOString()
+        });
+        localStorage.removeItem(KEYS.session);
+        event.currentTarget.reset();
+        setAuthMode("login");
+        if ($("#adminEmail")) $("#adminEmail").value = email;
+        const loginMessage = $("#adminLoginMessage");
+        if (loginMessage) {
+            loginMessage.textContent = "Admin account created. Login with your email and password.";
+            loginMessage.className = "form-message success";
+        }
     }
 
     async function handleLogin(event) {
@@ -113,6 +166,13 @@
         }
 
         const profile = readJson(KEYS.adminProfile, null);
+        if (!profile?.email) {
+            if (message) {
+                message.textContent = "Create the admin account first, then login.";
+                message.className = "form-message error";
+            }
+            return;
+        }
         if (profile?.email && profile.email !== email) {
             if (message) {
                 message.textContent = "The admin email or password is incorrect.";
@@ -135,15 +195,8 @@
             });
         }
 
-        if (!profile?.email) {
-            const passwordRecord = await window.GnpAuthSecurity.createPasswordRecord(password);
-            writeJson(KEYS.adminProfile, {
-                email,
-                ...passwordRecord,
-                createdAt: new Date().toISOString()
-            });
-        }
-
+        localStorage.removeItem(STUDENT_SESSION_KEY);
+        localStorage.removeItem(LECTURER_SESSION_KEY);
         writeJson(KEYS.session, {
             role: "admin",
             email,
@@ -157,6 +210,7 @@
         const courses = getCourses();
         const lecturers = readJson(KEYS.lecturers, []);
         const groups = readJson(KEYS.groups, []);
+        const meetings = readJson(KEYS.meetings, []);
         const exams = readJson(KEYS.exams, []);
         const payments = readJson(KEYS.payments, []);
         const paidCourses = courses.filter((course) => course.access === "paid" || Number(course.price || 0) > 0).length;
@@ -167,6 +221,7 @@
             ["Paid courses", paidCourses],
             ["Lecturers", lecturers.length],
             ["Groups", groups.length],
+            ["Lectures", meetings.length],
             ["Submitted exams", exams.length],
             ["Payments", payments.length],
             ["Revenue", money(totalRevenue)],
@@ -190,6 +245,7 @@
             access: $("#courseAccess").value,
             price,
             lecturer: $("#courseLecturer").value.trim(),
+            lecturerId: "",
             summary: $("#courseSummary").value.trim(),
             badge: price > 0 ? "Paid" : "Free",
             durationHours: 24,
@@ -212,6 +268,7 @@
                     <p class="muted">${escapeHtml(course.summary)}</p>
                     <p><span class="status-pill">${escapeHtml(course.category)}</span> <span class="status-pill">${escapeHtml(access.toUpperCase())}</span></p>
                     <p><strong>${money(course.price)}</strong> ${course.lecturer ? escapeHtml(course.lecturer) : "Lecturer not selected"}</p>
+                    ${course.contentNotes ? `<p class="course-notes-preview">${escapeHtml(course.contentNotes).slice(0, 180)}${String(course.contentNotes).length > 180 ? "..." : ""}</p>` : ""}
                     <div class="data-actions">
                         <button type="button" data-edit-course="${escapeHtml(course.id)}">Edit</button>
                         <button type="button" class="danger-button" data-delete-course="${escapeHtml(course.id)}">Delete</button>
@@ -226,7 +283,9 @@
         const next = normalizeCourseFromForm();
         const courses = getCourses();
         const exists = courses.some((course) => course.id === next.id);
-        saveCourses(exists ? courses.map((course) => course.id === next.id ? { ...course, ...next } : course) : [next, ...courses]);
+        saveCourses(exists ? courses.map((course) => (
+            course.id === next.id ? { ...course, ...next, lecturerId: next.lecturerId || course.lecturerId || "" } : course
+        )) : [next, ...courses]);
         event.currentTarget.reset();
         $("#courseId").value = "";
         $("#coursePrice").value = "0";
@@ -273,6 +332,28 @@
         `).join("") || `<article class="data-card empty-card"><p class="muted">Submitted exams will appear here for review.</p></article>`;
     }
 
+    function renderLectures() {
+        const meetings = readJson(KEYS.meetings, []);
+        const resources = readJson(KEYS.resources, []);
+        const lectureCards = meetings.map((meeting) => `
+            <article class="data-card">
+                <h3>${escapeHtml(meeting.title)}</h3>
+                <p class="muted">${escapeHtml(meeting.groupName)} • ${escapeHtml(meeting.date || "Date pending")}</p>
+                <p>Lecturer: ${escapeHtml(meeting.lecturerName || "Lecturer")}</p>
+                ${meeting.link ? `<p><a href="${escapeHtml(meeting.link)}" target="_blank" rel="noopener">Open lecture link</a></p>` : ""}
+            </article>
+        `);
+        const resourceCards = resources.map((resource) => `
+            <article class="data-card">
+                <h3>${escapeHtml(resource.title)}</h3>
+                <p class="muted">${escapeHtml(resource.courseTitle)} • ${escapeHtml(resource.type)}</p>
+                <p>Lecturer: ${escapeHtml(resource.lecturerName || "Lecturer")}</p>
+                ${resource.link ? `<p><a href="${escapeHtml(resource.link)}" target="_blank" rel="noopener">Open resource</a></p>` : ""}
+            </article>
+        `);
+        $("#lectureList").innerHTML = [...lectureCards, ...resourceCards].join("") || `<article class="data-card empty-card"><p class="muted">Scheduled lectures and uploaded resources will appear here.</p></article>`;
+    }
+
     function renderGroups() {
         const groups = readJson(KEYS.groups, []);
         $("#groupList").innerHTML = groups.map((group) => `
@@ -299,6 +380,7 @@
         renderStats();
         renderCourses();
         renderLecturers();
+        renderLectures();
         renderExams();
         renderGroups();
         renderPayments();
@@ -357,6 +439,9 @@
     function main() {
         ensureStarterRecords();
         $("#adminLoginForm")?.addEventListener("submit", handleLogin);
+        $("#adminSetupForm")?.addEventListener("submit", handleSetup);
+        $("#showAdminSetup")?.addEventListener("click", () => setAuthMode("setup"));
+        $("#showAdminLogin")?.addEventListener("click", () => setAuthMode("login"));
         $("#courseAdminForm")?.addEventListener("submit", saveCourse);
         $("#toggleAdminCourses")?.addEventListener("click", (event) => {
             const list = $("#adminCourseList");

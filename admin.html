@@ -9,6 +9,8 @@
     <script defer src="learning-core.js"></script>
     <script defer src="js/auth-security.js"></script>
     <script defer src="admin.js"></script>
+    <link rel="stylesheet" href="css/site-loader.css">
+    <script src="js/site-loader.js"></script>
 </head>
 <body>
     <header class="portal-topbar">
@@ -31,6 +33,7 @@
                 <p class="muted">Review courses, lecturer access, payments, exams, groups, and student-facing records from one organized workspace.</p>
             </div>
             <form class="portal-form" id="adminLoginForm">
+                <h2>Admin login</h2>
                 <label>
                     <span>Email</span>
                     <input type="email" id="adminEmail" autocomplete="username" required>
@@ -40,8 +43,24 @@
                     <input type="password" id="adminPassword" autocomplete="current-password" required minlength="6">
                 </label>
                 <button class="primary-button" type="submit">Sign in as admin</button>
-                <p class="hint">The first admin sign-in creates the local admin account for this browser. Use at least 6 characters.</p>
+                <p class="hint">Use your existing admin account.</p>
                 <p class="form-message" id="adminLoginMessage" aria-live="polite"></p>
+                <button class="link-button" type="button" id="showAdminSetup">Create admin account</button>
+            </form>
+            <form class="portal-form hidden" id="adminSetupForm">
+                <h2>Create admin account</h2>
+                <label>
+                    <span>Email</span>
+                    <input type="email" id="adminSetupEmail" autocomplete="username" required>
+                </label>
+                <label>
+                    <span>Password</span>
+                    <input type="password" id="adminSetupPassword" autocomplete="new-password" required minlength="6">
+                </label>
+                <button class="primary-button" type="submit">Create admin account</button>
+                <p class="hint">After setup you will return to admin login.</p>
+                <p class="form-message" id="adminSetupMessage" aria-live="polite"></p>
+                <button class="link-button" type="button" id="showAdminLogin">Back to login</button>
             </form>
         </section>
 
@@ -51,6 +70,7 @@
                 <button class="tab-button active" data-panel="overview">Overview</button>
                 <button class="tab-button" data-panel="courses">Courses & Pricing</button>
                 <button class="tab-button" data-panel="lecturers">Lecturers</button>
+                <button class="tab-button" data-panel="lectures">Lectures</button>
                 <button class="tab-button" data-panel="exams">Exam Submissions</button>
                 <button class="tab-button" data-panel="memberships">Membership Groups</button>
                 <button class="tab-button" data-panel="payments">Payments</button>
@@ -108,6 +128,16 @@
                         </div>
                     </div>
                     <div class="data-grid" id="lecturerList"></div>
+                </section>
+
+                <section class="panel" id="lectures">
+                    <div class="panel-head">
+                        <div>
+                            <p class="portal-kicker">Live teaching</p>
+                            <h2>Scheduled lectures and resources</h2>
+                        </div>
+                    </div>
+                    <div class="data-grid" id="lectureList"></div>
                 </section>
 
                 <section class="panel" id="exams">

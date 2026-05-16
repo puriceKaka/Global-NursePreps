@@ -3,150 +3,298 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global NursePrep | Nursing E-Learning</title>
-    <link rel="stylesheet" href="css/design-system.css">
+    <meta name="description" content="Global NursePrep is a premium nursing e-learning and international licensing preparation platform.">
+    <title>Global NursePrep | Nursing E-Learning and Licensing Preparation</title>    <link rel="stylesheet" href="css/site-loader.css">
     <link rel="stylesheet" href="dashboard-public.css">
+    <script src="js/site-loader.js"></script>
 </head>
 <body>
-    <header class="site-header">
+    <header class="site-header" id="top">
         <a class="brand" href="#home" aria-label="Global NursePrep home">
-            <span class="brand-logo">
-                <img src="logo/Screenshot_20260421-123818.jpg" alt="Global NursePrep logo">
-            </span>
-            <span>Global <span class="brand-nurse">Nurse</span>Prep</span>
+            <span class="brand-mark"><img src="logo/Screenshot_20260421-123818.jpg" alt="Global NursePrep logo"></span>
+            <span>Global <b>Nurse</b>Prep</span>
         </a>
 
-        <button type="button" class="site-nav-toggle" data-nav-toggle="publicNav" aria-expanded="false" aria-label="Toggle navigation">Menu</button>
-        <nav class="site-nav" id="publicNav" aria-label="Primary navigation">
+        <button type="button" class="nav-toggle" id="navToggle" aria-expanded="false" aria-label="Open navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="site-nav" id="siteNav" aria-label="Primary navigation">
             <a href="#home">Home</a>
-            <a href="about.html">About Us</a>
-            <a href="contact.html">Contact Us</a>
-            <a class="nav-cta" href="register.html">Sign Up</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <div class="nav-dropdown">
+                <a href="EXAMINATION%20PREP%20SITE/courses.html" class="dropdown-trigger">Courses</a>
+                <div class="dropdown-menu" aria-label="Course categories">
+                    <div>
+                        <strong>BSCN Courses</strong>
+                        <a href="EXAMINATION%20PREP%20SITE/courses.html">Anatomy</a>
+                        <a href="EXAMINATION%20PREP%20SITE/courses.html">Physiology</a>
+                        <a href="EXAMINATION%20PREP%20SITE/courses.html">Pharmacology</a>
+                        <a href="EXAMINATION%20PREP%20SITE/courses.html">Medical Surgical Nursing</a>
+                        <a href="EXAMINATION%20PREP%20SITE/courses.html">Pediatric Nursing</a>
+                        <a href="EXAMINATION%20PREP%20SITE/courses.html">Mental Health Nursing</a>
+                        <a href="EXAMINATION%20PREP%20SITE/courses.html">Midwifery</a>
+                        <a href="EXAMINATION%20PREP%20SITE/courses.html">Community Health Nursing</a>
+                        <a href="EXAMINATION%20PREP%20SITE/courses.html">Nursing Research</a>
+                    </div>
+                    <div>
+                        <strong>Certified Courses</strong>
+                        <a href="EXAMINATION%20PREP%20SITE/courses.html">CNA Preparation</a>
+                        <a href="EXAMINATION%20PREP%20SITE/courses.html">NCLEX-RN Preparation</a>
+                        <a href="EXAMINATION%20PREP%20SITE/courses.html">UK CBT Preparation</a>
+                        <a href="EXAMINATION%20PREP%20SITE/courses.html">Australia Nursing Licensing</a>
+                        <a href="EXAMINATION%20PREP%20SITE/courses.html">ICU Nursing</a>
+                        <a href="EXAMINATION%20PREP%20SITE/courses.html">Emergency Nursing</a>
+                        <a href="EXAMINATION%20PREP%20SITE/courses.html">Critical Care Nursing</a>
+                        <a href="EXAMINATION%20PREP%20SITE/courses.html">International Certifications</a>
+                    </div>
+                </div>
+            </div>
+            <a href="licensing.html">Licensing</a>
         </nav>
+
+        <div class="nav-actions">
+            <a class="login-button" href="login.html">Login</a>
+            <a class="register-button" href="register.html">Register</a>
+        </div>
     </header>
 
     <main>
-        <section class="hero" id="home">
-            <div class="hero-copy">
-                <p class="eyebrow">Online nursing learning and NCLEX preparation</p>
-                <h1>Prepare for nursing exams with guided courses, mock tests, and certificates.</h1>
+        <section class="hero section-shell" id="home">
+            <div class="hero-copy reveal">
+                <h1>Advance Your Nursing Career with Global Licensing Preparation</h1>
                 <p>
-                    Global NursePrep is a flexible e-learning platform for nursing students preparing for
-                    NCLEX-style exams, clinical assessments, certification, and continuous professional growth.
+                    Study nursing units, prepare for NCLEX-RN, UK CBT, Australia registration, and receive
+                    academic support through a secure medical learning platform built for nurses worldwide.
                 </p>
                 <div class="hero-actions">
-                    <a class="primary-button" href="register.html">Start Learning</a>
-                    <a class="secondary-button" href="register.html">Join Now</a>
+                    <a class="primary-button" href="register.html">Get Started</a>
+                    <a class="secondary-button" href="EXAMINATION%20PREP%20SITE/courses.html">Explore Courses</a>
+                </div>
+                <div class="hero-trust">
+                    <span>2500+ students trained</span>
+                    <span>Pass-rate analytics</span>
+                    <span>Academic support</span>
                 </div>
             </div>
 
-            <div class="hero-media" aria-label="Nursing students practicing clinical skills">
-                <img src="https://images.pexels.com/photos/35645530/pexels-photo-35645530.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Nursing students practicing clinical skills" loading="eager">
+            <div class="hero-panel reveal">
+                <img src="images/public/nursing-clinical-training.jpg" alt="Professional nurses in a clinical training session" loading="eager">
+                <div class="glass-card pass-card">
+                    <span>Current pass readiness</span>
+                    <strong>94%</strong>
+                    <small>Based on mock exam analytics</small>
+                </div>
             </div>
         </section>
 
-        <section class="features-section" aria-label="Platform features">
-            <div class="section-heading">
-                <p class="eyebrow">Features</p>
-                <h2>Everything a nursing student needs to stay organized.</h2>
-            </div>
-            <div class="course-list">
-                <article>
-                    <strong>Online nursing courses</strong>
-                    <p>Study fundamentals, pharmacology, med-surg, pediatrics, emergency care, and clinical procedures.</p>
-                </article>
-                <article>
-                    <strong>Mock exams</strong>
-                    <p>Practice timed exam sets with categories, instructions, scoring, and results summaries.</p>
-                </article>
-                <article>
-                    <strong>Progress tracking</strong>
-                    <p>Students can save course progress, monitor activity, and return to unfinished learning.</p>
-                </article>
-            </div>
-        </section>
-
-        <section class="courses-section" aria-label="Popular nursing courses">
-            <div class="section-heading">
-                <p class="eyebrow">Popular courses</p>
-                <h2>Start with high-impact nursing topics.</h2>
-            </div>
-            <div class="course-list">
-                <article>
-                    <strong>Fundamentals of Nursing</strong>
-                    <p>Vitals, infection control, documentation, patient safety, communication, and bedside care.</p>
-                    <a class="mini-link" href="login.html?next=EXAMINATION%20PREP%20SITE/courses.html">Open course</a>
-                </article>
-                <article>
-                    <strong>NCLEX Preparation</strong>
-                    <p>NCLEX-style questions, prioritization, clinical judgment, test strategy, and rationales.</p>
-                    <a class="mini-link" href="login.html?next=EXAMINATION%20PREP%20SITE/exam-lobby/exam-lobby.html">Start prep</a>
-                </article>
-                <article>
-                    <strong>Clinical Procedures</strong>
-                    <p>OSCE skills, patient assessment, medication safety, wound care, and simulation practice.</p>
-                    <a class="mini-link" href="login.html?next=EXAMINATION%20PREP%20SITE/courses.html">View skills</a>
-                </article>
-            </div>
-        </section>
-
-        <section class="exam-prep-section">
+        <section class="free-study-panel section-shell reveal" id="freeStudyResource" aria-live="polite">
+            <span class="free-study-icon" aria-hidden="true">WHO</span>
             <div>
-                <p class="eyebrow">Examination preparation</p>
-                <h2>Mock exams, clear instructions, results, and certificates.</h2>
+                <span class="eyebrow">Free global study</span>
+                <h2>OpenWHO public health learning</h2>
+                <p>Loading free global study resource...</p>
+            </div>
+            <a class="secondary-button" href="https://openwho.org/" target="_blank" rel="noopener">Open resource</a>
+        </section>
+
+        <section class="stats-grid section-shell" aria-label="Platform statistics">
+            <article class="stat-card reveal">
+                <strong>2500+</strong>
+                <span>Students trained</span>
+            </article>
+            <article class="stat-card reveal">
+                <strong>92%</strong>
+                <span>Average exam improvement</span>
+            </article>
+            <article class="stat-card reveal">
+                <strong>18</strong>
+                <span>Global licensing tracks</span>
+            </article>
+            <article class="stat-card reveal">
+                <strong>24/7</strong>
+                <span>Available support</span>
+            </article>
+        </section>
+
+        <section class="section-shell">
+            <div class="section-heading reveal">
+                <span class="eyebrow">How it works</span>
+                <h2>A simple nursing learning flow before login.</h2>
+                <p>Explore the platform, create an account, pay for your selected course, then learn from your student workspace.</p>
+            </div>
+            <div class="home-flow">
+                <article class="flow-step reveal">
+                    <span>1</span>
+                    <div>
+                        <strong>Explore courses</strong>
+                        <p>Review BSCN units and international certification programs from the courses page.</p>
+                    </div>
+                </article>
+                <article class="flow-step reveal">
+                    <span>2</span>
+                    <div>
+                        <strong>Register or login</strong>
+                        <p>Create an account before accessing learning materials.</p>
+                    </div>
+                </article>
+                <article class="flow-step reveal">
+                    <span>3</span>
+                    <div>
+                        <strong>Pay securely</strong>
+                        <p>Use M-Pesa, card, PayPal, or bank payment to unlock the selected course only.</p>
+                    </div>
+                </article>
+                <article class="flow-step reveal">
+                    <span>4</span>
+                    <div>
+                        <strong>Start learning</strong>
+                        <p>Access lessons, videos, notes, quizzes, exams, certificates, and support.</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="home-learning section-shell">
+            <div class="section-heading reveal">
+                <span class="eyebrow">Clinical learning</span>
+                <h2>Study nursing concepts with visual medical guidance.</h2>
+                <p>Students can learn anatomy, patient assessment, drug safety, emergency care, and licensing strategy with structured lessons and visual explanations.</p>
+            </div>
+
+            <div class="anatomy-showcase">
+                <div class="anatomy-copy reveal">
+                    <span class="eyebrow">Featured anatomy topic</span>
+                    <h3>Understanding the heart and circulation</h3>
+                    <p>
+                        Heart lessons help learners connect anatomy with clinical signs, vital signs, blood flow,
+                        medication effects, emergency warning signs, and patient education.
+                    </p>
+                    <div class="learning-points">
+                        <span>Cardiac chambers</span>
+                        <span>Blood flow pathway</span>
+                        <span>Assessment findings</span>
+                        <span>NCLEX-style questions</span>
+                    </div>
+                </div>
+                <figure class="heart-frame reveal">
+                    <img src="images/public/heart-diagram.svg" alt="Labeled diagram of the human heart">
+                    <figcaption>Heart anatomy visual for nursing revision</figcaption>
+                </figure>
+            </div>
+
+            <div class="anatomy-atlas">
+                <figure class="atlas-figure reveal">
+                    <img src="images/public/skeleton-diagram.svg" alt="Labeled human skeleton diagram">
+                    <figcaption>Skeleton: bones, joints, posture, fractures, and mobility assessment.</figcaption>
+                </figure>
+                <figure class="atlas-figure reveal">
+                    <img src="images/public/eye-diagram.svg" alt="Labeled human eye diagram">
+                    <figcaption>Eye: visual pathway basics, pupil response, assessment, and patient teaching.</figcaption>
+                </figure>
+                <div class="atlas-notes reveal">
+                    <h3>Core anatomy areas included</h3>
+                    <p>Heart, skeleton, eye, respiratory system, nervous system, gastrointestinal system, reproductive health, renal system, and endocrine basics are organized for nursing revision and licensing practice.</p>
+                    <div class="atlas-list">
+                        <span>Vital signs interpretation</span>
+                        <span>Physical assessment</span>
+                        <span>Clinical red flags</span>
+                        <span>Patient education</span>
+                        <span>Procedure preparation</span>
+                        <span>Exam rationales</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="home-depth section-shell">
+            <div class="section-heading reveal">
+                <span class="eyebrow">What learners get</span>
+                <h2>More than videos: a complete nursing preparation environment.</h2>
+                <p>Global NursePrep combines structured lessons, practical revision, assessment tools, and academic guidance for learners at different stages of medical training.</p>
+            </div>
+
+            <div class="depth-lines">
+                <article class="depth-line reveal">
+                    <span>01</span>
+                    <div>
+                        <h3>Guided lessons</h3>
+                        <p>Organized units for anatomy, physiology, pharmacology, medical-surgical nursing, pediatrics, mental health, midwifery, community health, and research.</p>
+                    </div>
+                </article>
+                <article class="depth-line reveal">
+                    <span>02</span>
+                    <div>
+                        <h3>Exam readiness</h3>
+                        <p>Timed practice, rationales, mock exams, weak-area review, performance tracking, question banks, and international licensing preparation.</p>
+                    </div>
+                </article>
+                <article class="depth-line reveal">
+                    <span>03</span>
+                    <div>
+                        <h3>Academic and clinical support</h3>
+                        <p>Research topic guidance, concept paper support, proposal development, report writing, slides, live class help, discussion support, and student consultation.</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="home-specialties section-shell">
+            <div class="specialty-media reveal">
+                <img src="images/public/licensing-exam-prep.jpg" alt="Nurses preparing for NCLEX exams">
+            </div>
+            <div class="specialty-copy reveal">
+                <span class="eyebrow">NCLEX preparation</span>
+                <h2>Build clinical judgment for NCLEX-style questions.</h2>
                 <p>
-                    Students can prepare with structured exam categories, timed practice, score summaries,
-                    revision feedback, and completion certificates as they progress through learning.
+                    NCLEX preparation focuses on patient safety, prioritization, clinical judgment, delegation,
+                    pharmacology, maternity, pediatrics, mental health, and medical-surgical decision making.
+                </p>
+                <div class="specialty-list">
+                    <span>Clinical judgment cases</span>
+                    <span>Priority and delegation questions</span>
+                    <span>Pharmacology rationales</span>
+                    <span>Timed mock exams</span>
+                    <span>Weak-area analytics</span>
+                    <span>Readiness tracking</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="split-section section-shell" id="platform">
+            <div class="section-copy reveal">
+                <span class="eyebrow">About the platform</span>
+                <h2>Premium medical learning for healthcare students, nurses, and medical professionals.</h2>
+                <p>
+                    Global NursePrep brings courses, licensing preparation, academic support, payments,
+                    certificates, and student progress into one structured e-learning platform.
                 </p>
             </div>
-        </section>
-
-        <section class="stats" aria-label="Site statistics">
-            <article>
-                <strong>6</strong>
-                <span>Total Courses</span>
-            </article>
-            <article>
-                <strong>5,480</strong>
-                <span>Practice Questions</span>
-            </article>
-            <article>
-                <strong>42</strong>
-                <span>Mock Exam Sets</span>
-            </article>
-            <article>
-                <strong>Global</strong>
-                <span>Flexible learning worldwide</span>
-            </article>
-        </section>
-
-        <section class="testimonials-section">
-            <div class="section-heading">
-                <p class="eyebrow">Testimonials</p>
-                <h2>Built around nursing student confidence.</h2>
-            </div>
-            <div class="faq-grid">
+            <div class="feature-grid reveal">
                 <article>
-                    <strong>“The questions helped me revise weak areas.”</strong>
-                    <p>Mock tests make it easier to know what to study next.</p>
+                    <strong>International preparation</strong>
+                    <p>NCLEX-RN, UK CBT, Australia registration, CNA, ICU, emergency, and critical care tracks.</p>
                 </article>
                 <article>
-                    <strong>“The courses are clear and practical.”</strong>
-                    <p>Short course sections support busy nursing students.</p>
+                    <strong>Academic support</strong>
+                    <p>Topic identification, concept papers, proposals, analysis, reports, slides, and consultations.</p>
                 </article>
                 <article>
-                    <strong>“Progress tracking keeps me consistent.”</strong>
-                    <p>Students can return to learning without losing their place.</p>
+                    <strong>Secure learning access</strong>
+                    <p>Login, payments, protected course access, certificates, and student dashboards.</p>
+                </article>
+                <article>
+                    <strong>Student support</strong>
+                    <p>AI tutor, notifications, forums, WhatsApp support, live classes, and English/Swahili support.</p>
                 </article>
             </div>
         </section>
     </main>
+    <footer class="site-footer centered-footer" id="siteFooter"></footer>
 
-    <footer class="site-footer">
-        <div>© <span data-year></span> Global NursePrep - Nursing education &amp; community.</div>
-        <div class="powered-by">Powered by Teams Technologies</div>
-    </footer>
-
-    <script src="js/app-shell.js"></script>
+    <script src="js/public-platform.js"></script>
 </body>
 </html>

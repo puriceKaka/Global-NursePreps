@@ -1,5 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const examConfig = JSON.parse(localStorage.getItem("activeExam"));
+    const session = JSON.parse(localStorage.getItem("nurseprep_session") || "null");
+    const userId = String(session?.userId || "guest").trim() || "guest";
+    const activeExamKey = `activeExam:${userId}`;
+    const submittedResultsKey = `submittedExamResults:${userId}`;
+    const progressKey = (examId) => `exam-progress:${userId}:${examId}`;
+    const examConfig = JSON.parse(localStorage.getItem(activeExamKey) || "null");
     if (!examConfig) {
         alert("No active session found. Returning to the exam lobby.");
         window.location.href = "../exam-lobby/exam-lobby.html";
@@ -225,14 +230,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 notes: document.getElementById("notes").value,
                 current
             };
-            localStorage.setItem(`exam-progress:${examConfig.id}`, JSON.stringify(payload));
+            localStorage.setItem(progressKey(examConfig.id), JSON.stringify(payload));
             autosaveIndicator.textContent = "Saved";
             autosaveIndicator.classList.remove("is-saving");
         }, 300);
     }
 
     function restoreSavedSession() {
-        const saved = JSON.parse(localStorage.getItem(`exam-progress:${examConfig.id}`) || "null");
+        const saved = JSON.parse(localStorage.getItem(progressKey(examConfig.id)) || "null");
         if (!saved) {
             return;
         }
@@ -267,9 +272,9 @@ document.addEventListener("DOMContentLoaded", () => {
     function finalizeExam(autoSubmitted = false) {
         submitted = true;
         const results = buildResults(autoSubmitted);
-        localStorage.setItem("submittedExamResults", JSON.stringify(results));
-        localStorage.removeItem("activeExam");
-        localStorage.removeItem(`exam-progress:${examConfig.id}`);
+        localStorage.setItem(submittedResultsKey, JSON.stringify(results));
+        localStorage.removeItem(activeExamKey);
+        localStorage.removeItem(progressKey(examConfig.id));
         window.location.href = "../results/results.html";
     }
 

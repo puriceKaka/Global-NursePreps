@@ -120,7 +120,7 @@ body {
     border: 1px solid #DDE8F0;
     border-radius: 14px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     gap: 10px;
     flex-wrap: wrap;
@@ -155,6 +155,69 @@ body {
     background: #fff1f0;
     color: #b42318;
 }
+
+.lecture-board {
+    margin: 12px 12px 0;
+    padding: 14px;
+    background: #ffffff;
+    border: 1px solid #DDE8F0;
+    border-radius: 14px;
+}
+
+.lecture-board-head {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.lecture-board-head p {
+    margin: 0 0 4px;
+    color: #0F4C81;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.lecture-board-head h2 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.lecture-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.lecture-card {
+    display: grid;
+    gap: 8px;
+    padding: 12px;
+    border: 1px solid #DDE8F0;
+    border-radius: 12px;
+    background: #fbfdff;
+}
+
+.lecture-card h3,
+.lecture-card p {
+    margin: 0;
+}
+
+.lecture-card h3 {
+    color: #0F4C81;
+    font-size: 17px;
+}
+
+.lecture-card p {
+    color: #667085;
+    font-size: 14px;
+}
+
+.lecture-card .primary-button {
+    width: fit-content;
+}
 .hero-actions {
     display: flex;
     gap: 12px;
@@ -164,7 +227,7 @@ body {
 .active-meeting-bar {
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     gap: 16px;
 }
@@ -266,7 +329,7 @@ body {
 }
 .tool-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     gap: 12px;
     margin-bottom: 16px;
@@ -386,7 +449,7 @@ body {
 }
 .participant-item {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     gap: 12px;
     padding: 12px 14px;
@@ -507,7 +570,7 @@ body {
 }
 .meeting-summary {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     padding: 22px;
     background: #ffffff;
@@ -537,7 +600,7 @@ body {
 }
 .chat-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     padding: 18px 20px;
     border-bottom: 1px solid #DDE8F0;
@@ -783,7 +846,7 @@ body {
 }
 .modal-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     padding: 18px 24px;
     border-bottom: 1px solid #DDE8F0;
@@ -823,11 +886,15 @@ body {
 }
 .modal-actions {
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     gap: 12px;
     padding: 16px 24px 20px;
 }
 @media (max-width: 980px) {
+    .lecture-grid {
+        grid-template-columns: 1fr;
+    }
+
     .meeting-workspace {
         grid-template-columns: 1fr;
     }
@@ -846,13 +913,13 @@ body {
     }
     .header-actions {
         width: 100%;
-        justify-content: space-between;
+        justify-content: flex-start;
         margin-top: 16px;
         gap: 8px;
         flex-wrap: wrap;
     }
     .header-actions > * {
-        flex: 1 1 auto;
+        flex: 0 1 auto;
         min-width: max-content;
     }
     .hero-card {

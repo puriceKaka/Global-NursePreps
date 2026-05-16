@@ -238,7 +238,7 @@ canvas {
     padding: 10px;
     display: flex;
     align-items: flex-start;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 12px;
     border-bottom: 1px solid var(--border);
 }
@@ -651,7 +651,7 @@ canvas {
 .section-header {
     display: flex;
     align-items: flex-start;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 14px;
     flex-wrap: wrap;
     margin-bottom: 12px;
@@ -838,7 +838,7 @@ canvas {
 .goal-item {
     display: flex;
     align-items: flex-start;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 10px;
     border: 1px solid var(--border);
     border-radius: 18px;
@@ -1517,6 +1517,7 @@ body.reduce-motion * {
     }
     .topbar-actions {
         gap: 6px;
+        margin-left: 0;
     }
     .topbar-actions .pill-button,
     .topbar-actions .secondary-button {

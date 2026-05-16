@@ -92,7 +92,7 @@ body {
     display: flex;
     gap: 2rem;
     list-style: none;
-    margin: 0;
+    margin: 0; margin-left: auto;
     padding: 0;
 }
 
@@ -451,7 +451,8 @@ body {
     .navbar ul {
         gap: 1rem;
         flex-wrap: wrap;
-        justify-content: center;
+        justify-content: flex-start;
+        margin-left: 0;
     }
 
     .hero-content,

@@ -3,66 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us | Global NursePrep</title>
+    <meta name="description" content="Contact Global NursePrep for nursing courses, licensing preparation, and academic support.">
+    <title>Contact | Global NursePrep</title>
+    <link rel="stylesheet" href="css/site-loader.css">
     <link rel="stylesheet" href="dashboard-public.css">
+    <script src="js/site-loader.js"></script>
 </head>
 <body>
     <header class="site-header">
-        <a class="brand" href="Dashboard.html">
-            <span class="brand-logo">
-                <img src="logo/Screenshot_20260421-123818.jpg" alt="Global NursePrep logo">
-            </span>
-            <span>Global <span class="brand-nurse">Nurse</span>Prep</span>
+        <a class="brand" href="Dashboard.html" aria-label="Global NursePrep home">
+            <span class="brand-mark"><img src="logo/Screenshot_20260421-123818.jpg" alt="Global NursePrep logo"></span>
+            <span>Global <b>Nurse</b>Prep</span>
         </a>
 
-        <button type="button" class="site-nav-toggle" data-nav-toggle="publicNav" aria-expanded="false" aria-label="Toggle navigation">Menu</button>
-        <nav class="site-nav" id="publicNav" aria-label="Primary navigation">
-            <a href="Dashboard.html">Home</a>
+        <button type="button" class="nav-toggle" id="navToggle" aria-expanded="false" aria-label="Open navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="site-nav" id="siteNav" aria-label="Primary navigation">
+            <a href="Dashboard.html#home">Home</a>
             <a href="about.html">About</a>
-            <a href="contact.html">Contact Us</a>
-            <a class="nav-cta" href="register.html">Sign Up</a>
+            <a href="contact.html">Contact</a>
+            <a href="Dashboard.html#courses">Courses</a>
+            <a href="licensing.html">Licensing</a>
         </nav>
+
+        <div class="nav-actions">
+            <a class="login-button" href="login.html">Login</a>
+            <a class="register-button" href="register.html">Register</a>
+        </div>
     </header>
 
     <main>
-        <section class="contact-section">
-            <div>
-                <p class="eyebrow">Contact Us</p>
-                <h1>Need help getting started?</h1>
+        <section class="hero section-shell">
+            <div class="hero-copy reveal">
+                <span class="eyebrow">Contact admissions</span>
+                <h1>Get help choosing courses, licensing tracks, or research support.</h1>
                 <p>
-                    Create an account to access nursing courses, practice questions, mock exams, saved progress,
-                    meetings, and learning tools. Students can use the dashboard to start studying after sign up.
+                    Speak with Global NursePrep support for course enrollment, payment guidance, academic
+                    consultations, licensing preparation, live classes, and student account assistance.
                 </p>
+                <div class="hero-actions">
+                    <a class="primary-button" href="https://wa.me/254726105087">WhatsApp +254 726105087</a>
+                    <a class="secondary-button" href="tel:+254726105087">Call Now</a>
+                </div>
+            </div>
+
+            <div class="hero-panel reveal">
+                <img src="images/public/medical-support.jpg" alt="Medical support team assisting a student" loading="eager">
+                <div class="glass-card live-card">
+                    <strong>Support line</strong>
+                    <span>+254 726105087</span>
+                </div>
             </div>
         </section>
 
-        <section class="courses-section">
-            <div class="section-heading">
-                <p class="eyebrow">Student support</p>
-                <h2>Common reasons to reach out</h2>
+        <section class="contact-simple section-shell">
+            <div class="contact-intro reveal">
+                <span class="eyebrow">Direct contact</span>
+                <h2>Reach Global NursePrep.</h2>
+                <p>Use the fastest channel for admissions, course guidance, licensing preparation, and research consultation.</p>
             </div>
-            <div class="course-list">
-                <article>
-                    <strong>Choosing a course</strong>
-                    <p>Find the right starting point for your nursing exam preparation.</p>
-                </article>
-                <article>
-                    <strong>Practice questions</strong>
-                    <p>Use question sets to identify weak areas and revise with purpose.</p>
-                </article>
-                <article>
-                    <strong>Account access</strong>
-                    <p>Sign up or log in to continue studying and save your learning progress.</p>
-                </article>
+
+            <div class="contact-frames">
+                <a class="contact-frame reveal" href="tel:+254726105087">
+                    <span>Phone</span>
+                    <strong>+254 726105087</strong>
+                </a>
+                <a class="contact-frame reveal" href="https://wa.me/254726105087">
+                    <span>WhatsApp</span>
+                    <strong>+254 726105087</strong>
+                </a>
+                <a class="contact-frame reveal" href="mailto:admissions@globalnurseprep.example">
+                    <span>Email</span>
+                    <strong>admissions@globalnurseprep.example</strong>
+                </a>
+            </div>
+
+            <div class="consult-frame reveal">
+                <div>
+                    <span class="eyebrow">Consultation</span>
+                    <h3>Request guidance</h3>
+                    <p>Share your email and the team will guide you on the right course, licensing track, payment step, or research support.</p>
+                </div>
+                <form class="consult-form">
+                    <input id="messageEmail" type="email" placeholder="Email address" autocomplete="email">
+                    <button type="submit">Send</button>
+                </form>
+            </div>
+
+            <div class="support-frame reveal">
+                <span class="eyebrow">Support areas</span>
+                <h2>What we can help with.</h2>
+                <div class="support-tags">
+                    <a href="EXAMINATION%20PREP%20SITE/courses.html">Course selection</a>
+                    <a href="licensing.html">Licensing exam prep</a>
+                    <a href="https://wa.me/254726105087?text=Hello%2C%20I%20need%20payment%20help.">Payment help</a>
+                    <a href="login.html">Student account access</a>
+                    <a href="https://wa.me/254726105087?text=Hello%2C%20I%20need%20research%20consultation.">Research consultation</a>
+                    <a href="meetings.html">Live class guidance</a>
+                </div>
             </div>
         </section>
     </main>
 
-    <footer class="site-footer">
-        <div>© <span data-year></span> Global NursePrep - Nursing education &amp; community.</div>
-        <div class="powered-by">Powered by Teams Technologies</div>
-    </footer>
+    <button type="button" class="chat-button" id="chatButton">WhatsApp</button>
+    <footer class="site-footer centered-footer" id="siteFooter"></footer>
 
-    <script src="js/app-shell.js"></script>
+    <script src="js/public-platform.js"></script>
 </body>
 </html>

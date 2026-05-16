@@ -168,7 +168,7 @@ canvas {
 
 .hero-icon {
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
 }
 
 .hero-icon img {
@@ -190,7 +190,7 @@ canvas {
 
 .section-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 14px;
     flex-wrap: wrap;
     align-items: flex-start;
@@ -320,7 +320,7 @@ canvas {
         margin-left: 0;
     }
     .actions > * {
-        flex: 1 1 auto;
+        flex: 0 1 auto;
     }
     .card-grid,
     .group-grid {

@@ -259,7 +259,7 @@ body {
     margin-top: 30px;
     display: flex;
     align-items: flex-end;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 16px;
     flex-wrap: wrap;
 }

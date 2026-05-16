@@ -8,6 +8,8 @@
         resources: "gnp_lecturer_resources",
         payments: "gnp_payments"
     };
+    const STUDENT_SESSION_KEY = "nurseprep_session";
+    const ADMIN_SESSION_KEY = "gnp_admin_session";
 
     const $ = (selector) => document.querySelector(selector);
     const $$ = (selector) => Array.from(document.querySelectorAll(selector));
@@ -103,14 +105,20 @@
         $("#lecturerAuth")?.classList.remove("hidden");
         $("#lecturerApp")?.classList.add("hidden");
         $("#lecturerLogout")?.classList.add("hidden");
+        setAuthMode("login");
     }
 
-    async function handleLogin(event) {
+    function setAuthMode(mode) {
+        $("#lecturerLoginForm")?.classList.toggle("hidden", mode !== "login");
+        $("#lecturerRegisterForm")?.classList.toggle("hidden", mode !== "register");
+    }
+
+    async function handleRegister(event) {
         event.preventDefault();
-        const name = ($("#lecturerName")?.value || "").trim();
-        const email = ($("#lecturerEmail")?.value || "").trim().toLowerCase();
-        const password = $("#lecturerPassword")?.value || "";
-        const message = $("#lecturerLoginMessage");
+        const name = ($("#lecturerRegisterName")?.value || "").trim();
+        const email = ($("#lecturerRegisterEmail")?.value || "").trim().toLowerCase();
+        const password = $("#lecturerRegisterPassword")?.value || "";
+        const message = $("#lecturerRegisterMessage");
 
         if (!name || !email || !password) {
             if (message) {
@@ -132,29 +140,78 @@
         const lecturers = readJson(KEYS.lecturers, []);
         const existing = lecturers.find((lecturer) => String(lecturer.email || "").toLowerCase() === email);
         if (existing?.passwordHash) {
-            const ok = await window.GnpAuthSecurity.verifyPassword(password, existing);
-            if (!ok) {
-                if (message) {
-                    message.textContent = "The lecturer email or password is incorrect.";
-                    message.className = "form-message error";
-                }
-                return;
+            if (message) {
+                message.textContent = "This email is already registered. Login instead.";
+                message.className = "form-message error";
             }
-            await window.GnpAuthSecurity.upgradePasswordIfNeeded(password, existing, (upgraded) => {
-                writeJson(KEYS.lecturers, lecturers.map((lecturer) => lecturer.id === existing.id ? upgraded : lecturer));
-            });
+            return;
         }
 
-        const passwordRecord = existing?.passwordHash ? {} : await window.GnpAuthSecurity.createPasswordRecord(password);
-        const session = {
+        const passwordRecord = await window.GnpAuthSecurity.createPasswordRecord(password);
+        saveLecturerAccount({
             id: existing?.id || `lecturer_${email.replace(/[^a-z0-9]/g, "_")}`,
             role: "lecturer",
             name,
             email,
+            ...passwordRecord
+        });
+        localStorage.removeItem(KEYS.session);
+        event.currentTarget.reset();
+        setAuthMode("login");
+        if ($("#lecturerEmail")) $("#lecturerEmail").value = email;
+        const loginMessage = $("#lecturerLoginMessage");
+        if (loginMessage) {
+            loginMessage.textContent = "Account created. Login with your lecturer email and password.";
+            loginMessage.className = "form-message success";
+        }
+    }
+
+    async function handleLogin(event) {
+        event.preventDefault();
+        const email = ($("#lecturerEmail")?.value || "").trim().toLowerCase();
+        const password = $("#lecturerPassword")?.value || "";
+        const message = $("#lecturerLoginMessage");
+
+        if (!email || !password) {
+            if (message) {
+                message.textContent = "Enter lecturer email and password.";
+                message.className = "form-message error";
+            }
+            return;
+        }
+
+        const lecturers = readJson(KEYS.lecturers, []);
+        const existing = lecturers.find((lecturer) => String(lecturer.email || "").toLowerCase() === email);
+        if (!existing?.passwordHash) {
+            if (message) {
+                message.textContent = "Lecturer account not found. Create an account first.";
+                message.className = "form-message error";
+            }
+            return;
+        }
+
+        const ok = await window.GnpAuthSecurity.verifyPassword(password, existing);
+        if (!ok) {
+            if (message) {
+                message.textContent = "The lecturer email or password is incorrect.";
+                message.className = "form-message error";
+            }
+            return;
+        }
+        await window.GnpAuthSecurity.upgradePasswordIfNeeded(password, existing, (upgraded) => {
+            writeJson(KEYS.lecturers, lecturers.map((lecturer) => lecturer.id === existing.id ? upgraded : lecturer));
+        });
+
+        const session = {
+            id: existing.id,
+            role: "lecturer",
+            name: existing.name || "Lecturer",
+            email: existing.email,
             loginAt: new Date().toISOString()
         };
+        localStorage.removeItem(STUDENT_SESSION_KEY);
+        localStorage.removeItem(ADMIN_SESSION_KEY);
         writeJson(KEYS.session, session);
-        saveLecturerAccount({ ...session, ...passwordRecord });
         showApp();
     }
 
@@ -360,6 +417,7 @@
             access,
             price: access === "paid" ? price : 0,
             lecturer: session.name,
+            lecturerId: session.id,
             badge: access === "paid" ? "Paid" : "Free",
             durationHours: Math.max(12, Math.ceil((notes.length || 2400) / 1200)),
             questions: 100,
@@ -462,7 +520,9 @@
 
     function renderPublishedCourses() {
         const session = getSession();
-        const courses = getCourses().filter((course) => course.source === "lecturer" && course.lecturer === session?.name);
+        const courses = getCourses().filter((course) => (
+            course.source === "lecturer" && (course.lecturerId === session?.id || course.lecturer === session?.name)
+        ));
         const container = $("#publishedCoursesList");
         if (!container) return;
         container.innerHTML = courses.map((course) => `
@@ -484,6 +544,9 @@
 
     function main() {
         $("#lecturerLoginForm")?.addEventListener("submit", handleLogin);
+        $("#lecturerRegisterForm")?.addEventListener("submit", handleRegister);
+        $("#showLecturerRegister")?.addEventListener("click", () => setAuthMode("register"));
+        $("#showLecturerLogin")?.addEventListener("click", () => setAuthMode("login"));
         $("#lecturerPaymentForm")?.addEventListener("submit", handlePayment);
         $("#groupForm")?.addEventListener("submit", handleGroup);
         $("#meetingForm")?.addEventListener("submit", handleMeeting);

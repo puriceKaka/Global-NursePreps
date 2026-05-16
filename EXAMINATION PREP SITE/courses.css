@@ -205,7 +205,7 @@ body[data-page="course-detail"] .navbar a[aria-current="page"] {
 
 .progress-strip-head {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 1rem;
     color: rgba(255, 255, 255, 0.88);
     font-weight: 600;
@@ -372,7 +372,7 @@ body[data-page="course-detail"] .navbar a[aria-current="page"] {
 .filter-heading {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 0.75rem;
     flex-wrap: nowrap;
     flex: 0 0 auto;
@@ -396,7 +396,7 @@ body[data-page="course-detail"] .navbar a[aria-current="page"] {
     font-size: 0.82rem;
     font-weight: 800;
     padding: 0.45rem 0.7rem;
-    margin-left: auto;
+    margin-left: 0;
     white-space: nowrap;
 }
 
@@ -451,9 +451,9 @@ body[data-page="course-detail"] .navbar a[aria-current="page"] {
     flex-wrap: nowrap;
     gap: 0.45rem;
     color: var(--text-muted);
-    justify-content: flex-end;
+    justify-content: flex-start;
     min-width: 0;
-    flex: 1 1 auto;
+    flex: 0 1 auto;
     overflow-x: auto;
     scrollbar-width: thin;
 }
@@ -506,7 +506,7 @@ body[data-page="course-detail"] .navbar a[aria-current="page"] {
 
 .status-row {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 1rem;
     color: var(--text-muted);
 }
@@ -544,7 +544,7 @@ body[data-page="course-detail"] .navbar a[aria-current="page"] {
 
 .catalog-toolbar {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: end;
     gap: 1rem;
     padding: 1.2rem 1.35rem;
@@ -939,7 +939,7 @@ body[data-page="course-detail"] .navbar a[aria-current="page"] {
 .module-header,
 .notes-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: start;
     gap: 1rem;
 }
@@ -1553,7 +1553,7 @@ body[data-page="catalog"] .course-actions .btn-outline {
     }
 
     body[data-page="catalog"] .difficulty-list {
-        justify-content: flex-end;
+        justify-content: flex-start;
         min-width: 0;
     }
 }
@@ -1602,7 +1602,7 @@ body[data-page="catalog"] .course-actions .btn-outline {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        margin-left: auto;
+        margin-left: 0;
     }
 
     body[data-page="catalog"] .filter-heading {

@@ -379,7 +379,7 @@ input:focus {
 .links {
     margin-top: 18px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 18px;
     flex-wrap: wrap;
     font-weight: 800;

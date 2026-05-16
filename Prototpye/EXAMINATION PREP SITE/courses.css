@@ -119,7 +119,7 @@
 
 .progress-strip-head {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 1rem;
     color: rgba(255, 255, 255, 0.88);
     font-weight: 600;
@@ -326,7 +326,7 @@
 
 .status-row {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 1rem;
     color: var(--text-muted);
 }
@@ -364,7 +364,7 @@
 
 .catalog-toolbar {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: end;
     gap: 1rem;
     padding: 1.2rem 1.35rem;
@@ -422,7 +422,7 @@
 
 .course-card-top {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: start;
     gap: 1rem;
 }
@@ -563,7 +563,7 @@
 .module-header,
 .notes-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: start;
     gap: 1rem;
 }

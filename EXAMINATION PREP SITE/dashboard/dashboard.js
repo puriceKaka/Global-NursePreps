@@ -1,9 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const latestResult = JSON.parse(localStorage.getItem("submittedExamResults") || "null");
+    const session = JSON.parse(localStorage.getItem("nurseprep_session") || "null");
+    const userId = String(session?.userId || "guest").trim() || "guest";
+    const latestResult = JSON.parse(localStorage.getItem(`submittedExamResults:${userId}`) || "null");
     const examHistory = latestResult ? [latestResult] : [];
 
-    document.getElementById("exams-completed").textContent = String(examHistory.length || 3);
-    document.getElementById("average-score").textContent = latestResult ? `${latestResult.score}%` : "85%";
+    document.getElementById("exams-completed").textContent = String(examHistory.length);
+    document.getElementById("average-score").textContent = latestResult ? `${latestResult.score}%` : "0%";
     document.getElementById("upcoming-exams").textContent = "2";
 
     const examCards = [
@@ -31,8 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
         { exam: latestResult.examTitle, score: `${latestResult.score}%`, feedback: latestResult.weakAreas.length ? `Review ${latestResult.weakAreas.join(", ")}.` : "Strong performance across the paper." },
         { exam: "Exam Session Saved", score: `${latestResult.answeredCount}/${latestResult.totalQuestions}`, feedback: "Your latest session has been synced to results." }
     ] : [
-        { exam: "Anatomy Practice", score: "90%", feedback: "Great job!" },
-        { exam: "Med-Surg Quiz", score: "78%", feedback: "Review weak areas." }
+        { exam: "No submitted exams", score: "0", feedback: "Your exam activity will appear here after you submit an exam." }
     ];
 
     const activityList = document.getElementById("recent-activity-list");

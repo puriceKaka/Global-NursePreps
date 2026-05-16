@@ -1,5 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
     let selectedExamId = null;
+    const session = JSON.parse(localStorage.getItem("nurseprep_session") || "null");
+    const userId = String(session?.userId || "guest").trim() || "guest";
+    const activeExamKey = `activeExam:${userId}`;
+    const submittedResultsKey = `submittedExamResults:${userId}`;
 
     const examData = {
         upcoming: [
@@ -131,13 +135,13 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        localStorage.setItem("activeExam", JSON.stringify({
+        localStorage.setItem(activeExamKey, JSON.stringify({
             id: exam.id,
             title: exam.name,
             duration: exam.duration,
             scheduledAt: `${exam.date} ${exam.time}`
         }));
-        localStorage.removeItem("submittedExamResults");
+        localStorage.removeItem(submittedResultsKey);
 
         window.location.href = exam.link;
     }

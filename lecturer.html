@@ -9,6 +9,8 @@
     <script defer src="learning-core.js"></script>
     <script defer src="js/auth-security.js"></script>
     <script defer src="lecturer.js"></script>
+    <link rel="stylesheet" href="css/site-loader.css">
+    <script src="js/site-loader.js"></script>
 </head>
 <body>
     <header class="lecturer-topbar">
@@ -31,12 +33,23 @@
                 <p class="muted">Create membership groups, schedule teaching sessions, submit exams, and organize resources for the students you teach.</p>
             </div>
             <form class="lecturer-form" id="lecturerLoginForm">
-                <label><span>Lecturer name</span><input id="lecturerName" autocomplete="name" required></label>
+                <h2>Lecturer login</h2>
                 <label><span>Email</span><input type="email" id="lecturerEmail" autocomplete="username" required></label>
                 <label><span>Password</span><input type="password" id="lecturerPassword" autocomplete="current-password" required minlength="6"></label>
-                <button class="primary-button" type="submit">Enter lecturer portal</button>
-                <p class="hint">Use your lecturer account to continue. New lecturer records are sent to admin for approval. Passwords need at least 6 characters.</p>
+                <button class="primary-button" type="submit">Login to lecturer portal</button>
+                <p class="hint">Use the lecturer account you registered with. New accounts wait for admin approval.</p>
                 <p class="form-message" id="lecturerLoginMessage" aria-live="polite"></p>
+                <button class="link-button" type="button" id="showLecturerRegister">Create lecturer account</button>
+            </form>
+            <form class="lecturer-form hidden" id="lecturerRegisterForm">
+                <h2>Create lecturer account</h2>
+                <label><span>Lecturer name</span><input id="lecturerRegisterName" autocomplete="name" required></label>
+                <label><span>Email</span><input type="email" id="lecturerRegisterEmail" autocomplete="username" required></label>
+                <label><span>Password</span><input type="password" id="lecturerRegisterPassword" autocomplete="new-password" required minlength="6"></label>
+                <button class="primary-button" type="submit">Register lecturer account</button>
+                <p class="hint">After registration you will return to lecturer login.</p>
+                <p class="form-message" id="lecturerRegisterMessage" aria-live="polite"></p>
+                <button class="link-button" type="button" id="showLecturerLogin">Back to login</button>
             </form>
         </section>
 

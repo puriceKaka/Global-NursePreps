@@ -3,6 +3,8 @@
         users: 'nurseprep_users',
         session: 'nurseprep_session'
     };
+    const LECTURER_SESSION_KEY = 'gnp_lecturer_session';
+    const ADMIN_SESSION_KEY = 'gnp_admin_session';
 
     const $ = (selector) => document.querySelector(selector);
 
@@ -111,6 +113,8 @@
                 saveJson(STORAGE_KEYS.users, users.map((item) => item.id === user.id ? upgradedUser : item));
             });
 
+            localStorage.removeItem(LECTURER_SESSION_KEY);
+            localStorage.removeItem(ADMIN_SESSION_KEY);
             saveJson(STORAGE_KEYS.session, {
                 id: uid('session'),
                 userId: user.id,

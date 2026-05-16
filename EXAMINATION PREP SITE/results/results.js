@@ -1,21 +1,17 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const fallbackResult = {
-        examTitle: "NCLEX-RN Mock Exam",
-        score: 85,
-        answeredCount: 4,
-        totalQuestions: 4,
-        strengths: ["Anatomy", "Pediatrics"],
-        weakAreas: ["Pharmacology"],
-        performanceBreakdown: [
-            { category: "Anatomy", score: 90 },
-            { category: "Pharmacology", score: 80 },
-            { category: "Pediatrics", score: 85 }
-        ],
-        proctoringEvents: ["Looked away from screen (10:15 AM)", "Tab switch detected (10:45 AM)"],
-        answerReview: []
-    };
+    const session = JSON.parse(localStorage.getItem("nurseprep_session") || "null");
+    const userId = String(session?.userId || "guest").trim() || "guest";
+    const result = JSON.parse(localStorage.getItem(`submittedExamResults:${userId}`) || "null");
 
-    const result = JSON.parse(localStorage.getItem("submittedExamResults") || "null") || fallbackResult;
+    if (!result) {
+        document.querySelector("h1").textContent = "No exam result found";
+        document.getElementById("score").textContent = "0%";
+        document.getElementById("performance-breakdown").innerHTML = '<p class="review-placeholder">Submit an exam from this account to see results.</p>';
+        document.getElementById("analytics").innerHTML = "";
+        document.getElementById("proctoring-events").innerHTML = "";
+        document.getElementById("review-answers-btn").disabled = true;
+        return;
+    }
 
     document.querySelector("h1").textContent = `${result.examTitle} Completed`;
     document.getElementById("score").textContent = `${result.score}%`;

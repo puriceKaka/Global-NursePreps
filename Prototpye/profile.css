@@ -154,7 +154,7 @@ body {
 .card-head {
     display: flex;
     align-items: flex-start;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 12px;
     flex-wrap: wrap;
 }

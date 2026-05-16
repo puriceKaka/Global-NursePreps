@@ -148,6 +148,7 @@
             access: String(course?.access || fallback.access || (Number(course?.price || fallback.price || 0) > 0 ? "paid" : "free")).trim(),
             price: Number(course?.price || fallback.price || 0),
             lecturer: String(course?.lecturer || fallback.lecturer || "").trim(),
+            lecturerId: String(course?.lecturerId || fallback.lecturerId || "").trim(),
             contentNotes: String(course?.contentNotes || fallback.contentNotes || "").trim(),
             uploadedDocument: course?.uploadedDocument || fallback.uploadedDocument || null,
             source: String(course?.source || fallback.source || "admin").trim()
