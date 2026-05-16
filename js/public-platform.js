@@ -23,8 +23,8 @@ function ensurePuriceButton() {
 function getPuriceAssetPath() {
     return window.location.pathname.includes('/EXAMINATION%20PREP%20SITE/') ||
         window.location.pathname.includes('/EXAMINATION PREP SITE/')
-        ? '../images/public/puriceAI.svg'
-        : 'images/public/puriceAI.svg';
+        ? '../images/public/puriceAI.svg?v=4'
+        : 'images/public/puriceAI.svg?v=4';
 }
 
 function getPuricePath() {

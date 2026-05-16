@@ -2865,20 +2865,24 @@ p {
         grid-template-columns: 1fr;
         gap: 0;
         border-radius: 18px;
+        overflow: hidden;
     }
 
     .gateway-visual {
-        padding: 11px;
+        min-height: 172px;
+        padding: 14px;
+        gap: 10px;
     }
 
     .gateway-visual img {
-        width: min(100%, 220px);
-        height: 96px;
+        width: min(100%, 270px);
+        height: 122px;
         border-radius: 14px;
+        background: rgba(255, 255, 255, 0.24);
     }
 
     .gateway-content {
-        padding: 12px;
+        padding: 14px;
     }
 
     .gateway-content h2,
@@ -2890,13 +2894,13 @@ p {
 
     .gateway-content p,
     .gateway-content li {
-        font-size: 0.82rem;
-        line-height: 1.42;
+        font-size: 0.86rem;
+        line-height: 1.5;
     }
 
     .gateway-content ol {
-        padding-left: 17px;
-        gap: 7px;
+        padding-left: 19px;
+        gap: 9px;
     }
 
     .payment-hero-image {
