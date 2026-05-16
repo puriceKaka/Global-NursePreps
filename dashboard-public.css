@@ -1233,6 +1233,47 @@ p {
     font-weight: 900;
 }
 
+.license-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: center;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.license-view-button,
+.license-enroll-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 14px;
+    border: 0;
+    border-radius: 999px;
+    color: #ffffff;
+    font-weight: 850;
+    line-height: 1;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: 0 12px 24px rgba(7, 55, 99, 0.14);
+    transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.license-view-button {
+    background: linear-gradient(135deg, var(--blue-900) 0%, var(--blue-600) 58%, #20825f 100%);
+}
+
+.license-enroll-button {
+    background: linear-gradient(135deg, #178a55 0%, #20a66b 100%);
+}
+
+.license-view-button:hover,
+.license-enroll-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 30px rgba(7, 55, 99, 0.18);
+}
+
 .dashboard-grid,
 .testimonial-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));

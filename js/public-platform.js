@@ -41,8 +41,8 @@ function renderSiteFooter() {
                 <a href="licensing.html">Australia Nursing Licensing</a>
                 <a href="EXAMINATION%20PREP%20SITE/courses.html">CNA, ICU, Emergency &amp; Critical Care</a>
                 <a href="EXAMINATION%20PREP%20SITE/courses.html">Research Support &amp; Academic Writing</a>
-                <a href="EXAMINATION%20PREP%20SITE/exam-lobby/exam-lobby.html">Mock Exams &amp; Question Banks</a>
-                <a href="certificate.html">Certificates</a>
+                <a href="login.html?next=EXAMINATION%20PREP%20SITE/exam-lobby/exam-lobby.html">Mock Exams &amp; Question Banks</a>
+                <a href="login.html?next=certificate.html">Certificates</a>
                 <a href="login.html?next=meetings.html">Live Classes</a>
             </div>
         </div>
