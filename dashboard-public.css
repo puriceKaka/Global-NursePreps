@@ -465,50 +465,6 @@ p {
     display: block;
 }
 
-.free-study-panel {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    align-items: center;
-    gap: clamp(14px, 3vw, 26px);
-    margin-top: 16px;
-    padding: clamp(18px, 3vw, 28px);
-    border: 1px solid rgba(15, 76, 129, 0.18);
-    border-left: 5px solid var(--blue-800);
-    border-radius: var(--radius);
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 18px 44px rgba(7, 55, 99, 0.08);
-}
-
-.free-study-icon {
-    display: grid;
-    place-items: center;
-    width: 58px;
-    height: 58px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--blue-900), var(--blue-500));
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: 800;
-    box-shadow: 0 14px 28px rgba(7, 55, 99, 0.18);
-}
-
-.free-study-panel h2 {
-    margin-bottom: 8px;
-    font-size: clamp(22px, 3vw, 32px);
-}
-
-.free-study-panel p {
-    margin: 0;
-}
-
-.free-study-panel.loading {
-    opacity: 0.82;
-}
-
-.free-study-panel.error {
-    border-left-color: var(--warning);
-}
-
 .glass-card {
     position: absolute;
     z-index: 2;
@@ -2095,22 +2051,6 @@ p {
         width: auto;
         justify-content: flex-end;
         gap: 6px;
-    }
-
-    .free-study-panel {
-        grid-template-columns: 1fr;
-        justify-items: start;
-        align-items: start;
-        text-align: left;
-    }
-
-    .free-study-icon {
-        width: 50px;
-        height: 50px;
-    }
-
-    .free-study-panel .secondary-button {
-        width: 100%;
     }
 
     .login-button,
