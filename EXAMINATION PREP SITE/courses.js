@@ -890,7 +890,7 @@ function initializeCatalogPage() {
         search: requestedSearch ? requestedSearch.trim().toLowerCase() : "",
         difficulties: [],
         sort: "featured",
-        selectedCourseId: getCourseById(requestedCourse) ? requestedCourse : (state.enrolledCourseIds.includes(state.selectedCourseId) ? state.selectedCourseId : courseCatalog[0].id)
+        selectedCourseId: getCourseById(requestedCourse) ? requestedCourse : (getCourseById(state.selectedCourseId) ? state.selectedCourseId : courseCatalog[0].id)
     };
 
     filterToggle?.addEventListener("click", () => {
@@ -1016,6 +1016,28 @@ function initializeCatalogPage() {
             .map((course) => renderCourseCard(course, latestState))
             .join("");
 
+        grid.querySelectorAll("[data-select-course]").forEach((card) => {
+            card.addEventListener("click", (event) => {
+                if (event.target.closest("a, button, input, select, textarea")) {
+                    return;
+                }
+                selectCourse(card.dataset.selectCourse, true);
+            });
+            card.addEventListener("keydown", (event) => {
+                if (event.key !== "Enter" && event.key !== " ") {
+                    return;
+                }
+                event.preventDefault();
+                selectCourse(card.dataset.selectCourse, true);
+            });
+        });
+
+        grid.querySelectorAll("[data-select-course-btn]").forEach((button) => {
+            button.addEventListener("click", () => {
+                selectCourse(button.dataset.selectCourseBtn, true);
+            });
+        });
+
         grid.querySelectorAll("[data-enroll-course]").forEach((button) => {
             button.addEventListener("click", () => {
                 const latest = getLearningState();
@@ -1070,6 +1092,28 @@ function initializeCatalogPage() {
         });
 
         revealElements(document.querySelectorAll(".reveal-on-scroll"));
+    }
+
+    function selectCourse(courseId, shouldScroll = false) {
+        const course = getCourseById(courseId);
+        if (!course) {
+            return;
+        }
+
+        const latest = getLearningState();
+        latest.selectedCourseId = course.id;
+        saveLearningState(latest);
+        view.selectedCourseId = course.id;
+        renderCatalog();
+
+        const selectedProgram = document.getElementById("selected-program");
+        if (shouldScroll && selectedProgram) {
+            selectedProgram.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+
+        const nextUrl = new URL(window.location.href);
+        nextUrl.searchParams.set("course", course.id);
+        window.history.replaceState({}, "", `${nextUrl.pathname.split("/").pop()}?${nextUrl.searchParams.toString()}#selected-program`);
     }
 
     function renderCategoryFilter(category, isActive) {
@@ -1472,7 +1516,7 @@ function renderCourseCard(course, state) {
         ? `<div class="term-preview">${course.terms.map((term) => `<span>${escapeHtml(term.name)}: ${term.modules.length} modules</span>`).join("")}</div>`
         : "";
     return `
-        <article class="course-card homepage-style-course-card reveal-on-scroll">
+        <article class="course-card homepage-style-course-card reveal-on-scroll${state.selectedCourseId === course.id ? " selected-course-card" : ""}" data-select-course="${course.id}" tabindex="0">
             <img class="course-card-image" src="${courseImage}" alt="${course.title} course image" loading="lazy">
             <div class="course-card-body">
                 <div class="badge-row">
@@ -1493,6 +1537,7 @@ function renderCourseCard(course, state) {
                 <div class="muted small">${percent >= 100 ? "Certificate unlocked" : "Certificate locked until course completion"}</div>
                 <div class="course-actions card-actions${enrolled ? " enrolled-actions" : " unenrolled-actions"}">
                     <button class="btn-primary" data-enroll-course="${course.id}">${enrolled ? "Continue learning" : (loggedIn ? "Enroll" : "Login to enroll")}</button>
+                    <button class="btn-outline" type="button" data-select-course-btn="${course.id}">View details</button>
                     <a class="btn-outline${enrolled ? "" : " is-disabled"}" href="${enrolled ? workspaceHref : "#selected-program"}">${enrolled ? "Open course" : "Enroll to open"}</a>
                     ${enrolled ? `<button class="btn-outline" data-cancel-course="${course.id}">Cancel</button>` : ""}
                 </div>
