@@ -73,7 +73,7 @@
         showLoader(message || 'Opening course...');
         window.setTimeout(function () {
             if (navigator.onLine !== false) hideLoader();
-        }, 1100);
+        }, 3000);
     }
 
     if (navigator.onLine === false) {
