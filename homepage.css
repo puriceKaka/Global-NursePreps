@@ -28,7 +28,7 @@ html, body {
     background:
         linear-gradient(135deg, rgba(15, 76, 129, 0.10), transparent 32%),
         linear-gradient(315deg, rgba(76, 175, 80, 0.13), transparent 36%),
-        var(--bg);
+        #eef8f2;
     color: var(--text);
     overflow-x: hidden;
 }

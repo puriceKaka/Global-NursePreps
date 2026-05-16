@@ -119,8 +119,25 @@
         syncDrawerOffset();
     }
 
+    function ensurePuriceButton() {
+        if (document.body.classList.contains("purice-page") || $("#chatButton")) return;
+
+        const isNested = window.location.pathname.includes("/EXAMINATION%20PREP%20SITE/") ||
+            window.location.pathname.includes("/EXAMINATION PREP SITE/");
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "chat-button";
+        button.id = "chatButton";
+        button.textContent = "Purice AI";
+        button.addEventListener("click", () => {
+            window.location.href = isNested ? "../purice-ai.html" : "purice-ai.html";
+        });
+        document.body.appendChild(button);
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         updateDrawerUser();
         initDrawerNav();
+        ensurePuriceButton();
     });
 })();

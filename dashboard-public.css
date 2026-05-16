@@ -31,9 +31,9 @@ body {
     font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
     color: var(--gray-900);
     background:
-        linear-gradient(135deg, rgba(15, 76, 129, 0.10), transparent 32%),
-        linear-gradient(315deg, rgba(76, 175, 80, 0.13), transparent 36%),
-        var(--gray-100);
+        linear-gradient(135deg, rgba(15, 76, 129, 0.08), transparent 32%),
+        linear-gradient(315deg, rgba(31, 166, 122, 0.18), transparent 38%),
+        #eef8f2;
     overflow-x: hidden;
 }
 
@@ -1306,8 +1306,8 @@ p {
 
 .payments-status {
     display: grid;
-    gap: 12px;
-    padding: 14px;
+    gap: 0;
+    padding: 12px;
     border: 1px solid rgba(15, 76, 129, 0.14);
     border-radius: var(--radius);
     background:
@@ -1318,7 +1318,7 @@ p {
 
 .payment-hero-image {
     width: 100%;
-    height: 210px;
+    height: 190px;
     object-fit: contain;
     display: block;
     border-radius: 22px;
@@ -1326,25 +1326,9 @@ p {
     box-shadow: 0 14px 30px rgba(7, 55, 99, 0.12);
 }
 
-.payment-mini-images {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 8px;
-}
-
-.payment-mini-images img {
-    width: 100%;
-    height: 72px;
-    object-fit: cover;
-    display: block;
-    border-radius: 14px;
-    background: rgba(255, 255, 255, 0.72);
-    box-shadow: 0 8px 18px rgba(7, 55, 99, 0.1);
-}
-
 .gateway-marquee {
     width: 100%;
-    overflow: hidden;
+    overflow: visible;
     margin: 8px 0 22px;
     border-block: 1px solid rgba(15, 76, 129, 0.10);
     background: rgba(255, 255, 255, 0.55);
@@ -1352,10 +1336,13 @@ p {
 
 .gateway-track {
     display: flex;
-    width: max-content;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: min(100% - 20px, var(--max-width));
+    margin: 0 auto;
     gap: 10px;
     padding: 12px 10px;
-    animation: gateway-slide 34s linear infinite;
+    animation: none;
 }
 
 .gateway-chip {
@@ -1465,8 +1452,8 @@ p {
     display: grid;
     place-items: center;
     gap: 14px;
-    min-height: 260px;
-    padding: 24px;
+    min-height: 210px;
+    padding: 18px;
     color: #ffffff;
     text-align: center;
     background:
@@ -1475,8 +1462,8 @@ p {
 }
 
 .gateway-visual img {
-    width: min(100%, 360px);
-    height: 190px;
+    width: min(100%, 290px);
+    height: 145px;
     object-fit: contain;
     display: block;
     border-radius: 22px;
@@ -1485,7 +1472,7 @@ p {
 }
 
 .gateway-visual strong {
-    font-size: clamp(22px, 4vw, 34px);
+    font-size: clamp(18px, 3vw, 26px);
 }
 
 .gateway-content {
@@ -1575,15 +1562,6 @@ p {
     background: rgba(232, 248, 243, 0.78);
     color: var(--blue-900);
     font-weight: 800;
-}
-
-@keyframes gateway-slide {
-    from {
-        transform: translateX(0);
-    }
-    to {
-        transform: translateX(-50%);
-    }
 }
 
 @keyframes payment-flow-slide {
@@ -2275,36 +2253,54 @@ p {
 
 @media (max-width: 1100px) {
     .site-header {
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
+        gap: 8px;
+        min-height: 64px;
+        padding: 10px 10px;
     }
 
     .brand {
         order: 2;
+        min-width: 0;
+        font-size: 15px;
     }
 
     .nav-toggle {
         order: 1;
         display: block;
         margin-left: 0;
+        flex: 0 0 auto;
     }
 
     .site-nav {
         order: 4;
         display: none;
+        position: absolute;
+        top: calc(100% + 1px);
+        left: 0;
+        right: 0;
         width: 100%;
         flex-direction: row;
         align-items: center;
         gap: 8px;
-        flex-wrap: wrap;
-        overflow: visible;
+        flex-wrap: nowrap;
+        overflow-x: auto;
         margin-left: 0;
-        padding-top: 8px;
-        padding-bottom: 6px;
+        padding: 8px 10px;
+        background: rgba(7, 55, 99, 0.94);
+        scrollbar-width: none;
+    }
+
+    .site-nav::-webkit-scrollbar {
+        display: none;
     }
 
     .nav-actions {
-        order: 5;
-        margin-left: 0;
+        order: 3;
+        margin-left: auto;
+        gap: 6px;
+        justify-content: flex-end;
+        flex: 0 0 auto;
     }
 
     .site-nav.open {
@@ -2315,6 +2311,9 @@ p {
     .dropdown-trigger {
         justify-content: center;
         flex: 0 0 auto;
+        min-height: 34px;
+        padding: 0 11px;
+        font-size: 13px;
     }
 
     .dropdown-menu {
@@ -2375,17 +2374,18 @@ p {
 
 @media (max-width: 760px) {
     .site-header {
-        gap: 10px;
-        min-height: 68px;
+        gap: 8px;
+        min-height: 62px;
     }
 
     .brand {
-        font-size: 16px;
+        font-size: 14px;
     }
 
     .nav-actions {
         width: auto;
-        justify-content: flex-start;
+        justify-content: flex-end;
+        margin-left: auto;
     }
 
     .login-button,
@@ -2422,17 +2422,12 @@ p {
     }
 
     .payments-status {
-        padding: 16px;
+        padding: 10px;
     }
 
     .payment-hero-image {
-        height: 150px;
+        height: 130px;
         border-radius: 18px;
-    }
-
-    .payment-mini-images img {
-        height: 54px;
-        border-radius: 12px;
     }
 
     .gateway-selector {
@@ -2450,13 +2445,13 @@ p {
 
     .gateway-visual {
         min-height: 0;
-        padding: 14px;
+        padding: 12px;
         gap: 8px;
     }
 
     .gateway-visual img {
-        width: min(100%, 260px);
-        height: 116px;
+        width: min(100%, 220px);
+        height: 96px;
         border-radius: 16px;
         box-shadow: 0 10px 22px rgba(11, 31, 58, 0.16);
     }
@@ -2599,6 +2594,28 @@ p {
         width: min(100% - 22px, var(--max-width));
     }
 
+    .site-header {
+        gap: 6px;
+        padding-inline: 8px;
+    }
+
+    .brand {
+        font-size: 13px;
+        gap: 6px;
+    }
+
+    .brand-mark {
+        width: 34px;
+        height: 34px;
+    }
+
+    .login-button,
+    .register-button {
+        min-height: 31px;
+        padding: 0 9px;
+        font-size: 12px;
+    }
+
     .payments-copy h1 {
         font-size: 1.95rem;
     }
@@ -2618,8 +2635,17 @@ p {
     }
 
     .gateway-track {
+        justify-content: flex-start;
+        flex-wrap: nowrap;
+        overflow-x: auto;
         gap: 7px;
         padding: 9px 8px;
+        width: 100%;
+        scrollbar-width: none;
+    }
+
+    .gateway-track::-webkit-scrollbar {
+        display: none;
     }
 
     .gateway-chip {
@@ -2654,16 +2680,7 @@ p {
     }
 
     .payment-hero-image {
-        height: 128px;
-    }
-
-    .payment-mini-images {
-        gap: 6px;
-    }
-
-    .payment-mini-images img {
-        height: 44px;
-        border-radius: 10px;
+        height: 112px;
     }
 
     .flow-steps article {

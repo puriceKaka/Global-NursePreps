@@ -195,3 +195,34 @@ body.drawer-open {
 .drawer .small {
     font-size: 13px;
 }
+
+.chat-button {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 2200;
+    min-height: 44px;
+    padding: 0 18px;
+    border: 0;
+    border-radius: 999px;
+    background: #1fa67a;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 850;
+    box-shadow: 0 14px 30px rgba(15, 76, 129, 0.22);
+    cursor: pointer;
+}
+
+.chat-button:hover {
+    filter: brightness(0.96);
+}
+
+@media (max-width: 520px) {
+    .chat-button {
+        right: 12px;
+        bottom: 12px;
+        min-height: 39px;
+        padding: 0 13px;
+        font-size: 12px;
+    }
+}

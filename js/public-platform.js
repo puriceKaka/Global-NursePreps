@@ -5,8 +5,27 @@ const modal = document.getElementById('courseModal');
 const modalClose = document.getElementById('modalClose');
 const modalCourse = document.getElementById('modalCourse');
 const year = document.getElementById('year');
-const chatButton = document.getElementById('chatButton');
+let chatButton = document.getElementById('chatButton');
 const siteFooter = document.getElementById('siteFooter');
+
+function ensurePuriceButton() {
+    if (document.body.classList.contains('purice-page')) return;
+    if (!chatButton) {
+        chatButton = document.createElement('button');
+        chatButton.type = 'button';
+        chatButton.className = 'chat-button';
+        chatButton.id = 'chatButton';
+        chatButton.textContent = 'Purice AI';
+        document.body.appendChild(chatButton);
+    }
+}
+
+function getPuricePath() {
+    return window.location.pathname.includes('/EXAMINATION%20PREP%20SITE/') ||
+        window.location.pathname.includes('/EXAMINATION PREP SITE/')
+        ? '../purice-ai.html'
+        : 'purice-ai.html';
+}
 
 function renderSiteFooter() {
     if (!siteFooter || siteFooter.dataset.rendered === 'true') return;
@@ -93,6 +112,7 @@ function renderSiteFooter() {
 }
 
 renderSiteFooter();
+ensurePuriceButton();
 
 window.addEventListener('load', () => {
     window.setTimeout(() => {
@@ -199,7 +219,7 @@ document.querySelectorAll('form').forEach((form) => {
 });
 
 chatButton?.addEventListener('click', () => {
-    window.location.href = 'purice-ai.html';
+    window.location.href = getPuricePath();
 });
 
 const revealObserver = new IntersectionObserver((entries) => {
