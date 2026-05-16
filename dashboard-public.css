@@ -1300,12 +1300,22 @@ p {
     overflow: hidden;
 }
 
+.payments-page,
+.payments-page * {
+    max-width: 100%;
+}
+
 .payments-hero {
     display: grid;
-    grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
     gap: clamp(18px, 4vw, 44px);
     align-items: center;
     padding-top: 24px;
+}
+
+.payments-copy,
+.payments-status {
+    min-width: 0;
 }
 
 .payments-copy h1 {
@@ -1313,6 +1323,7 @@ p {
     max-width: 850px;
     font-size: clamp(34px, 5vw, 62px);
     line-height: 1.02;
+    overflow-wrap: anywhere;
 }
 
 .payments-copy p {
@@ -1327,6 +1338,7 @@ p {
     gap: 10px;
     flex-wrap: wrap;
     margin-top: 18px;
+    min-width: 0;
 }
 
 .payments-strip span {
@@ -1417,6 +1429,7 @@ p {
     gap: 18px;
     align-items: start;
     max-width: 920px;
+    min-width: 0;
 }
 
 .payment-gateway-panel {
@@ -1432,6 +1445,7 @@ p {
     background: rgba(255, 255, 255, 0.9);
     box-shadow: 0 14px 34px rgba(7, 55, 99, 0.08);
     overflow: hidden;
+    min-width: 0;
 }
 
 .gateway-selector {
@@ -1491,6 +1505,7 @@ p {
     background: #ffffff;
     font: inherit;
     font-weight: 800;
+    min-width: 0;
 }
 
 .gateway-detail {
@@ -1546,6 +1561,7 @@ p {
     background:
         radial-gradient(circle at top right, rgba(255, 255, 255, 0.28), transparent 32%),
         linear-gradient(145deg, var(--gateway-color), color-mix(in srgb, var(--gateway-color), #0b1f3a 30%));
+    min-width: 0;
 }
 
 .gateway-visual img {
@@ -1558,6 +1574,7 @@ p {
     border-radius: 22px;
     background: rgba(255, 255, 255, 0.18);
     box-shadow: 0 18px 36px rgba(11, 31, 58, 0.18);
+    max-width: 100%;
 }
 
 .gateway-visual strong {
@@ -1610,6 +1627,8 @@ p {
     border: 1px solid rgba(15, 76, 129, 0.13);
     border-radius: var(--radius);
     background: rgba(255, 255, 255, 0.8);
+    overflow: hidden;
+    min-width: 0;
 }
 
 .unlock-list {
@@ -1617,6 +1636,8 @@ p {
     border: 1px solid rgba(15, 76, 129, 0.13);
     border-radius: var(--radius);
     background: rgba(255, 255, 255, 0.8);
+    overflow: hidden;
+    min-width: 0;
 }
 
 .home-payment-flow {
@@ -1643,6 +1664,8 @@ p {
     overflow: hidden;
     margin-top: 18px;
     mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    width: 100%;
+    max-width: 100%;
 }
 
 .flow-slider .flow-steps {
@@ -1650,7 +1673,7 @@ p {
 }
 
 .flow-steps article {
-    flex: 0 0 260px;
+    flex: 0 0 clamp(190px, 46vw, 260px);
     --flow-color: var(--blue-500);
     --flow-soft: rgba(232, 245, 255, 0.92);
     border: 1px solid color-mix(in srgb, var(--flow-color), transparent 68%);
@@ -1661,6 +1684,7 @@ p {
         radial-gradient(circle at top right, color-mix(in srgb, var(--flow-color), transparent 78%), transparent 40%),
         linear-gradient(135deg, #ffffff 0%, var(--flow-soft) 100%);
     box-shadow: 0 14px 30px rgba(7, 55, 99, 0.09);
+    min-width: 0;
 }
 
 .flow-steps article:nth-child(6n + 1) {
@@ -2607,6 +2631,7 @@ p {
         border-radius: 18px;
         margin-inline: auto;
         max-width: 100%;
+        width: 100%;
     }
 
     .payments-hero {
@@ -2619,6 +2644,7 @@ p {
         overflow-x: auto;
         scrollbar-width: none;
         width: 100%;
+        max-width: 100%;
     }
 
     .payments-strip::-webkit-scrollbar {
@@ -2674,6 +2700,7 @@ p {
     .gateway-visual img {
         width: min(100%, 220px);
         height: 96px;
+        max-width: 100%;
         border-radius: 16px;
         box-shadow: 0 10px 22px rgba(11, 31, 58, 0.16);
     }
@@ -2716,7 +2743,7 @@ p {
     }
 
     .flow-steps article {
-        flex-basis: 215px;
+        flex-basis: min(215px, 72vw);
         padding-right: 10px;
     }
 
@@ -2815,6 +2842,7 @@ p {
 @media (max-width: 430px) {
     .payments-page .section-shell {
         width: calc(100% - 22px);
+        max-width: calc(100% - 22px);
     }
 
     .site-header {
@@ -2966,10 +2994,11 @@ p {
 
     .payment-hero-image {
         height: 112px;
+        width: 100%;
     }
 
     .flow-steps article {
-        flex-basis: 190px;
+        flex-basis: min(190px, 76vw);
     }
 }
 
