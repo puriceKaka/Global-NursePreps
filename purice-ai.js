@@ -75,6 +75,18 @@ const knowledgeBase = [
     {
         keys: ["dashboard", "profile", "learning", "materials", "notes", "video", "download"],
         answer: "After login, use the student side menu for Dashboard, Courses, Licensing, Exams, Research Support, My Learning, Payments, Certificates, Notifications, Profile, and Help & Support. Paid learning materials appear only in the purchased course."
+    },
+    {
+        keys: ["software", "system", "platform", "app", "website", "navigation", "navigate", "use the site", "how to use"],
+        answer: "Global NursePrep works in a simple flow: browse public information first, create an account or login, choose a course or licensing track, pay for the selected item, then access that item from the student workspace. Protected pages such as My Learnings, Certificates, Exams, Meetings, Profile, and paid resources require login."
+    },
+    {
+        keys: ["login problem", "cannot login", "forgot password", "reset password", "password"],
+        answer: "For login problems, check that the email includes @, use the password you registered with, or open Forgot Password to reset it. After login, the platform connects your progress, payments, certificates, and learning access to your student account."
+    },
+    {
+        keys: ["where", "find", "open", "access", "menu", "sidebar"],
+        answer: "Use the menu or sidebar to move around the platform. Courses opens the course catalog, Licensing opens international exam preparation, My Learnings shows enrolled courses, Payments explains payment options, Certificates shows completed credentials, and Purice AI gives support."
     }
 ];
 
@@ -335,7 +347,6 @@ function updateActionButton() {
     const hasText = input.value.trim().length > 0;
     const voiceUnavailable = actionButton.dataset.voiceUnsupported === "true";
     actionButton.classList.toggle("has-text", hasText);
-    actionButton.classList.toggle("voice-unavailable", voiceUnavailable && !hasText);
     actionButton.type = "button";
     actionButton.setAttribute("aria-label", hasText ? "Send message" : (voiceUnavailable ? "Type your question" : "Start voice input"));
 }

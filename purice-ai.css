@@ -115,8 +115,10 @@ body.purice-dark .purice-chat-head {
 }
 
 .purice-chat-head p {
-    opacity: 0.86;
+    color: #32d583;
+    opacity: 1;
     font-size: 13px;
+    font-weight: 750;
 }
 
 .purice-tools {
@@ -374,19 +376,6 @@ body.purice-dark .purice-form {
 
 .purice-action.has-text .icon-send {
     display: block;
-}
-
-.purice-action.voice-unavailable {
-    background: var(--purice-green);
-}
-
-.purice-action.voice-unavailable .icon-mic {
-    display: none;
-}
-
-.purice-action.voice-unavailable .icon-send {
-    display: block;
-    opacity: 0.72;
 }
 
 .purice-action.listening {
