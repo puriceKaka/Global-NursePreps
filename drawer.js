@@ -119,6 +119,43 @@
         syncDrawerOffset();
     }
 
+    function getRootPrefix() {
+        const parts = decodeURIComponent(window.location.pathname).split('/').filter(Boolean);
+        const examIndex = parts.findIndex((part) => part.toLowerCase() === 'examination prep site');
+        if (examIndex === -1) return "";
+        const directoriesInsideExam = Math.max(0, parts.length - examIndex - 2);
+        return "../".repeat(directoriesInsideExam + 1);
+    }
+
+    function renderStudentDrawerMenu() {
+        const session = safeJsonParse(localStorage.getItem('nurseprep_session'), null);
+        if (!session?.userId) return;
+
+        const nav = $('.drawer-nav');
+        if (!nav) return;
+
+        const root = getRootPrefix();
+        const links = [
+            ["Dashboard", `${root}homepage.html`],
+            ["Courses", `${root}EXAMINATION%20PREP%20SITE/courses.html`],
+            ["Licensing", `${root}licensing.html`],
+            ["Exams", `${root}EXAMINATION%20PREP%20SITE/exam-lobby/exam-lobby.html`],
+            ["Research Support", `${root}research-consultation.html`],
+            ["My Learning", `${root}my-learnings.html`],
+            ["Payments", `${root}payments.html`],
+            ["Certificates", `${root}certificate.html`],
+            ["Notifications", `${root}questions.html`],
+            ["Profile", `${root}Profile.html`],
+            ["Help & Support", `${root}purice-ai.html`]
+        ];
+
+        nav.innerHTML = `${links.map(([label, href]) => `<a class="drawer-link" href="${href}">${label}</a>`).join("")}<a class="drawer-link" href="${root}login.html" data-logout="true">Logout</a>`;
+
+        nav.querySelector('[data-logout="true"]')?.addEventListener('click', () => {
+            localStorage.removeItem('nurseprep_session');
+        });
+    }
+
     function ensurePuriceButton() {
         if (document.body.classList.contains("purice-page") || $("#chatButton")) return;
 
@@ -137,6 +174,7 @@
 
     document.addEventListener('DOMContentLoaded', () => {
         updateDrawerUser();
+        renderStudentDrawerMenu();
         initDrawerNav();
         ensurePuriceButton();
     });

@@ -1,7 +1,8 @@
 (() => {
     const STORAGE_KEYS = {
         users: 'nurseprep_users',
-        session: 'nurseprep_session'
+        session: 'nurseprep_session',
+        rememberedLogin: 'nurseprep_remembered_login'
     };
     const LECTURER_SESSION_KEY = 'gnp_lecturer_session';
     const ADMIN_SESSION_KEY = 'gnp_admin_session';
@@ -124,6 +125,12 @@
                 loginAt: new Date().toISOString()
             });
 
+            if ($('#rememberMe')?.checked) {
+                saveJson(STORAGE_KEYS.rememberedLogin, { email, password });
+            } else {
+                localStorage.removeItem(STORAGE_KEYS.rememberedLogin);
+            }
+
             window.location.replace(window.GnpUtils?.getNextUrl?.('homepage.html') || 'homepage.html');
         } finally {
             if (btn) {
@@ -135,6 +142,12 @@
 
     function main() {
         redirectIfLoggedIn();
+        const remembered = loadJson(STORAGE_KEYS.rememberedLogin, null);
+        if (remembered && typeof remembered.email === 'string' && typeof remembered.password === 'string') {
+            if ($('#emailInput')) $('#emailInput').value = remembered.email;
+            if ($('#passwordInput')) $('#passwordInput').value = remembered.password;
+            if ($('#rememberMe')) $('#rememberMe').checked = true;
+        }
         const params = new URLSearchParams(window.location.search);
         if (params.get('registered') === '1') {
             showError('Account created. Please login with your email and password.');
