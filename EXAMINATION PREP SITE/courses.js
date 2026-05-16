@@ -909,7 +909,6 @@ function initializeCatalogPage() {
             .join("");
         categorySelect.value = view.category;
         categorySelect.addEventListener("change", (event) => {
-            showCourseLoader(`Opening ${event.target.value}...`);
             view.category = event.target.value;
             syncCategoryControls();
             renderCatalog();
@@ -926,7 +925,6 @@ function initializeCatalogPage() {
         }
 
         view.category = target.dataset.category;
-        showCourseLoader(`Opening ${view.category}...`);
         syncCategoryControls();
         renderCatalog();
     });
@@ -1023,8 +1021,6 @@ function initializeCatalogPage() {
                 if (event.target.closest("a, button, input, select, textarea")) {
                     return;
                 }
-                const course = getCourseById(card.dataset.selectCourse);
-                showCourseLoader(course ? `Opening ${course.title}...` : "Opening course...");
                 selectCourse(card.dataset.selectCourse, true);
             });
             card.addEventListener("keydown", (event) => {
@@ -1032,8 +1028,6 @@ function initializeCatalogPage() {
                     return;
                 }
                 event.preventDefault();
-                const course = getCourseById(card.dataset.selectCourse);
-                showCourseLoader(course ? `Opening ${course.title}...` : "Opening course...");
                 selectCourse(card.dataset.selectCourse, true);
             });
         });
@@ -1114,12 +1108,6 @@ function initializeCatalogPage() {
         const nextUrl = new URL(window.location.href);
         nextUrl.searchParams.set("course", course.id);
         window.history.replaceState({}, "", `${nextUrl.pathname.split("/").pop()}?${nextUrl.searchParams.toString()}#selected-program`);
-    }
-
-    function showCourseLoader(message) {
-        if (window.GlobalNursePrepLoader && typeof window.GlobalNursePrepLoader.show === "function") {
-            window.GlobalNursePrepLoader.show(message || "Opening course...");
-        }
     }
 
     function renderCategoryFilter(category, isActive) {

@@ -3,7 +3,6 @@
 
     var loader;
     var slowTimer;
-    var navigationTimer;
     var visible = false;
     var scriptUrl = document.currentScript ? document.currentScript.src : window.location.href;
     var logoUrl = new URL('../logo/finalLogo.jpg', scriptUrl).href;
@@ -64,40 +63,12 @@
         }
     }
 
-    function isNavigationLink(link) {
-        if (!link || !link.href) return false;
-        if (link.hasAttribute('download')) return false;
-        if (link.target && link.target.toLowerCase() !== '_self') return false;
-
-        var href = link.getAttribute('href') || '';
-        if (!href || href.charAt(0) === '#') return false;
-        if (/^(mailto:|tel:|javascript:)/i.test(href)) return false;
-
-        try {
-            var targetUrl = new URL(link.href, window.location.href);
-            if (targetUrl.origin !== window.location.origin) return true;
-            return targetUrl.pathname !== window.location.pathname ||
-                targetUrl.search !== window.location.search ||
-                targetUrl.hash !== window.location.hash;
-        } catch (error) {
-            return false;
-        }
-    }
-
-    function showNavigationLoader(message) {
-        window.clearTimeout(navigationTimer);
-        showLoader(message || 'Opening page...');
-        navigationTimer = window.setTimeout(function () {
-            if (navigator.onLine !== false) hideLoader();
-        }, 1400);
-    }
-
     if (navigator.onLine === false) {
         if (document.body) showOffline();
         else document.addEventListener('DOMContentLoaded', showOffline);
     } else {
         slowTimer = window.setTimeout(function () {
-            if (document.readyState !== 'complete') {
+            if (navigator.onLine === false && document.readyState !== 'complete') {
                 showLoader('Network is slow. Loading platform...');
             }
         }, 900);
@@ -113,25 +84,8 @@
     window.addEventListener('offline', showOffline);
     window.addEventListener('online', hideIfOnline);
 
-    document.addEventListener('click', function (event) {
-        if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
-            return;
-        }
-
-        var link = event.target.closest ? event.target.closest('a[href]') : null;
-        if (!isNavigationLink(link)) return;
-
-        var isCourseLink = /courses\.html/i.test(link.href);
-        showNavigationLoader(isCourseLink ? 'Opening courses...' : 'Opening page...');
-    }, true);
-
-    window.addEventListener('pageshow', function () {
-        window.clearTimeout(navigationTimer);
-        if (navigator.onLine !== false) hideLoader();
-    });
-
     window.GlobalNursePrepLoader = {
-        show: showNavigationLoader,
+        show: showOffline,
         hide: hideLoader,
         offline: showOffline
     };
