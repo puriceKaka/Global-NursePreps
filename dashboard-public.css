@@ -505,6 +505,7 @@ p {
     background: rgba(255, 255, 255, 0.78);
     color: var(--blue-900);
     font-weight: 850;
+    font-size: 1rem;
     box-shadow: 0 10px 24px rgba(7, 55, 99, 0.05);
 }
 
@@ -1431,7 +1432,7 @@ p {
     color: var(--blue-900);
     background: rgba(255, 255, 255, 0.72);
     font-weight: 800;
-    font-size: 0.9rem;
+    font-size: 1rem;
 }
 
 .payments-status {
@@ -2609,7 +2610,7 @@ p {
         min-width: 74px;
         min-height: 36px;
         padding: 0 10px;
-        font-size: 13px;
+        font-size: 14px;
     }
 
     .site-nav.open {
@@ -2622,7 +2623,7 @@ p {
         flex: 0 0 auto;
         min-height: 34px;
         padding: 0 11px;
-        font-size: 14px;
+        font-size: 15px;
     }
 
     .dropdown-menu {
@@ -2680,7 +2681,7 @@ p {
         justify-content: center;
         min-height: 31px;
         padding: 0 6px;
-        font-size: clamp(0.62rem, 1.5vw, 0.82rem);
+        font-size: clamp(0.78rem, 1.7vw, 0.94rem);
         line-height: 1.12;
         text-align: center;
         white-space: nowrap;
@@ -2781,7 +2782,7 @@ p {
         flex: 0 0 auto;
         min-height: 31px;
         padding: 0 8px;
-        font-size: 0.72rem;
+        font-size: 0.86rem;
         white-space: nowrap;
     }
 
@@ -3040,7 +3041,7 @@ p {
         justify-content: center;
         min-height: 30px;
         padding: 0 2px;
-        font-size: clamp(0.62rem, 2.35vw, 0.76rem);
+        font-size: clamp(0.72rem, 2.7vw, 0.86rem);
         line-height: 1.08;
         font-weight: 950;
         text-align: center;
@@ -3087,7 +3088,7 @@ p {
         min-height: 26px;
         justify-content: center;
         padding: 0 3px;
-        font-size: 0.54rem;
+        font-size: 0.68rem;
         line-height: 1.15;
         text-align: center;
         white-space: nowrap;

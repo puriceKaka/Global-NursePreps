@@ -509,7 +509,7 @@ input:focus {
     }
     .public-nav nav a {
         padding: 7px 8px;
-        font-size: 12px;
+        font-size: 13px;
     }
     .auth-shell {
         align-items: flex-start;
