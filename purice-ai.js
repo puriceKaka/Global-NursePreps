@@ -1,5 +1,6 @@
 const HISTORY_KEY = "gnp_purice_ai_history";
 const THEME_KEY = "gnp_purice_ai_theme";
+const VISITOR_NAME_KEY = "gnp_purice_visitor_name";
 
 const messages = document.getElementById("puriceMessages");
 const form = document.getElementById("puriceForm");
@@ -111,10 +112,19 @@ function readJson(key) {
 function cleanName(value) {
     const text = String(value || "").trim();
     if (!text) return "";
-    return text.includes("@") ? text.split("@")[0] : text;
+    const withoutEmail = text.includes("@") ? text.split("@")[0] : text;
+    return withoutEmail
+        .replace(/[^\p{L}\p{N}\s'-]/gu, "")
+        .replace(/\s+/g, " ")
+        .trim();
 }
 
 function getUserName() {
+    const visitorName = cleanName(localStorage.getItem(VISITOR_NAME_KEY));
+    if (visitorName) {
+        return visitorName;
+    }
+
     const session = readJson("nurseprep_session");
     if (session?.name || session?.email) {
         return cleanName(session.name || session.email);
@@ -143,6 +153,41 @@ function getUserName() {
 
 function greeting() {
     return `Hello ${getUserName()}, what can I help you with?`;
+}
+
+function captureName(question) {
+    const match = question.match(/\b(?:i am|i'm|am|my name is|call me)\s+([a-zA-Z][a-zA-Z\s'-]{1,40})/i);
+    if (!match) return "";
+    const name = cleanName(match[1]);
+    if (!name || ["student", "nurse", "here"].includes(name.toLowerCase())) return "";
+    localStorage.setItem(VISITOR_NAME_KEY, name);
+    return name;
+}
+
+function isGreeting(normalized) {
+    return /\b(hi|hey|hello|helo|hellow|hellwo|hallo|good morning|good afternoon|good evening)\b/.test(normalized);
+}
+
+function isIdentityQuestion(normalized) {
+    return (
+        normalized.includes("your name") ||
+        normalized.includes("who are you") ||
+        normalized.includes("what are you") ||
+        normalized.includes("who is purice") ||
+        normalized.includes("what is purice")
+    );
+}
+
+function buildStructuredFallback(question) {
+    const topic = question.replace(/[?!.,]+$/g, "").trim();
+    return [
+        `I can help with "${topic}".`,
+        "Here is how we can handle it:",
+        "1. Tell me the course or clinical area if it is about nursing.",
+        "2. Share the exact question, patient scenario, or calculation values.",
+        "3. I will break it down into simple points, priority nursing actions, safety checks, and exam tips.",
+        "You can also ask general questions, platform questions, or study-planning questions."
+    ].join("\n");
 }
 
 function nowLabel() {
@@ -198,14 +243,23 @@ function appendMessage(record, shouldSave = true) {
 
 function buildResponse(question) {
     const normalized = question.toLowerCase();
+    const capturedName = captureName(question);
+    if (capturedName) {
+        return `Nice to meet you, ${capturedName}. I am Purice AI, your Global NursePrep assistant. You can ask me about nursing topics, courses, NCLEX, UK CBT, payments, assignments, research support, exams, or how to use the platform.`;
+    }
+
+    if (isIdentityQuestion(normalized)) {
+        return "My name is Purice AI. I am the Global NursePrep support assistant for nursing learning, licensing preparation, course guidance, payments, research support, assignments, and student navigation.";
+    }
+
     const matched = [...knowledgeBase, ...broadTopics].find((item) => item.keys.some((key) => normalized.includes(key)));
 
     if (matched) {
         return matched.answer;
     }
 
-    if (normalized.includes("hello") || normalized.includes("hi") || normalized.includes("hey")) {
-        return `Hello ${getUserName()}. Ask me about courses, licensing exams, payments, assignments, research support, certificates, or study planning.`;
+    if (isGreeting(normalized)) {
+        return `Hello ${getUserName()}. I am Purice AI. What would you like help with today?`;
     }
 
     if (normalized.startsWith("what") || normalized.includes(" define ") || normalized.includes("meaning")) {
@@ -220,7 +274,7 @@ function buildResponse(question) {
         return "In nursing, the reason usually connects to patient safety, physiology, prevention of complications, evidence-based practice, or legal documentation. Tell me the exact concept and I will explain the clinical reason in simple terms.";
     }
 
-    return "I can help with that. For the best answer, share the exact nursing topic, patient scenario, assignment question, drug calculation, or exam area. I will respond with: key idea, nursing assessment, priority actions, safety risks, and exam tips.";
+    return buildStructuredFallback(question);
 }
 
 function setTyping(isTyping) {
@@ -255,6 +309,11 @@ function loadHistory() {
     } catch {
         chatHistory = [];
     }
+
+    chatHistory = chatHistory.filter((message) => (
+        !/^Hello student,/i.test(message.text || "") &&
+        !/^Hello there\./i.test(message.text || "")
+    ));
 
     if (!Array.isArray(chatHistory) || chatHistory.length === 0) {
         appendMessage({ role: "bot", text: greeting() });
