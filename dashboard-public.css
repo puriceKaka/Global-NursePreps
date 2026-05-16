@@ -2039,7 +2039,7 @@ p {
     .nav-dropdown.open .dropdown-menu {
         display: grid;
         position: fixed;
-        left: 12px;
+        left: clamp(34px, 10vw, 86px);
         right: 12px;
         top: 126px;
         z-index: 10;
@@ -2162,6 +2162,11 @@ p {
     .support-grid,
     .dropdown-menu {
         grid-template-columns: 1fr;
+    }
+
+    .nav-dropdown.open .dropdown-menu {
+        left: 28px;
+        right: 10px;
     }
 
     .mission-row {
