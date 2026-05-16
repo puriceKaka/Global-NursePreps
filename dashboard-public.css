@@ -2862,6 +2862,8 @@ p {
     }
 
     .gateway-detail {
+        display: flex;
+        flex-direction: column;
         grid-template-columns: 1fr;
         gap: 0;
         border-radius: 18px;
@@ -2869,19 +2871,34 @@ p {
     }
 
     .gateway-visual {
-        min-height: 172px;
-        padding: 14px;
-        gap: 10px;
+        order: 0;
+        display: grid;
+        min-height: 218px;
+        padding: 16px 14px;
+        gap: 12px;
+        visibility: visible;
+        opacity: 1;
     }
 
     .gateway-visual img {
-        width: min(100%, 270px);
-        height: 122px;
-        border-radius: 14px;
+        width: min(100%, 310px);
+        height: auto;
+        min-height: 136px;
+        aspect-ratio: 640 / 420;
+        object-fit: contain;
+        display: block;
+        border-radius: 16px;
         background: rgba(255, 255, 255, 0.24);
     }
 
+    .gateway-visual strong {
+        display: block;
+        color: #ffffff;
+        font-size: 1.2rem;
+    }
+
     .gateway-content {
+        order: 1;
         padding: 14px;
     }
 
