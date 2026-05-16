@@ -4,6 +4,8 @@
     var loader;
     var slowTimer;
     var visible = false;
+    var scriptUrl = document.currentScript ? document.currentScript.src : window.location.href;
+    var logoUrl = new URL('../logo/global-nurseprep-logo.svg', scriptUrl).href;
 
     function createLoader() {
         if (loader) return loader;
@@ -15,8 +17,9 @@
         loader.setAttribute('aria-label', 'Loading Global NursePrep');
         loader.innerHTML = [
             '<div class="gnp-global-loader-card">',
-            '<span class="gnp-global-loader-mark"><img src="logo/Screenshot_20260421-123818.jpg" alt="Global NursePrep logo"></span>',
+            '<span class="gnp-global-loader-mark"><img src="' + logoUrl + '" alt="Global NursePrep logo"></span>',
             '<strong>Global NursePrep</strong>',
+            '<span class="gnp-loader-track" aria-hidden="true"><span></span></span>',
             '<span id="gnpLoaderMessage">Checking connection</span>',
             '</div>'
         ].join('');

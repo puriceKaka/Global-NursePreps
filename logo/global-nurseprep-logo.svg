@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Global NursePrep logo">
+  <defs>
+    <linearGradient id="bg" x1="74" x2="438" y1="64" y2="448" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0f6fb5"/>
+      <stop offset=".52" stop-color="#0b4f83"/>
+      <stop offset="1" stop-color="#1fa67a"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="154" x2="360" y1="134" y2="380" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffe29a"/>
+      <stop offset="1" stop-color="#d7b55d"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="128" fill="url(#bg)"/>
+  <circle cx="256" cy="256" r="188" fill="none" stroke="#ffffff" stroke-opacity=".22" stroke-width="18"/>
+  <path d="M256 121c75 0 136 61 136 136s-61 136-136 136-136-61-136-136 61-136 136-136Zm0 34c-56 0-102 46-102 102s46 102 102 102 102-46 102-102-46-102-102-102Z" fill="#fff" opacity=".96"/>
+  <path d="M238 178h36v61h61v36h-61v61h-36v-61h-61v-36h61v-61Z" fill="url(#gold)"/>
+  <path d="M170 366c28-31 58-47 89-47 30 0 59 15 87 45-25 20-55 31-90 31-33 0-62-10-86-29Z" fill="#ffffff" opacity=".92"/>
+  <path d="M151 132c42 13 76 34 102 64M361 132c-42 13-76 34-102 64M151 380c42-13 76-34 102-64M361 380c-42-13-76-34-102-64" fill="none" stroke="#fff" stroke-opacity=".36" stroke-width="12" stroke-linecap="round"/>
+</svg>

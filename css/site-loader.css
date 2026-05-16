@@ -20,7 +20,7 @@
 .gnp-global-loader-card {
     display: grid;
     place-items: center;
-    gap: 8px;
+    gap: 10px;
     padding: 24px;
     font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
     text-align: center;
@@ -35,7 +35,6 @@
     background: linear-gradient(135deg, #0b4f83, #2f9eea);
     color: #ffffff;
     font-weight: 950;
-    animation: gnp-loader-pulse 1100ms ease-in-out infinite;
     overflow: hidden;
 }
 
@@ -56,21 +55,37 @@
     font-weight: 800;
 }
 
-@keyframes gnp-loader-pulse {
-    0%,
-    100% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(47, 158, 234, 0.24);
+.gnp-loader-track {
+    position: relative;
+    display: block;
+    width: min(220px, 62vw);
+    height: 7px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(15, 76, 129, 0.12);
+}
+
+.gnp-loader-track span {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 42%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #0b4f83, #2f9eea, #1fa67a);
+    animation: gnp-loader-slide 900ms ease-in-out infinite;
+}
+
+@keyframes gnp-loader-slide {
+    0% {
+        transform: translateX(-105%);
     }
 
-    50% {
-        transform: scale(1.04);
-        box-shadow: 0 0 0 16px rgba(47, 158, 234, 0);
+    100% {
+        transform: translateX(245%);
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .gnp-global-loader-mark {
+    .gnp-loader-track span {
         animation: none;
     }
 }
