@@ -71,9 +71,9 @@ function renderSiteFooter() {
             <div class="footer-support-links">
                 <a href="EXAMINATION%20PREP%20SITE/courses.html">Course selection</a>
                 <a href="licensing.html">Licensing exam prep</a>
-                <a href="https://wa.me/254726105087?text=Hello%2C%20I%20need%20payment%20help.">Payment help</a>
+                <a href="contact.html#payment-help">Payment help</a>
                 <a href="login.html">Student account access</a>
-                <a href="https://wa.me/254726105087?text=Hello%2C%20I%20need%20research%20consultation.">Research consultation</a>
+                <a href="contact.html#research-consultation">Research consultation</a>
                 <a href="meetings.html">Live class guidance</a>
             </div>
         </div>
