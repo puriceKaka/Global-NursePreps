@@ -57,13 +57,13 @@ function renderSiteFooter() {
         <div class="footer-resources" aria-label="Resources">
             <strong>Resources</strong>
             <div class="footer-resource-links">
-                <span>System Requirements</span>
-                <span>Privacy Policy</span>
-                <span>Terms of Use</span>
-                <span>Cookie Policy</span>
-                <span>Platform Architecture</span>
+                <a href="system-requirements.html">System Requirements</a>
+                <a href="privacy-policy.html">Privacy Policy</a>
+                <a href="terms-of-use.html">Terms of Use</a>
+                <a href="cookie-policy.html">Cookie Policy</a>
+                <a href="platform-architecture.html">Platform Architecture</a>
                 <a href="https://openwho.org/" target="_blank" rel="noopener">Free Global Study: OpenWHO</a>
-                <span>Accessibility Assistance</span>
+                <a href="accessibility-assistance.html">Accessibility Assistance</a>
             </div>
         </div>
         <div class="footer-services" aria-label="Services">
@@ -106,16 +106,42 @@ if (year) {
     year.textContent = new Date().getFullYear();
 }
 
+const isMobileNav = () => window.matchMedia('(max-width: 1100px)').matches;
+const closeMobileNav = () => {
+    siteNav?.classList.remove('open');
+    document.querySelectorAll('.nav-dropdown.open').forEach((dropdown) => {
+        dropdown.classList.remove('open');
+    });
+    navToggle?.setAttribute('aria-expanded', 'false');
+};
+
 navToggle?.addEventListener('click', () => {
     const isOpen = siteNav.classList.toggle('open');
     navToggle.setAttribute('aria-expanded', String(isOpen));
+    if (!isOpen) {
+        document.querySelectorAll('.nav-dropdown.open').forEach((dropdown) => {
+            dropdown.classList.remove('open');
+        });
+    }
 });
 
 siteNav?.addEventListener('click', (event) => {
+    const dropdownTrigger = event.target.closest('.dropdown-trigger');
+    if (dropdownTrigger && isMobileNav()) {
+        event.preventDefault();
+        dropdownTrigger.closest('.nav-dropdown')?.classList.toggle('open');
+        return;
+    }
+
     const link = event.target.closest('a');
     if (!link) return;
-    siteNav.classList.remove('open');
-    navToggle?.setAttribute('aria-expanded', 'false');
+    closeMobileNav();
+});
+
+window.addEventListener('resize', () => {
+    if (!isMobileNav()) {
+        closeMobileNav();
+    }
 });
 
 document.querySelectorAll('.tab-button').forEach((button) => {

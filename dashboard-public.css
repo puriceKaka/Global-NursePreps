@@ -1985,7 +1985,12 @@ p {
         flex-wrap: wrap;
     }
 
+    .brand {
+        order: 2;
+    }
+
     .nav-toggle {
+        order: 1;
         display: block;
         margin-left: 0;
     }
@@ -2001,6 +2006,7 @@ p {
     }
 
     .nav-actions {
+        order: 5;
         margin-left: 0;
     }
 
@@ -2015,6 +2021,7 @@ p {
 
     .dropdown-menu {
         position: static;
+        display: none;
         min-width: 0;
         width: 100%;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2022,6 +2029,15 @@ p {
         visibility: visible;
         transform: none;
         box-shadow: none;
+    }
+
+    .nav-dropdown.open .dropdown-menu {
+        display: grid;
+    }
+
+    .nav-dropdown.open .dropdown-trigger {
+        color: var(--white);
+        background: rgba(255, 255, 255, 0.13);
     }
 
     .hero,
@@ -2065,6 +2081,22 @@ p {
     .nav-actions {
         width: auto;
         justify-content: flex-start;
+    }
+
+    .free-study-panel {
+        grid-template-columns: 1fr;
+        justify-items: start;
+        align-items: start;
+        text-align: left;
+    }
+
+    .free-study-icon {
+        width: 50px;
+        height: 50px;
+    }
+
+    .free-study-panel .secondary-button {
+        width: 100%;
     }
 
     .login-button,
