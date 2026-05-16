@@ -2711,12 +2711,12 @@ p {
     }
 
     .stat-card strong {
-        font-size: clamp(18px, 8vw, 30px);
+        font-size: clamp(22px, 4.2vw, 34px);
     }
 
     .stat-card span {
         margin-top: 5px;
-        font-size: 0.68rem;
+        font-size: 0.78rem;
         line-height: 1.15;
     }
 }
@@ -2937,12 +2937,12 @@ p {
     }
 
     .stat-card strong {
-        font-size: clamp(16px, 6.4vw, 28px);
+        font-size: clamp(19px, 5.6vw, 30px);
     }
 
     .stat-card span {
         margin-top: 5px;
-        font-size: clamp(0.54rem, 1.8vw, 0.72rem);
+        font-size: clamp(0.64rem, 2vw, 0.82rem);
         line-height: 1.12;
         overflow-wrap: anywhere;
     }
@@ -3061,11 +3061,11 @@ p {
     }
 
     .stat-card strong {
-        font-size: clamp(15px, 6.8vw, 24px);
+        font-size: clamp(18px, 7vw, 26px);
     }
 
     .stat-card span {
-        font-size: 0.58rem;
+        font-size: 0.66rem;
         line-height: 1.1;
         overflow-wrap: anywhere;
     }
