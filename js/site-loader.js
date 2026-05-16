@@ -63,6 +63,18 @@
         }
     }
 
+    function showCourseClickLoader(message) {
+        if (navigator.onLine === false) {
+            showOffline();
+            return;
+        }
+
+        showLoader(message || 'Opening course...');
+        window.setTimeout(function () {
+            if (navigator.onLine !== false) hideLoader();
+        }, 1100);
+    }
+
     if (navigator.onLine === false) {
         if (document.body) showOffline();
         else document.addEventListener('DOMContentLoaded', showOffline);
@@ -84,8 +96,19 @@
     window.addEventListener('offline', showOffline);
     window.addEventListener('online', hideIfOnline);
 
+    document.addEventListener('click', function (event) {
+        if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
+            return;
+        }
+
+        var courseLink = event.target.closest ? event.target.closest('[data-course-loader]') : null;
+        if (!courseLink) return;
+
+        showCourseClickLoader('Opening ' + courseLink.textContent.trim() + '...');
+    }, true);
+
     window.GlobalNursePrepLoader = {
-        show: showOffline,
+        show: showCourseClickLoader,
         hide: hideLoader,
         offline: showOffline
     };
