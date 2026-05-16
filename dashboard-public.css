@@ -868,18 +868,19 @@ p {
 }
 
 .atlas-list {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 8px;
     margin-top: 12px;
 }
 
 .atlas-list span {
-    display: inline-flex;
+    display: flex;
     align-items: center;
+    width: 100%;
     min-height: 34px;
     padding: 0 10px;
-    border-radius: 999px;
+    border-radius: 12px;
     background: var(--blue-100);
     color: var(--blue-900);
     font-weight: 850;
