@@ -2903,6 +2903,32 @@ p {
         grid-template-columns: 1fr;
     }
 
+    .stats-grid.section-shell {
+        width: calc(100% - 18px);
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 7px;
+    }
+
+    .stat-card {
+        min-width: 0;
+        padding: 9px 5px;
+        text-align: center;
+    }
+
+    .stat-card strong {
+        font-size: clamp(16px, 6.4vw, 28px);
+    }
+
+    .stat-card span {
+        margin-top: 5px;
+        font-size: clamp(0.54rem, 1.8vw, 0.72rem);
+        line-height: 1.12;
+        overflow-wrap: anywhere;
+    }
+
     .mission-row {
         grid-template-columns: 1fr;
         gap: 10px;
