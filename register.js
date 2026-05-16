@@ -16,11 +16,21 @@
     }
 
     function loadJson(key, fallback) {
-        return safeJsonParse(localStorage.getItem(key), fallback);
+        try {
+            return safeJsonParse(localStorage.getItem(key), fallback);
+        } catch {
+            return fallback;
+        }
     }
 
     function saveJson(key, value) {
-        localStorage.setItem(key, JSON.stringify(value));
+        try {
+            localStorage.setItem(key, JSON.stringify(value));
+            return true;
+        } catch {
+            showError('Storage is unavailable. Please enable browser storage and try again.');
+            return false;
+        }
     }
 
     function uid(prefix = 'id') {
@@ -50,7 +60,7 @@
     }
 
     function setUsers(users) {
-        saveJson(STORAGE_KEYS.users, users);
+        return saveJson(STORAGE_KEYS.users, users);
     }
 
     function getSession() {
@@ -139,7 +149,9 @@
                 createdAt: new Date().toISOString()
             };
 
-            setUsers([user, ...users]);
+            if (!setUsers([user, ...users])) {
+                return;
+            }
             localStorage.removeItem(STORAGE_KEYS.session);
             window.location.replace(`login.html?registered=1&email=${encodeURIComponent(email)}`);
         } finally {

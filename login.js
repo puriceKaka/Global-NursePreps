@@ -19,11 +19,21 @@
     }
 
     function loadJson(key, fallback) {
-        return safeJsonParse(localStorage.getItem(key), fallback);
+        try {
+            return safeJsonParse(localStorage.getItem(key), fallback);
+        } catch {
+            return fallback;
+        }
     }
 
     function saveJson(key, value) {
-        localStorage.setItem(key, JSON.stringify(value));
+        try {
+            localStorage.setItem(key, JSON.stringify(value));
+            return true;
+        } catch {
+            showError('Storage is unavailable. Please enable browser storage and try again.');
+            return false;
+        }
     }
 
     function uid(prefix = 'id') {
@@ -92,6 +102,11 @@
             return;
         }
 
+        if (password.length < 8) {
+            showError('Password must be at least 8 characters.');
+            return;
+        }
+
         if (btn) {
             btn.disabled = true;
             btn.textContent = 'Logging in...';
@@ -127,7 +142,7 @@
             });
 
             if ($('#rememberMe')?.checked) {
-                saveJson(STORAGE_KEYS.rememberedLogin, { email, password });
+                saveJson(STORAGE_KEYS.rememberedLogin, { email });
             } else {
                 localStorage.removeItem(STORAGE_KEYS.rememberedLogin);
             }
@@ -144,9 +159,8 @@
     function main() {
         redirectIfLoggedIn();
         const remembered = loadJson(STORAGE_KEYS.rememberedLogin, null);
-        if (remembered && typeof remembered.email === 'string' && typeof remembered.password === 'string') {
+        if (remembered && typeof remembered.email === 'string') {
             if ($('#emailInput')) $('#emailInput').value = remembered.email;
-            if ($('#passwordInput')) $('#passwordInput').value = remembered.password;
             if ($('#rememberMe')) $('#rememberMe').checked = true;
         }
         const params = new URLSearchParams(window.location.search);

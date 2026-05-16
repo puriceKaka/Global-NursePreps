@@ -52,8 +52,17 @@ This repo ships with an optional API scaffold in `server.js` that can persist le
 
 Endpoints:
 - `GET /api/health`
+- `GET /api/ready`
+- `POST /api/auth/register`
+- `POST /api/auth/login`
 - `GET /api/learning/state?userId=...`
 - `PUT /api/learning/state` with JSON `{ "userId": "...", "state": { ... } }`
+
+Database starter schema:
+- `data/database-schema.sql`
+
+Production notes:
+- `docs/production-readiness.md`
 
 3. To create a new meeting:
    - Click "New meeting"
