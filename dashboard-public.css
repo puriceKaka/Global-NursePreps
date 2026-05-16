@@ -2667,6 +2667,24 @@ p {
         padding: 24px;
     }
 
+    .hero-trust {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 7px;
+        width: 100%;
+        margin-top: 16px;
+    }
+
+    .hero-trust span {
+        justify-content: center;
+        min-height: 31px;
+        padding: 0 6px;
+        font-size: clamp(0.62rem, 1.5vw, 0.82rem);
+        line-height: 1.12;
+        text-align: center;
+        white-space: nowrap;
+    }
+
     .stats-grid,
     .platform-steps,
     .home-flow,
