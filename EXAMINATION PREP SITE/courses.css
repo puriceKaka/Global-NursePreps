@@ -1416,10 +1416,11 @@ body[data-page="catalog"] .course-grid {
 }
 
 body[data-page="catalog"] .course-card.homepage-style-course-card {
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 10px;
     padding: 14px;
+    height: 100%;
     min-height: 100%;
     background: rgba(255, 255, 255, 0.9);
     animation: panel-rise 0.65s ease both;
@@ -1480,9 +1481,12 @@ body[data-page="catalog"] .course-card:hover .course-card-image {
 }
 
 body[data-page="catalog"] .course-card-body {
-    display: grid;
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
     gap: 10px;
     padding: 0;
+    min-height: 0;
 }
 
 body[data-page="catalog"] .course-card h4 {
@@ -1523,6 +1527,7 @@ body[data-page="catalog"] .course-actions {
     flex-wrap: nowrap;
     gap: 10px;
     align-items: center;
+    margin-top: auto;
     min-width: 0;
 }
 
