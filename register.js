@@ -71,7 +71,18 @@
         const show = input.type === 'password';
         input.type = show ? 'text' : 'password';
         btn.textContent = show ? 'Hide' : 'Show';
+        btn.classList.toggle('is-password-visible', show);
         btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+    }
+
+    function togglePasswordByButton(button) {
+        const input = document.getElementById(button.dataset.togglePassword || '');
+        if (!input) return;
+        const show = input.type === 'password';
+        input.type = show ? 'text' : 'password';
+        button.textContent = show ? 'Hide' : 'Show';
+        button.classList.toggle('is-password-visible', show);
+        button.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
     }
 
     async function onSubmit(event) {
@@ -146,6 +157,9 @@
             policy.textContent = window.GnpAuthSecurity.PASSWORD_POLICY_TEXT;
         }
         $('#togglePasswordBtn')?.addEventListener('click', togglePassword);
+        document.querySelectorAll('[data-toggle-password]').forEach((button) => {
+            button.addEventListener('click', () => togglePasswordByButton(button));
+        });
         $('#registerForm')?.addEventListener('submit', onSubmit);
     }
 

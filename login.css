@@ -308,6 +308,7 @@ input:focus {
     border: 2px solid currentColor;
     border-radius: 75% 15%;
     transform: rotate(45deg);
+    transition: transform 160ms ease, border-radius 160ms ease;
 }
 
 .pill-button::after {
@@ -319,6 +320,28 @@ input:focus {
     border-radius: 50%;
     background: currentColor;
     transform: translate(-50%, -50%);
+    transition: width 160ms ease, height 160ms ease, opacity 160ms ease;
+}
+
+.pill-button:not(.is-password-visible)::before {
+    border-radius: 60% 40%;
+    transform: rotate(45deg) scaleX(0.82);
+}
+
+.pill-button:not(.is-password-visible)::after {
+    width: 18px;
+    height: 2px;
+    border-radius: 999px;
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.pill-button.is-password-visible::before {
+    transform: rotate(45deg) scale(1.04);
+}
+
+.pill-button.is-password-visible::after {
+    width: 7px;
+    height: 7px;
 }
 
 .error {

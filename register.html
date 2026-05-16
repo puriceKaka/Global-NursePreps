@@ -118,7 +118,10 @@
 
                     <label class="field">
                         <span>Confirm password</span>
-                        <input type="password" id="confirmInput" autocomplete="new-password" placeholder="Repeat password" required>
+                        <div class="password-row">
+                            <input type="password" id="confirmInput" autocomplete="new-password" placeholder="Repeat password" required>
+                            <button type="button" class="pill-button" data-toggle-password="confirmInput" aria-label="Show password">Show</button>
+                        </div>
                     </label>
 
                     <div class="error hidden" id="errorBox" role="alert"></div>

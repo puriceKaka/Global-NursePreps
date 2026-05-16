@@ -70,6 +70,7 @@
         const show = input.type === 'password';
         input.type = show ? 'text' : 'password';
         btn.textContent = show ? 'Hide' : 'Show';
+        btn.classList.toggle('is-password-visible', show);
         btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
     }
 

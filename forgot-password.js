@@ -91,6 +91,7 @@
                 if (!input) return;
                 const show = input.type === "password";
                 input.type = show ? "text" : "password";
+                button.classList.toggle("is-password-visible", show);
                 button.setAttribute("aria-label", show ? "Hide password" : "Show password");
             });
         });
