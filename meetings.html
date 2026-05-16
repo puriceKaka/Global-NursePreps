@@ -8,6 +8,18 @@
         <link rel="stylesheet" href="Dashboard.css">
         <link rel="stylesheet" href="drawer.css">
         <link rel="stylesheet" href="css/site-loader.css">
+        <script>
+            (() => {
+                try {
+                    const session = JSON.parse(localStorage.getItem("nurseprep_session") || "null");
+                    if (!session?.userId) {
+                        window.location.replace("login.html?next=meetings.html");
+                    }
+                } catch {
+                    window.location.replace("login.html?next=meetings.html");
+                }
+            })();
+        </script>
     <script src="js/site-loader.js"></script>
 </head>
     <body>

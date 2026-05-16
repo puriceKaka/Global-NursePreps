@@ -43,7 +43,7 @@ function renderSiteFooter() {
                 <a href="EXAMINATION%20PREP%20SITE/courses.html">Research Support &amp; Academic Writing</a>
                 <a href="EXAMINATION%20PREP%20SITE/exam-lobby/exam-lobby.html">Mock Exams &amp; Question Banks</a>
                 <a href="certificate.html">Certificates</a>
-                <a href="meetings.html">Live Classes</a>
+                <a href="login.html?next=meetings.html">Live Classes</a>
             </div>
         </div>
         <div class="footer-legal" aria-label="Nursing regulations and policies">
@@ -91,7 +91,7 @@ function renderSiteFooter() {
                 <a href="payments.html">Payment help</a>
                 <a href="login.html">Student account access</a>
                 <a href="research-consultation.html">Research consultation</a>
-                <a href="meetings.html">Live class guidance</a>
+                <a href="login.html?next=meetings.html">Live class guidance</a>
             </div>
         </div>
         <div class="footer-divider" aria-hidden="true"></div>

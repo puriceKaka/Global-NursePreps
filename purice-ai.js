@@ -76,6 +76,29 @@ const knowledgeBase = [
     }
 ];
 
+const broadTopics = [
+    {
+        keys: ["hypertension", "blood pressure", "bp"],
+        answer: "For hypertension, think assessment first: confirm repeated elevated readings, check symptoms, review risk factors, assess medication adherence, and teach lifestyle changes. Urgent red flags include chest pain, severe headache, confusion, shortness of breath, weakness, or very high readings that need immediate clinical review."
+    },
+    {
+        keys: ["diabetes", "glucose", "insulin", "hypoglycemia", "hyperglycemia"],
+        answer: "For diabetes questions, separate low glucose from high glucose. Hypoglycemia often needs fast sugar if the patient can swallow, then recheck. Hyperglycemia needs hydration, medication review, ketone awareness where relevant, and escalation if vomiting, confusion, dehydration, or very high readings appear."
+    },
+    {
+        keys: ["infection", "sepsis", "fever", "wound"],
+        answer: "For infection and sepsis, assess temperature, heart rate, breathing, blood pressure, mental status, wound changes, urine output, and pain. Escalate quickly for hypotension, confusion, fast breathing, reduced urine, spreading redness, or suspected sepsis."
+    },
+    {
+        keys: ["pain", "analgesia", "comfort"],
+        answer: "For pain management, assess location, severity, onset, triggers, vital signs, allergies, medication history, and functional impact. Use prescribed analgesia safely, reassess after intervention, and document the response."
+    },
+    {
+        keys: ["pregnancy", "labor", "midwifery", "postpartum", "antenatal"],
+        answer: "For maternal nursing, prioritize maternal vital signs, fetal wellbeing where applicable, bleeding, pain, contractions, danger signs, hydration, infection prevention, education, and timely referral for complications."
+    }
+];
+
 function readJson(key) {
     try {
         return JSON.parse(localStorage.getItem(key) || "null");
@@ -174,7 +197,7 @@ function appendMessage(record, shouldSave = true) {
 
 function buildResponse(question) {
     const normalized = question.toLowerCase();
-    const matched = knowledgeBase.find((item) => item.keys.some((key) => normalized.includes(key)));
+    const matched = [...knowledgeBase, ...broadTopics].find((item) => item.keys.some((key) => normalized.includes(key)));
 
     if (matched) {
         return matched.answer;
@@ -184,7 +207,19 @@ function buildResponse(question) {
         return `Hello ${getUserName()}. Ask me about courses, licensing exams, payments, assignments, research support, certificates, or study planning.`;
     }
 
-    return "I can help with Global NursePrep courses, licensing preparation, exams, assignments, research support, payments, certificates, and student navigation. Tell me the course, exam, or topic you are working on and I will guide you step by step.";
+    if (normalized.startsWith("what") || normalized.includes(" define ") || normalized.includes("meaning")) {
+        return "Here is a clear way to approach it: define the term, connect it to patient assessment, explain why it matters clinically, then add nursing actions, patient education, and safety concerns. If you give me the exact topic, I can break it into exam-ready points.";
+    }
+
+    if (normalized.startsWith("how") || normalized.includes(" steps") || normalized.includes("procedure")) {
+        return "Use a step-by-step nursing approach: assess the patient, confirm the indication, check safety risks, prepare equipment or learning materials, perform the action according to policy, monitor the response, document clearly, and escalate concerns early.";
+    }
+
+    if (normalized.startsWith("why")) {
+        return "In nursing, the reason usually connects to patient safety, physiology, prevention of complications, evidence-based practice, or legal documentation. Tell me the exact concept and I will explain the clinical reason in simple terms.";
+    }
+
+    return "I can help with that. For the best answer, share the exact nursing topic, patient scenario, assignment question, drug calculation, or exam area. I will respond with: key idea, nursing assessment, priority actions, safety risks, and exam tips.";
 }
 
 function setTyping(isTyping) {
