@@ -231,10 +231,33 @@ img {
 .nav-actions {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 0;
     margin-left: 8px;
     justify-content: flex-end;
     white-space: nowrap;
+    position: relative;
+    padding: 4px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    overflow: hidden;
+}
+
+.nav-actions::before {
+    content: "";
+    position: absolute;
+    inset: 4px auto 4px 4px;
+    width: calc(50% - 4px);
+    border-radius: 999px;
+    background: #ffffff;
+    box-shadow: 0 10px 22px rgba(7, 55, 99, 0.14);
+    transition: transform 220ms ease;
+}
+
+.nav-actions:has(.register-button:hover)::before,
+.nav-actions:has(.register-button:active)::before,
+.nav-actions:has(.register-button:focus-visible)::before {
+    transform: translateX(100%);
 }
 
 .login-button,
@@ -261,6 +284,44 @@ img {
     color: var(--blue-900);
     background: linear-gradient(135deg, #ffffff 0%, #edf8ff 100%);
     border: 1px solid rgba(255, 255, 255, 0.82);
+}
+
+.nav-actions .login-button,
+.nav-actions .register-button {
+    position: relative;
+    z-index: 1;
+    min-height: 40px;
+    min-width: 94px;
+    padding: 0 16px;
+    border: 0;
+    box-shadow: none;
+    background: transparent;
+}
+
+.nav-actions .login-button {
+    color: var(--blue-900);
+}
+
+.nav-actions .register-button {
+    color: #ffffff;
+}
+
+.nav-actions:has(.register-button:hover) .login-button,
+.nav-actions:has(.register-button:active) .login-button,
+.nav-actions:has(.register-button:focus-visible) .login-button {
+    color: #ffffff;
+}
+
+.nav-actions:has(.register-button:hover) .register-button,
+.nav-actions:has(.register-button:active) .register-button,
+.nav-actions:has(.register-button:focus-visible) .register-button {
+    color: var(--blue-900);
+}
+
+.nav-actions .login-button:hover,
+.nav-actions .register-button:hover {
+    transform: none;
+    box-shadow: none;
 }
 
 .register-button,
@@ -1374,7 +1435,7 @@ p {
 .payments-status {
     display: grid;
     gap: 0;
-    padding: 16px;
+    padding: 18px;
     border: 1px solid rgba(15, 76, 129, 0.14);
     border-radius: var(--radius);
     background:
@@ -1385,7 +1446,7 @@ p {
 
 .payment-hero-image {
     width: 100%;
-    height: 245px;
+    height: 310px;
     object-fit: contain;
     display: block;
     border-radius: 22px;
@@ -1445,7 +1506,7 @@ p {
     grid-template-columns: 1fr;
     gap: 22px;
     align-items: start;
-    max-width: 1120px;
+    max-width: 1188px;
     min-width: 0;
 }
 
@@ -2536,9 +2597,17 @@ p {
     .nav-actions {
         order: 3;
         margin-left: auto;
-        gap: 6px;
+        gap: 0;
         justify-content: flex-end;
         flex: 0 0 auto;
+    }
+
+    .nav-actions .login-button,
+    .nav-actions .register-button {
+        min-width: 74px;
+        min-height: 36px;
+        padding: 0 10px;
+        font-size: 12px;
     }
 
     .site-nav.open {
@@ -2700,7 +2769,7 @@ p {
     }
 
     .payment-hero-image {
-        height: 150px;
+        height: 190px;
         border-radius: 18px;
     }
 
@@ -3074,7 +3143,7 @@ p {
     }
 
     .payment-hero-image {
-        height: 112px;
+        height: 170px;
         width: 100%;
     }
 
