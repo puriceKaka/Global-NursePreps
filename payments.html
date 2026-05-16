@@ -6,7 +6,7 @@
     <meta name="description" content="Global NursePrep payment methods for nursing courses, licensing tracks, mock exams, and academic support.">
     <title>Payments | Global NursePrep</title>
     <link rel="stylesheet" href="css/site-loader.css">
-    <link rel="stylesheet" href="dashboard-public.css?v=8">
+    <link rel="stylesheet" href="dashboard-public.css?v=9">
     <script src="js/site-loader.js"></script>
     <script defer src="js/payments.js"></script>
 </head>
@@ -61,12 +61,13 @@
 
         <section class="payment-workspace section-shell">
             <div class="payment-gateway-panel reveal">
+                <div class="gateway-heading">
+                    <span class="eyebrow">Payment method</span>
+                    <h2>Choose how to pay</h2>
+                    <p>Select one option. The instructions below update automatically.</p>
+                </div>
+
                 <div class="gateway-selector">
-                    <div class="gateway-heading">
-                        <span class="eyebrow">Choose payment gateway</span>
-                        <h2>Select how you want to pay</h2>
-                        <p>Choose one payment route, then review the exact steps for unlocking your selected course or service.</p>
-                    </div>
                     <label class="gateway-select-label" for="gatewaySelect">Payment method</label>
                     <select id="gatewaySelect">
                         <option value="mpesa">M-Pesa</option>
@@ -76,14 +77,6 @@
                         <option value="airtel">Airtel Money</option>
                         <option value="sponsor">Institution/Sponsor</option>
                     </select>
-                    <div class="gateway-options" id="gatewayOptions" aria-label="Payment gateway options">
-                        <button type="button" class="gateway-option is-active mpesa" data-gateway-option="mpesa">M-Pesa</button>
-                        <button type="button" class="gateway-option visa" data-gateway-option="card">Visa/Mastercard</button>
-                        <button type="button" class="gateway-option paypal" data-gateway-option="paypal">PayPal</button>
-                        <button type="button" class="gateway-option bank" data-gateway-option="bank">Bank Transfer</button>
-                        <button type="button" class="gateway-option airtel" data-gateway-option="airtel">Airtel Money</button>
-                        <button type="button" class="gateway-option sponsor" data-gateway-option="sponsor">Institution/Sponsor</button>
-                    </div>
                 </div>
 
                 <article class="gateway-detail payment-instructions" id="gatewayDetail" data-gateway="mpesa">
