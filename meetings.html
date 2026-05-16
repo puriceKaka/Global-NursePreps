@@ -106,6 +106,24 @@
             <div class="lecture-grid" id="scheduledLectures"></div>
         </section>
 
+        <section class="lecture-board" aria-labelledby="lectureQuizTitle">
+            <div class="lecture-board-head">
+                <div>
+                    <p>Lecture tools</p>
+                    <h2 id="lectureQuizTitle">Quiz generator</h2>
+                </div>
+            </div>
+            <div class="quiz-generator-panel">
+                <div class="upload-box" id="lectureDropArea">
+                    <input type="file" id="lectureFileElem" accept="application/pdf" hidden>
+                    <label class="pill-button" for="lectureFileElem">Upload study PDF</label>
+                    <p id="lectureFileName">No file selected</p>
+                    <button id="lectureGenerateBtn" class="primary-button" disabled>Generate questions</button>
+                </div>
+                <div id="lectureQuestionsPreview" class="generated-questions-preview"></div>
+            </div>
+        </section>
+
         <div class="meeting-layout">
             <div class="video-stage hidden" id="videoStage">
                 <div class="meeting-workspace">

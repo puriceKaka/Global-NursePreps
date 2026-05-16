@@ -7,8 +7,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const examData = {
         upcoming: [
-            { id: "nclex-mock-1", name: "NCLEX-RN Mock Exam", date: "April 25, 2026", time: "10:00 AM", duration: 120, type: "exam", link: "../exam-interface/exam-interface.html" },
-            { id: "pharm-midterm", name: "Pharmacology Midterm", date: "May 02, 2026", time: "02:00 PM", duration: 60, type: "exam", link: "../exam-interface/exam-interface.html" }
+            { id: "nck-licensing-msq", name: "NCK Licensing MSQ Mock Exam", category: "Kenya NCK", date: "May 20, 2026", time: "10:00 AM", duration: 120, questionMode: "MCQ/MSQ", passingScore: 70, type: "exam", link: "../exam-interface/exam-interface.html" },
+            { id: "nclex-rn-msq", name: "NCLEX-RN Select-All-That-Apply Mock", category: "NCLEX-RN", date: "May 22, 2026", time: "02:00 PM", duration: 150, questionMode: "MCQ/MSQ", passingScore: 75, type: "exam", link: "../exam-interface/exam-interface.html" },
+            { id: "uk-cbt-adult-msq", name: "UK CBT Adult Nursing Mock", category: "UK CBT", date: "May 25, 2026", time: "09:00 AM", duration: 100, questionMode: "MCQ/MSQ", passingScore: 68, type: "exam", link: "../exam-interface/exam-interface.html" },
+            { id: "aus-nmba-msq", name: "Australia NMBA Readiness Mock", category: "Australia Licensing", date: "May 28, 2026", time: "11:00 AM", duration: 100, questionMode: "MCQ/MSQ", passingScore: 70, type: "exam", link: "../exam-interface/exam-interface.html" }
         ],
         done: [
             { id: "anatomy-baseline", name: "Anatomy Baseline", score: "88%", date: "April 10, 2026", type: "results", link: "../results/results.html?examId=anatomy-baseline" },
@@ -53,6 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 if (item.date && item.time) {
                     details.innerHTML += `<span>${item.date} at ${item.time}</span>`;
+                    details.innerHTML += `<span>${item.category || "Licensing"} - ${item.questionMode || "MCQ"} - Pass ${item.passingScore || 70}%</span>`;
                 } else if (item.score) {
                     details.innerHTML += `<span>Score: ${item.score}</span>`;
                 } else if (item.status) {
@@ -139,7 +142,10 @@ document.addEventListener("DOMContentLoaded", () => {
             id: exam.id,
             title: exam.name,
             duration: exam.duration,
-            scheduledAt: `${exam.date} ${exam.time}`
+            scheduledAt: `${exam.date} ${exam.time}`,
+            category: exam.category,
+            questionMode: exam.questionMode,
+            passingScore: exam.passingScore
         }));
         localStorage.removeItem(submittedResultsKey);
 
@@ -148,14 +154,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     consentCheckbox.addEventListener("change", checkAllSystemsReady);
 
-    fileInput.addEventListener("change", (event) => {
+    fileInput?.addEventListener("change", (event) => {
         const [file] = event.target.files;
         document.getElementById("file-name").textContent = file ? file.name : "No file selected";
         generateButton.disabled = !file;
         dropArea.classList.toggle("has-file", Boolean(file));
     });
 
-    generateButton.addEventListener("click", () => {
+    generateButton?.addEventListener("click", () => {
         const fileName = document.getElementById("file-name").textContent;
         if (fileName === "No file selected") {
             alert("Please select a PDF file first.");
@@ -179,20 +185,20 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     ["dragenter", "dragover"].forEach((eventName) => {
-        dropArea.addEventListener(eventName, (event) => {
+        dropArea?.addEventListener(eventName, (event) => {
             event.preventDefault();
             dropArea.classList.add("is-dragover");
         });
     });
 
     ["dragleave", "drop"].forEach((eventName) => {
-        dropArea.addEventListener(eventName, (event) => {
+        dropArea?.addEventListener(eventName, (event) => {
             event.preventDefault();
             dropArea.classList.remove("is-dragover");
         });
     });
 
-    dropArea.addEventListener("drop", (event) => {
+    dropArea?.addEventListener("drop", (event) => {
         const [file] = Array.from(event.dataTransfer?.files || []).filter((item) => item.type === "application/pdf");
         if (!file || typeof DataTransfer === "undefined") {
             return;

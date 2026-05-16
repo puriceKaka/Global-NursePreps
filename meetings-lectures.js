@@ -75,8 +75,41 @@
         if (meeting) openLecture(meeting);
     }
 
+    function setupQuizGenerator() {
+        const fileInput = $("#lectureFileElem");
+        const fileName = $("#lectureFileName");
+        const generateButton = $("#lectureGenerateBtn");
+        const preview = $("#lectureQuestionsPreview");
+        const dropArea = $("#lectureDropArea");
+
+        if (!fileInput || !generateButton || !preview || !fileName) return;
+
+        fileInput.addEventListener("change", (event) => {
+            const [file] = event.target.files;
+            fileName.textContent = file ? file.name : "No file selected";
+            generateButton.disabled = !file;
+            dropArea?.classList.toggle("has-file", Boolean(file));
+        });
+
+        generateButton.addEventListener("click", () => {
+            if (fileName.textContent === "No file selected") return;
+            preview.innerHTML = `<p>Generating lecture questions from "<strong>${escapeHtml(fileName.textContent)}</strong>"...</p><div class="loading-spinner"></div>`;
+            window.setTimeout(() => {
+                preview.innerHTML = `
+                    <h3>Generated Lecture Questions</h3>
+                    <ol>
+                        <li>Which assessment finding should the nurse prioritize from this lecture topic?</li>
+                        <li>Which patient teaching point is safest for this condition?</li>
+                        <li>Which action should be completed before giving medication?</li>
+                    </ol>
+                `;
+            }, 900);
+        });
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
         renderLectures();
+        setupQuizGenerator();
         $("#scheduledLectures")?.addEventListener("click", handleClick);
         $("#refreshLecturesBtn")?.addEventListener("click", renderLectures);
     });

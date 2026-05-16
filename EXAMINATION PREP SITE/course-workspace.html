@@ -147,6 +147,14 @@
 
                     <div class="module-grid">
                         <div class="module-copy-panel">
+                            <div class="avatar-guide-card" id="avatar-guide-card">
+                                <div class="avatar-guide-face" aria-hidden="true">AI</div>
+                                <div>
+                                    <span class="section-kicker">Avatar tutor</span>
+                                    <strong id="avatar-guide-title">Guided lesson</strong>
+                                    <p id="avatar-guide-message">Your tutor will introduce this module, explain the clinical link, and guide you to the checkpoint question.</p>
+                                </div>
+                            </div>
                             <div class="learning-objective">
                                 <strong>Objective</strong>
                                 <span id="module-objective"></span>
@@ -165,13 +173,13 @@
                 <div class="workspace-section assessment-workspace" id="course-final-test">
                     <div class="notes-header">
                         <div>
-                            <p class="section-kicker">Assessment</p>
-                            <h3>Course questions</h3>
+                            <p class="section-kicker">Module Assessment</p>
+                            <h3>Checkpoint questions</h3>
                         </div>
                         <button type="button" class="btn-outline" id="toggle-quiz-btn" aria-expanded="false">Complete lessons first</button>
                     </div>
                     <div class="sample-quiz hidden" id="module-quiz-panel">
-                        <h4>Final Knowledge Check</h4>
+                        <h4>Module Knowledge Check</h4>
                         <p id="quiz-prompt"></p>
                         <div class="quiz-options"></div>
                         <button class="btn-primary check-answer-btn">Check My Understanding</button>
@@ -183,9 +191,9 @@
                     <div class="module-header">
                         <div>
                             <p class="section-kicker">Final Assessment</p>
-                            <h3>Certificate readiness</h3>
+                            <h3>Final exam readiness</h3>
                         </div>
-                        <a class="btn-outline" href="exam-interface/exam-interface.html">Open Exam Center</a>
+                        <a class="btn-outline" href="exam-lobby/exam-lobby.html">Open Final Exam Center</a>
                     </div>
                     <div class="final-readiness-panel" id="final-readiness-panel"></div>
                 </div>

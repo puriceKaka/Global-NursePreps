@@ -28,12 +28,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.addEventListener("visibilitychange", () => {
         if (document.hidden) {
-            logWarning("Tab switch detected. This event has been reported.");
+            terminateExamForViolation("Tab switch detected. The exam attempt was stopped automatically.");
         }
     });
 
     window.addEventListener("blur", () => {
-        logWarning("Focus lost. Stay within the examination interface.");
+        window.setTimeout(() => {
+            if (document.hidden) {
+                terminateExamForViolation("Exam tab focus was lost. The exam attempt was stopped automatically.");
+            }
+        }, 200);
     });
 
     window.addEventListener("keyup", (event) => {
@@ -43,6 +47,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 navigator.clipboard.writeText("");
             }
         }
+    });
+
+    document.addEventListener("click", (event) => {
+        const link = event.target.closest("a[href]");
+        if (!link || submitted) {
+            return;
+        }
+        event.preventDefault();
+        terminateExamForViolation("Navigation away from the exam was attempted. The exam attempt was stopped automatically.");
     });
 
     const totalDurationSeconds = Number(examConfig.duration) * 60;
@@ -63,12 +76,9 @@ document.addEventListener("DOMContentLoaded", () => {
         logWarning("Media capture is unsupported in this browser.");
     }
 
-    const questions = [
-        { type: "mcq", category: "Adult Health", text: "What is the normal range for adult heart rate?", options: ["60-100 bpm", "40-60 bpm", "100-120 bpm", "120-160 bpm"], correctAnswer: "60-100 bpm" },
-        { type: "short", category: "Pharmacology", text: "Define pharmacokinetics.", expectedKeywords: ["absorption", "distribution", "metabolism", "excretion"] },
-        { type: "essay", category: "Professional Practice", text: "Discuss the importance of patient-centered care in nursing.", expectedKeywords: ["preferences", "safety", "communication", "shared decision"] },
-        { type: "case", category: "Emergency Care", text: "Case: A 65-year-old male presents with chest pain. What is your initial assessment?", expectedKeywords: ["airway", "breathing", "circulation", "vital signs", "pain"] }
-    ];
+    const questions = Array.isArray(examConfig.questions) && examConfig.questions.length
+        ? examConfig.questions
+        : buildQuestionBank(examConfig);
 
     let current = 0;
     const answers = Array(questions.length).fill(null);
@@ -81,6 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="question-shell">
                 <div class="question-meta-bar">
                     <span class="question-tag">${question.category}</span>
+                    <span class="question-tag">${question.type === "msq" ? "MSQ: select all that apply" : "MCQ: select one"}</span>
                     <span class="question-progress">Question ${index + 1} of ${questions.length}</span>
                 </div>
                 <h2>Question ${index + 1}</h2>
@@ -96,10 +107,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                 `;
             });
-        } else if (question.type === "short") {
-            html += `<input type="text" id="short-ans" value="${answers[index] || ""}" class="exam-text-input" placeholder="Type answer...">`;
-        } else {
-            html += `<textarea id="essay-ans" class="exam-textarea" placeholder="Type response...">${answers[index] || ""}</textarea>`;
+        } else if (question.type === "msq") {
+            const selectedAnswers = Array.isArray(answers[index]) ? answers[index] : [];
+            question.options.forEach((option, optionIndex) => {
+                html += `
+                    <div class="option-item">
+                        <input type="checkbox" name="q${index}" id="opt${index}-${optionIndex}" value="${option}" ${selectedAnswers.includes(option) ? "checked" : ""}>
+                        <label for="opt${index}-${optionIndex}">${option}</label>
+                    </div>
+                `;
+            });
         }
 
         html += "</div>";
@@ -113,14 +130,13 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
 
-        const textInput = container.querySelector('input[type="text"], textarea');
-        if (textInput) {
-            textInput.addEventListener("input", (event) => {
-                answers[index] = event.target.value;
+        container.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+            checkbox.addEventListener("change", () => {
+                answers[index] = Array.from(container.querySelectorAll('input[type="checkbox"]:checked')).map((item) => item.value);
                 renderGrid();
                 scheduleAutosave();
             });
-        }
+        });
 
         updateNavState();
     }
@@ -131,7 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         questions.forEach((_, index) => {
             const button = document.createElement("button");
-            const stateClass = flagged[index] ? "flagged" : (answers[index] ? "answered" : "not-answered");
+            const stateClass = flagged[index] ? "flagged" : (hasAnswer(answers[index]) ? "answered" : "not-answered");
             button.className = `question-btn ${stateClass} ${index === current ? "current" : ""}`.trim();
             button.textContent = index + 1;
             button.onclick = () => {
@@ -141,6 +157,10 @@ document.addEventListener("DOMContentLoaded", () => {
             };
             grid.appendChild(button);
         });
+    }
+
+    function hasAnswer(answer) {
+        return Array.isArray(answer) ? answer.length > 0 : Boolean(answer);
     }
 
     document.getElementById("prev-btn").onclick = () => {
@@ -278,6 +298,28 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = "../results/results.html";
     }
 
+    function terminateExamForViolation(message) {
+        if (submitted) {
+            return;
+        }
+
+        logWarning(message);
+        submitted = true;
+        const results = buildResults(true);
+        results.terminated = true;
+        results.terminationReason = message;
+        results.proctoringEvents = [message, ...proctoringEvents];
+        localStorage.setItem(submittedResultsKey, JSON.stringify(results));
+        localStorage.removeItem(activeExamKey);
+        localStorage.removeItem(progressKey(examConfig.id));
+        localStorage.removeItem("nurseprep_session");
+
+        window.setTimeout(() => {
+            window.close();
+            window.location.replace("../../login.html?examTerminated=tab-left");
+        }, 250);
+    }
+
     function buildResults(autoSubmitted) {
         const categoryTotals = {};
         let earnedPoints = 0;
@@ -304,7 +346,7 @@ document.addEventListener("DOMContentLoaded", () => {
             submittedAt: new Date().toISOString(),
             autoSubmitted,
             score: Math.round((earnedPoints / questions.length) * 100),
-            answeredCount: answers.filter(Boolean).length,
+            answeredCount: answers.filter(hasAnswer).length,
             totalQuestions: questions.length,
             strengths: performanceBreakdown.filter((item) => item.score >= 80).map((item) => item.category),
             weakAreas: performanceBreakdown.filter((item) => item.score < 70).map((item) => item.category),
@@ -313,14 +355,14 @@ document.addEventListener("DOMContentLoaded", () => {
             answerReview: questions.map((question, index) => ({
                 question: question.text,
                 category: question.category,
-                answer: answers[index] || "No response submitted",
+                answer: formatAnswer(answers[index]),
                 flagged: flagged[index]
             }))
         };
     }
 
     function scoreResponse(question, answer) {
-        if (!answer) {
+        if (!hasAnswer(answer)) {
             return 0;
         }
 
@@ -328,9 +370,92 @@ document.addEventListener("DOMContentLoaded", () => {
             return answer === question.correctAnswer ? 1 : 0;
         }
 
-        const normalizedAnswer = String(answer).toLowerCase();
-        const keywordMatches = question.expectedKeywords.filter((keyword) => normalizedAnswer.includes(keyword)).length;
-        return keywordMatches >= Math.max(1, Math.ceil(question.expectedKeywords.length / 3)) ? 1 : 0.5;
+        if (question.type === "msq") {
+            const selected = Array.isArray(answer) ? answer.slice().sort() : [];
+            const correct = (question.correctAnswers || []).slice().sort();
+            return selected.length === correct.length && selected.every((item, index) => item === correct[index]) ? 1 : 0;
+        }
+
+        return 0;
+    }
+
+    function formatAnswer(answer) {
+        if (!hasAnswer(answer)) {
+            return "No response submitted";
+        }
+        return Array.isArray(answer) ? answer.join(", ") : answer;
+    }
+
+    function buildQuestionBank(config) {
+        const category = String(config.category || config.title || "Licensing").toLowerCase();
+        const isNclex = category.includes("nclex");
+        const isCbt = category.includes("cbt") || category.includes("uk");
+        const isNck = category.includes("nck") || category.includes("kenya");
+
+        const base = [
+            {
+                type: "mcq",
+                category: "Adult Health",
+                text: "A patient reports chest pain and shortness of breath. Which nursing action is the priority?",
+                options: ["Offer oral fluids", "Assess airway, breathing, circulation, and vital signs", "Document the complaint at shift end", "Delay care until family arrives"],
+                correctAnswer: "Assess airway, breathing, circulation, and vital signs"
+            },
+            {
+                type: "msq",
+                category: "Medication Safety",
+                text: "Which checks should the nurse complete before administering a high-alert medication? Select all that apply.",
+                options: ["Confirm patient identity", "Check allergies", "Verify dose and route", "Skip documentation", "Ignore abnormal vital signs"],
+                correctAnswers: ["Confirm patient identity", "Check allergies", "Verify dose and route"]
+            },
+            {
+                type: "mcq",
+                category: "Infection Prevention",
+                text: "Which action best supports standard precautions?",
+                options: ["Use hand hygiene before and after patient contact", "Wear sterile gloves for every patient interaction", "Reuse disposable equipment", "Place all patients in airborne isolation"],
+                correctAnswer: "Use hand hygiene before and after patient contact"
+            },
+            {
+                type: "msq",
+                category: "Clinical Judgement",
+                text: "Which findings suggest a patient may be deteriorating? Select all that apply.",
+                options: ["New confusion", "Falling blood pressure", "Increasing respiratory rate", "Stable appetite", "Warm dry skin with normal pulse"],
+                correctAnswers: ["New confusion", "Falling blood pressure", "Increasing respiratory rate"]
+            }
+        ];
+
+        const licensingSpecific = isNclex
+            ? [
+                {
+                    type: "msq",
+                    category: "NCLEX-RN NGN",
+                    text: "Which actions reflect safe prioritization and delegation? Select all that apply.",
+                    options: ["Keep initial assessment of chest pain with the RN", "Delegate routine stable vital signs with clear instructions", "Delegate patient teaching to unlicensed staff", "Reassess after an intervention", "Ignore acute changes in condition"],
+                    correctAnswers: ["Keep initial assessment of chest pain with the RN", "Delegate routine stable vital signs with clear instructions", "Reassess after an intervention"]
+                }
+            ]
+            : isCbt
+                ? [
+                    {
+                        type: "msq",
+                        category: "UK CBT Professional Practice",
+                        text: "Which behaviours support professional nursing practice? Select all that apply.",
+                        options: ["Maintain confidentiality", "Escalate safety concerns", "Document accurately", "Share passwords", "Practice outside competence"],
+                        correctAnswers: ["Maintain confidentiality", "Escalate safety concerns", "Document accurately"]
+                    }
+                ]
+                : isNck
+                    ? [
+                        {
+                            type: "msq",
+                            category: "NCK Readiness",
+                            text: "Which areas should be revised before a licensing mock exam? Select all that apply.",
+                            options: ["Professional ethics", "Medication safety", "Maternal-child nursing", "Skipping rationales", "Unreviewed weak topics"],
+                            correctAnswers: ["Professional ethics", "Medication safety", "Maternal-child nursing"]
+                        }
+                    ]
+                    : [];
+
+        return base.concat(licensingSpecific);
     }
 });
 (function () {
@@ -796,6 +921,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function bootExamEnhancements() {
+        return;
         const bank = ensureQuestionDepth();
         injectExamTopNav();
         if (!bank || !bank.length) return;

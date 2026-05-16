@@ -424,6 +424,136 @@ courseCatalog.push(...additionalCourseTracks.map((track) => ({
     modules: []
 })));
 
+const bsnYearTracks = [
+    {
+        id: "bsn-year-1",
+        title: "BSN Year 1: Nursing Foundations",
+        category: "BSN / BSCN Year 1",
+        difficulty: "Beginner",
+        badge: "1st Year",
+        durationHours: 96,
+        questions: 900,
+        exams: 6,
+        format: "Avatar-guided + Lecturer support",
+        summary: "First-year BSN learning path covering core sciences, nursing foundations, communication, microbiology, and early clinical thinking.",
+        image: courseImages.anatomyLab,
+        outcomes: ["Understand normal body systems", "Build safe beginner nursing habits", "Prepare for first-year assessments"],
+        facts: ["Year 1", "Core sciences", "Foundation modules"],
+        keywords: ["bsn", "bscn", "year 1", "anatomy", "physiology", "fundamentals"],
+        yearLabel: "1st Year",
+        terms: [
+            { name: "Term 1", modules: ["Anatomy I", "Physiology I", "Foundations of Nursing", "Communication Skills"] },
+            { name: "Term 2", modules: ["Microbiology", "Biochemistry for Nurses", "Basic Pharmacology", "Health Assessment Basics"] }
+        ],
+        modules: []
+    },
+    {
+        id: "bsn-year-2",
+        title: "BSN Year 2: Core Clinical Nursing",
+        category: "BSN / BSCN Year 2",
+        difficulty: "Intermediate",
+        badge: "2nd Year",
+        durationHours: 112,
+        questions: 1200,
+        exams: 8,
+        format: "Avatar-guided + Skills review",
+        summary: "Second-year clinical bridge with pathophysiology, medical-surgical nursing, nutrition, health assessment, and community health.",
+        image: courseImages.simulationLab,
+        outcomes: ["Link disease processes to nursing care", "Strengthen assessment and documentation", "Practice safe clinical decisions"],
+        facts: ["Year 2", "Clinical bridge", "Assessment focus"],
+        keywords: ["bsn", "bscn", "year 2", "med surg", "pathophysiology", "nutrition"],
+        yearLabel: "2nd Year",
+        terms: [
+            { name: "Term 1", modules: ["Pathophysiology", "Medical-Surgical Nursing I", "Nutrition and Dietetics", "Health Assessment"] },
+            { name: "Term 2", modules: ["Community Health Nursing I", "Pharmacology and Medication Safety", "Clinical Skills Lab", "Nursing Informatics"] }
+        ],
+        modules: []
+    },
+    {
+        id: "bsn-year-3",
+        title: "BSN Year 3: Specialized Nursing Practice",
+        category: "BSN / BSCN Year 3",
+        difficulty: "Intermediate",
+        badge: "3rd Year",
+        durationHours: 124,
+        questions: 1400,
+        exams: 9,
+        format: "Avatar-guided + Case studies",
+        summary: "Third-year BSN path for med-surg depth, pediatric nursing, mental health, maternal-newborn nursing, and research methods.",
+        image: courseImages.pediatricWard,
+        outcomes: ["Handle specialty cases safely", "Use research evidence in care", "Prepare for complex clinical placements"],
+        facts: ["Year 3", "Specialty nursing", "Case learning"],
+        keywords: ["bsn", "bscn", "year 3", "pediatrics", "mental health", "midwifery"],
+        yearLabel: "3rd Year",
+        terms: [
+            { name: "Term 1", modules: ["Medical-Surgical Nursing II", "Pediatric Nursing", "Mental Health Nursing", "Nursing Research Methods"] },
+            { name: "Term 2", modules: ["Maternal and Newborn Nursing", "Emergency Nursing", "Community Health Nursing II", "Evidence-Based Practice"] }
+        ],
+        modules: []
+    },
+    {
+        id: "bsn-year-4",
+        title: "BSN Year 4: Leadership, Practicum and Licensing Readiness",
+        category: "BSN / BSCN Year 4",
+        difficulty: "Advanced",
+        badge: "4th Year",
+        durationHours: 132,
+        questions: 1600,
+        exams: 10,
+        format: "Avatar-guided + Exam readiness",
+        summary: "Final-year BSN path for leadership, ethics, critical care, internship preparation, final exams, and licensing readiness.",
+        image: courseImages.criticalCare,
+        outcomes: ["Prepare for final practicum", "Build leadership and delegation judgement", "Move into licensing exam readiness"],
+        facts: ["Year 4", "Practicum", "Licensing bridge"],
+        keywords: ["bsn", "bscn", "year 4", "leadership", "critical care", "licensing"],
+        yearLabel: "4th Year",
+        terms: [
+            { name: "Term 1", modules: ["Nursing Leadership and Management", "Critical Care Nursing", "Ethics and Legal Practice", "Quality Improvement"] },
+            { name: "Term 2", modules: ["Clinical Practicum", "Research Project", "Final Comprehensive Review", "Licensing Exam Bridge"] }
+        ],
+        modules: []
+    }
+];
+
+courseCatalog.unshift(...bsnYearTracks);
+
+courseCatalog.splice(4, 0,
+    {
+        id: "uk-cbt-prep",
+        title: "UK CBT Adult Nursing Preparation",
+        category: "Licensing Prep (UK CBT)",
+        difficulty: "Intermediate",
+        badge: "UK NMC",
+        durationHours: 46,
+        questions: 1200,
+        exams: 7,
+        format: "Avatar-guided + Timed mocks",
+        summary: "Structured UK CBT preparation covering professional values, communication, nursing practice, safety, and timed adult nursing mock exams.",
+        image: courseImages.nurseConference,
+        outcomes: ["Understand the UK CBT blueprint", "Practice NMC-style questions", "Build readiness with timed mocks"],
+        facts: ["UK CBT", "NMC blueprint", "MSQ practice"],
+        keywords: ["uk cbt", "nmc", "adult nursing", "licensing"],
+        modules: []
+    },
+    {
+        id: "australia-licensing-readiness",
+        title: "Australia Nursing Licensing Readiness",
+        category: "Licensing Prep (Australia)",
+        difficulty: "Intermediate",
+        badge: "Australia",
+        durationHours: 44,
+        questions: 1000,
+        exams: 6,
+        format: "Avatar-guided + Checklist review",
+        summary: "Preparation path for Australia nursing registration readiness with clinical review, documentation checklist, safety practice, and mock exam support.",
+        image: courseImages.criticalCare,
+        outcomes: ["Review registration readiness", "Practice clinical safety questions", "Prepare for documentation and pathway checks"],
+        facts: ["Australia", "Registration", "Mock readiness"],
+        keywords: ["australia", "nmba", "registration", "licensing"],
+        modules: []
+    }
+);
+
 const externalCourses = window.GnpLearning?.getCourses?.() || [];
 externalCourses.forEach((course) => {
     if (courseCatalog.some((item) => item.id === course.id)) {
@@ -478,6 +608,30 @@ const COURSE_TOPIC_BLUEPRINTS = {
         "Psychosocial integrity",
         "CAT exam strategy and endurance",
         "Rationale review and weak-area repair"
+    ],
+    "uk-cbt-prep": [
+        "Introduction to the UK CBT blueprint",
+        "Professional values and NMC code",
+        "Communication and person-centred care",
+        "Adult nursing assessment priorities",
+        "Medication safety and numeracy",
+        "Infection prevention and safeguarding",
+        "Clinical emergencies and escalation",
+        "Documentation, consent, and confidentiality",
+        "MSQ practice and rationale review",
+        "Timed UK CBT mock readiness"
+    ],
+    "australia-licensing-readiness": [
+        "Australia registration pathway overview",
+        "Professional standards and documentation",
+        "Clinical assessment and safety priorities",
+        "Medication administration and monitoring",
+        "Infection prevention and risk management",
+        "Communication, handover, and patient education",
+        "Emergency response and escalation",
+        "Portfolio and pathway checklist review",
+        "MSQ practice and weak-area review",
+        "Australia licensing mock readiness"
     ],
     "lecture-series": [
         "Introduction to professional nursing study",
@@ -543,12 +697,14 @@ const MODULE_IMAGE_SEQUENCE = [
 ];
 
 function createTextbookModule(course, topic, index) {
-    const phase = index === 0 ? "Introduction" : `Unit ${index + 1}`;
+    const termName = typeof topic === "object" ? topic.term : "";
+    const topicTitle = typeof topic === "object" ? topic.title : topic;
+    const phase = termName || (index === 0 ? "Introduction" : `Unit ${index + 1}`);
     const lecturerNotes = String(course.contentNotes || "").trim();
     const noteExcerpt = lecturerNotes
         ? `\n\nLecturer notes:\n${lecturerNotes.slice(0, 1800)}${lecturerNotes.length > 1800 ? "\n\nContinue with the uploaded notes and class guidance from your lecturer." : ""}`
         : "";
-    const body = `${topic} gives the student a structured textbook-style lesson for ${course.title}. Start by reading the key idea, then connect it to patient assessment, nursing priorities, exam wording, and safe clinical action.
+    const body = `${topicTitle} gives the student a structured textbook-style lesson for ${course.title}. Start by reading the key idea, then connect it to patient assessment, nursing priorities, exam wording, and safe clinical action.
 
 Study content:
 - Definition and purpose: understand what the topic means in nursing practice.
@@ -584,11 +740,12 @@ Clinical example:
 A patient with a change in breathing, confusion, low blood pressure, chest pain, new weakness, uncontrolled bleeding, severe allergic reaction, or sudden deterioration should be treated as a priority. A stable patient needing teaching or routine documentation can usually wait while unstable cues are addressed.${noteExcerpt}`;
 
     return {
-        title: `${phase}: ${topic}`,
-        objective: `Build clear understanding of ${topic.toLowerCase()} before moving to practice questions.`,
+        title: `${phase}: ${topicTitle}`,
+        term: termName,
+        objective: `Build clear understanding of ${String(topicTitle).toLowerCase()} before moving to practice questions.`,
         body,
         pearlTitle: "Textbook Focus",
-        pearl: `Do not memorize this unit in isolation. Link ${topic.toLowerCase()} to assessment cues, safe nursing action, and the reason one answer is safer than another.`,
+        pearl: `Do not memorize this unit in isolation. Link ${String(topicTitle).toLowerCase()} to assessment cues, safe nursing action, and the reason one answer is safer than another.`,
         structures: [
             "Core concept and definition",
             "Assessment findings and warning signs",
@@ -597,7 +754,7 @@ A patient with a change in breathing, confusion, low blood pressure, chest pain,
         ],
         image: MODULE_IMAGE_SEQUENCE[index % MODULE_IMAGE_SEQUENCE.length],
         quiz: {
-            prompt: `What is the safest way to study ${topic.toLowerCase()}?`,
+            prompt: `What is the safest way to study ${String(topicTitle).toLowerCase()}?`,
             options: [
                 "Memorize one sentence and skip practice",
                 "Connect the concept to assessment cues, nursing action, and rationales",
@@ -650,7 +807,9 @@ Use this unit as a readiness checkpoint. The goal is not only to finish question
 }
 
 function expandCourseModules(course) {
-    const topics = COURSE_TOPIC_BLUEPRINTS[course.id] || [
+    const topics = Array.isArray(course.terms)
+        ? course.terms.flatMap((term) => term.modules.map((title) => ({ title, term: term.name })))
+        : COURSE_TOPIC_BLUEPRINTS[course.id] || [
         "Introduction to the course",
         "Core concepts",
         "Assessment priorities",
@@ -673,6 +832,7 @@ courseCatalog.forEach((course) => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+    document.body.classList.toggle("has-session", hasStudentSession());
     initializeCatalogPage();
     initializeCourseDetailPage();
 });
@@ -710,14 +870,27 @@ function initializeCatalogPage() {
     const difficultyInputs = Array.from(document.querySelectorAll(".difficulty-filter"));
     const enrollButton = document.getElementById("selected-enroll-btn");
 
+    const params = new URLSearchParams(window.location.search);
     const categories = ["All Courses", ...new Set(courseCatalog.map((course) => course.category))];
     const state = getLearningState();
+    const requestedEnrollment = params.get("enroll");
+    const requestedCourse = params.get("course") || params.get("track");
+    const requestedSearch = params.get("search");
+    if (requestedEnrollment && hasStudentSession() && getCourseById(requestedEnrollment)) {
+        if (!state.enrolledCourseIds.includes(requestedEnrollment)) {
+            state.enrolledCourseIds.push(requestedEnrollment);
+        }
+        state.selectedCourseId = requestedEnrollment;
+        ensureCourseProgress(state, requestedEnrollment);
+        saveLearningState(state);
+        window.history.replaceState({}, "", "courses.html");
+    }
     const view = {
         category: "All Courses",
-        search: "",
+        search: requestedSearch ? requestedSearch.trim().toLowerCase() : "",
         difficulties: [],
         sort: "featured",
-        selectedCourseId: state.selectedCourseId || courseCatalog[0].id
+        selectedCourseId: getCourseById(requestedCourse) ? requestedCourse : (state.enrolledCourseIds.includes(state.selectedCourseId) ? state.selectedCourseId : courseCatalog[0].id)
     };
 
     filterToggle?.addEventListener("click", () => {
@@ -740,6 +913,9 @@ function initializeCatalogPage() {
             syncCategoryControls();
             renderCatalog();
         });
+    }
+    if (searchInput && requestedSearch) {
+        searchInput.value = requestedSearch;
     }
 
     categoryContainer.addEventListener("click", (event) => {
@@ -774,6 +950,11 @@ function initializeCatalogPage() {
         const latest = getLearningState();
         const selectedCourse = getCourseById(view.selectedCourseId);
         if (!selectedCourse) {
+            return;
+        }
+
+        if (!hasStudentSession()) {
+            redirectToLoginForEnrollment(selectedCourse.id);
             return;
         }
 
@@ -841,6 +1022,11 @@ function initializeCatalogPage() {
                 const courseId = button.dataset.enrollCourse;
                 const course = getCourseById(courseId);
                 if (!course) {
+                    return;
+                }
+
+                if (!hasStudentSession()) {
+                    redirectToLoginForEnrollment(courseId);
                     return;
                 }
 
@@ -946,6 +1132,8 @@ function initializeCourseDetailPage() {
         moduleLessonType: document.getElementById("module-lesson-type"),
         moduleStatusLabel: document.getElementById("module-status-label"),
         moduleCheckLabel: document.getElementById("module-check-label"),
+        avatarGuideTitle: document.getElementById("avatar-guide-title"),
+        avatarGuideMessage: document.getElementById("avatar-guide-message"),
         moduleObjective: document.getElementById("module-objective"),
         moduleBody: document.getElementById("module-body"),
         modulePearlTitle: document.getElementById("module-pearl-title"),
@@ -978,14 +1166,14 @@ function initializeCourseDetailPage() {
         if (!elements.quizPanel) return;
         const latest = getLearningState();
         const progress = ensureCourseProgress(latest, activeCourse.id);
-        if (!isCourseLearningComplete(progress)) {
-            elements.quizFeedback.textContent = "Finish all learning modules before opening course questions.";
+        if (!progress.completedModules.includes(activeModuleIndex)) {
+            elements.quizFeedback.textContent = "Complete this lesson before opening its module assessment.";
             elements.quizFeedback.className = "quiz-feedback";
             return;
         }
         const isHidden = elements.quizPanel.classList.toggle("hidden");
         elements.quizToggle.setAttribute("aria-expanded", String(!isHidden));
-        elements.quizToggle.textContent = isHidden ? "Show final questions" : "Hide final questions";
+        elements.quizToggle.textContent = isHidden ? "Start module assessment" : "Hide module assessment";
     });
 
     elements.nextButton.addEventListener("click", () => {
@@ -1129,6 +1317,7 @@ function initializeCourseDetailPage() {
         const checked = progress.quizChecked?.[activeModuleIndex] === true;
         const completed = progress.completedModules.includes(activeModuleIndex);
         const learningComplete = isCourseLearningComplete(progress);
+        const moduleComplete = progress.completedModules.includes(activeModuleIndex);
 
         if (elements.modulePositionLabel) {
             elements.modulePositionLabel.textContent = `Module ${activeModuleIndex + 1} of ${activeCourse.modules.length}`;
@@ -1141,7 +1330,13 @@ function initializeCourseDetailPage() {
             elements.moduleStatusLabel.textContent = completed ? "Completed" : "In progress";
         }
         if (elements.moduleCheckLabel) {
-            elements.moduleCheckLabel.textContent = learningComplete ? "Questions unlocked" : "Learning";
+            elements.moduleCheckLabel.textContent = moduleComplete ? "Assessment unlocked" : "Learning";
+        }
+        if (elements.avatarGuideTitle) {
+            elements.avatarGuideTitle.textContent = `Tutor guide: ${module.term || `Module ${activeModuleIndex + 1}`}`;
+        }
+        if (elements.avatarGuideMessage) {
+            elements.avatarGuideMessage.textContent = `Let us study ${module.title.replace(/^.*?:\s*/, "")}. First understand the normal concept, then connect assessment cues to safe nursing action before taking the checkpoint.`;
         }
         elements.moduleObjective.textContent = module.objective;
         elements.moduleBody.textContent = module.body;
@@ -1153,9 +1348,9 @@ function initializeCourseDetailPage() {
         elements.quizPanel?.classList.add("hidden");
         if (elements.quizToggle) {
             elements.quizToggle.setAttribute("aria-expanded", "false");
-            elements.quizToggle.textContent = learningComplete ? "Show final questions" : "Complete lessons first";
-            elements.quizToggle.disabled = !learningComplete;
-            elements.quizToggle.classList.toggle("is-disabled", !learningComplete);
+            elements.quizToggle.textContent = moduleComplete ? "Start module assessment" : "Complete lesson first";
+            elements.quizToggle.disabled = !moduleComplete;
+            elements.quizToggle.classList.toggle("is-disabled", !moduleComplete);
         }
         elements.quizPrompt.textContent = module.quiz.prompt;
         elements.quizOptions.innerHTML = module.quiz.options
@@ -1185,7 +1380,7 @@ function initializeCourseDetailPage() {
     function getNextStepLabel(progress) {
         const completed = progress.completedModules.includes(activeModuleIndex);
         if (isCourseLearningComplete(progress)) {
-            return "Learning complete. Open final questions and certificate readiness.";
+            return areModuleAssessmentsPassed(progress) ? "Course complete. You are ready for the final exam assessment." : "Finish each module assessment to unlock final readiness.";
         }
         if (!completed) {
             return "Read this lesson and mark it complete when finished.";
@@ -1197,6 +1392,10 @@ function initializeCourseDetailPage() {
         return progress.completedModules.length >= activeCourse.modules.length;
     }
 
+    function areModuleAssessmentsPassed(progress) {
+        return activeCourse.modules.every((_, index) => progress.quizPassed?.[index] === true);
+    }
+
     function renderFinalReadiness(progress) {
         if (!elements.finalReadinessPanel) {
             return;
@@ -1204,17 +1403,18 @@ function initializeCourseDetailPage() {
 
         const completedCount = progress.completedModules.length;
         const remaining = Math.max(0, activeCourse.modules.length - completedCount);
-        const ready = isCourseLearningComplete(progress);
+        const quizzesPassed = activeCourse.modules.filter((_, index) => progress.quizPassed?.[index] === true).length;
+        const ready = isCourseLearningComplete(progress) && areModuleAssessmentsPassed(progress);
         renderCertificateLink(progress, ready);
         elements.finalReadinessPanel.innerHTML = `
             <div class="readiness-score ${ready ? "ready" : ""}">
-                <strong>${ready ? "Certificate unlocked" : `${remaining} lessons left`}</strong>
-                <span>${ready ? "You have completed the learning pathway. Final questions are now available." : "Complete every lesson before answering final questions or opening a certificate."}</span>
+                <strong>${ready ? "Final exam ready" : `${remaining} lessons left`}</strong>
+                <span>${ready ? "You have completed every lesson and passed every module assessment. Open the final exam center when ready." : "Complete every lesson and pass every module assessment before final exam readiness."}</span>
             </div>
             <div class="readiness-checks">
                 <span class="${completedCount > 0 ? "done" : ""}">Started course</span>
-                <span class="${completedCount >= Math.ceil(activeCourse.modules.length / 2) ? "done" : ""}">Halfway checkpoint</span>
-                <span class="${ready ? "done" : ""}">Certificate ready</span>
+                <span class="${quizzesPassed >= Math.ceil(activeCourse.modules.length / 2) ? "done" : ""}">Module assessments ${quizzesPassed}/${activeCourse.modules.length}</span>
+                <span class="${ready ? "done" : ""}">Final assessment ready</span>
             </div>
         `;
     }
@@ -1264,9 +1464,13 @@ function initializeCourseDetailPage() {
 
 function renderCourseCard(course, state) {
     const enrolled = state.enrolledCourseIds.includes(course.id);
+    const loggedIn = hasStudentSession();
     const percent = getProgressPercent(course.id, state);
     const workspaceHref = `course-workspace.html?course=${encodeURIComponent(course.id)}`;
     const courseImage = course.image || "../assets/nursing-hero.svg";
+    const termPreview = Array.isArray(course.terms)
+        ? `<div class="term-preview">${course.terms.map((term) => `<span>${escapeHtml(term.name)}: ${term.modules.length} modules</span>`).join("")}</div>`
+        : "";
     return `
         <article class="course-card homepage-style-course-card reveal-on-scroll">
             <img class="course-card-image" src="${courseImage}" alt="${course.title} course image" loading="lazy">
@@ -1280,6 +1484,7 @@ function renderCourseCard(course, state) {
                 </div>
                 <h4>${course.title}</h4>
                 <p>${course.summary}</p>
+                ${termPreview}
                 <div class="muted small">${Number(course.questions || 0).toLocaleString()}+ questions • ${Number(course.durationHours || 0)}h guided study • ${Number(course.exams || 0)} assessments</div>
                 <div class="course-progress-inline">
                     <div class="progress-bar"><span style="width:${percent}%"></span></div>
@@ -1287,7 +1492,7 @@ function renderCourseCard(course, state) {
                 </div>
                 <div class="muted small">${percent >= 100 ? "Certificate unlocked" : "Certificate locked until course completion"}</div>
                 <div class="course-actions card-actions${enrolled ? " enrolled-actions" : " unenrolled-actions"}">
-                    <button class="btn-primary" data-enroll-course="${course.id}">${enrolled ? "Continue learning" : "Enroll"}</button>
+                    <button class="btn-primary" data-enroll-course="${course.id}">${enrolled ? "Continue learning" : (loggedIn ? "Enroll" : "Login to enroll")}</button>
                     <a class="btn-outline${enrolled ? "" : " is-disabled"}" href="${enrolled ? workspaceHref : "#selected-program"}">${enrolled ? "Open course" : "Enroll to open"}</a>
                     ${enrolled ? `<button class="btn-outline" data-cancel-course="${course.id}">Cancel</button>` : ""}
                 </div>
@@ -1300,6 +1505,7 @@ function renderSelectedProgram(course, state) {
     const progress = ensureCourseProgress(state, course.id);
     const percent = getProgressPercent(course.id, state);
     const enrolled = state.enrolledCourseIds.includes(course.id);
+    const loggedIn = hasStudentSession();
 
     document.getElementById("selected-title").textContent = course.title;
     document.getElementById("selected-summary").textContent = course.summary;
@@ -1313,18 +1519,27 @@ function renderSelectedProgram(course, state) {
     ].join("");
     const outline = document.getElementById("selected-outline");
     if (outline) {
+        const courseStructure = Array.isArray(course.terms)
+            ? course.terms.map((term) => `
+                <li>
+                    <span>${escapeHtml(term.name)}</span>
+                    <strong>${term.modules.map((module) => escapeHtml(module)).join(", ")}</strong>
+                </li>
+            `).join("")
+            : course.modules.map((module, index) => `
+                <li>
+                    <span>${index + 1}</span>
+                    <strong>${escapeHtml(module.title)}</strong>
+                </li>
+            `).join("");
+
         outline.innerHTML = `
             <div class="selected-outline-head">
                 <strong>${course.title} structure</strong>
-                <span>${course.modules.length} learning units before the final practice block.</span>
+                <span>${Array.isArray(course.terms) ? `${course.yearLabel} terms and modules` : `${course.modules.length} learning units before the final practice block.`}</span>
             </div>
             <ol>
-                ${course.modules.map((module, index) => `
-                    <li>
-                        <span>${index + 1}</span>
-                        <strong>${module.title}</strong>
-                    </li>
-                `).join("")}
+                ${courseStructure}
             </ol>
         `;
     }
@@ -1333,13 +1548,13 @@ function renderSelectedProgram(course, state) {
         openBtn.href = enrolled ? `course-workspace.html?course=${encodeURIComponent(course.id)}` : "#selected-program";
         openBtn.removeAttribute("target");
         openBtn.removeAttribute("rel");
-        openBtn.textContent = enrolled ? "Open Workspace" : "Enroll to open";
+        openBtn.textContent = enrolled ? "Open Workspace" : (loggedIn ? "Enroll to open" : "Login required");
         openBtn.classList.toggle("is-disabled", !enrolled);
         openBtn.setAttribute("aria-disabled", String(!enrolled));
     }
     const enrollBtn = document.getElementById("selected-enroll-btn");
     if (enrollBtn) {
-        enrollBtn.textContent = enrolled ? "Continue learning" : "Enroll";
+        enrollBtn.textContent = enrolled ? "Continue learning" : (loggedIn ? "Enroll" : "Login to enroll");
         enrollBtn.classList.toggle("btn-outline", enrolled);
         enrollBtn.classList.toggle("btn-primary", !enrolled);
     }
@@ -1449,6 +1664,33 @@ function getCourseById(courseId) {
     return courseCatalog.find((course) => course.id === courseId) || null;
 }
 
+function hasStudentSession() {
+    const session = window.GnpLearning?.getSession?.() || (() => {
+        try {
+            return JSON.parse(localStorage.getItem("nurseprep_session") || "null");
+        } catch {
+            return null;
+        }
+    })();
+
+    if (!session?.userId) {
+        return false;
+    }
+
+    try {
+        const users = JSON.parse(localStorage.getItem("nurseprep_users") || "[]");
+        const account = Array.isArray(users) ? users.find((user) => user.id === session.userId) : null;
+        return Boolean(account && (!account.role || account.role === "student"));
+    } catch {
+        return false;
+    }
+}
+
+function redirectToLoginForEnrollment(courseId) {
+    const next = encodeURIComponent(`EXAMINATION%20PREP%20SITE/courses.html?enroll=${encodeURIComponent(courseId)}`);
+    window.location.href = `../login.html?next=${next}`;
+}
+
 function createMetaPill(label, value) {
     return `<div class="meta-pill"><strong>${label}</strong><span>${value}</span></div>`;
 }
@@ -1466,7 +1708,10 @@ function matchesSearch(course, searchValue) {
         return true;
     }
 
-    const haystack = [course.title, course.category, course.summary, ...course.keywords, ...course.outcomes].join(" ").toLowerCase();
+    const termText = Array.isArray(course.terms)
+        ? course.terms.flatMap((term) => [term.name, ...term.modules]).join(" ")
+        : "";
+    const haystack = [course.title, course.category, course.summary, termText, ...(course.keywords || []), ...(course.outcomes || [])].join(" ").toLowerCase();
     return haystack.includes(searchValue);
 }
 
@@ -1479,6 +1724,14 @@ function sortCourses(left, right, sortMode) {
     }
     if (sortMode === "title") {
         return left.title.localeCompare(right.title);
+    }
+    const leftBsnYear = Number(String(left.id).match(/^bsn-year-(\d)$/)?.[1] || 0);
+    const rightBsnYear = Number(String(right.id).match(/^bsn-year-(\d)$/)?.[1] || 0);
+    if (leftBsnYear || rightBsnYear) {
+        if (leftBsnYear && rightBsnYear) {
+            return leftBsnYear - rightBsnYear;
+        }
+        return leftBsnYear ? -1 : 1;
     }
     return right.exams - left.exams;
 }
