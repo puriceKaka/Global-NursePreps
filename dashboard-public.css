@@ -2504,6 +2504,7 @@ p {
         flex-wrap: nowrap;
         overflow-x: auto;
         scrollbar-width: none;
+        width: 100%;
     }
 
     .payments-strip::-webkit-scrollbar {
@@ -2528,15 +2529,29 @@ p {
 
     .gateway-selector {
         align-items: stretch;
-        gap: 9px;
+        gap: 8px;
         padding: 12px;
         position: static;
     }
 
+    .gateway-selector h2 {
+        font-size: 1.45rem;
+        line-height: 1.12;
+    }
+
+    .gateway-selector p {
+        font-size: 0.92rem;
+        line-height: 1.4;
+    }
+
+    .gateway-select-label {
+        font-size: 0.78rem;
+    }
+
     .gateway-selector select {
         width: 100%;
-        min-height: 42px;
-        font-size: 0.92rem;
+        min-height: 40px;
+        font-size: 0.88rem;
     }
 
     .gateway-visual {
@@ -2570,12 +2585,13 @@ p {
     .gateway-content p,
     .gateway-content li,
     .flow-steps p {
-        font-size: 0.92rem;
+        font-size: 0.88rem;
     }
 
     .gateway-content ol {
         gap: 8px;
         margin-top: 12px;
+        padding-left: 18px;
     }
 
     .payment-flow,
@@ -2722,12 +2738,43 @@ p {
 
     .payments-strip {
         gap: 6px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        overflow: visible;
     }
 
     .payments-strip span {
         min-height: 28px;
-        padding: 0 8px;
-        font-size: 0.7rem;
+        justify-content: center;
+        padding: 0 5px;
+        font-size: 0.62rem;
+        line-height: 1.15;
+        text-align: center;
+        white-space: normal;
+    }
+
+    .gateway-selector {
+        gap: 7px;
+        padding: 10px;
+    }
+
+    .gateway-selector h2 {
+        font-size: 1.18rem;
+    }
+
+    .gateway-selector p {
+        font-size: 0.82rem;
+        line-height: 1.32;
+    }
+
+    .gateway-select-label {
+        display: none;
+    }
+
+    .gateway-selector select {
+        min-height: 36px;
+        font-size: 0.82rem;
+        border-radius: 12px;
     }
 
     .gateway-options {
@@ -2763,13 +2810,25 @@ p {
     }
 
     .gateway-content {
-        padding: 14px;
+        padding: 12px;
     }
 
     .gateway-content h2,
     .payment-flow h2,
     .unlock-list h2 {
-        font-size: 1.2rem;
+        font-size: 1.08rem;
+        line-height: 1.16;
+    }
+
+    .gateway-content p,
+    .gateway-content li {
+        font-size: 0.82rem;
+        line-height: 1.42;
+    }
+
+    .gateway-content ol {
+        padding-left: 17px;
+        gap: 7px;
     }
 
     .payment-hero-image {
