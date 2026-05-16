@@ -3,6 +3,8 @@
 
     var loader;
     var slowTimer;
+    var firstEntryTimer;
+    var firstEntryActive = false;
     var visible = false;
     var firstEntryKey = 'gnp_loader_seen_once';
     var scriptUrl = document.currentScript ? document.currentScript.src : window.location.href;
@@ -76,6 +78,16 @@
         }, 3000);
     }
 
+    function showFirstEntryLoader() {
+        firstEntryActive = true;
+        showLoader('Loading Global NursePrep...');
+        window.clearTimeout(firstEntryTimer);
+        firstEntryTimer = window.setTimeout(function () {
+            firstEntryActive = false;
+            if (navigator.onLine !== false) hideLoader();
+        }, 4000);
+    }
+
     if (navigator.onLine === false) {
         if (document.body) showOffline();
         else document.addEventListener('DOMContentLoaded', showOffline);
@@ -83,13 +95,13 @@
         try {
             if (sessionStorage.getItem(firstEntryKey) !== '1') {
                 sessionStorage.setItem(firstEntryKey, '1');
-                if (document.body) showLoader('Loading Global NursePrep...');
+                if (document.body) showFirstEntryLoader();
                 else document.addEventListener('DOMContentLoaded', function () {
-                    showLoader('Loading Global NursePrep...');
+                    showFirstEntryLoader();
                 });
             }
         } catch (error) {
-            if (document.body) showLoader('Loading Global NursePrep...');
+            if (document.body) showFirstEntryLoader();
         }
 
         slowTimer = window.setTimeout(function () {
@@ -101,7 +113,7 @@
 
     window.addEventListener('load', function () {
         window.clearTimeout(slowTimer);
-        if (visible && navigator.onLine !== false) {
+        if (visible && !firstEntryActive && navigator.onLine !== false) {
             window.setTimeout(hideLoader, 450);
         }
     });
