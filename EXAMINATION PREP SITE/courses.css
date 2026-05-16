@@ -50,7 +50,7 @@ body[data-page="course-detail"] .logo-container {
 body[data-page="catalog"] .logo-text,
 body[data-page="course-detail"] .logo-text {
     color: #ffffff;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 800;
     line-height: 1.1;
     min-width: 0;
@@ -87,6 +87,7 @@ body[data-page="course-detail"] .navbar a {
     color: #ffffff !important;
     text-decoration: none;
     font-weight: 800;
+    font-size: 15px;
 }
 
 body[data-page="catalog"] .navbar a:hover,
@@ -173,7 +174,7 @@ body[data-page="course-detail"] .navbar a[aria-current="page"] {
 .catalog-hero-copy h1,
 .workspace-hero-copy h1 {
     margin: 0;
-    font-size: clamp(1.75rem, 3vw, 2.8rem);
+    font-size: clamp(1.9rem, 3vw, 2.95rem);
     line-height: 1.06;
 }
 
@@ -1669,7 +1670,7 @@ body[data-page="catalog"].has-session #menuToggle {
 
     body[data-page="catalog"] .logo-text,
     body[data-page="course-detail"] .logo-text {
-        font-size: 16px;
+        font-size: 17px;
     }
 
     body[data-page="catalog"] .learning-layout .discovery-rail {
