@@ -1416,20 +1416,22 @@ p {
     grid-template-columns: 1fr;
     gap: 18px;
     align-items: start;
+    max-width: 920px;
 }
 
 .payment-gateway-panel {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 14px;
+    gap: 16px;
     align-items: start;
     width: 100%;
     max-width: 100%;
-    padding: clamp(14px, 3vw, 22px);
+    padding: clamp(14px, 2.4vw, 24px);
     border: 1px solid rgba(15, 76, 129, 0.12);
     border-radius: 22px;
     background: rgba(255, 255, 255, 0.9);
     box-shadow: 0 14px 34px rgba(7, 55, 99, 0.08);
+    overflow: hidden;
 }
 
 .gateway-selector {
@@ -1444,7 +1446,8 @@ p {
 .gateway-heading {
     display: grid;
     gap: 7px;
-    max-width: 720px;
+    max-width: 100%;
+    min-width: 0;
 }
 
 .gateway-selector h2 {
@@ -1480,6 +1483,7 @@ p {
 .gateway-selector select {
     min-height: 46px;
     width: 100%;
+    max-width: 100%;
     border: 1px solid rgba(15, 76, 129, 0.18);
     border-radius: 14px;
     padding: 0 14px;
@@ -1492,15 +1496,17 @@ p {
 .gateway-detail {
     --gateway-color: #16a34a;
     display: grid;
-    grid-template-columns: minmax(190px, 0.32fr) minmax(0, 0.68fr);
-    gap: 14px;
-    align-items: stretch;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    align-items: start;
+    width: 100%;
+    max-width: 100%;
     border: 0;
     border-radius: 18px;
     background:
         linear-gradient(135deg, color-mix(in srgb, var(--gateway-color), #ffffff 84%), rgba(255, 255, 255, 0.96));
     box-shadow: none;
-    overflow: visible;
+    overflow: hidden;
     min-width: 0;
 }
 
@@ -1532,7 +1538,7 @@ p {
     display: grid;
     place-items: center;
     gap: 10px;
-    min-height: 190px;
+    min-height: clamp(150px, 24vw, 220px);
     padding: 14px;
     color: #ffffff;
     text-align: center;
@@ -1543,8 +1549,10 @@ p {
 }
 
 .gateway-visual img {
-    width: min(100%, 210px);
-    height: 112px;
+    width: min(100%, 300px);
+    height: auto;
+    max-height: 150px;
+    aspect-ratio: 640 / 420;
     object-fit: contain;
     display: block;
     border-radius: 22px;
@@ -1559,21 +1567,27 @@ p {
 .gateway-content {
     display: grid;
     gap: 10px;
+    width: 100%;
+    max-width: 100%;
     min-width: 0;
-    padding: clamp(10px, 2vw, 18px) 0;
+    padding: 0;
 }
 
 .gateway-content h2,
 .payment-flow h2,
 .unlock-list h2 {
     margin: 0;
+    max-width: 100%;
     color: var(--blue-900);
-    font-size: clamp(24px, 3vw, 38px);
+    font-size: clamp(22px, 2.4vw, 32px);
+    overflow-wrap: anywhere;
 }
 
 .gateway-content p {
     margin: 0;
+    max-width: 100%;
     color: var(--gray-700);
+    overflow-wrap: anywhere;
 }
 
 .gateway-content ol {
@@ -1582,6 +1596,8 @@ p {
     margin: 0;
     padding-left: 21px;
     color: var(--gray-800);
+    max-width: 100%;
+    overflow-wrap: anywhere;
 }
 
 .payment-flow,
@@ -2590,7 +2606,7 @@ p {
         padding: 14px;
         border-radius: 18px;
         margin-inline: auto;
-        max-width: calc(100vw - 28px);
+        max-width: 100%;
     }
 
     .payments-hero {
@@ -2798,7 +2814,7 @@ p {
 
 @media (max-width: 430px) {
     .payments-page .section-shell {
-        width: min(100% - 22px, var(--max-width));
+        width: calc(100% - 22px);
     }
 
     .site-header {
@@ -2878,7 +2894,7 @@ p {
         grid-template-columns: 1fr;
         gap: 12px;
         border-radius: 0;
-        overflow: visible;
+        overflow: hidden;
         width: 100%;
         max-width: 100%;
     }
@@ -2894,9 +2910,10 @@ p {
     }
 
     .gateway-visual img {
-        width: min(100%, 238px);
+        width: min(100%, 232px);
         height: auto;
         min-height: 96px;
+        max-height: 126px;
         aspect-ratio: 640 / 420;
         object-fit: contain;
         display: block;
@@ -2958,7 +2975,8 @@ p {
 
 @media (max-width: 360px) {
     .payment-gateway-panel {
-        max-width: calc(100vw - 20px);
+        max-width: 100%;
+        padding: 12px;
     }
 
     .gateway-visual {
