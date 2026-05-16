@@ -321,7 +321,6 @@ input:focus {
 .social-icon {
     width: 22px;
     height: 22px;
-    border-radius: 999px;
     display: inline-grid;
     place-items: center;
     flex: 0 0 auto;
@@ -329,31 +328,18 @@ input:focus {
     font-weight: 900;
 }
 
-.google-icon {
-    color: #ffffff;
-    background: linear-gradient(135deg, #4285f4, #34a853 45%, #fbbc05 70%, #ea4335);
+.social-icon svg {
+    width: 20px;
+    height: 20px;
+    display: block;
 }
-
-.microsoft-icon {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2px;
-    border-radius: 4px;
-}
-
-.microsoft-icon span:nth-child(1) { background: #f35325; }
-.microsoft-icon span:nth-child(2) { background: #81bc06; }
-.microsoft-icon span:nth-child(3) { background: #05a6f0; }
-.microsoft-icon span:nth-child(4) { background: #ffba08; }
 
 .apple-icon {
-    background: #111827;
+    color: #111827;
 }
 
 .apple-icon svg {
-    width: 16px;
-    height: 16px;
-    fill: #ffffff;
+    fill: currentColor;
 }
 
 @keyframes auth-rise {

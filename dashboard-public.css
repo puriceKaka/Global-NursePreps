@@ -1958,11 +1958,13 @@ p {
         flex-direction: row;
         align-items: center;
         gap: 8px;
-        flex-wrap: wrap;
-        overflow: visible;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: visible;
         margin-left: 0;
         padding-top: 8px;
         padding-bottom: 6px;
+        scrollbar-width: thin;
     }
 
     .nav-actions {
@@ -1990,6 +1992,7 @@ p {
         visibility: visible;
         transform: none;
         box-shadow: none;
+        gap: 10px;
     }
 
     .nav-dropdown.open .dropdown-menu {
@@ -2003,8 +2006,40 @@ p {
         max-height: calc(100vh - 146px);
         overflow-y: auto;
         padding: 14px;
+        border-radius: 14px;
         box-shadow: var(--shadow);
         transform: translateX(-50%);
+    }
+
+    .dropdown-menu > div {
+        display: grid;
+        gap: 6px;
+        padding: 10px;
+        border: 1px solid rgba(15, 76, 129, 0.14);
+        border-radius: var(--radius);
+        background: rgba(248, 251, 255, 0.94);
+    }
+
+    .dropdown-menu strong {
+        margin-bottom: 2px;
+        padding: 8px 10px;
+        border-radius: 6px;
+        background: var(--blue-900);
+        color: #ffffff;
+    }
+
+    .dropdown-menu div:nth-child(2) strong {
+        background: var(--blue-900);
+        color: #ffffff;
+        border-left-color: var(--blue-500);
+    }
+
+    .dropdown-menu a {
+        min-height: 38px;
+        margin-bottom: 0;
+        padding: 0 10px;
+        background: #ffffff;
+        border: 1px solid rgba(15, 76, 129, 0.12);
     }
 
     .nav-dropdown.open .dropdown-trigger {
@@ -2106,10 +2141,6 @@ p {
     .support-grid,
     .dropdown-menu {
         grid-template-columns: 1fr;
-    }
-
-    .site-nav > a[href$="licensing.html"] {
-        margin-left: auto;
     }
 
     .nav-dropdown.open .dropdown-menu {
