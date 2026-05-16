@@ -76,19 +76,45 @@ const knowledgeBase = [
     }
 ];
 
-function getUserName() {
-    const stored = localStorage.getItem("gnp_current_user");
+function readJson(key) {
+    try {
+        return JSON.parse(localStorage.getItem(key) || "null");
+    } catch {
+        return null;
+    }
+}
 
+function cleanName(value) {
+    const text = String(value || "").trim();
+    if (!text) return "";
+    return text.includes("@") ? text.split("@")[0] : text;
+}
+
+function getUserName() {
+    const session = readJson("nurseprep_session");
+    if (session?.name || session?.email) {
+        return cleanName(session.name || session.email);
+    }
+
+    const users = readJson("nurseprep_users");
+    const matchedUser = Array.isArray(users) && session?.userId
+        ? users.find((user) => user.id === session.userId)
+        : null;
+    if (matchedUser?.name || matchedUser?.profile?.displayName || matchedUser?.email) {
+        return cleanName(matchedUser.name || matchedUser.profile.displayName || matchedUser.email);
+    }
+
+    const stored = localStorage.getItem("gnp_current_user");
     if (stored) {
         try {
             const user = JSON.parse(stored);
-            return user.name || user.fullName || user.email?.split("@")[0] || "student";
+            return cleanName(user.name || user.fullName || user.email);
         } catch {
-            return "student";
+            return "";
         }
     }
 
-    return "student";
+    return "there";
 }
 
 function greeting() {
@@ -132,7 +158,7 @@ function appendMessage(record, shouldSave = true) {
 
     row.appendChild(bubble);
     messages.appendChild(row);
-    messages.scrollTop = messages.scrollHeight;
+    scrollToLatest();
 
     if (shouldSave) {
         chatHistory.push({
@@ -164,8 +190,14 @@ function buildResponse(question) {
 function setTyping(isTyping) {
     typing.classList.toggle("hidden", !isTyping);
     if (isTyping) {
-        messages.scrollTop = messages.scrollHeight;
+        scrollToLatest();
     }
+}
+
+function scrollToLatest() {
+    requestAnimationFrame(() => {
+        messages.scrollTo({ top: messages.scrollHeight, behavior: "smooth" });
+    });
 }
 
 function ask(question) {
@@ -178,7 +210,7 @@ function ask(question) {
     window.setTimeout(() => {
         setTyping(false);
         appendMessage({ role: "bot", text: buildResponse(text) });
-    }, 650);
+    }, Math.min(1100, Math.max(420, text.length * 14)));
 }
 
 function loadHistory() {
@@ -194,7 +226,7 @@ function loadHistory() {
     }
 
     chatHistory.forEach((message) => appendMessage(message, false));
-    messages.scrollTop = messages.scrollHeight;
+    scrollToLatest();
 }
 
 function clearChat() {
@@ -280,6 +312,15 @@ form.addEventListener("submit", (event) => {
 input.addEventListener("input", () => {
     updateActionButton();
     resizeInput();
+});
+
+input.addEventListener("focus", () => {
+    document.body.classList.add("keyboard-active");
+    scrollToLatest();
+});
+
+input.addEventListener("blur", () => {
+    document.body.classList.remove("keyboard-active");
 });
 
 actionButton.addEventListener("click", () => {

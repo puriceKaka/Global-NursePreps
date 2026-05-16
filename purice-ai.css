@@ -158,6 +158,7 @@ body.purice-dark .purice-chat-head {
     gap: 8px;
     max-width: min(86%, 780px);
     animation: purice-pop 0.2s ease both;
+    transition: transform 0.18s ease, opacity 0.18s ease;
 }
 
 .purice-message-row.user {
@@ -293,7 +294,7 @@ body.purice-dark .purice-suggestions button {
     display: flex;
     align-items: flex-end;
     gap: 8px;
-    padding: 11px 14px 7px;
+    padding: 11px 14px max(14px, env(safe-area-inset-bottom));
     background: rgba(244, 249, 252, 0.94);
     border-top: 0;
 }
@@ -418,6 +419,7 @@ body.purice-dark .purice-form {
 
     .purice-chat {
         grid-template-rows: auto minmax(0, 1fr) auto auto auto;
+        height: 100svh;
     }
 
     .purice-chat {
@@ -500,8 +502,12 @@ body.purice-dark .purice-form {
 
     .purice-form {
         gap: 7px;
-        padding: 7px 8px max(2px, env(safe-area-inset-bottom));
+        padding: 8px 8px calc(18px + env(safe-area-inset-bottom));
         align-items: center;
+    }
+
+    body.keyboard-active .purice-form {
+        padding-bottom: calc(28px + env(safe-area-inset-bottom));
     }
 
     .purice-action {
