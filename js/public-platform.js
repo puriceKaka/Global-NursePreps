@@ -15,7 +15,7 @@ function ensurePuriceButton() {
         chatButton.type = 'button';
         chatButton.className = 'chat-button';
         chatButton.id = 'chatButton';
-        chatButton.innerHTML = '<img src="' + getPuriceAssetPath() + '" alt="" aria-hidden="true"><span>puriceAI</span>';
+        chatButton.innerHTML = '<img src="' + getPuriceAssetPath() + '" alt="" aria-hidden="true"><span>Purice AI</span>';
         document.body.appendChild(chatButton);
     }
 }
