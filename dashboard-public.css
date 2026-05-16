@@ -1999,10 +1999,14 @@ p {
         order: 4;
         display: none;
         width: 100%;
-        flex-direction: column;
-        align-items: stretch;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        overflow: visible;
         margin-left: 0;
         padding-top: 8px;
+        padding-bottom: 6px;
     }
 
     .nav-actions {
@@ -2016,7 +2020,8 @@ p {
 
     .site-nav a,
     .dropdown-trigger {
-        justify-content: flex-start;
+        justify-content: center;
+        flex: 0 0 auto;
     }
 
     .dropdown-menu {
@@ -2033,6 +2038,13 @@ p {
 
     .nav-dropdown.open .dropdown-menu {
         display: grid;
+        position: fixed;
+        left: 12px;
+        right: 12px;
+        top: 126px;
+        z-index: 10;
+        max-height: calc(100vh - 146px);
+        overflow-y: auto;
     }
 
     .nav-dropdown.open .dropdown-trigger {
