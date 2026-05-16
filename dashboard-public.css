@@ -2386,6 +2386,7 @@ p {
 
     .payments-hero {
         padding-top: 24px;
+        gap: 14px;
     }
 
     .payments-strip {
@@ -2421,20 +2422,67 @@ p {
     .gateway-selector {
         align-items: stretch;
         flex-direction: column;
+        gap: 9px;
+        padding: 12px;
     }
 
     .gateway-selector select {
         width: 100%;
+        min-height: 42px;
+        font-size: 0.92rem;
     }
 
     .gateway-visual {
-        min-height: 168px;
+        min-height: 0;
+        padding: 14px;
+        gap: 8px;
     }
 
     .gateway-visual img {
-        width: min(100%, 300px);
-        height: 138px;
-        border-radius: 18px;
+        width: min(100%, 260px);
+        height: 116px;
+        border-radius: 16px;
+        box-shadow: 0 10px 22px rgba(11, 31, 58, 0.16);
+    }
+
+    .gateway-visual strong {
+        font-size: 1.08rem;
+    }
+
+    .gateway-content {
+        padding: 16px;
+    }
+
+    .gateway-content h2,
+    .payment-flow h2,
+    .unlock-list h2 {
+        font-size: 1.35rem;
+        line-height: 1.15;
+    }
+
+    .gateway-content p,
+    .gateway-content li,
+    .flow-steps p {
+        font-size: 0.92rem;
+    }
+
+    .gateway-content ol {
+        gap: 8px;
+        margin-top: 12px;
+    }
+
+    .payment-flow,
+    .unlock-list {
+        padding: 16px;
+    }
+
+    .flow-steps {
+        gap: 14px;
+    }
+
+    .unlock-list span {
+        padding: 10px 11px;
+        font-size: 0.9rem;
     }
 
     .hero {
@@ -2521,5 +2569,74 @@ p {
 
     .site-footer {
         padding-bottom: 86px;
+    }
+}
+
+@media (max-width: 430px) {
+    .payments-page .section-shell {
+        width: min(100% - 22px, var(--max-width));
+    }
+
+    .payments-copy h1 {
+        font-size: 1.95rem;
+    }
+
+    .payments-copy p {
+        font-size: 0.95rem;
+    }
+
+    .payments-strip {
+        gap: 6px;
+    }
+
+    .payments-strip span {
+        min-height: 28px;
+        padding: 0 8px;
+        font-size: 0.7rem;
+    }
+
+    .gateway-track {
+        gap: 7px;
+        padding: 9px 8px;
+    }
+
+    .gateway-chip {
+        min-height: 32px;
+        padding: 0 11px;
+        font-size: 0.78rem;
+    }
+
+    .gateway-detail {
+        gap: 0;
+        border-radius: 18px;
+    }
+
+    .gateway-visual {
+        padding: 11px;
+    }
+
+    .gateway-visual img {
+        width: min(100%, 220px);
+        height: 96px;
+        border-radius: 14px;
+    }
+
+    .gateway-content {
+        padding: 14px;
+    }
+
+    .gateway-content h2,
+    .payment-flow h2,
+    .unlock-list h2 {
+        font-size: 1.2rem;
+    }
+
+    .status-ring {
+        width: 116px;
+        height: 116px;
+    }
+
+    .status-ring strong {
+        font-size: 28px;
     }
 }
