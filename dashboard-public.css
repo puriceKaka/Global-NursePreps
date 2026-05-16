@@ -3052,21 +3052,24 @@ p {
     .stats-grid {
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 6px;
+        gap: 5px;
     }
 
     .stat-card {
-        padding: 8px 4px;
+        padding: 9px 3px;
         min-width: 0;
     }
 
     .stat-card strong {
-        font-size: clamp(18px, 7vw, 26px);
+        font-size: clamp(20px, 7.4vw, 28px);
+        font-weight: 950;
     }
 
     .stat-card span {
-        font-size: 0.66rem;
-        line-height: 1.1;
+        font-size: 0.72rem;
+        line-height: 1.12;
+        font-weight: 900;
+        color: var(--blue-900);
         overflow-wrap: anywhere;
     }
 
