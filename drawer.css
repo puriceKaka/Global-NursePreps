@@ -201,6 +201,9 @@ body.drawer-open {
     right: 18px;
     bottom: 18px;
     z-index: 2200;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     min-height: 44px;
     padding: 0 18px;
     border: 0;
@@ -211,6 +214,14 @@ body.drawer-open {
     font-weight: 850;
     box-shadow: 0 14px 30px rgba(15, 76, 129, 0.22);
     cursor: pointer;
+}
+
+.chat-button img {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #ffffff;
+    object-fit: cover;
 }
 
 .chat-button:hover {

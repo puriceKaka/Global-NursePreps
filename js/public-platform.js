@@ -15,9 +15,16 @@ function ensurePuriceButton() {
         chatButton.type = 'button';
         chatButton.className = 'chat-button';
         chatButton.id = 'chatButton';
-        chatButton.textContent = 'Purice AI';
+        chatButton.innerHTML = '<img src="' + getPuriceAssetPath() + '" alt="" aria-hidden="true"><span>puriceAI</span>';
         document.body.appendChild(chatButton);
     }
+}
+
+function getPuriceAssetPath() {
+    return window.location.pathname.includes('/EXAMINATION%20PREP%20SITE/') ||
+        window.location.pathname.includes('/EXAMINATION PREP SITE/')
+        ? '../images/public/puriceAI.svg'
+        : 'images/public/puriceAI.svg';
 }
 
 function getPuricePath() {

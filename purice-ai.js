@@ -54,7 +54,7 @@ const knowledgeBase = [
     },
     {
         keys: ["assignment", "essay", "case study", "write"],
-        answer: "For assignments, start with the marking rubric, define the clinical problem, support points with current nursing evidence, and end with practical nursing implications. Purice AI can help you outline, refine, and check clarity."
+        answer: "For assignments, start with the marking rubric, define the clinical problem, support points with current nursing evidence, and end with practical nursing implications. puriceAI can help you outline, refine, and check clarity."
     },
     {
         keys: ["exam", "mock", "quiz", "score", "practice"],
@@ -86,7 +86,7 @@ const knowledgeBase = [
     },
     {
         keys: ["where", "find", "open", "access", "menu", "sidebar"],
-        answer: "Use the menu or sidebar to move around the platform. Courses opens the course catalog, Licensing opens international exam preparation, My Learnings shows enrolled courses, Payments explains payment options, Certificates shows completed credentials, and Purice AI gives support."
+        answer: "Use the menu or sidebar to move around the platform. Courses opens the course catalog, Licensing opens international exam preparation, My Learnings shows enrolled courses, Payments explains payment options, Certificates shows completed credentials, and puriceAI gives support."
     }
 ];
 
@@ -257,11 +257,11 @@ function buildResponse(question) {
     const normalized = question.toLowerCase();
     const capturedName = captureName(question);
     if (capturedName) {
-        return `Nice to meet you, ${capturedName}. I am Purice AI, your Global NursePrep assistant. You can ask me about nursing topics, courses, NCLEX, UK CBT, payments, assignments, research support, exams, or how to use the platform.`;
+        return `Nice to meet you, ${capturedName}. I am puriceAI, your Global NursePrep assistant. You can ask me about nursing topics, courses, NCLEX, UK CBT, payments, assignments, research support, exams, or how to use the platform.`;
     }
 
     if (isIdentityQuestion(normalized)) {
-        return "My name is Purice AI. I am the Global NursePrep support assistant for nursing learning, licensing preparation, course guidance, payments, research support, assignments, and student navigation.";
+        return "My name is puriceAI. I am the Global NursePrep support assistant for nursing learning, licensing preparation, course guidance, payments, research support, assignments, and student navigation.";
     }
 
     const matched = [...knowledgeBase, ...broadTopics].find((item) => item.keys.some((key) => normalized.includes(key)));
@@ -271,7 +271,7 @@ function buildResponse(question) {
     }
 
     if (isGreeting(normalized)) {
-        return `Hello ${getUserName()}. I am Purice AI. What would you like help with today?`;
+        return `Hello ${getUserName()}. I am puriceAI. What would you like help with today?`;
     }
 
     if (normalized.startsWith("what") || normalized.includes(" define ") || normalized.includes("meaning")) {

@@ -128,7 +128,7 @@
         button.type = "button";
         button.className = "chat-button";
         button.id = "chatButton";
-        button.textContent = "Purice AI";
+        button.innerHTML = '<img src="' + (isNested ? "../images/public/puriceAI.svg" : "images/public/puriceAI.svg") + '" alt="" aria-hidden="true"><span>puriceAI</span>';
         button.addEventListener("click", () => {
             window.location.href = isNested ? "../purice-ai.html" : "purice-ai.html";
         });

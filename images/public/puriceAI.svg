@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+    <title id="title">puriceAI logo</title>
+    <desc id="desc">Medical AI assistant logo with a nurse robot and chat symbol.</desc>
+    <defs>
+        <linearGradient id="ring" x1="84" y1="94" x2="430" y2="400" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#0b3a85"/>
+            <stop offset="1" stop-color="#20c7d8"/>
+        </linearGradient>
+        <linearGradient id="face" x1="158" y1="158" x2="354" y2="294" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#06255e"/>
+            <stop offset="1" stop-color="#061a3e"/>
+        </linearGradient>
+        <linearGradient id="bubble" x1="340" y1="174" x2="446" y2="278" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#21c6dc"/>
+            <stop offset="1" stop-color="#0875b9"/>
+        </linearGradient>
+        <linearGradient id="body" x1="158" y1="286" x2="354" y2="430" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#ffffff"/>
+            <stop offset="1" stop-color="#cfe5ff"/>
+        </linearGradient>
+    </defs>
+    <rect width="512" height="512" rx="96" fill="#f8fcff"/>
+    <circle cx="256" cy="224" r="176" fill="none" stroke="url(#ring)" stroke-width="14"/>
+    <path d="M158 368c17-48 51-74 98-74s81 26 98 74v46H158v-46Z" fill="url(#body)" stroke="#0b3a85" stroke-width="7"/>
+    <path d="M188 124c19-22 44-33 68-33s49 11 68 33l-11 58H199l-11-58Z" fill="#eef7ff" stroke="#0b3a85" stroke-width="7"/>
+    <path d="M238 119h36v18h18v31h-18v18h-36v-18h-18v-31h18v-18Z" fill="#0b3a85"/>
+    <rect x="135" y="154" width="242" height="148" rx="58" fill="#d8ecff" stroke="#0b3a85" stroke-width="8"/>
+    <rect x="157" y="172" width="198" height="112" rx="42" fill="url(#face)"/>
+    <path d="M202 226c6-17 31-17 37 0" fill="none" stroke="#47e2ed" stroke-width="11" stroke-linecap="round"/>
+    <path d="M273 226c6-17 31-17 37 0" fill="none" stroke="#47e2ed" stroke-width="11" stroke-linecap="round"/>
+    <path d="M226 252c18 19 42 19 60 0" fill="none" stroke="#47e2ed" stroke-width="11" stroke-linecap="round"/>
+    <circle cx="131" cy="226" r="23" fill="#cfe5ff" stroke="#0b3a85" stroke-width="8"/>
+    <circle cx="381" cy="226" r="23" fill="#cfe5ff" stroke="#0b3a85" stroke-width="8"/>
+    <path d="M354 184c18-20 63-19 82 1 24 25 19 65-11 82-13 7-30 8-44 2l-28 14 9-30c-13-18-13-49-8-69Z" fill="url(#bubble)"/>
+    <path d="M401 197l8 18 18 8-18 8-8 18-8-18-18-8 18-8 8-18Z" fill="#ffffff"/>
+    <path d="M434 221l5 11 11 5-11 5-5 11-5-11-11-5 11-5 5-11Z" fill="#ffffff"/>
+    <path d="M196 345c22 25 98 25 120 0" fill="none" stroke="#0b3a85" stroke-width="8" stroke-linecap="round"/>
+    <path d="M212 344c-18-48 20-68 44-33 24-35 62-15 44 33" fill="none" stroke="#0b3a85" stroke-width="8" stroke-linecap="round"/>
+    <text x="256" y="462" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="48" font-weight="800" fill="#06255e">puriceAI</text>
+</svg>
