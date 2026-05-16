@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Purice AI support assistant for Global NursePrep students.">
+    <title>Purice AI | Global NursePrep</title>
+    <link rel="stylesheet" href="css/site-loader.css">
+    <link rel="stylesheet" href="dashboard-public.css">
+    <link rel="stylesheet" href="purice-ai.css">
+    <script src="js/site-loader.js"></script>
+    <script defer src="purice-ai.js"></script>
+</head>
+<body>
+    <main class="purice-shell">
+        <section class="purice-chat" aria-label="Purice AI chat">
+            <div class="purice-chat-head">
+                <div class="purice-avatar" aria-hidden="true">P</div>
+                <div>
+                    <h2>Purice AI</h2>
+                    <p>Online nursing learning support</p>
+                </div>
+                <div class="purice-tools" aria-label="Chat tools">
+                    <button type="button" id="puriceTheme" aria-pressed="false">Dark</button>
+                    <button type="button" id="puriceClear">Clear</button>
+                </div>
+            </div>
+
+            <div class="purice-messages" id="puriceMessages" aria-live="polite"></div>
+
+            <div class="purice-typing hidden" id="puriceTyping" aria-live="polite">
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
+            </div>
+
+            <div class="purice-suggestions" aria-label="Suggested questions">
+                <button type="button" data-question="How do I enroll in a course?">Enroll in a course</button>
+                <button type="button" data-question="Help me calculate a drug dose.">Drug calculation</button>
+                <button type="button" data-question="How do payments unlock lessons?">Payment access</button>
+                <button type="button" data-question="Where can I prepare for NCLEX?">NCLEX prep</button>
+                <button type="button" data-question="Explain anatomy and physiology revision.">A&amp;P revision</button>
+                <button type="button" data-question="How do I plan my study week?">Study planning</button>
+                <button type="button" data-question="How do I contact research support?">Research support</button>
+                <button type="button" data-question="Where are my certificates?">Certificates</button>
+                <button type="button" data-question="How do live classes work?">Live classes</button>
+            </div>
+
+            <form class="purice-form" id="puriceForm">
+                <div class="purice-input-wrap">
+                    <label class="purice-upload" title="Upload PDF or image" aria-label="Upload PDF or image">
+                        <input id="puriceFile" type="file" accept=".pdf,image/*" hidden>
+                        <span>+</span>
+                    </label>
+                    <textarea id="puriceInput" autocomplete="off" placeholder="Type your question for Purice AI..." rows="1" required></textarea>
+                </div>
+                <button class="purice-action" type="button" id="puriceAction" aria-label="Start voice input">
+                    <svg class="icon-mic" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3Zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2Z"></path>
+                    </svg>
+                    <svg class="icon-send" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M3.4 20.4 21 12 3.4 3.6 3 10l10 2-10 2 .4 6.4Z"></path>
+                    </svg>
+                </button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>
