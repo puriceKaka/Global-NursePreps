@@ -6,7 +6,7 @@
     <meta name="description" content="Global NursePrep payment methods for nursing courses, licensing tracks, mock exams, and academic support.">
     <title>Payments | Global NursePrep</title>
     <link rel="stylesheet" href="css/site-loader.css">
-    <link rel="stylesheet" href="dashboard-public.css?v=6">
+    <link rel="stylesheet" href="dashboard-public.css?v=7">
     <script src="js/site-loader.js"></script>
     <script defer src="js/payments.js"></script>
 </head>
@@ -60,49 +60,53 @@
         </section>
 
         <section class="payment-workspace section-shell">
-            <div class="gateway-selector reveal">
-                <span class="eyebrow">Choose payment gateway</span>
-                <h2>Select how you want to pay</h2>
-                <p>Pick one gateway to see the exact payment process and what happens after confirmation.</p>
-                <div class="gateway-options" id="gatewayOptions" aria-label="Payment gateway options">
-                    <button type="button" class="gateway-option is-active mpesa" data-gateway-option="mpesa">M-Pesa</button>
-                    <button type="button" class="gateway-option visa" data-gateway-option="card">Visa/Mastercard</button>
-                    <button type="button" class="gateway-option paypal" data-gateway-option="paypal">PayPal</button>
-                    <button type="button" class="gateway-option bank" data-gateway-option="bank">Bank Transfer</button>
-                    <button type="button" class="gateway-option airtel" data-gateway-option="airtel">Airtel Money</button>
-                    <button type="button" class="gateway-option sponsor" data-gateway-option="sponsor">Institution/Sponsor</button>
+            <div class="payment-gateway-panel reveal">
+                <div class="gateway-selector">
+                    <div class="gateway-heading">
+                        <span class="eyebrow">Choose payment gateway</span>
+                        <h2>Select how you want to pay</h2>
+                        <p>Choose one payment route, then review the exact steps for unlocking your selected course or service.</p>
+                    </div>
+                    <label class="gateway-select-label" for="gatewaySelect">Payment method</label>
+                    <select id="gatewaySelect">
+                        <option value="mpesa">M-Pesa</option>
+                        <option value="card">Visa/Mastercard</option>
+                        <option value="paypal">PayPal</option>
+                        <option value="bank">Bank Transfer</option>
+                        <option value="airtel">Airtel Money</option>
+                        <option value="sponsor">Institution/Sponsor</option>
+                    </select>
+                    <div class="gateway-options" id="gatewayOptions" aria-label="Payment gateway options">
+                        <button type="button" class="gateway-option is-active mpesa" data-gateway-option="mpesa">M-Pesa</button>
+                        <button type="button" class="gateway-option visa" data-gateway-option="card">Visa/Mastercard</button>
+                        <button type="button" class="gateway-option paypal" data-gateway-option="paypal">PayPal</button>
+                        <button type="button" class="gateway-option bank" data-gateway-option="bank">Bank Transfer</button>
+                        <button type="button" class="gateway-option airtel" data-gateway-option="airtel">Airtel Money</button>
+                        <button type="button" class="gateway-option sponsor" data-gateway-option="sponsor">Institution/Sponsor</button>
+                    </div>
                 </div>
-                <label class="gateway-select-label" for="gatewaySelect">Gateway dropdown</label>
-                <select id="gatewaySelect">
-                    <option value="mpesa">M-Pesa</option>
-                    <option value="card">Visa/Mastercard</option>
-                    <option value="paypal">PayPal</option>
-                    <option value="bank">Bank Transfer</option>
-                    <option value="airtel">Airtel Money</option>
-                    <option value="sponsor">Institution/Sponsor</option>
-                </select>
-            </div>
 
-            <article class="gateway-detail payment-instructions reveal" id="gatewayDetail" data-gateway="mpesa">
-                <div class="gateway-visual">
-                    <img id="gatewayPaymentImage" src="images/payments/mpesa.svg" alt="M-Pesa payment details" loading="eager" decoding="async">
-                    <strong id="gatewayVisualLabel">M-Pesa</strong>
-                </div>
-                <div class="gateway-content">
-                    <span class="eyebrow" id="gatewayType">Mobile money</span>
-                    <h2 id="gatewayTitle">M-Pesa payment workflow</h2>
-                    <p id="gatewayDescription">
-                        Use the M-Pesa option at enrollment, confirm the course name and price, then submit the
-                        transaction code for verification and course unlocking.
-                    </p>
-                    <ol id="gatewaySteps">
-                        <li>Register or login with the student account that will own the course.</li>
-                        <li>Select the exact course, licensing track, mock exam, or support service.</li>
-                        <li>Choose M-Pesa, pay from your phone, then save the transaction code.</li>
-                        <li>Access opens only after the selected item is confirmed as paid.</li>
-                    </ol>
-                </div>
-            </article>
+                <article class="gateway-detail payment-instructions" id="gatewayDetail" data-gateway="mpesa">
+                    <div class="gateway-visual">
+                        <img id="gatewayPaymentImage" src="images/payments/mpesa.svg" alt="M-Pesa payment details" loading="eager" decoding="async">
+                        <strong id="gatewayVisualLabel">M-Pesa</strong>
+                    </div>
+                    <div class="gateway-content">
+                        <span class="eyebrow" id="gatewayType">Mobile money</span>
+                        <h2 id="gatewayTitle">M-Pesa payment workflow</h2>
+                        <p id="gatewayDescription">
+                            Use the M-Pesa option at enrollment, confirm the course name and price, then submit the
+                            transaction code for verification and course unlocking.
+                        </p>
+                        <ol id="gatewaySteps">
+                            <li>Register or login with the student account that will own the course.</li>
+                            <li>Select the exact course, licensing track, mock exam, or support service.</li>
+                            <li>Choose M-Pesa, pay from your phone, then save the transaction code.</li>
+                            <li>Access opens only after the selected item is confirmed as paid.</li>
+                        </ol>
+                    </div>
+                </article>
+            </div>
 
             <section class="payment-flow payment-page-flow reveal">
                 <span class="eyebrow">Payment flow</span>
