@@ -61,16 +61,25 @@ html, body {
     align-items: center;
     justify-content: flex-end;
     gap: 8px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     min-width: 0;
+    margin-left: auto;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.public-nav nav::-webkit-scrollbar {
+    display: none;
 }
 
 .public-nav nav a {
     padding: 9px 12px;
     border-radius: 999px;
+    white-space: nowrap;
 }
 
-.public-nav nav a:hover {
+.public-nav nav a:hover,
+.public-nav nav a[aria-current="page"] {
     background: rgba(255, 255, 255, 0.12);
 }
 
@@ -446,14 +455,14 @@ input:focus {
 
 @media (max-width: 620px) {
     .public-nav {
-        align-items: flex-start;
-        flex-direction: column;
+        align-items: center;
+        flex-direction: row;
         gap: 8px;
         padding: 10px 12px;
     }
     .public-nav nav {
-        justify-content: flex-start;
-        width: 100%;
+        justify-content: flex-end;
+        width: auto;
         gap: 6px;
     }
     .public-nav nav a {
