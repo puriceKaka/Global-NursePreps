@@ -1426,9 +1426,9 @@ p {
 .payment-workspace {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 18px;
+    gap: 22px;
     align-items: start;
-    max-width: 920px;
+    max-width: 1120px;
     min-width: 0;
 }
 
@@ -1623,7 +1623,7 @@ p {
 }
 
 .payment-flow {
-    padding: clamp(18px, 3vw, 28px);
+    padding: clamp(20px, 3.2vw, 34px);
     border: 1px solid rgba(15, 76, 129, 0.13);
     border-radius: var(--radius);
     background: rgba(255, 255, 255, 0.8);
@@ -1632,7 +1632,7 @@ p {
 }
 
 .unlock-list {
-    padding: clamp(18px, 3vw, 28px);
+    padding: clamp(20px, 3.2vw, 34px);
     border: 1px solid rgba(15, 76, 129, 0.13);
     border-radius: var(--radius);
     background: rgba(255, 255, 255, 0.8);
