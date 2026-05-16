@@ -55,7 +55,7 @@
     }
 
     function showOffline() {
-        showLoader('Network is low or offline. Waiting for connection...');
+        showLoader('Network is down. Waiting for connection...');
     }
 
     function hideIfOnline() {
