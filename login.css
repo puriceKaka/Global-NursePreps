@@ -236,14 +236,15 @@ input:focus {
 }
 
 .password-row {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 10px;
-    align-items: center;
+    position: relative;
+}
+
+.password-row input {
+    padding-right: 48px;
 }
 
 .primary-button,
-.pill-button {
+.password-toggle {
     border: none;
     cursor: pointer;
     border-radius: 999px;
@@ -256,11 +257,36 @@ input:focus {
     color: #ffffff;
 }
 
-.pill-button {
-    padding: 10px 14px;
-    background: var(--ice);
+.password-toggle {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    background: transparent;
     color: var(--navy);
-    border: 1px solid rgba(11, 31, 58, 0.10);
+    transform: translateY(-50%);
+}
+
+.password-toggle svg {
+    width: 21px;
+    height: 21px;
+    fill: currentColor;
+}
+
+.password-toggle .eye-closed {
+    display: none;
+}
+
+.password-toggle[aria-pressed="true"] .eye-open {
+    display: none;
+}
+
+.password-toggle[aria-pressed="true"] .eye-closed {
+    display: block;
 }
 
 .error {
@@ -437,9 +463,6 @@ input:focus {
     }
     .preview {
         border-radius: 14px;
-    }
-    .password-row {
-        grid-template-columns: 1fr;
     }
     .social-login-row {
         grid-template-columns: repeat(3, minmax(0, 1fr));

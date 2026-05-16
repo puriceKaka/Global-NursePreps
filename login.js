@@ -68,8 +68,8 @@
         if (!input || !btn) return;
         const show = input.type === 'password';
         input.type = show ? 'text' : 'password';
-        btn.textContent = show ? 'Hide' : 'Show';
         btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+        btn.setAttribute('aria-pressed', String(show));
     }
 
     function handleSocialLogin(event) {
