@@ -6,7 +6,7 @@
     <meta name="description" content="Global NursePrep payment methods for nursing courses, licensing tracks, mock exams, and academic support.">
     <title>Payments | Global NursePrep</title>
     <link rel="stylesheet" href="css/site-loader.css">
-    <link rel="stylesheet" href="dashboard-public.css?v=11">
+    <link rel="stylesheet" href="dashboard-public.css?v=10">
     <script src="js/site-loader.js"></script>
     <script defer src="js/payments.js"></script>
 </head>
@@ -39,16 +39,36 @@
     </header>
 
     <main class="payments-page">
+        <section class="payments-hero section-shell reveal">
+            <div class="payments-copy">
+                <span class="eyebrow">Payments</span>
+                <h1>Pay securely and unlock only the course or licensing track you selected.</h1>
+                <p>
+                    Global NursePrep supports course units, licensing preparation, mock exams, live class access,
+                    certificates, and academic support payments through multiple gateway workflows.
+                </p>
+                <div class="payments-strip" aria-label="Payment highlights">
+                    <span>2500+ students trained</span>
+                    <span>Pass-rate analytics</span>
+                    <span>Academic support</span>
+                </div>
+            </div>
+
+            <aside class="payments-status" aria-label="Payment gateway details">
+                <img class="payment-hero-image main" id="heroPaymentImage" src="images/payments/mpesa.svg" alt="M-Pesa payment details" loading="eager" decoding="async">
+            </aside>
+        </section>
+
         <section class="payment-workspace section-shell">
             <div class="payment-gateway-panel reveal">
                 <div class="gateway-heading">
-                    <span class="eyebrow">Payments</span>
-                    <h1>Secure course payments</h1>
-                    <p>Choose one payment method. After confirmation, only the selected course, licensing track, mock exam, or support service is unlocked.</p>
+                    <span class="eyebrow">Payment method</span>
+                    <h2>Choose how to pay</h2>
+                    <p>Select one option. The instructions below update automatically.</p>
                 </div>
 
                 <div class="gateway-selector">
-                    <label class="gateway-select-label" for="gatewaySelect">Choose payment method</label>
+                    <label class="gateway-select-label" for="gatewaySelect">Payment method</label>
                     <select id="gatewaySelect">
                         <option value="mpesa">M-Pesa</option>
                         <option value="card">Visa/Mastercard</option>
@@ -112,6 +132,17 @@
                             <p>Course access is connected to a student account.</p>
                         </article>
                     </div>
+                </div>
+            </section>
+
+            <section class="unlock-list reveal">
+                <span class="eyebrow">What payment unlocks</span>
+                <h2>Materials connected to the purchased item</h2>
+                <div>
+                    <span><strong>Recorded learning</strong>Course videos, recorded lectures, and replay access.</span>
+                    <span><strong>Revision materials</strong>PDF notes, downloadable guides, and structured study resources.</span>
+                    <span><strong>Assessment tools</strong>Quizzes, assignments, practice MCQs, and mock exams.</span>
+                    <span><strong>Progress records</strong>Course progress, certificates, and analytics where included.</span>
                 </div>
             </section>
         </section>
