@@ -2010,8 +2010,8 @@ p {
     }
 
     .nav-actions {
-        order: 5;
-        margin-left: 0;
+        order: 3;
+        margin-left: auto;
     }
 
     .site-nav.open {
@@ -2088,11 +2088,13 @@ p {
 
     .brand {
         font-size: 16px;
+        margin-right: 4px;
     }
 
     .nav-actions {
         width: auto;
-        justify-content: flex-start;
+        justify-content: flex-end;
+        gap: 6px;
     }
 
     .free-study-panel {
@@ -2114,6 +2116,9 @@ p {
     .login-button,
     .register-button {
         flex: 0 1 auto;
+        min-height: 38px;
+        padding: 0 11px;
+        font-size: 12px;
     }
 
     .hero {

@@ -96,11 +96,17 @@ function renderSiteFooter() {
 
 renderSiteFooter();
 
-window.addEventListener('load', () => {
+function hidePageLoader() {
     window.setTimeout(() => {
         loader?.classList.add('hidden');
-    }, 450);
-});
+    }, 100);
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', hidePageLoader, { once: true });
+} else {
+    hidePageLoader();
+}
 
 if (year) {
     year.textContent = new Date().getFullYear();
