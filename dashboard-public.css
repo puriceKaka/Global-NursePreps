@@ -1306,45 +1306,40 @@ p {
 
 .payments-status {
     display: grid;
-    gap: 14px;
-    padding: 22px;
+    gap: 12px;
+    padding: 14px;
     border: 1px solid rgba(15, 76, 129, 0.14);
     border-radius: var(--radius);
-    background: linear-gradient(145deg, rgba(255, 255, 255, 0.86), rgba(232, 248, 243, 0.9));
+    background:
+        radial-gradient(circle at top right, rgba(31, 166, 122, 0.16), transparent 34%),
+        linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(232, 248, 243, 0.9));
     box-shadow: 0 16px 38px rgba(7, 55, 99, 0.09);
 }
 
-.status-ring {
-    display: grid;
-    place-items: center;
-    width: 172px;
-    height: 172px;
-    margin: 0 auto;
-    border-radius: 50%;
-    text-align: center;
-    background:
-        radial-gradient(circle at center, #ffffff 0 56%, transparent 57%),
-        conic-gradient(var(--green-500), var(--blue-500), var(--blue-900), var(--green-500));
-}
-
-.status-ring strong {
+.payment-hero-image {
+    width: 100%;
+    height: 210px;
+    object-fit: contain;
     display: block;
-    color: var(--blue-900);
-    font-size: 44px;
-    line-height: 1;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.64);
+    box-shadow: 0 14px 30px rgba(7, 55, 99, 0.12);
 }
 
-.status-ring span {
-    max-width: 105px;
-    color: var(--gray-700);
-    font-size: 12px;
-    font-weight: 750;
+.payment-mini-images {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
 }
 
-.payments-status p {
-    margin: 0;
-    text-align: center;
-    color: var(--gray-700);
+.payment-mini-images img {
+    width: 100%;
+    height: 72px;
+    object-fit: cover;
+    display: block;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.72);
+    box-shadow: 0 8px 18px rgba(7, 55, 99, 0.1);
 }
 
 .gateway-marquee {
@@ -1526,15 +1521,27 @@ p {
 }
 
 .flow-steps {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    display: flex;
+    width: max-content;
     gap: 12px;
     margin-top: 18px;
+    animation: payment-flow-slide 28s linear infinite;
+}
+
+.flow-slider {
+    overflow: hidden;
+    margin-top: 18px;
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.flow-slider .flow-steps {
+    margin-top: 0;
 }
 
 .flow-steps article {
+    flex: 0 0 260px;
     border-top: 3px solid var(--blue-500);
-    padding-top: 12px;
+    padding: 12px 14px 2px 0;
 }
 
 .flow-steps span {
@@ -1576,6 +1583,15 @@ p {
     }
     to {
         transform: translateX(-50%);
+    }
+}
+
+@keyframes payment-flow-slide {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(calc(-50% - 6px));
     }
 }
 
@@ -2379,7 +2395,6 @@ p {
 
     .payments-hero,
     .gateway-detail,
-    .flow-steps,
     .unlock-list div {
         grid-template-columns: 1fr;
     }
@@ -2410,13 +2425,14 @@ p {
         padding: 16px;
     }
 
-    .status-ring {
-        width: 138px;
-        height: 138px;
+    .payment-hero-image {
+        height: 150px;
+        border-radius: 18px;
     }
 
-    .status-ring strong {
-        font-size: 34px;
+    .payment-mini-images img {
+        height: 54px;
+        border-radius: 12px;
     }
 
     .gateway-selector {
@@ -2477,7 +2493,13 @@ p {
     }
 
     .flow-steps {
-        gap: 14px;
+        gap: 10px;
+        animation-duration: 24s;
+    }
+
+    .flow-steps article {
+        flex-basis: 215px;
+        padding-right: 10px;
     }
 
     .unlock-list span {
@@ -2631,12 +2653,20 @@ p {
         font-size: 1.2rem;
     }
 
-    .status-ring {
-        width: 116px;
-        height: 116px;
+    .payment-hero-image {
+        height: 128px;
     }
 
-    .status-ring strong {
-        font-size: 28px;
+    .payment-mini-images {
+        gap: 6px;
+    }
+
+    .payment-mini-images img {
+        height: 44px;
+        border-radius: 10px;
+    }
+
+    .flow-steps article {
+        flex-basis: 190px;
     }
 }

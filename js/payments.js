@@ -93,13 +93,17 @@ const gatewayType = document.getElementById("gatewayType");
 const gatewayTitle = document.getElementById("gatewayTitle");
 const gatewayDescription = document.getElementById("gatewayDescription");
 const gatewaySteps = document.getElementById("gatewaySteps");
-const paidCourseCount = document.getElementById("paidCourseCount");
+const heroPaymentImage = document.getElementById("heroPaymentImage");
 
 function renderGateway(key) {
     const gateway = gatewayData[key] || gatewayData.mpesa;
     gatewayDetail.dataset.gateway = key;
     gatewayImage.src = gateway.image;
     gatewayImage.alt = `${gateway.visual} payment illustration`;
+    if (heroPaymentImage) {
+        heroPaymentImage.src = gateway.image;
+        heroPaymentImage.alt = `${gateway.visual} payment details`;
+    }
     gatewayVisualTitle.textContent = gateway.visual;
     gatewayType.textContent = gateway.type;
     gatewayTitle.textContent = gateway.title;
@@ -107,21 +111,8 @@ function renderGateway(key) {
     gatewaySteps.innerHTML = gateway.steps.map((step) => `<li>${step}</li>`).join("");
 }
 
-function countPaidCourses() {
-    try {
-        const payments = JSON.parse(localStorage.getItem("gnp_payments") || "[]");
-        if (!Array.isArray(payments)) return 0;
-        return payments.filter((payment) => payment.status === "recorded" || payment.status === "paid" || payment.status === "confirmed").length;
-    } catch {
-        return 0;
-    }
-}
-
 gatewaySelect?.addEventListener("change", () => renderGateway(gatewaySelect.value));
 
 document.addEventListener("DOMContentLoaded", () => {
     renderGateway(gatewaySelect?.value || "mpesa");
-    if (paidCourseCount) {
-        paidCourseCount.textContent = String(countPaidCourses());
-    }
 });

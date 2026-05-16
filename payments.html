@@ -54,12 +54,13 @@
                 </div>
             </div>
 
-            <aside class="payments-status" aria-label="Local payment status">
-                <div class="status-ring">
-                    <strong id="paidCourseCount">0</strong>
-                    <span>paid courses on this device</span>
+            <aside class="payments-status" aria-label="Payment gateway details">
+                <img class="payment-hero-image main" id="heroPaymentImage" src="images/payments/mpesa.svg" alt="M-Pesa payment details">
+                <div class="payment-mini-images" aria-label="Payment method previews">
+                    <img src="images/payments/card.svg" alt="Visa and Mastercard payment details">
+                    <img src="images/payments/paypal.svg" alt="PayPal payment details">
+                    <img src="images/payments/bank.svg" alt="Bank transfer payment details">
                 </div>
-                <p>Payment records are stored against the student account and can be reviewed by admin before access is activated.</p>
             </aside>
         </section>
 
@@ -117,27 +118,49 @@
             <section class="payment-flow reveal">
                 <span class="eyebrow">Payment flow</span>
                 <h2>How learning access is unlocked</h2>
-                <div class="flow-steps">
-                    <article>
-                        <span>01</span>
-                        <strong>Create account</strong>
-                        <p>Course access is connected to a student account.</p>
-                    </article>
-                    <article>
-                        <span>02</span>
-                        <strong>Choose item</strong>
-                        <p>Select one unit, exam track, certificate route, or support service.</p>
-                    </article>
-                    <article>
-                        <span>03</span>
-                        <strong>Pay securely</strong>
-                        <p>Use the available gateway and keep the payment reference.</p>
-                    </article>
-                    <article>
-                        <span>04</span>
-                        <strong>Unlock access</strong>
-                        <p>Only the purchased videos, notes, quizzes, exams, and downloads open.</p>
-                    </article>
+                <div class="flow-slider" aria-label="Sliding payment flow steps">
+                    <div class="flow-steps">
+                        <article>
+                            <span>01</span>
+                            <strong>Create account</strong>
+                            <p>Course access is connected to a student account.</p>
+                        </article>
+                        <article>
+                            <span>02</span>
+                            <strong>Choose item</strong>
+                            <p>Select one unit, exam track, certificate route, or support service.</p>
+                        </article>
+                        <article>
+                            <span>03</span>
+                            <strong>Pay securely</strong>
+                            <p>Use the available gateway and keep the payment reference.</p>
+                        </article>
+                        <article>
+                            <span>04</span>
+                            <strong>Unlock access</strong>
+                            <p>Only the purchased videos, notes, quizzes, exams, and downloads open.</p>
+                        </article>
+                        <article aria-hidden="true">
+                            <span>01</span>
+                            <strong>Create account</strong>
+                            <p>Course access is connected to a student account.</p>
+                        </article>
+                        <article aria-hidden="true">
+                            <span>02</span>
+                            <strong>Choose item</strong>
+                            <p>Select one unit, exam track, certificate route, or support service.</p>
+                        </article>
+                        <article aria-hidden="true">
+                            <span>03</span>
+                            <strong>Pay securely</strong>
+                            <p>Use the available gateway and keep the payment reference.</p>
+                        </article>
+                        <article aria-hidden="true">
+                            <span>04</span>
+                            <strong>Unlock access</strong>
+                            <p>Only the purchased videos, notes, quizzes, exams, and downloads open.</p>
+                        </article>
+                    </div>
                 </div>
             </section>
 
