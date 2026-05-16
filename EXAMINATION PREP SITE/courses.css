@@ -1534,8 +1534,8 @@ body[data-page="catalog"] .course-actions .btn-outline {
     min-height: 40px;
     font-size: 0.9rem;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    overflow: visible;
+    text-overflow: clip;
 }
 
 .course-progress-inline {
@@ -1766,7 +1766,7 @@ body[data-page="catalog"].has-session #menuToggle {
     }
 
     body[data-page="catalog"] .course-actions.unenrolled-actions {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: 1fr;
     }
 
     body[data-page="catalog"] .course-actions .btn-primary,

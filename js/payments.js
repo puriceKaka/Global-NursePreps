@@ -92,6 +92,9 @@ const gatewayTitle = document.getElementById("gatewayTitle");
 const gatewayDescription = document.getElementById("gatewayDescription");
 const gatewaySteps = document.getElementById("gatewaySteps");
 const heroPaymentImage = document.getElementById("heroPaymentImage");
+const gatewayPaymentImage = document.getElementById("gatewayPaymentImage");
+const gatewayVisualLabel = document.getElementById("gatewayVisualLabel");
+const gatewayOptions = document.getElementById("gatewayOptions");
 
 function renderGateway(key) {
     const gateway = gatewayData[key] || gatewayData.mpesa;
@@ -100,13 +103,36 @@ function renderGateway(key) {
         heroPaymentImage.src = gateway.image;
         heroPaymentImage.alt = `${gateway.visual} payment details`;
     }
+    if (gatewayPaymentImage) {
+        gatewayPaymentImage.src = gateway.image;
+        gatewayPaymentImage.alt = `${gateway.visual} payment details`;
+    }
+    if (gatewayVisualLabel) {
+        gatewayVisualLabel.textContent = gateway.visual;
+    }
     gatewayType.textContent = gateway.type;
     gatewayTitle.textContent = gateway.title;
     gatewayDescription.textContent = gateway.description;
     gatewaySteps.innerHTML = gateway.steps.map((step) => `<li>${step}</li>`).join("");
+    gatewayOptions?.querySelectorAll("[data-gateway-option]").forEach((button) => {
+        const isActive = button.dataset.gatewayOption === key;
+        button.classList.toggle("is-active", isActive);
+        button.setAttribute("aria-pressed", String(isActive));
+    });
 }
 
 gatewaySelect?.addEventListener("change", () => renderGateway(gatewaySelect.value));
+gatewayOptions?.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-gateway-option]");
+    if (!button) {
+        return;
+    }
+    const gateway = button.dataset.gatewayOption;
+    if (gatewaySelect) {
+        gatewaySelect.value = gateway;
+    }
+    renderGateway(gateway);
+});
 
 document.addEventListener("DOMContentLoaded", () => {
     renderGateway(gatewaySelect?.value || "mpesa");

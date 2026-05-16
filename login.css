@@ -75,22 +75,22 @@ html, body {
 }
 
 .auth-shell {
-    min-height: 100vh;
+    min-height: calc(100vh - 120px);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: clamp(32px, 6vw, 70px);
+    padding: 22px;
     width: 100%;
     overflow-x: hidden;
 }
 
 .auth-card {
-    width: min(1120px, 100%);
+    width: min(880px, 100%);
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 28px;
     display: grid;
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
     overflow: hidden;
     box-shadow: var(--shadow);
     animation: auth-rise 0.65s ease both;
@@ -98,7 +98,7 @@ html, body {
 
 .auth-left {
     background: linear-gradient(160deg, var(--ice-2), #ffffff);
-    padding: 22px 22px 0;
+    padding: 20px 20px 0;
     border-right: 1px solid var(--border);
 }
 
@@ -143,7 +143,7 @@ html, body {
 
 .left-content h2 {
     margin: 10px 0 10px;
-    font-size: 34px;
+    font-size: 30px;
     line-height: 1.12;
     color: var(--navy);
 }
@@ -195,7 +195,7 @@ html, body {
 }
 
 .auth-right {
-    padding: 34px 30px;
+    padding: 28px 24px;
     display: grid;
     align-content: start;
     gap: 14px;
@@ -208,9 +208,9 @@ html, body {
 }
 
 .form {
-    margin-top: 16px;
+    margin-top: 8px;
     display: grid;
-    gap: 18px;
+    gap: 12px;
 }
 
 .field span {
@@ -235,10 +235,13 @@ input:focus {
 }
 
 .password-row {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 10px;
+    position: relative;
+    display: block;
     align-items: center;
+}
+
+.password-row input {
+    padding-right: 48px;
 }
 
 .primary-button,
@@ -256,10 +259,39 @@ input:focus {
 }
 
 .pill-button {
-    padding: 10px 14px;
-    background: var(--ice);
+    position: absolute;
+    right: 7px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    background: transparent;
     color: var(--navy);
-    border: 1px solid rgba(11, 31, 58, 0.10);
+    border: 0;
+    font-size: 0;
+}
+
+.pill-button::before {
+    content: "";
+    width: 18px;
+    height: 18px;
+    display: block;
+    margin: auto;
+    border: 2px solid currentColor;
+    border-radius: 75% 15%;
+    transform: rotate(45deg);
+}
+
+.pill-button::after {
+    content: "";
+    position: absolute;
+    inset: 50% auto auto 50%;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    transform: translate(-50%, -50%);
 }
 
 .error {
@@ -333,21 +365,18 @@ input:focus {
 }
 
 .google-icon {
-    color: #ffffff;
-    background: linear-gradient(135deg, #4285f4, #34a853 45%, #fbbc05 70%, #ea4335);
+    background: #ffffff;
 }
 
 .microsoft-icon {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2px;
-    border-radius: 4px;
+    background: #ffffff;
 }
 
-.microsoft-icon span:nth-child(1) { background: #f35325; }
-.microsoft-icon span:nth-child(2) { background: #81bc06; }
-.microsoft-icon span:nth-child(3) { background: #05a6f0; }
-.microsoft-icon span:nth-child(4) { background: #ffba08; }
+.social-icon svg {
+    width: 19px;
+    height: 19px;
+    display: block;
+}
 
 .apple-icon {
     background: #111827;
@@ -382,10 +411,15 @@ input:focus {
 .links {
     margin-top: 18px;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     gap: 18px;
     flex-wrap: wrap;
     font-weight: 800;
+}
+
+.links a[href="forgot-password.html"] {
+    margin-left: auto;
+    text-align: right;
 }
 
 .links a {
@@ -447,7 +481,7 @@ input:focus {
         border-radius: 14px;
     }
     .password-row {
-        grid-template-columns: 1fr;
+        display: block;
     }
     .social-login-row {
         grid-template-columns: repeat(3, minmax(0, 1fr));

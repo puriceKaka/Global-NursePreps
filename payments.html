@@ -59,20 +59,20 @@
             </aside>
         </section>
 
-        <section class="gateway-marquee" aria-label="Supported payment gateways">
-            <div class="gateway-track">
-                <span class="gateway-chip mpesa">M-Pesa</span>
-                <span class="gateway-chip visa">Visa/Mastercard</span>
-                <span class="gateway-chip paypal">PayPal</span>
-                <span class="gateway-chip bank">Bank Transfer</span>
-                <span class="gateway-chip airtel">Airtel Money</span>
-                <span class="gateway-chip sponsor">Institution/Sponsor</span>
-            </div>
-        </section>
-
         <section class="payment-workspace section-shell">
             <div class="gateway-selector reveal">
-                <label for="gatewaySelect">Choose payment gateway</label>
+                <span class="eyebrow">Choose payment gateway</span>
+                <h2>Select how you want to pay</h2>
+                <p>Pick one gateway to see the exact payment process and what happens after confirmation.</p>
+                <div class="gateway-options" id="gatewayOptions" aria-label="Payment gateway options">
+                    <button type="button" class="gateway-option is-active mpesa" data-gateway-option="mpesa">M-Pesa</button>
+                    <button type="button" class="gateway-option visa" data-gateway-option="card">Visa/Mastercard</button>
+                    <button type="button" class="gateway-option paypal" data-gateway-option="paypal">PayPal</button>
+                    <button type="button" class="gateway-option bank" data-gateway-option="bank">Bank Transfer</button>
+                    <button type="button" class="gateway-option airtel" data-gateway-option="airtel">Airtel Money</button>
+                    <button type="button" class="gateway-option sponsor" data-gateway-option="sponsor">Institution/Sponsor</button>
+                </div>
+                <label class="gateway-select-label" for="gatewaySelect">Gateway dropdown</label>
                 <select id="gatewaySelect">
                     <option value="mpesa">M-Pesa</option>
                     <option value="card">Visa/Mastercard</option>
@@ -84,6 +84,10 @@
             </div>
 
             <article class="gateway-detail payment-instructions reveal" id="gatewayDetail" data-gateway="mpesa">
+                <div class="gateway-visual">
+                    <img id="gatewayPaymentImage" src="images/payments/mpesa.svg" alt="M-Pesa payment details">
+                    <strong id="gatewayVisualLabel">M-Pesa</strong>
+                </div>
                 <div class="gateway-content">
                     <span class="eyebrow" id="gatewayType">Mobile money</span>
                     <h2 id="gatewayTitle">M-Pesa payment workflow</h2>
@@ -104,10 +108,10 @@
                 <span class="eyebrow">What payment unlocks</span>
                 <h2>Materials connected to the purchased item</h2>
                 <div>
-                    <span>Recorded lectures and course videos</span>
-                    <span>PDF notes and downloadable revision materials</span>
-                    <span>Quizzes, assignments, practice MCQs, and mock exams</span>
-                    <span>Course progress, certificates, and analytics where included</span>
+                    <span><strong>Recorded learning</strong>Course videos, recorded lectures, and replay access.</span>
+                    <span><strong>Revision materials</strong>PDF notes, downloadable guides, and structured study resources.</span>
+                    <span><strong>Assessment tools</strong>Quizzes, assignments, practice MCQs, and mock exams.</span>
+                    <span><strong>Progress records</strong>Course progress, certificates, and analytics where included.</span>
                 </div>
             </section>
         </section>

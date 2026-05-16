@@ -195,6 +195,10 @@ img {
     display: block;
     margin: 0 0 8px;
     color: var(--blue-900);
+    background: var(--blue-100);
+    border-left: 4px solid var(--blue-900);
+    border-radius: 6px;
+    padding: 8px 10px;
 }
 
 .dropdown-menu a {
@@ -213,14 +217,6 @@ img {
     color: #ffffff;
     background: var(--blue-800);
     transform: none;
-}
-
-.dropdown-menu div:nth-child(2) strong {
-    color: var(--blue-900);
-    background: var(--blue-100);
-    border-left: 4px solid var(--blue-900);
-    border-radius: 6px;
-    padding: 8px 10px;
 }
 
 .nav-actions {
@@ -1327,64 +1323,56 @@ p {
     box-shadow: 0 14px 30px rgba(7, 55, 99, 0.12);
 }
 
-.gateway-marquee {
-    width: 100%;
-    overflow: visible;
-    margin: 4px 0 18px;
-    border-block: 1px solid rgba(15, 76, 129, 0.10);
-    background: rgba(255, 255, 255, 0.55);
-}
-
-.gateway-track {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    width: min(100% - 20px, var(--max-width));
-    margin: 0 auto;
-    gap: 10px;
-    padding: 12px 10px;
-    animation: none;
-}
-
-.gateway-chip {
+.gateway-option {
     display: inline-flex;
     align-items: center;
-    min-height: 38px;
-    padding: 0 16px;
+    justify-content: center;
+    min-height: 40px;
+    padding: 0 14px;
+    border: 0;
     border-radius: 999px;
     color: #ffffff;
     font-weight: 850;
     white-space: nowrap;
+    cursor: pointer;
     box-shadow: 0 8px 18px rgba(11, 31, 58, 0.12);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, outline-color 0.18s ease;
 }
 
-.gateway-chip.mpesa {
+.gateway-option:hover,
+.gateway-option.is-active {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 26px rgba(11, 31, 58, 0.16);
+    outline: 3px solid rgba(255, 255, 255, 0.7);
+}
+
+.gateway-option.mpesa {
     background: #16a34a;
 }
 
-.gateway-chip.visa {
+.gateway-option.visa {
     background: #1a1f71;
 }
 
-.gateway-chip.paypal {
+.gateway-option.paypal {
     background: #0070ba;
 }
 
-.gateway-chip.bank {
+.gateway-option.bank {
     background: #475569;
 }
 
-.gateway-chip.airtel {
+.gateway-option.airtel {
     background: #e11d48;
 }
 
-.gateway-chip.sponsor {
+.gateway-option.sponsor {
     background: #7c3aed;
 }
 
 .payment-workspace {
     display: grid;
-    grid-template-columns: minmax(260px, 0.42fr) minmax(0, 0.58fr);
+    grid-template-columns: minmax(280px, 0.36fr) minmax(0, 0.64fr);
     gap: 18px;
     align-items: start;
 }
@@ -1393,15 +1381,37 @@ p {
     display: grid;
     align-items: start;
     gap: 12px;
-    padding: 18px;
+    padding: clamp(18px, 3vw, 26px);
     border: 1px solid rgba(15, 76, 129, 0.13);
     border-radius: var(--radius);
-    background: rgba(255, 255, 255, 0.82);
+    background:
+        radial-gradient(circle at top right, rgba(32, 130, 95, 0.12), transparent 34%),
+        rgba(255, 255, 255, 0.84);
+    position: sticky;
+    top: 108px;
 }
 
-.gateway-selector label {
+.gateway-selector h2 {
+    margin: 0;
+    color: var(--blue-900);
+    font-size: clamp(24px, 3vw, 34px);
+}
+
+.gateway-selector p {
+    margin: 0;
+    color: var(--gray-700);
+}
+
+.gateway-select-label {
     color: var(--blue-900);
     font-weight: 900;
+    font-size: 0.86rem;
+}
+
+.gateway-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
 }
 
 .gateway-selector select {
@@ -1419,8 +1429,8 @@ p {
 .gateway-detail {
     --gateway-color: #16a34a;
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 22px;
+    grid-template-columns: minmax(180px, 0.34fr) minmax(0, 0.66fr);
+    gap: 0;
     align-items: stretch;
     border: 1px solid color-mix(in srgb, var(--gateway-color), transparent 72%);
     border-radius: var(--radius-lg);
@@ -1458,7 +1468,7 @@ p {
     display: grid;
     place-items: center;
     gap: 14px;
-    min-height: 210px;
+    min-height: 100%;
     padding: 18px;
     color: #ffffff;
     text-align: center;
@@ -1468,8 +1478,8 @@ p {
 }
 
 .gateway-visual img {
-    width: min(100%, 290px);
-    height: 145px;
+    width: min(100%, 210px);
+    height: 112px;
     object-fit: contain;
     display: block;
     border-radius: 22px;
@@ -1506,6 +1516,10 @@ p {
 }
 
 .payment-flow,
+.unlock-list {
+    grid-column: 1 / -1;
+}
+
 .unlock-list {
     padding: clamp(18px, 3vw, 28px);
     border: 1px solid rgba(15, 76, 129, 0.13);
@@ -1569,12 +1583,18 @@ p {
 }
 
 .unlock-list span {
+    display: grid;
+    gap: 4px;
     padding: 12px 14px;
     border-left: 4px solid var(--green-500);
     border-radius: 12px;
     background: rgba(232, 248, 243, 0.78);
     color: var(--blue-900);
     font-weight: 800;
+}
+
+.unlock-list span strong {
+    color: var(--green-700);
 }
 
 @keyframes payment-flow-slide {
@@ -2449,9 +2469,9 @@ p {
 
     .gateway-selector {
         align-items: stretch;
-        flex-direction: column;
         gap: 9px;
         padding: 12px;
+        position: static;
     }
 
     .gateway-selector select {
@@ -2651,27 +2671,22 @@ p {
         font-size: 0.7rem;
     }
 
-    .gateway-track {
-        justify-content: flex-start;
-        flex-wrap: nowrap;
-        overflow-x: auto;
+    .gateway-options {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 7px;
-        padding: 9px 8px;
-        width: 100%;
-        scrollbar-width: none;
     }
 
-    .gateway-track::-webkit-scrollbar {
-        display: none;
-    }
-
-    .gateway-chip {
+    .gateway-option {
         min-height: 32px;
         padding: 0 11px;
-        font-size: 0.78rem;
+        font-size: 0.72rem;
+        white-space: normal;
+        text-align: center;
     }
 
     .gateway-detail {
+        grid-template-columns: 1fr;
         gap: 0;
         border-radius: 18px;
     }
