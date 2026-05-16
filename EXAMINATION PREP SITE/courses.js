@@ -832,10 +832,29 @@ courseCatalog.forEach((course) => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    document.body.classList.toggle("has-session", hasStudentSession());
+    const loggedIn = hasStudentSession();
+    document.body.classList.toggle("has-session", loggedIn);
+    syncAuthenticatedNavigation(loggedIn);
     initializeCatalogPage();
     initializeCourseDetailPage();
 });
+
+function syncAuthenticatedNavigation(loggedIn) {
+    if (!loggedIn) {
+        return;
+    }
+
+    document.querySelectorAll(
+        '.navbar a[href="../login.html"], .navbar a[href="../register.html"], .drawer-nav a[href="../login.html"], .drawer-nav a[href="../register.html"]'
+    ).forEach((link) => {
+        const listItem = link.closest("li");
+        if (listItem) {
+            listItem.remove();
+            return;
+        }
+        link.remove();
+    });
+}
 
 function uid(prefix = "id") {
     if (window.crypto && typeof window.crypto.randomUUID === "function") {

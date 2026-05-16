@@ -4,6 +4,7 @@
     var loader;
     var slowTimer;
     var visible = false;
+    var firstEntryKey = 'gnp_loader_seen_once';
     var scriptUrl = document.currentScript ? document.currentScript.src : window.location.href;
     var logoUrl = new URL('../logo/finalLogo.jpg', scriptUrl).href;
 
@@ -79,8 +80,20 @@
         if (document.body) showOffline();
         else document.addEventListener('DOMContentLoaded', showOffline);
     } else {
+        try {
+            if (sessionStorage.getItem(firstEntryKey) !== '1') {
+                sessionStorage.setItem(firstEntryKey, '1');
+                if (document.body) showLoader('Loading Global NursePrep...');
+                else document.addEventListener('DOMContentLoaded', function () {
+                    showLoader('Loading Global NursePrep...');
+                });
+            }
+        } catch (error) {
+            if (document.body) showLoader('Loading Global NursePrep...');
+        }
+
         slowTimer = window.setTimeout(function () {
-            if (navigator.onLine === false && document.readyState !== 'complete') {
+            if (document.readyState !== 'complete') {
                 showLoader('Network is slow. Loading platform...');
             }
         }, 900);
