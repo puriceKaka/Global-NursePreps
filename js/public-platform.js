@@ -133,13 +133,28 @@ siteNav?.addEventListener('click', (event) => {
     const dropdownTrigger = event.target.closest('.dropdown-trigger');
     if (dropdownTrigger && isMobileNav()) {
         event.preventDefault();
-        dropdownTrigger.closest('.nav-dropdown')?.classList.toggle('open');
+        const dropdown = dropdownTrigger.closest('.nav-dropdown');
+        document.querySelectorAll('.nav-dropdown.open').forEach((openDropdown) => {
+            if (openDropdown !== dropdown) {
+                openDropdown.classList.remove('open');
+            }
+        });
+        dropdown?.classList.toggle('open');
         return;
     }
 
     const link = event.target.closest('a');
     if (!link) return;
     closeMobileNav();
+});
+
+document.addEventListener('click', (event) => {
+    if (!isMobileNav() || !siteNav?.classList.contains('open')) return;
+    const clickedInsideNav = event.target.closest('#siteNav');
+    const clickedToggle = event.target.closest('#navToggle');
+    if (!clickedInsideNav && !clickedToggle) {
+        closeMobileNav();
+    }
 });
 
 window.addEventListener('resize', () => {
