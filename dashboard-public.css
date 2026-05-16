@@ -104,7 +104,7 @@ img {
     gap: 24px;
     min-height: 88px;
     padding: 18px clamp(10px, 2vw, 28px);
-    background: rgba(7, 55, 99, 0.86);
+    background: linear-gradient(135deg, rgba(7, 55, 99, 0.96) 0%, rgba(15, 111, 181, 0.94) 54%, rgba(32, 130, 95, 0.88) 100%);
     border-bottom: 1px solid rgba(255, 255, 255, 0.16);
     backdrop-filter: blur(18px);
     box-shadow: 0 12px 34px rgba(7, 55, 99, 0.07);
@@ -253,8 +253,8 @@ img {
 .login-button,
 .secondary-button {
     color: var(--blue-900);
-    background: var(--white);
-    border: 1px solid var(--gray-200);
+    background: linear-gradient(135deg, #ffffff 0%, #edf8ff 100%);
+    border: 1px solid rgba(255, 255, 255, 0.82);
 }
 
 .register-button,
@@ -262,7 +262,7 @@ img {
 .enroll-button,
 .newsletter-row button {
     color: var(--white);
-    background: linear-gradient(135deg, var(--blue-800), var(--blue-500));
+    background: linear-gradient(135deg, var(--blue-900) 0%, var(--blue-600) 58%, #20825f 100%);
     box-shadow: 0 14px 28px rgba(15, 111, 181, 0.2);
 }
 
@@ -2299,7 +2299,7 @@ p {
         overflow-x: auto;
         margin-left: 0;
         padding: 8px 10px;
-        background: rgba(7, 55, 99, 0.94);
+        background: linear-gradient(135deg, rgba(7, 55, 99, 0.98), rgba(15, 111, 181, 0.96), rgba(32, 130, 95, 0.92));
         scrollbar-width: none;
     }
 
@@ -2343,12 +2343,15 @@ p {
     .nav-dropdown.open .dropdown-menu {
         display: grid;
         position: fixed;
-        left: 12px;
-        right: 12px;
+        left: 50%;
+        right: auto;
         top: 126px;
         z-index: 10;
+        width: min(520px, calc(100vw - 24px));
         max-height: calc(100vh - 146px);
         overflow-y: auto;
+        transform: translateX(-50%);
+        margin: 0 auto;
     }
 
     .nav-dropdown.open .dropdown-trigger {

@@ -17,7 +17,7 @@ body {
 .navbar,
 .results-top-bar,
 .exam-top-bar {
-    background: var(--primary) !important;
+    background: linear-gradient(135deg, #0a2342 0%, var(--primary) 58%, #20825f 100%) !important;
     color: #ffffff !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
@@ -34,7 +34,7 @@ body {
 #generate-btn,
 #next-btn,
 #review-answers-btn {
-    background: var(--primary) !important;
+    background: linear-gradient(135deg, #0a2342 0%, var(--primary) 58%, #20825f 100%) !important;
     color: #ffffff !important;
     border: none !important;
     border-radius: 999px !important;
@@ -46,7 +46,7 @@ body {
 .tab-btn,
 #prev-btn,
 #flag-btn {
-    background: #EAF4FC !important;
+    background: linear-gradient(135deg, #ffffff 0%, #EAF4FC 100%) !important;
     color: var(--primary) !important;
     border: 1px solid rgba(15, 76, 129, 0.14) !important;
     border-radius: 999px !important;
