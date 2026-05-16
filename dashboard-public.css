@@ -1520,6 +1520,13 @@ p {
     grid-column: 1 / -1;
 }
 
+.payment-flow {
+    padding: clamp(18px, 3vw, 28px);
+    border: 1px solid rgba(15, 76, 129, 0.13);
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.8);
+}
+
 .unlock-list {
     padding: clamp(18px, 3vw, 28px);
     border: 1px solid rgba(15, 76, 129, 0.13);
@@ -1532,6 +1539,11 @@ p {
     margin-bottom: 12px;
     background:
         linear-gradient(135deg, rgba(255, 255, 255, 0.86), rgba(232, 248, 243, 0.9));
+}
+
+.payment-page-flow {
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(232, 248, 243, 0.92));
 }
 
 .flow-steps {

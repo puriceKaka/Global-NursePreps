@@ -1530,7 +1530,7 @@ function renderCourseCard(course, state) {
                 </div>
                 <div class="muted small">${percent >= 100 ? "Certificate unlocked" : "Certificate locked until course completion"}</div>
                 <div class="course-actions card-actions${enrolled ? " enrolled-actions" : " unenrolled-actions"}">
-                    <button class="btn-primary" data-enroll-course="${course.id}">${enrolled ? "Continue learning" : "Enroll Now"}</button>
+                    <button class="btn-primary" data-enroll-course="${course.id}">${enrolled ? "Continue learning" : (loggedIn ? "Enroll Now" : "Login to enroll")}</button>
                     ${enrolled ? `<a class="btn-outline" href="${workspaceHref}">Open course</a>` : ""}
                     ${enrolled ? `<button class="btn-outline" data-cancel-course="${course.id}">Cancel</button>` : ""}
                 </div>
@@ -1586,13 +1586,13 @@ function renderSelectedProgram(course, state) {
         openBtn.href = enrolled ? `course-workspace.html?course=${encodeURIComponent(course.id)}` : "#selected-program";
         openBtn.removeAttribute("target");
         openBtn.removeAttribute("rel");
-        openBtn.textContent = enrolled ? "Open Workspace" : "Enroll Now";
+        openBtn.textContent = enrolled ? "Open Workspace" : (loggedIn ? "Enroll Now" : "Login to enroll");
         openBtn.classList.toggle("is-disabled", !enrolled);
         openBtn.setAttribute("aria-disabled", String(!enrolled));
     }
     const enrollBtn = document.getElementById("selected-enroll-btn");
     if (enrollBtn) {
-        enrollBtn.textContent = enrolled ? "Continue learning" : "Enroll Now";
+        enrollBtn.textContent = enrolled ? "Continue learning" : (loggedIn ? "Enroll Now" : "Login to enroll");
         enrollBtn.classList.toggle("btn-outline", enrolled);
         enrollBtn.classList.toggle("btn-primary", !enrolled);
     }
