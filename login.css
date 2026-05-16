@@ -50,6 +50,7 @@ html, body {
     gap: 10px;
     min-width: 0;
     overflow-wrap: anywhere;
+    flex: 1 1 auto;
 }
 
 .brand-nurse {
@@ -73,9 +74,10 @@ html, body {
 }
 
 .public-nav nav a {
-    padding: 9px 12px;
+    padding: 8px 10px;
     border-radius: 999px;
     white-space: nowrap;
+    font-size: clamp(11px, 2.4vw, 14px);
 }
 
 .public-nav nav a:hover,
@@ -480,10 +482,11 @@ input:focus {
         justify-content: flex-end;
         width: auto;
         gap: 6px;
+        flex: 0 1 auto;
     }
     .public-nav nav a {
-        padding: 8px 10px;
-        font-size: 13px;
+        padding: 7px 8px;
+        font-size: 11px;
     }
     .auth-shell {
         align-items: flex-start;

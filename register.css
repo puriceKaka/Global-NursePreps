@@ -47,6 +47,8 @@ html, body {
     display: inline-flex;
     align-items: center;
     gap: 10px;
+    min-width: 0;
+    flex: 1 1 auto;
 }
 
 .brand-nurse {
@@ -69,9 +71,10 @@ html, body {
 }
 
 .public-nav nav a {
-    padding: 7px 10px;
+    padding: 7px 9px;
     border-radius: 999px;
     white-space: nowrap;
+    font-size: clamp(11px, 2.4vw, 14px);
 }
 
 .public-nav nav a:hover,
@@ -372,6 +375,12 @@ input:focus {
     }
     .public-nav nav {
         justify-content: flex-end;
+        flex: 0 1 auto;
+    }
+
+    .public-nav nav a {
+        padding: 7px 8px;
+        font-size: 11px;
     }
 }
 
