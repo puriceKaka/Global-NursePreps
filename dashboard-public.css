@@ -2868,22 +2868,24 @@ p {
         gap: 0;
         border-radius: 18px;
         overflow: hidden;
+        width: 100%;
+        max-width: 100%;
     }
 
     .gateway-visual {
         order: 0;
         display: grid;
-        min-height: 218px;
-        padding: 16px 14px;
-        gap: 12px;
+        min-height: 188px;
+        padding: 14px 12px;
+        gap: 8px;
         visibility: visible;
         opacity: 1;
     }
 
     .gateway-visual img {
-        width: min(100%, 310px);
+        width: min(100%, 286px);
         height: auto;
-        min-height: 136px;
+        min-height: 118px;
         aspect-ratio: 640 / 420;
         object-fit: contain;
         display: block;
@@ -2899,25 +2901,39 @@ p {
 
     .gateway-content {
         order: 1;
-        padding: 14px;
+        display: grid;
+        gap: 9px;
+        padding: 14px 12px 16px;
+        text-align: left;
+        min-width: 0;
     }
 
     .gateway-content h2,
     .payment-flow h2,
     .unlock-list h2 {
-        font-size: 1.08rem;
-        line-height: 1.16;
+        margin: 0;
+        font-size: 1.02rem;
+        line-height: 1.18;
+    }
+
+    .gateway-content .eyebrow {
+        width: fit-content;
+        max-width: 100%;
+        font-size: 0.68rem;
     }
 
     .gateway-content p,
     .gateway-content li {
-        font-size: 0.86rem;
-        line-height: 1.5;
+        font-size: 0.84rem;
+        line-height: 1.48;
+        overflow-wrap: anywhere;
     }
 
     .gateway-content ol {
-        padding-left: 19px;
-        gap: 9px;
+        gap: 8px;
+        margin-top: 2px;
+        padding-left: 0;
+        list-style-position: inside;
     }
 
     .payment-hero-image {
@@ -2926,5 +2942,39 @@ p {
 
     .flow-steps article {
         flex-basis: 190px;
+    }
+}
+
+@media (max-width: 360px) {
+    .gateway-visual {
+        min-height: 168px;
+        padding: 12px 10px;
+    }
+
+    .gateway-visual img {
+        width: min(100%, 248px);
+        min-height: 104px;
+        border-radius: 14px;
+    }
+
+    .gateway-visual strong {
+        font-size: 1.05rem;
+    }
+
+    .gateway-content {
+        padding: 12px 10px 14px;
+        gap: 8px;
+    }
+
+    .gateway-content h2,
+    .payment-flow h2,
+    .unlock-list h2 {
+        font-size: 0.98rem;
+    }
+
+    .gateway-content p,
+    .gateway-content li {
+        font-size: 0.8rem;
+        line-height: 1.45;
     }
 }
