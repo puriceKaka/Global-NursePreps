@@ -1,6 +1,7 @@
 const gatewayData = {
     mpesa: {
         icon: "M",
+        image: "images/payments/mpesa.svg",
         visual: "M-Pesa",
         type: "Mobile money",
         title: "M-Pesa payment workflow",
@@ -14,6 +15,7 @@ const gatewayData = {
     },
     card: {
         icon: "V",
+        image: "images/payments/card.svg",
         visual: "Visa/Mastercard",
         type: "Card payment",
         title: "Visa and Mastercard payment workflow",
@@ -27,6 +29,7 @@ const gatewayData = {
     },
     paypal: {
         icon: "P",
+        image: "images/payments/paypal.svg",
         visual: "PayPal",
         type: "International payment",
         title: "PayPal payment workflow",
@@ -40,6 +43,7 @@ const gatewayData = {
     },
     bank: {
         icon: "B",
+        image: "images/payments/bank.svg",
         visual: "Bank Transfer",
         type: "Manual bank confirmation",
         title: "Bank transfer workflow",
@@ -53,6 +57,7 @@ const gatewayData = {
     },
     airtel: {
         icon: "A",
+        image: "images/payments/airtel.svg",
         visual: "Airtel Money",
         type: "Mobile wallet",
         title: "Airtel Money workflow",
@@ -66,6 +71,7 @@ const gatewayData = {
     },
     sponsor: {
         icon: "S",
+        image: "images/payments/sponsor.svg",
         visual: "Sponsor",
         type: "Institution or sponsor",
         title: "Institution and sponsor workflow",
@@ -81,7 +87,7 @@ const gatewayData = {
 
 const gatewaySelect = document.getElementById("gatewaySelect");
 const gatewayDetail = document.getElementById("gatewayDetail");
-const gatewayIcon = document.getElementById("gatewayIcon");
+const gatewayImage = document.getElementById("gatewayImage");
 const gatewayVisualTitle = document.getElementById("gatewayVisualTitle");
 const gatewayType = document.getElementById("gatewayType");
 const gatewayTitle = document.getElementById("gatewayTitle");
@@ -92,7 +98,8 @@ const paidCourseCount = document.getElementById("paidCourseCount");
 function renderGateway(key) {
     const gateway = gatewayData[key] || gatewayData.mpesa;
     gatewayDetail.dataset.gateway = key;
-    gatewayIcon.textContent = gateway.icon;
+    gatewayImage.src = gateway.image;
+    gatewayImage.alt = `${gateway.visual} payment illustration`;
     gatewayVisualTitle.textContent = gateway.visual;
     gatewayType.textContent = gateway.type;
     gatewayTitle.textContent = gateway.title;
