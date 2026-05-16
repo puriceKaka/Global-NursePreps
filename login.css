@@ -72,22 +72,22 @@ html, body {
 }
 
 .auth-shell {
-    min-height: 100vh;
+    min-height: calc(100vh - 120px);
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: clamp(32px, 6vw, 70px);
+    padding: 22px;
     width: 100%;
     overflow-x: hidden;
 }
 
 .auth-card {
-    width: min(1120px, 100%);
+    width: min(880px, 100%);
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 28px;
     display: grid;
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
     overflow: hidden;
     box-shadow: var(--shadow);
     animation: auth-rise 0.65s ease both;
@@ -95,7 +95,7 @@ html, body {
 
 .auth-left {
     background: linear-gradient(160deg, var(--ice-2), #ffffff);
-    padding: 22px 22px 0;
+    padding: 28px;
     border-right: 1px solid var(--border);
 }
 
@@ -192,7 +192,7 @@ html, body {
 }
 
 .auth-right {
-    padding: 34px 30px;
+    padding: 28px 24px;
     display: grid;
     align-content: start;
     gap: 14px;
