@@ -333,9 +333,11 @@ function clearChat() {
 
 function updateActionButton() {
     const hasText = input.value.trim().length > 0;
+    const voiceUnavailable = actionButton.dataset.voiceUnsupported === "true";
     actionButton.classList.toggle("has-text", hasText);
+    actionButton.classList.toggle("voice-unavailable", voiceUnavailable && !hasText);
     actionButton.type = "button";
-    actionButton.setAttribute("aria-label", hasText ? "Send message" : "Start voice input");
+    actionButton.setAttribute("aria-label", hasText ? "Send message" : (voiceUnavailable ? "Type your question" : "Start voice input"));
 }
 
 function resizeInput() {
@@ -363,6 +365,7 @@ function initVoice() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
         actionButton.dataset.voiceUnsupported = "true";
+        updateActionButton();
         return;
     }
 
@@ -456,10 +459,6 @@ actionButton.addEventListener("click", () => {
         return;
     }
 
-    appendMessage({
-        role: "bot",
-        text: "Voice input is not supported in this browser. You can still type your question and I will answer."
-    });
     input.focus();
 });
 
