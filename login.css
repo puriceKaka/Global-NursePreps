@@ -32,7 +32,7 @@ html, body {
     justify-content: space-between;
     gap: 16px;
     padding: 12px clamp(16px, 4vw, 56px);
-    background: #0F4C81;
+    background: linear-gradient(135deg, #0a2342 0%, #0F4C81 58%, #20825f 100%);
     color: #ffffff;
     min-width: 0;
 }
