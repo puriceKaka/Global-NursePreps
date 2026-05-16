@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Global NursePrep payment methods for nursing courses, licensing tracks, mock exams, and academic support.">
+    <title>Payments | Global NursePrep</title>
+    <link rel="stylesheet" href="css/site-loader.css">
+    <link rel="stylesheet" href="dashboard-public.css">
+    <script src="js/site-loader.js"></script>
+    <script defer src="js/payments.js"></script>
+</head>
+<body>
+    <header class="site-header" id="top">
+        <a class="brand" href="Dashboard.html#home" aria-label="Global NursePrep home">
+            <span class="brand-mark"><img src="logo/Screenshot_20260421-123818.jpg" alt="Global NursePrep logo"></span>
+            <span>Global <b>Nurse</b>Prep</span>
+        </a>
+
+        <button type="button" class="nav-toggle" id="navToggle" aria-expanded="false" aria-label="Open navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="site-nav" id="siteNav" aria-label="Primary navigation">
+            <a href="Dashboard.html#home">Home</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="EXAMINATION%20PREP%20SITE/courses.html">Courses</a>
+            <a href="licensing.html">Licensing</a>
+            <a href="payments.html" aria-current="page">Payments</a>
+        </nav>
+
+        <div class="nav-actions">
+            <a class="login-button" href="login.html">Login</a>
+            <a class="register-button" href="register.html">Register</a>
+        </div>
+    </header>
+
+    <main class="payments-page">
+        <section class="payments-hero section-shell reveal">
+            <div class="payments-copy">
+                <span class="eyebrow">Payments</span>
+                <h1>Pay securely and unlock only the course or licensing track you selected.</h1>
+                <p>
+                    Global NursePrep supports course units, licensing preparation, mock exams, live class access,
+                    certificates, and academic support payments through multiple gateway workflows.
+                </p>
+                <div class="payments-strip" aria-label="Payment highlights">
+                    <span>2500+ students trained</span>
+                    <span>Pass-rate analytics</span>
+                    <span>Academic support</span>
+                </div>
+            </div>
+
+            <aside class="payments-status" aria-label="Local payment status">
+                <div class="status-ring">
+                    <strong id="paidCourseCount">0</strong>
+                    <span>paid courses on this device</span>
+                </div>
+                <p>Payment records are stored against the student account and can be reviewed by admin before access is activated.</p>
+            </aside>
+        </section>
+
+        <section class="gateway-marquee" aria-label="Supported payment gateways">
+            <div class="gateway-track">
+                <span class="gateway-chip mpesa">M-Pesa</span>
+                <span class="gateway-chip visa">Visa/Mastercard</span>
+                <span class="gateway-chip paypal">PayPal</span>
+                <span class="gateway-chip bank">Bank Transfer</span>
+                <span class="gateway-chip airtel">Airtel Money</span>
+                <span class="gateway-chip sponsor">Institution/Sponsor</span>
+                <span class="gateway-chip mpesa">M-Pesa</span>
+                <span class="gateway-chip visa">Visa/Mastercard</span>
+                <span class="gateway-chip paypal">PayPal</span>
+                <span class="gateway-chip bank">Bank Transfer</span>
+                <span class="gateway-chip airtel">Airtel Money</span>
+                <span class="gateway-chip sponsor">Institution/Sponsor</span>
+            </div>
+        </section>
+
+        <section class="payment-workspace section-shell">
+            <div class="gateway-selector reveal">
+                <label for="gatewaySelect">Choose payment gateway</label>
+                <select id="gatewaySelect">
+                    <option value="mpesa">M-Pesa</option>
+                    <option value="card">Visa/Mastercard</option>
+                    <option value="paypal">PayPal</option>
+                    <option value="bank">Bank Transfer</option>
+                    <option value="airtel">Airtel Money</option>
+                    <option value="sponsor">Institution/Sponsor</option>
+                </select>
+            </div>
+
+            <article class="gateway-detail reveal" id="gatewayDetail" data-gateway="mpesa">
+                <div class="gateway-visual" aria-hidden="true">
+                    <span id="gatewayIcon">M</span>
+                    <strong id="gatewayVisualTitle">M-Pesa</strong>
+                </div>
+                <div class="gateway-content">
+                    <span class="eyebrow" id="gatewayType">Mobile money</span>
+                    <h2 id="gatewayTitle">M-Pesa payment workflow</h2>
+                    <p id="gatewayDescription">
+                        Use the M-Pesa option at enrollment, confirm the course name and price, then submit the
+                        transaction code for verification and course unlocking.
+                    </p>
+                    <ol id="gatewaySteps">
+                        <li>Register or login with the student account that will own the course.</li>
+                        <li>Select the exact course, licensing track, mock exam, or support service.</li>
+                        <li>Choose M-Pesa, pay from your phone, then save the transaction code.</li>
+                        <li>Access opens only after the selected item is confirmed as paid.</li>
+                    </ol>
+                </div>
+            </article>
+
+            <section class="payment-flow reveal">
+                <span class="eyebrow">Payment flow</span>
+                <h2>How learning access is unlocked</h2>
+                <div class="flow-steps">
+                    <article>
+                        <span>01</span>
+                        <strong>Create account</strong>
+                        <p>Course access is connected to a student account.</p>
+                    </article>
+                    <article>
+                        <span>02</span>
+                        <strong>Choose item</strong>
+                        <p>Select one unit, exam track, certificate route, or support service.</p>
+                    </article>
+                    <article>
+                        <span>03</span>
+                        <strong>Pay securely</strong>
+                        <p>Use the available gateway and keep the payment reference.</p>
+                    </article>
+                    <article>
+                        <span>04</span>
+                        <strong>Unlock access</strong>
+                        <p>Only the purchased videos, notes, quizzes, exams, and downloads open.</p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="unlock-list reveal">
+                <span class="eyebrow">What payment unlocks</span>
+                <h2>Materials connected to the purchased item</h2>
+                <div>
+                    <span>Recorded lectures and course videos</span>
+                    <span>PDF notes and downloadable revision materials</span>
+                    <span>Quizzes, assignments, practice MCQs, and mock exams</span>
+                    <span>Course progress, certificates, and analytics where included</span>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <button type="button" class="chat-button" id="chatButton">Purice AI</button>
+    <footer class="site-footer centered-footer" id="siteFooter"></footer>
+    <script src="js/public-platform.js"></script>
+</body>
+</html>
