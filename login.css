@@ -390,6 +390,11 @@ input:focus {
     text-decoration: none;
 }
 
+.links a:last-child {
+    margin-left: auto;
+    text-align: right;
+}
+
 .links a:hover {
     text-decoration: underline;
 }
