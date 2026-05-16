@@ -87,8 +87,6 @@ const gatewayData = {
 
 const gatewaySelect = document.getElementById("gatewaySelect");
 const gatewayDetail = document.getElementById("gatewayDetail");
-const gatewayImage = document.getElementById("gatewayImage");
-const gatewayVisualTitle = document.getElementById("gatewayVisualTitle");
 const gatewayType = document.getElementById("gatewayType");
 const gatewayTitle = document.getElementById("gatewayTitle");
 const gatewayDescription = document.getElementById("gatewayDescription");
@@ -98,13 +96,10 @@ const heroPaymentImage = document.getElementById("heroPaymentImage");
 function renderGateway(key) {
     const gateway = gatewayData[key] || gatewayData.mpesa;
     gatewayDetail.dataset.gateway = key;
-    gatewayImage.src = gateway.image;
-    gatewayImage.alt = `${gateway.visual} payment illustration`;
     if (heroPaymentImage) {
         heroPaymentImage.src = gateway.image;
         heroPaymentImage.alt = `${gateway.visual} payment details`;
     }
-    gatewayVisualTitle.textContent = gateway.visual;
     gatewayType.textContent = gateway.type;
     gatewayTitle.textContent = gateway.title;
     gatewayDescription.textContent = gateway.description;
