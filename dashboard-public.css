@@ -2108,6 +2108,10 @@ p {
         grid-template-columns: 1fr;
     }
 
+    .site-nav > a[href$="licensing.html"] {
+        margin-left: auto;
+    }
+
     .nav-dropdown.open .dropdown-menu {
         left: 50%;
         right: auto;
