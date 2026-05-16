@@ -3030,17 +3030,18 @@ p {
     .hero-trust {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 6px;
+        gap: 4px;
         width: 100%;
         margin-top: 14px;
     }
 
     .hero-trust span {
         justify-content: center;
-        min-height: 26px;
-        padding: 0 3px;
-        font-size: 0.54rem;
-        line-height: 1.15;
+        min-height: 30px;
+        padding: 0 2px;
+        font-size: clamp(0.62rem, 2.35vw, 0.76rem);
+        line-height: 1.08;
+        font-weight: 950;
         text-align: center;
         white-space: nowrap;
     }
