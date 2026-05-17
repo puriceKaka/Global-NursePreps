@@ -56,9 +56,21 @@ class AvatarTutor {
     }
     
     init() {
+        this.injectAvatarStyles();
         this.createAvatarUI();
         this.loadVoices();
         this.bindEvents();
+    }
+
+    injectAvatarStyles() {
+        if (document.getElementById('avatarTutorStyles')) return;
+        const template = document.createElement('template');
+        template.innerHTML = this.getAvatarStyles().trim();
+        const style = template.content.firstElementChild;
+        if (style) {
+            style.id = 'avatarTutorStyles';
+            document.head.appendChild(style);
+        }
     }
     
     createAvatarUI() {
@@ -106,8 +118,14 @@ class AvatarTutor {
             </div>
         `;
         
+        const cleanAvatarHTML = avatarHTML
+            .replace(/<div class="avatar-badge">[\s\S]*?<\/div>/, '<div class="avatar-badge">RN</div>')
+            .replace(/<span class="icon-volume">[\s\S]*?<\/span>/, '<span class="icon-volume">Voice</span>')
+            .replace(/<span class="icon-lang">[\s\S]*?<\/span>/, '<span class="icon-lang">EN</span>')
+            .replace(/<span class="icon-speed">[\s\S]*?<\/span>/, '<span class="icon-speed">1x</span>');
+
         if (this.container) {
-            this.container.innerHTML = avatarHTML;
+            this.container.innerHTML = cleanAvatarHTML;
             this.container.classList.add('avatar-tutor-active');
         }
         
@@ -150,6 +168,11 @@ class AvatarTutor {
     }
     
     speak(text, expression = 'neutral') {
+        if (this.isMuted) {
+            this.showSpeechBubble(text);
+            return;
+        }
+
         if (!('speechSynthesis' in window)) {
             this.showSpeechBubble(text);
             return;
@@ -196,7 +219,7 @@ class AvatarTutor {
             this.speechBubble.classList.add('visible');
             
             // Auto-hide after text is read (estimate reading time)
-            const readingTime = text.length / 15 / 1000 + 2; // ~15 chars per second + buffer
+            const readingTime = text.length / 15 + 2; // ~15 chars per second + buffer
             setTimeout(() => {
                 this.speechBubble?.classList.remove('visible');
             }, readingTime * 1000);
@@ -204,10 +227,10 @@ class AvatarTutor {
     }
     
     setState(state) {
-        if (this.avatarCharacter && this.states[state]) {
+        if (this.avatarCharacter && Object.values(this.states).includes(state)) {
             this.avatarCharacter.classList.remove(...Object.values(this.states));
-            this.avatarCharacter.classList.add(this.states[state]);
-            this.currentState = this.states[state];
+            this.avatarCharacter.classList.add(state);
+            this.currentState = state;
         }
     }
     
@@ -254,9 +277,9 @@ class AvatarTutor {
         this.speak(completionText, 'happy');
         
         // Add celebration animation
-        this.avatarCharacter?.classList.add('celebrating');
+        this.avatarCharacter?.classList.add('avatar-celebrating');
         setTimeout(() => {
-            this.avatarCharacter?.classList.remove('celebrating');
+            this.avatarCharacter?.classList.remove('avatar-celebrating');
         }, 3000);
     }
     
@@ -510,9 +533,10 @@ class AvatarTutor {
             }
             
             .avatar-control-btn {
-                width: 36px;
+                min-width: 44px;
                 height: 36px;
-                border-radius: 50%;
+                padding: 0 8px;
+                border-radius: 999px;
                 border: 2px solid #667eea;
                 background: white;
                 cursor: pointer;
@@ -520,6 +544,8 @@ class AvatarTutor {
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                font-size: 11px;
+                font-weight: 800;
             }
             
             .avatar-control-btn:hover {
@@ -552,6 +578,19 @@ class AvatarTutor {
         `;
     }
 }
+
+AvatarTutor.prototype.toggleMute = function toggleMute() {
+    if (this.speaking) {
+        this.stopSpeaking();
+        return;
+    }
+
+    this.isMuted = !this.isMuted;
+    const muteBtn = document.getElementById('avatarMuteBtn');
+    if (muteBtn) {
+        muteBtn.querySelector('.icon-volume').textContent = this.isMuted ? 'Muted' : 'Voice';
+    }
+};
 
 // Initialize avatar when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {

@@ -149,14 +149,6 @@
 
                     <div class="module-grid">
                         <div class="module-copy-panel">
-                            <div class="avatar-guide-card" id="avatar-guide-card">
-                                <div class="avatar-guide-face" aria-hidden="true">AI</div>
-                                <div>
-                                    <span class="section-kicker">Avatar tutor</span>
-                                    <strong id="avatar-guide-title">Guided lesson</strong>
-                                    <p id="avatar-guide-message">Your tutor will introduce this module, explain the clinical link, and guide you to the checkpoint question.</p>
-                                </div>
-                            </div>
                             <div class="learning-objective">
                                 <strong>Objective</strong>
                                 <span id="module-objective"></span>
@@ -168,7 +160,19 @@
                             </div>
                             <h3>Key Structures</h3>
                             <ul id="module-structures" class="structure-card-list"></ul>
+                            <div class="lesson-completion-gate" id="lesson-completion-gate">
+                                <strong>Lesson progress</strong>
+                                <span id="lesson-completion-hint">Scroll through the full lesson to enable completion.</span>
+                            </div>
                         </div>
+                        <aside class="avatar-guide-card avatar-side-panel" id="avatar-guide-card" aria-label="Avatar tutor">
+                            <div class="avatar-guide-face" aria-hidden="true">AI</div>
+                            <div>
+                                <span class="section-kicker">Avatar tutor</span>
+                                <strong id="avatar-guide-title">Guided lesson</strong>
+                                <p id="avatar-guide-message">Your tutor will introduce this module, explain the clinical link, and guide you to the checkpoint question.</p>
+                            </div>
+                        </aside>
                     </div>
                 </div>
 

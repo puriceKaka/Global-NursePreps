@@ -1007,7 +1007,8 @@ function initializeCatalogPage() {
             .filter((course) => matchesCategory(course, view.category))
             .filter((course) => matchesDifficulty(course, view.difficulties))
             .filter((course) => matchesSearch(course, view.search))
-            .sort((left, right) => sortCourses(left, right, view.sort));
+            .sort((left, right) => sortCourses(left, right, view.sort))
+            .sort((left, right) => promoteSelectedCourse(left, right, view.selectedCourseId));
 
         if (!filteredCourses.some((course) => course.id === view.selectedCourseId)) {
             view.selectedCourseId = filteredCourses[0]?.id || courseCatalog[0].id;
@@ -1196,6 +1197,8 @@ function initializeCourseDetailPage() {
         modulePearlTitle: document.getElementById("module-pearl-title"),
         modulePearlBody: document.getElementById("module-pearl-body"),
         structureList: document.getElementById("module-structures"),
+        lessonGate: document.getElementById("lesson-completion-gate"),
+        lessonHint: document.getElementById("lesson-completion-hint"),
         quizPanel: document.getElementById("module-quiz-panel"),
         quizToggle: document.getElementById("toggle-quiz-btn"),
         quizPrompt: document.getElementById("quiz-prompt"),
@@ -1210,6 +1213,8 @@ function initializeCourseDetailPage() {
 
     let activeCourse = currentCourse;
     let activeModuleIndex = clampModuleIndex(state.progress[activeCourse.id].currentModuleIndex, activeCourse.modules.length);
+    let lessonEndReady = false;
+    let lessonScrollHandler = null;
 
     elements.prevButton.addEventListener("click", () => {
         if (activeModuleIndex > 0) {
@@ -1255,6 +1260,7 @@ function initializeCourseDetailPage() {
         progress.lastVisited = new Date().toISOString();
         saveLearningState(latest);
         elements.workspaceSaveState.textContent = "Module completed";
+        window.avatarTutor?.celebrateCompletion?.();
         renderWorkspace();
     });
 
@@ -1428,10 +1434,70 @@ function initializeCourseDetailPage() {
         elements.prevButton.disabled = activeModuleIndex === 0;
         elements.nextButton.disabled = activeModuleIndex === activeCourse.modules.length - 1;
         elements.nextButton.textContent = activeModuleIndex === activeCourse.modules.length - 1 ? "Stay on Final Module" : "Next Module";
-        elements.markCompleteButton.disabled = completed;
-        elements.markCompleteButton.textContent = completed ? "Completed" : "Mark Lesson Complete";
+        setupLessonCompletionGate(completed);
         elements.workspaceProgressBar.style.width = `${getProgressPercent(activeCourse.id)}%`;
         elements.workspaceProgressLabel.textContent = `${getProgressPercent(activeCourse.id)}% complete`;
+
+        if (!completed) {
+            const tutorText = `Let us study ${module.title.replace(/^.*?:\s*/, "")}. Move through the lesson, then I will help you check understanding.`;
+            window.avatarTutor?.showSpeechBubble?.(tutorText);
+        }
+    }
+
+    function setupLessonCompletionGate(completed) {
+        if (lessonScrollHandler) {
+            window.removeEventListener("scroll", lessonScrollHandler);
+            window.removeEventListener("resize", lessonScrollHandler);
+            lessonScrollHandler = null;
+        }
+
+        lessonEndReady = completed;
+        updateLessonGate(completed);
+
+        if (completed) {
+            return;
+        }
+
+        lessonScrollHandler = () => {
+            if (lessonEndReady || !hasReachedLessonEnd()) {
+                return;
+            }
+            lessonEndReady = true;
+            elements.workspaceSaveState.textContent = "Lesson end reached";
+            updateLessonGate(false);
+            window.avatarTutor?.encourageLearner?.();
+            window.removeEventListener("scroll", lessonScrollHandler);
+            window.removeEventListener("resize", lessonScrollHandler);
+            lessonScrollHandler = null;
+        };
+
+        window.addEventListener("scroll", lessonScrollHandler, { passive: true });
+        window.addEventListener("resize", lessonScrollHandler);
+        window.requestAnimationFrame(lessonScrollHandler);
+    }
+
+    function hasReachedLessonEnd() {
+        const target = elements.lessonGate || elements.structureList;
+        if (!target) {
+            return true;
+        }
+        const rect = target.getBoundingClientRect();
+        return rect.top <= window.innerHeight * 0.86;
+    }
+
+    function updateLessonGate(completed) {
+        if (elements.lessonGate) {
+            elements.lessonGate.classList.toggle("ready", completed || lessonEndReady);
+        }
+        if (elements.lessonHint) {
+            elements.lessonHint.textContent = completed
+                ? "This lesson is complete. You can open the checkpoint assessment."
+                : (lessonEndReady ? "Lesson end reached. You can now mark this module complete." : "Scroll through the full lesson to enable completion.");
+        }
+        elements.markCompleteButton.disabled = completed || !lessonEndReady;
+        elements.markCompleteButton.textContent = completed
+            ? "Completed"
+            : (lessonEndReady ? "Mark Lesson Complete" : "Scroll to Finish Lesson");
     }
 
     function getNextStepLabel(progress) {
@@ -1798,6 +1864,19 @@ function clampModuleIndex(index, length) {
         return 0;
     }
     return Math.max(0, Math.min(index, length - 1));
+}
+
+function promoteSelectedCourse(left, right, selectedCourseId) {
+    if (!selectedCourseId) {
+        return 0;
+    }
+    if (left.id === selectedCourseId && right.id !== selectedCourseId) {
+        return -1;
+    }
+    if (right.id === selectedCourseId && left.id !== selectedCourseId) {
+        return 1;
+    }
+    return 0;
 }
 
 function formatDate(value) {
