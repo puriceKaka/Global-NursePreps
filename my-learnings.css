@@ -39,8 +39,9 @@
 }
 
 .learning-card .card-actions {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
     gap: 10px;
     overflow: visible;
 }
@@ -48,12 +49,29 @@
 .learning-card .primary-button,
 .learning-card .pill-button,
 .learning-card .secondary-button {
-    flex: 1 1 150px;
-    min-width: min(100%, 150px);
+    width: 100%;
+    min-width: 0;
     white-space: normal;
     overflow-wrap: anywhere;
     text-align: center;
     min-height: 42px;
+}
+
+@media (max-width: 430px) {
+    .learning-card .card-actions,
+    .card-actions {
+        gap: 6px;
+    }
+
+    .learning-card .primary-button,
+    .learning-card .pill-button,
+    .learning-card .secondary-button,
+    .card-actions .primary-button,
+    .card-actions .pill-button,
+    .card-actions .secondary-button {
+        padding-inline: 5px;
+        font-size: 0.72rem;
+    }
 }
 
 .progress-wrap {

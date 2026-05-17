@@ -1342,7 +1342,7 @@ p {
 }
 
 .license-view-button {
-    background: linear-gradient(135deg, var(--blue-900) 0%, var(--blue-600) 58%, #20825f 100%);
+    background: linear-gradient(135deg, #071f3f 0%, #0f4c81 48%, #20825f 100%);
 }
 
 .license-enroll-button {

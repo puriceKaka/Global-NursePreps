@@ -1524,10 +1524,11 @@ body[data-page="catalog"] .badge.alt {
 }
 
 body[data-page="catalog"] .course-actions {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
     gap: 10px;
-    align-items: center;
+    align-items: stretch;
     margin-top: auto;
     min-width: 0;
     overflow: visible;
@@ -1535,10 +1536,10 @@ body[data-page="catalog"] .course-actions {
 
 body[data-page="catalog"] .course-actions .btn-primary,
 body[data-page="catalog"] .course-actions .btn-outline {
-    flex: 1 1 150px;
-    min-width: min(100%, 150px);
+    width: 100%;
+    min-width: 0;
     padding: 10px 14px;
-    min-height: 40px;
+    min-height: 44px;
     font-size: 0.9rem;
     white-space: normal;
     text-align: center;
@@ -1548,7 +1549,7 @@ body[data-page="catalog"] .course-actions .btn-outline {
 }
 
 body[data-page="catalog"] .course-actions.enrolled-actions {
-    flex-wrap: wrap;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .course-progress-inline {
@@ -1740,8 +1741,8 @@ body[data-page="catalog"].has-session #menuToggle {
     body[data-page="catalog"] .course-actions .btn-primary,
     body[data-page="catalog"] .course-actions .btn-outline {
         padding: 9px 8px;
-        min-height: 38px;
-        font-size: 0.78rem;
+        min-height: 42px;
+        font-size: 0.76rem;
     }
 
     body[data-page="catalog"] .catalog-toolbar {
@@ -1775,8 +1776,8 @@ body[data-page="catalog"].has-session #menuToggle {
     }
 
     body[data-page="catalog"] .course-actions.enrolled-actions {
-        display: flex;
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     body[data-page="catalog"] .course-actions.unenrolled-actions {
@@ -1786,7 +1787,7 @@ body[data-page="catalog"].has-session #menuToggle {
     body[data-page="catalog"] .course-actions .btn-primary,
     body[data-page="catalog"] .course-actions .btn-outline {
         width: auto;
-        padding: 8px 6px;
-        font-size: 0.78rem;
+        padding: 8px 4px;
+        font-size: 0.7rem;
     }
 }

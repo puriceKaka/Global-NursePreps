@@ -1432,10 +1432,11 @@ canvas {
 }
 
 .card-actions {
-    display: flex;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
     gap: 10px;
-    flex-wrap: wrap;
-    align-items: center;
+    align-items: stretch;
     min-width: 0;
     overflow: visible;
 }
@@ -1443,8 +1444,8 @@ canvas {
 .card-actions .primary-button,
 .card-actions .pill-button,
 .card-actions .secondary-button {
-    flex: 1 1 150px;
-    min-width: min(100%, 150px);
+    width: 100%;
+    min-width: 0;
     padding-inline: 10px;
     font-size: 0.86rem;
     min-height: 42px;
