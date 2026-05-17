@@ -141,6 +141,10 @@
                 email,
                 ...passwordRecord,
                 role: 'student',
+                verified: false,
+                emailVerified: false,
+                verificationStatus: 'pending',
+                verificationToken: window.GnpAuthSecurity?.createClientToken?.('gnp_verify') || uid('verify'),
                 profile: {
                     displayName: window.GnpUtils?.sanitizeText?.(name) || name,
                     learningGoal: 'Nursing exam preparation',

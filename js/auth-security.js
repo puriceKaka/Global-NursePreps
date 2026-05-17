@@ -15,6 +15,28 @@ window.GnpAuthSecurity = (() => {
         return `${Date.now().toString(16)}${Math.random().toString(16).slice(2)}`.padEnd(byteLength * 2, "0").slice(0, byteLength * 2);
     }
 
+    function createClientToken(prefix = "gnp") {
+        return `${prefix}_${randomHex(32)}`;
+    }
+
+    function createSessionTokens(hours = 8) {
+        const issuedAt = new Date();
+        const expiresAt = new Date(issuedAt.getTime() + hours * 60 * 60 * 1000);
+        return {
+            tokenType: "Bearer",
+            authToken: createClientToken("gnp_access"),
+            refreshToken: createClientToken("gnp_refresh"),
+            issuedAt: issuedAt.toISOString(),
+            expiresAt: expiresAt.toISOString()
+        };
+    }
+
+    function isSessionValid(session) {
+        if (!session?.userId || !session?.authToken) return false;
+        const expires = Date.parse(session.expiresAt || "");
+        return Number.isFinite(expires) && expires > Date.now();
+    }
+
     async function sha256Hex(text) {
         if (!window.crypto?.subtle) return text;
         const hash = await window.crypto.subtle.digest("SHA-256", encoder.encode(text));
@@ -83,6 +105,9 @@ window.GnpAuthSecurity = (() => {
         createPasswordRecord,
         verifyPassword,
         upgradePasswordIfNeeded,
-        sha256Hex
+        sha256Hex,
+        createClientToken,
+        createSessionTokens,
+        isSessionValid
     };
 })();

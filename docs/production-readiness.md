@@ -8,6 +8,9 @@ This project is prepared for a backend/database migration while still running as
 - Password records use salted PBKDF2 hashes in the server scaffold.
 - Registration redirects to login; users must officially log in after account creation.
 - Frontend "Remember me" stores only email, not plaintext passwords.
+- Login sessions store bearer-style access tokens, refresh tokens, issue time, and expiry time.
+- The API scaffold includes `/api/auth/verify` for future server-side token validation.
+- `js/api-client.js` adds reusable authenticated requests with bearer headers, timeout, and retry support.
 
 ## Fault Tolerance
 

@@ -19,7 +19,12 @@ window.GnpUtils = (() => {
     }
 
     function getSession() {
-        return safeJsonParse(localStorage.getItem("nurseprep_session"), null);
+        const session = safeJsonParse(localStorage.getItem("nurseprep_session"), null);
+        if (!session?.userId) return null;
+        if (window.GnpAuthSecurity?.isSessionValid && !window.GnpAuthSecurity.isSessionValid(session)) {
+            return null;
+        }
+        return session;
     }
 
     function requireAuth(nextUrl = "homepage.html") {

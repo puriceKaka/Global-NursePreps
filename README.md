@@ -55,6 +55,7 @@ Endpoints:
 - `GET /api/ready`
 - `POST /api/auth/register`
 - `POST /api/auth/login`
+- `GET /api/auth/verify` with `Authorization: Bearer <token>`
 - `GET /api/learning/state?userId=...`
 - `PUT /api/learning/state` with JSON `{ "userId": "...", "state": { ... } }`
 
@@ -63,6 +64,7 @@ Database starter schema:
 
 Production notes:
 - `docs/production-readiness.md`
+- `js/api-client.js` provides a token-aware API client for future backend calls.
 
 3. To create a new meeting:
    - Click "New meeting"

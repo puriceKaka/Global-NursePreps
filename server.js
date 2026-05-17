@@ -63,6 +63,24 @@ function createSessionToken(user) {
     return `${header}.${payload}.${signature}`;
 }
 
+function verifySessionToken(token) {
+    const parts = String(token || '').split('.');
+    if (parts.length !== 3) return null;
+    const [header, payload, signature] = parts;
+    const secret = process.env.JWT_SECRET || 'dev-change-this-secret';
+    const expected = crypto.createHmac('sha256', secret).update(`${header}.${payload}`).digest('base64url');
+    const actual = Buffer.from(signature);
+    const expectedBuffer = Buffer.from(expected);
+    if (actual.length !== expectedBuffer.length || !crypto.timingSafeEqual(actual, expectedBuffer)) return null;
+    try {
+        const decoded = JSON.parse(Buffer.from(payload, 'base64url').toString('utf8'));
+        if (!decoded?.sub || Number(decoded.exp || 0) <= Math.floor(Date.now() / 1000)) return null;
+        return decoded;
+    } catch {
+        return null;
+    }
+}
+
 const memoryUsers = new Map();
 
 app.use((req, res, next) => {
@@ -167,6 +185,25 @@ app.post('/api/auth/login', asyncRoute(async (req, res) => {
     sendOk(res, {
         token: createSessionToken(user),
         user: { id: user.id, name: user.name, email: user.email, role: user.role || 'student' }
+    });
+}));
+
+app.get('/api/auth/verify', asyncRoute(async (req, res) => {
+    const header = String(req.headers.authorization || '');
+    const token = header.toLowerCase().startsWith('bearer ') ? header.slice(7).trim() : '';
+    const decoded = verifySessionToken(token);
+    if (!decoded) {
+        sendError(res, 401, 'Invalid or expired token.', 'INVALID_TOKEN');
+        return;
+    }
+
+    sendOk(res, {
+        user: {
+            id: decoded.sub,
+            email: decoded.email,
+            role: decoded.role
+        },
+        expiresAt: new Date(Number(decoded.exp) * 1000).toISOString()
     });
 }));
 

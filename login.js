@@ -132,13 +132,17 @@
 
             localStorage.removeItem(LECTURER_SESSION_KEY);
             localStorage.removeItem(ADMIN_SESSION_KEY);
+            const tokens = window.GnpAuthSecurity?.createSessionTokens?.(8) || {};
             saveJson(STORAGE_KEYS.session, {
                 id: uid('session'),
                 userId: user.id,
                 name: user.name,
                 email: user.email,
                 role: user.role || 'student',
-                loginAt: new Date().toISOString()
+                loginAt: new Date().toISOString(),
+                verified: user.verified === true || user.emailVerified === true,
+                verificationStatus: user.verificationStatus || 'pending',
+                ...tokens
             });
 
             if ($('#rememberMe')?.checked) {

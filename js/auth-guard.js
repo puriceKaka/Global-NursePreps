@@ -16,7 +16,11 @@
     }
 
     const account = users.find((user) => user.id === session?.userId);
-    if (session?.userId && account && (!account.role || account.role === "student")) return;
+    const expires = Date.parse(session?.expiresAt || "");
+    const validSession = window.GnpAuthSecurity?.isSessionValid
+        ? window.GnpAuthSecurity.isSessionValid(session)
+        : Boolean(session?.userId && session?.authToken && Number.isFinite(expires) && expires > Date.now());
+    if (validSession && account && (!account.role || account.role === "student")) return;
     localStorage.removeItem("nurseprep_session");
 
     const script = document.currentScript;

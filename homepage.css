@@ -69,7 +69,9 @@ canvas {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    white-space: nowrap;
+    white-space: normal;
+    text-align: center;
+    overflow-wrap: anywhere;
 }
 
 .primary-button {
@@ -1432,18 +1434,20 @@ canvas {
 .card-actions {
     display: flex;
     gap: 10px;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     align-items: center;
     min-width: 0;
+    overflow: visible;
 }
 
 .card-actions .primary-button,
 .card-actions .pill-button,
 .card-actions .secondary-button {
-    flex: 1 1 0;
-    min-width: 0;
+    flex: 1 1 150px;
+    min-width: min(100%, 150px);
     padding-inline: 10px;
     font-size: 0.86rem;
+    min-height: 42px;
 }
 
 /* Reduce motion */

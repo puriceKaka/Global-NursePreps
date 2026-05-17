@@ -17,6 +17,7 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
+    overflow: visible;
 }
 
 .learning-card {
@@ -26,12 +27,33 @@
     background: #ffffff;
     display: grid;
     gap: 12px;
+    overflow: visible;
+    min-width: 0;
 }
 
 .learning-card h4 {
     margin: 0;
     color: var(--navy);
     font-size: 18px;
+    overflow-wrap: anywhere;
+}
+
+.learning-card .card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    overflow: visible;
+}
+
+.learning-card .primary-button,
+.learning-card .pill-button,
+.learning-card .secondary-button {
+    flex: 1 1 150px;
+    min-width: min(100%, 150px);
+    white-space: normal;
+    overflow-wrap: anywhere;
+    text-align: center;
+    min-height: 42px;
 }
 
 .progress-wrap {
@@ -107,4 +129,3 @@
         grid-template-columns: 1fr;
     }
 }
-
