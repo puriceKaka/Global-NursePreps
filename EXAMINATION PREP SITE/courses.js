@@ -987,7 +987,7 @@ function initializeCatalogPage() {
         }
         latest.selectedCourseId = selectedCourse.id;
         saveLearningState(latest);
-        renderCatalog();
+        window.location.href = `course-workspace.html?course=${encodeURIComponent(selectedCourse.id)}`;
     });
 
     renderCatalog();
@@ -1077,8 +1077,7 @@ function initializeCatalogPage() {
 
                 latest.selectedCourseId = courseId;
                 saveLearningState(latest);
-                view.selectedCourseId = courseId;
-                renderCatalog();
+                window.location.href = `course-workspace.html?course=${encodeURIComponent(courseId)}`;
             });
         });
 
@@ -1591,22 +1590,34 @@ function renderCourseCard(course, state) {
     const percent = getProgressPercent(course.id, state);
     const workspaceHref = `course-workspace.html?course=${encodeURIComponent(course.id)}`;
     const courseImage = course.image || "../assets/nursing-hero.svg";
+    const selected = state.selectedCourseId === course.id;
+    const sectionCount = Array.isArray(course.terms) ? course.terms.length : Math.max(1, Math.ceil(course.modules.length / 3));
+    const progressLabel = percent >= 100 ? "Complete" : (percent > 0 ? "In progress" : "Not started");
+    const entryLabel = enrolled ? "Continue learning" : (loggedIn ? "Enroll and start" : "Login to enroll");
     const termPreview = Array.isArray(course.terms)
         ? `<div class="term-preview">${course.terms.map((term) => `<span>${escapeHtml(term.name)}: ${term.modules.length} modules</span>`).join("")}</div>`
         : "";
     return `
-        <article class="course-card homepage-style-course-card reveal-on-scroll${state.selectedCourseId === course.id ? " selected-course-card" : ""}" data-select-course="${course.id}" tabindex="0">
+        <article class="course-card homepage-style-course-card reveal-on-scroll${selected ? " selected-course-card" : ""}" data-select-course="${course.id}" tabindex="0">
+            <div class="catalog-card-head">
+                <span>${selected ? "Selected course" : "Learning path"}</span>
+                <strong>${progressLabel}</strong>
+            </div>
             <img class="course-card-image" src="${courseImage}" alt="${course.title} course image" loading="lazy">
             <div class="course-card-body">
                 <div class="badge-row">
                     <span class="badge">${course.category}</span>
                     <span class="badge alt">${course.difficulty}</span>
-                    <span class="badge alt">${course.modules.length} units</span>
                     <span class="badge alt">${Number(course.price || 0) > 0 ? `KES ${Number(course.price).toLocaleString()}` : "Free"}</span>
                     ${enrolled ? `<span class="course-chip enrolled-chip">Enrolled</span>` : ""}
                 </div>
                 <h4>${course.title}</h4>
                 <p>${course.summary}</p>
+                <div class="catalog-learning-strip" aria-label="Course learning structure">
+                    <span><strong>${course.modules.length}</strong> Lessons</span>
+                    <span><strong>${sectionCount}</strong> Sections</span>
+                    <span><strong>${Number(course.exams || 0)}</strong> Checks</span>
+                </div>
                 ${termPreview}
                 <div class="muted small">${Number(course.questions || 0).toLocaleString()}+ questions • ${Number(course.durationHours || 0)}h guided study • ${Number(course.exams || 0)} assessments</div>
                 <div class="course-progress-inline">
@@ -1615,7 +1626,7 @@ function renderCourseCard(course, state) {
                 </div>
                 <div class="muted small">${percent >= 100 ? "Certificate unlocked" : "Certificate locked until course completion"}</div>
                 <div class="course-actions card-actions${enrolled ? " enrolled-actions" : " unenrolled-actions"}">
-                    <button class="btn-primary" data-enroll-course="${course.id}">${enrolled ? "Continue learning" : (loggedIn ? "Enroll Now" : "Login to enroll")}</button>
+                    <button class="btn-primary" data-enroll-course="${course.id}">${entryLabel}</button>
                     ${enrolled ? `<a class="btn-outline" href="${workspaceHref}">Open course</a>` : ""}
                     ${enrolled ? `<button class="btn-outline" data-cancel-course="${course.id}">Cancel</button>` : ""}
                 </div>

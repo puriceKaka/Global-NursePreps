@@ -1464,6 +1464,32 @@ body[data-page="catalog"] .course-card.homepage-style-course-card.selected-cours
     border-color: rgba(0, 156, 166, 0.52);
 }
 
+body[data-page="catalog"] .catalog-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    min-height: 34px;
+    padding: 0.42rem 0.55rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: #f8fbff;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    font-weight: 900;
+}
+
+body[data-page="catalog"] .selected-course-card .catalog-card-head {
+    border-color: rgba(0, 156, 166, 0.38);
+    background: rgba(0, 156, 166, 0.09);
+    color: var(--navy);
+}
+
+body[data-page="catalog"] .catalog-card-head strong {
+    color: var(--navy);
+    white-space: nowrap;
+}
+
 body[data-page="catalog"] .course-card-image {
     width: 100%;
     aspect-ratio: 16 / 9;
@@ -1520,6 +1546,30 @@ body[data-page="catalog"] .course-card h4 {
 
 body[data-page="catalog"] .course-card p {
     margin: 0;
+}
+
+body[data-page="catalog"] .catalog-learning-strip {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+}
+
+body[data-page="catalog"] .catalog-learning-strip span {
+    display: grid;
+    gap: 2px;
+    min-height: 54px;
+    padding: 0.55rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: #fbfdff;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    line-height: 1.2;
+}
+
+body[data-page="catalog"] .catalog-learning-strip strong {
+    color: var(--navy);
+    font-size: 1rem;
 }
 
 body[data-page="catalog"] .badge-row {
@@ -1769,6 +1819,10 @@ body[data-page="catalog"].has-session #menuToggle {
     body[data-page="catalog"] .course-meta,
     body[data-page="catalog"] .course-stats {
         grid-template-columns: 1fr;
+    }
+
+    body[data-page="catalog"] .catalog-learning-strip {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     body[data-page="catalog"] .course-actions {
