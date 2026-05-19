@@ -1165,7 +1165,7 @@ function initializeCourseDetailPage() {
     const currentProgress = ensureCourseProgress(state, currentCourse.id);
     if (!state.enrolledCourseIds.includes(currentCourse.id)) {
         saveLearningState(state);
-        window.location.href = "courses.html";
+        redirectToLoginForEnrollment(currentCourse.id);
         return;
     }
     currentProgress.currentModuleIndex = Number.isInteger(requestedModuleIndex)
@@ -1214,6 +1214,11 @@ function initializeCourseDetailPage() {
     let activeModuleIndex = clampModuleIndex(state.progress[activeCourse.id].currentModuleIndex, activeCourse.modules.length);
     let lessonEndReady = false;
     let lessonScrollHandler = null;
+    if (!isModuleUnlocked(activeModuleIndex, currentProgress)) {
+        activeModuleIndex = getFirstAvailableModuleIndex(currentProgress);
+        currentProgress.currentModuleIndex = activeModuleIndex;
+        saveLearningState(state);
+    }
 
     elements.prevButton.addEventListener("click", () => {
         if (activeModuleIndex > 0) {
@@ -1227,7 +1232,7 @@ function initializeCourseDetailPage() {
         if (!elements.quizPanel) return;
         const latest = getLearningState();
         const progress = ensureCourseProgress(latest, activeCourse.id);
-        if (!progress.completedModules.includes(activeModuleIndex)) {
+        if (!progress.lessonRead.includes(activeModuleIndex)) {
             elements.quizFeedback.textContent = "Complete this lesson before opening its module assessment.";
             elements.quizFeedback.className = "quiz-feedback";
             return;
@@ -1238,7 +1243,9 @@ function initializeCourseDetailPage() {
     });
 
     elements.nextButton.addEventListener("click", () => {
-        if (activeModuleIndex < activeCourse.modules.length - 1) {
+        const latest = getLearningState();
+        const progress = ensureCourseProgress(latest, activeCourse.id);
+        if (activeModuleIndex < activeCourse.modules.length - 1 && isModuleUnlocked(activeModuleIndex + 1, progress)) {
             activeModuleIndex += 1;
             persistModulePosition();
             renderWorkspace();
@@ -1248,18 +1255,18 @@ function initializeCourseDetailPage() {
     elements.markCompleteButton.addEventListener("click", () => {
         const latest = getLearningState();
         const progress = ensureCourseProgress(latest, activeCourse.id);
-        if (progress.completedModules.includes(activeModuleIndex)) {
+        if (progress.lessonRead.includes(activeModuleIndex)) {
             return;
         }
 
-        if (!progress.completedModules.includes(activeModuleIndex)) {
-            progress.completedModules.push(activeModuleIndex);
+        if (!progress.lessonRead.includes(activeModuleIndex)) {
+            progress.lessonRead.push(activeModuleIndex);
         }
         progress.currentModuleIndex = activeModuleIndex;
         progress.lastVisited = new Date().toISOString();
         saveLearningState(latest);
-        elements.workspaceSaveState.textContent = "Module completed";
-        window.avatarTutor?.celebrateCompletion?.();
+        elements.workspaceSaveState.textContent = "Checkpoint unlocked";
+        window.avatarTutor?.encourageLearner?.();
         renderWorkspace();
     });
 
@@ -1274,6 +1281,7 @@ function initializeCourseDetailPage() {
         progress.quizAnswers[activeModuleIndex] = Number(selectedOption.value);
         if (progress.quizPassed?.[activeModuleIndex]) {
             progress.quizPassed[activeModuleIndex] = false;
+            progress.completedModules = progress.completedModules.filter((index) => index !== activeModuleIndex);
         }
         if (progress.quizChecked?.[activeModuleIndex]) {
             progress.quizChecked[activeModuleIndex] = false;
@@ -1299,9 +1307,15 @@ function initializeCourseDetailPage() {
         const progress = ensureCourseProgress(latest, activeCourse.id);
         progress.quizChecked[activeModuleIndex] = true;
         progress.quizPassed[activeModuleIndex] = isCorrect;
+        if (isCorrect && !progress.completedModules.includes(activeModuleIndex)) {
+            progress.completedModules.push(activeModuleIndex);
+        }
         progress.lastVisited = new Date().toISOString();
         saveLearningState(latest);
         elements.workspaceSaveState.textContent = isCorrect ? "Knowledge check passed" : "Review and retry";
+        if (isCorrect) {
+            window.avatarTutor?.celebrateCompletion?.();
+        }
         renderWorkspace();
     });
 
@@ -1351,21 +1365,42 @@ function initializeCourseDetailPage() {
     }
 
     function renderOutline(progress) {
-        elements.outlineList.innerHTML = activeCourse.modules
-            .map((module, index) => {
+        const grouped = activeCourse.modules.reduce((groups, module, index) => {
+            const term = module.term || "Course Lessons";
+            if (!groups.has(term)) {
+                groups.set(term, []);
+            }
+            groups.get(term).push({ module, index });
+            return groups;
+        }, new Map());
+
+        elements.outlineList.innerHTML = Array.from(grouped.entries())
+            .map(([term, lessons]) => `
+                <li class="outline-term">
+                    <strong>${escapeHtml(term)}</strong>
+                    <span>${lessons.length} ${lessons.length === 1 ? "lesson" : "lessons"}</span>
+                </li>
+                ${lessons.map(({ module, index }) => {
                 const completed = progress.completedModules.includes(index);
+                const read = progress.lessonRead.includes(index);
+                const unlocked = isModuleUnlocked(index, progress);
                 return `
-                <li class="outline-item${index === activeModuleIndex ? " active" : ""}${completed ? " completed" : ""}" data-module-index="${index}">
+                <li class="outline-item${index === activeModuleIndex ? " active" : ""}${completed ? " completed" : ""}${unlocked ? "" : " locked"}" data-module-index="${index}" aria-disabled="${String(!unlocked)}">
                     <span>${module.title}</span>
-                    <small>${completed ? "Complete" : "Learning"}</small>
+                    <small>${completed ? "Complete" : (read ? "Checkpoint unlocked" : (unlocked ? "Available" : "Locked"))}</small>
                 </li>
             `;
-            })
+            }).join("")}
+            `)
             .join("");
 
         elements.outlineList.querySelectorAll("[data-module-index]").forEach((item) => {
             item.addEventListener("click", () => {
-                activeModuleIndex = Number(item.dataset.moduleIndex);
+                const nextIndex = Number(item.dataset.moduleIndex);
+                if (!isModuleUnlocked(nextIndex, progress)) {
+                    return;
+                }
+                activeModuleIndex = nextIndex;
                 persistModulePosition();
                 renderWorkspace();
             });
@@ -1378,6 +1413,7 @@ function initializeCourseDetailPage() {
         const passed = progress.quizPassed?.[activeModuleIndex] === true;
         const checked = progress.quizChecked?.[activeModuleIndex] === true;
         const completed = progress.completedModules.includes(activeModuleIndex);
+        const read = progress.lessonRead.includes(activeModuleIndex);
         const learningComplete = isCourseLearningComplete(progress);
         const moduleComplete = progress.completedModules.includes(activeModuleIndex);
 
@@ -1389,10 +1425,10 @@ function initializeCourseDetailPage() {
             elements.moduleLessonType.textContent = activeCourse.format || "Guided lesson";
         }
         if (elements.moduleStatusLabel) {
-            elements.moduleStatusLabel.textContent = completed ? "Completed" : "In progress";
+            elements.moduleStatusLabel.textContent = passed ? "Checkpoint passed" : (read ? "Checkpoint unlocked" : "In progress");
         }
         if (elements.moduleCheckLabel) {
-            elements.moduleCheckLabel.textContent = moduleComplete ? "Assessment unlocked" : "Learning";
+            elements.moduleCheckLabel.textContent = passed ? "Passed" : (read ? "Unlocked" : "Locked");
         }
         if (elements.avatarGuideTitle) {
             elements.avatarGuideTitle.textContent = `Tutor guide: ${module.term || `Module ${activeModuleIndex + 1}`}`;
@@ -1410,9 +1446,9 @@ function initializeCourseDetailPage() {
         elements.quizPanel?.classList.add("hidden");
         if (elements.quizToggle) {
             elements.quizToggle.setAttribute("aria-expanded", "false");
-            elements.quizToggle.textContent = moduleComplete ? "Start module assessment" : "Complete lesson first";
-            elements.quizToggle.disabled = !moduleComplete;
-            elements.quizToggle.classList.toggle("is-disabled", !moduleComplete);
+            elements.quizToggle.textContent = read ? "Start module assessment" : "Complete lesson first";
+            elements.quizToggle.disabled = !read;
+            elements.quizToggle.classList.toggle("is-disabled", !read);
         }
         elements.quizPrompt.textContent = module.quiz.prompt;
         elements.quizOptions.innerHTML = module.quiz.options
@@ -1431,9 +1467,11 @@ function initializeCourseDetailPage() {
             elements.quizFeedback.className = "quiz-feedback";
         }
         elements.prevButton.disabled = activeModuleIndex === 0;
-        elements.nextButton.disabled = activeModuleIndex === activeCourse.modules.length - 1;
-        elements.nextButton.textContent = activeModuleIndex === activeCourse.modules.length - 1 ? "Stay on Final Module" : "Next Module";
-        setupLessonCompletionGate(completed);
+        elements.nextButton.disabled = activeModuleIndex === activeCourse.modules.length - 1 || !isModuleUnlocked(activeModuleIndex + 1, progress);
+        elements.nextButton.textContent = activeModuleIndex === activeCourse.modules.length - 1
+            ? "Stay on Final Module"
+            : (passed ? "Next Lesson" : "Pass Checkpoint to Continue");
+        setupLessonCompletionGate(read, completed);
         elements.workspaceProgressBar.style.width = `${getProgressPercent(activeCourse.id)}%`;
         elements.workspaceProgressLabel.textContent = `${getProgressPercent(activeCourse.id)}% complete`;
 
@@ -1443,17 +1481,17 @@ function initializeCourseDetailPage() {
         }
     }
 
-    function setupLessonCompletionGate(completed) {
+    function setupLessonCompletionGate(read, completed) {
         if (lessonScrollHandler) {
             window.removeEventListener("scroll", lessonScrollHandler);
             window.removeEventListener("resize", lessonScrollHandler);
             lessonScrollHandler = null;
         }
 
-        lessonEndReady = completed;
-        updateLessonGate(completed);
+        lessonEndReady = read || completed;
+        updateLessonGate(read, completed);
 
-        if (completed) {
+        if (read || completed) {
             return;
         }
 
@@ -1463,7 +1501,7 @@ function initializeCourseDetailPage() {
             }
             lessonEndReady = true;
             elements.workspaceSaveState.textContent = "Lesson end reached";
-            updateLessonGate(false);
+            updateLessonGate(false, false);
             window.avatarTutor?.encourageLearner?.();
             window.removeEventListener("scroll", lessonScrollHandler);
             window.removeEventListener("resize", lessonScrollHandler);
@@ -1484,30 +1522,47 @@ function initializeCourseDetailPage() {
         return rect.top <= window.innerHeight * 0.86;
     }
 
-    function updateLessonGate(completed) {
+    function updateLessonGate(read, completed) {
         if (elements.lessonGate) {
             elements.lessonGate.classList.toggle("ready", completed || lessonEndReady);
         }
         if (elements.lessonHint) {
             elements.lessonHint.textContent = completed
-                ? "This lesson is complete. You can open the checkpoint assessment."
-                : (lessonEndReady ? "Lesson end reached. You can now mark this module complete." : "Scroll through the full lesson to enable completion.");
+                ? "Lesson and checkpoint complete. Continue to the next available lesson."
+                : (read ? "Lesson reading complete. Open and pass the checkpoint to finish this lesson." : (lessonEndReady ? "Lesson end reached. Unlock the checkpoint now." : "Scroll through the full lesson to enable the checkpoint."));
         }
-        elements.markCompleteButton.disabled = completed || !lessonEndReady;
+        elements.markCompleteButton.disabled = completed || read || !lessonEndReady;
+        elements.markCompleteButton.classList.toggle("is-disabled", completed || read || !lessonEndReady);
         elements.markCompleteButton.textContent = completed
             ? "Completed"
-            : (lessonEndReady ? "Mark Lesson Complete" : "Scroll to Finish Lesson");
+            : (read ? "Checkpoint Unlocked" : (lessonEndReady ? "Unlock Checkpoint" : "Scroll to Finish Lesson"));
     }
 
     function getNextStepLabel(progress) {
         const completed = progress.completedModules.includes(activeModuleIndex);
+        const read = progress.lessonRead.includes(activeModuleIndex);
         if (isCourseLearningComplete(progress)) {
             return areModuleAssessmentsPassed(progress) ? "Course complete. You are ready for the final exam assessment." : "Finish each module assessment to unlock final readiness.";
         }
         if (!completed) {
-            return "Read this lesson and mark it complete when finished.";
+            return read ? "Pass this checkpoint to complete the lesson." : "Read this lesson and unlock the checkpoint when finished.";
         }
         return "Move to the next module.";
+    }
+
+    function isModuleUnlocked(index, progress) {
+        if (index <= 0) {
+            return true;
+        }
+        return progress.quizPassed?.[index - 1] === true;
+    }
+
+    function getFirstAvailableModuleIndex(progress) {
+        let index = 0;
+        while (index < activeCourse.modules.length - 1 && progress.quizPassed?.[index] === true) {
+            index += 1;
+        }
+        return index;
     }
 
     function isCourseLearningComplete(progress) {
@@ -1593,7 +1648,7 @@ function renderCourseCard(course, state) {
     const selected = state.selectedCourseId === course.id;
     const sectionCount = Array.isArray(course.terms) ? course.terms.length : Math.max(1, Math.ceil(course.modules.length / 3));
     const progressLabel = percent >= 100 ? "Complete" : (percent > 0 ? "In progress" : "Not started");
-    const entryLabel = enrolled ? "Continue learning" : (loggedIn ? "Enroll and start" : "Login to enroll");
+    const entryLabel = enrolled ? "Continue learning" : (loggedIn ? "Enroll and start" : "Register to enroll");
     const termPreview = Array.isArray(course.terms)
         ? `<div class="term-preview">${course.terms.map((term) => `<span>${escapeHtml(term.name)}: ${term.modules.length} modules</span>`).join("")}</div>`
         : "";
@@ -1640,7 +1695,6 @@ function renderSelectedProgram(course, state) {
     const percent = getProgressPercent(course.id, state);
     const enrolled = state.enrolledCourseIds.includes(course.id);
     const loggedIn = hasStudentSession();
-
     document.getElementById("selected-title").textContent = course.title;
     document.getElementById("selected-summary").textContent = course.summary;
     document.getElementById("selected-image").src = course.image;
@@ -1682,13 +1736,13 @@ function renderSelectedProgram(course, state) {
         openBtn.href = enrolled ? `course-workspace.html?course=${encodeURIComponent(course.id)}` : "#selected-program";
         openBtn.removeAttribute("target");
         openBtn.removeAttribute("rel");
-        openBtn.textContent = enrolled ? "Open Workspace" : (loggedIn ? "Enroll Now" : "Login to enroll");
+        openBtn.textContent = enrolled ? "Open Workspace" : (loggedIn ? "Enroll to open" : "Register to enroll");
         openBtn.classList.toggle("is-disabled", !enrolled);
         openBtn.setAttribute("aria-disabled", String(!enrolled));
     }
     const enrollBtn = document.getElementById("selected-enroll-btn");
     if (enrollBtn) {
-        enrollBtn.textContent = enrolled ? "Continue learning" : (loggedIn ? "Enroll Now" : "Login to enroll");
+        enrollBtn.textContent = enrolled ? "Continue learning" : (loggedIn ? "Enroll Now" : "Register to Enroll");
         enrollBtn.classList.toggle("btn-outline", enrolled);
         enrollBtn.classList.toggle("btn-primary", !enrolled);
     }
@@ -1746,6 +1800,7 @@ function ensureCourseProgress(state, courseId) {
         state.progress[courseId] = {
             currentModuleIndex: 0,
             completedModules: [],
+            lessonRead: [],
             notes: {},
             quizAnswers: {},
             quizChecked: {},
@@ -1762,6 +1817,7 @@ function ensureCourseProgress(state, courseId) {
     const progress = state.progress[courseId];
     progress.currentModuleIndex = Number.isFinite(progress.currentModuleIndex) ? progress.currentModuleIndex : 0;
     progress.completedModules = Array.isArray(progress.completedModules) ? progress.completedModules : [];
+    progress.lessonRead = Array.isArray(progress.lessonRead) ? progress.lessonRead : [];
     progress.notes = progress.notes && typeof progress.notes === "object" ? progress.notes : {};
     progress.quizAnswers = progress.quizAnswers && typeof progress.quizAnswers === "object" ? progress.quizAnswers : {};
     progress.quizChecked = progress.quizChecked && typeof progress.quizChecked === "object" ? progress.quizChecked : {};
@@ -1822,7 +1878,7 @@ function hasStudentSession() {
 
 function redirectToLoginForEnrollment(courseId) {
     const next = encodeURIComponent(`EXAMINATION%20PREP%20SITE/courses.html?enroll=${encodeURIComponent(courseId)}`);
-    window.location.href = `../login.html?next=${next}`;
+    window.location.href = `../register.html?next=${next}`;
 }
 
 function createMetaPill(label, value) {

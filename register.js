@@ -70,7 +70,7 @@
     function redirectIfLoggedIn() {
         const session = getSession();
         if (session && session.userId) {
-            window.location.replace('homepage.html');
+            window.location.replace(window.GnpUtils?.getNextUrl?.('homepage.html') || 'homepage.html');
         }
     }
 
@@ -157,7 +157,9 @@
                 return;
             }
             localStorage.removeItem(STORAGE_KEYS.session);
-            window.location.replace(`login.html?registered=1&email=${encodeURIComponent(email)}`);
+            const next = window.GnpUtils?.getNextUrl?.('');
+            const nextParam = next ? `&next=${encodeURIComponent(next)}` : '';
+            window.location.replace(`login.html?registered=1&email=${encodeURIComponent(email)}${nextParam}`);
         } finally {
             if (btn) {
                 btn.disabled = false;
@@ -173,6 +175,12 @@
             policy.textContent = window.GnpAuthSecurity.PASSWORD_POLICY_TEXT;
         }
         $('#togglePasswordBtn')?.addEventListener('click', togglePassword);
+        const next = window.GnpUtils?.getNextUrl?.('');
+        if (next) {
+            document.querySelectorAll('a[href="login.html"]').forEach((link) => {
+                link.href = `login.html?next=${encodeURIComponent(next)}`;
+            });
+        }
         document.querySelectorAll('[data-toggle-password]').forEach((button) => {
             button.addEventListener('click', () => togglePasswordByButton(button));
         });

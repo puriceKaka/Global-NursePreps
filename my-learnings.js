@@ -107,7 +107,7 @@
         const state = core.loadState();
         const enrolledIds = Array.isArray(state.enrolledCourseIds) ? state.enrolledCourseIds : [];
         const enrolledCourses = enrolledIds
-            .map((id) => core.getCourseMeta(id) || { id, title: state.progress?.[id]?.courseTitle || id, category: "Course", difficulty: "—" })
+            .map((id) => window.GnpLmsData?.getCourse?.(id) || core.getCourseMeta(id) || { id, title: state.progress?.[id]?.courseTitle || id, category: "Course", difficulty: "Course" })
             .filter(Boolean);
 
         let completedCount = 0;
@@ -130,10 +130,13 @@
         }
 
         enrolledCourses.forEach((course) => {
-            const progress = core.ensureCourseProgress(state, course.id, course);
-            const percent = core.getProgressPercent(course.id, state);
-            const totalModules = progress.totalModules || course.moduleCount || 0;
-            const doneModules = Array.isArray(progress.completedModules) ? progress.completedModules.length : 0;
+            const progress = state.progress?.[course.id] || core.ensureCourseProgress(state, course.id, course);
+            const lmsLessons = window.GnpLmsData?.flattenLessons && course.terms ? window.GnpLmsData.flattenLessons(course) : null;
+            const totalModules = lmsLessons?.length || progress.totalModules || course.moduleCount || 0;
+            const doneModules = Array.isArray(progress.completedLessons)
+                ? progress.completedLessons.length
+                : (Array.isArray(progress.completedModules) ? progress.completedModules.length : 0);
+            const percent = totalModules ? Math.round((doneModules / totalModules) * 100) : core.getProgressPercent(course.id, state);
             const isComplete = percent === 100 && totalModules > 0;
 
             if (isComplete) completedCount += 1;
@@ -153,7 +156,7 @@
             header.innerHTML = `
                 <div class="badge-row" style="margin-bottom: 8px;">
                     <span class="badge">${course.category || "Course"}</span>
-                    <span class="badge alt">${course.difficulty || "—"}</span>
+                    <span class="badge alt">${course.difficulty || course.level || "—"}</span>
                     <span class="badge alt">${totalModules ? `${doneModules}/${totalModules} modules` : "0 modules"}</span>
                 </div>
             `;
@@ -188,7 +191,7 @@
 
             const continueLink = document.createElement("a");
             continueLink.className = "primary-button";
-            continueLink.href = `EXAMINATION%20PREP%20SITE/exam-lobby/anatomy.html?course=${encodeURIComponent(course.id)}`;
+            continueLink.href = `EXAMINATION%20PREP%20SITE/course-workspace.html?course=${encodeURIComponent(course.id)}`;
             continueLink.textContent = percent > 0 ? "Continue" : "Start learning";
 
             const cancelBtn = document.createElement("button");

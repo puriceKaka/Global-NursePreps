@@ -3,218 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Course Workspace | GlobalNursePrep</title>
-    <link rel="stylesheet" href="../css/design-system.css">
-    <link rel="stylesheet" href="landing.css">
-    <link rel="stylesheet" href="courses.css">
-    <link rel="stylesheet" href="../css/exam-prep-theme.css">
-    <link rel="stylesheet" href="../drawer.css">
-    <script defer src="../learning-core.js"></script>
-    <script defer src="progress-engine.js"></script>
-    <script defer src="avatar-tutor.js"></script>
-    <script defer src="../js/auth-guard.js" data-login="../login.html"></script>
-    <script defer src="courses.js"></script>
-    <script defer src="../drawer.js"></script>
+    <title>Course Workspace | Global NursePrep</title>
+    <link rel="stylesheet" href="lms-courses.css">
     <link rel="stylesheet" href="../css/site-loader.css">
     <script src="../js/site-loader.js"></script>
+    <script defer src="../learning-core.js"></script>
+    <script defer src="../js/auth-guard.js" data-login="../login.html"></script>
+    <script defer src="lms-data.js"></script>
+    <script defer src="lms-workspace.js"></script>
 </head>
-<body data-page="course-detail">
-    <nav class="navbar">
-        <div class="logo-container">
-            <button type="button" id="menuToggle" aria-label="Open menu">
-                <span class="hamburger" aria-hidden="true"></span>
-            </button>
-            <span class="brand-logo">
-                <img src="../logo/finalLogo.jpg" alt="Global NursePrep logo">
-            </span>
-            <span class="logo-text">Global <span class="highlight">Nurse</span>Prep</span>
+<body class="lms-body" data-lms-page="workspace">
+    <nav class="lms-nav">
+        <a class="lms-brand" href="courses.html">
+            <img src="../logo/finalLogo.jpg" alt="Global NursePrep logo">
+            <span>Global <span style="color:#008c95;">Nurse</span>Prep</span>
+        </a>
+        <div class="lms-nav-links">
+            <a href="courses.html">Courses</a>
+            <a href="../my-learnings.html">My Learnings</a>
+            <a href="../meetings.html">Lectures</a>
+            <a href="../Dashboard.html">Dashboard</a>
         </div>
-        <ul>
-            <li><a href="../homepage.html">Main Homepage</a></li>
-            <li><a href="landing.html">Home</a></li>
-            <li><a href="courses.html">Courses</a></li>
-            <li><a href="exam-lobby/exam-lobby.html">Exam Lobby</a></li>
-        </ul>
     </nav>
 
-    <div class="drawer-overlay hidden" id="drawerOverlay" tabindex="-1" aria-hidden="true"></div>
-
-    <aside class="drawer hidden" id="drawer" aria-label="Side menu">
-        <div class="drawer-header">
-            <div class="drawer-user">
-                <div class="avatar" id="drawerAvatar" aria-hidden="true">N</div>
-                <div>
-                    <strong id="drawerName">Member</strong>
-                    <div class="muted small" id="drawerEmail">-</div>
+    <main class="lms-shell">
+        <section class="lms-hero">
+            <div>
+                <p class="lms-kicker" id="courseKicker">Learning Workspace</p>
+                <h1 id="courseTitle">Course</h1>
+                <p class="lms-muted" id="courseSummary"></p>
+                <div class="lms-hero-metrics" id="courseMetrics"></div>
+                <div style="margin-top:1rem;">
+                    <div class="lms-progress"><span id="courseProgressBar"></span></div>
+                    <p class="lms-muted" id="courseProgressText">0% complete</p>
                 </div>
             </div>
-            <button type="button" id="drawerClose" aria-label="Close menu">x</button>
-        </div>
-
-        <nav class="drawer-nav" aria-label="Navigation">
-            <a class="drawer-link" href="../homepage.html">Home</a>
-            <a class="drawer-link" href="../homepage.html#career">Career Paths</a>
-            <a class="drawer-link" href="courses.html">Courses</a>
-            <a class="drawer-link" href="exam-interface/exam-interface.html">Exams</a>
-            <a class="drawer-link" href="../questions.html">Questions</a>
-            <a class="drawer-link" href="../my-learnings.html">My Learnings</a>
-            <a class="drawer-link" href="../Profile.html">Profile</a>
-            <a class="drawer-link" href="../Membership.html">Membership</a>
-            <a class="drawer-link" href="../meetings.html">Meetings and Lectures</a>
-            <a class="drawer-link" href="landing.html">Exam Prep</a>
-            <a class="drawer-link" href="exam-lobby/exam-lobby.html">Exam Lobby</a>
-        </nav>
-
-        <div class="drawer-footer">
-            <div class="muted small">Tip: Complete each module before moving to final practice.</div>
-        </div>
-    </aside>
-
-    <main class="courses-page course-workspace-page">
-        <section class="workspace-hero reveal-on-scroll">
-            <div class="workspace-hero-copy">
-                <p class="section-kicker">Learning Workspace</p>
-                <h1 id="workspace-course-title">Course Title</h1>
-                <p id="workspace-course-summary" class="workspace-summary"></p>
-                <div class="workspace-meta" id="workspace-meta"></div>
-                <div class="workspace-hero-actions">
-                    <a class="btn-primary" href="#lesson-viewer">Continue Lesson</a>
-                    <a class="btn-outline" href="#course-final-test">Final Questions</a>
-                    <a class="btn-outline is-disabled" id="course-certificate-link" href="#" aria-disabled="true">Certificate locked</a>
-                </div>
-                <div class="progress-strip">
-                    <div class="progress-strip-head">
-                        <span id="workspace-progress-label">0% complete</span>
-                        <span id="workspace-save-state">Synced</span>
-                    </div>
-                    <div class="progress-bar">
-                        <span id="workspace-progress-bar"></span>
-                    </div>
-                </div>
+            <div>
+                <img id="courseImage" src="" alt="">
             </div>
         </section>
 
-        <section class="workspace-layout">
-            <aside class="workspace-sidebar reveal-on-scroll">
-                <div class="rail-card workspace-plan-card">
-                    <p class="section-kicker">Course Plan</p>
-                    <div class="workspace-progress-summary">
-                        <strong id="workspace-completed-count">0 of 0 modules</strong>
-                        <span id="workspace-next-step">Open the first lesson to begin.</span>
-                    </div>
+        <section class="lms-layout" style="margin-top:1rem;">
+            <aside class="lms-sidebar">
+                <div>
+                    <p class="lms-kicker">Course Outline</p>
+                    <h3>Terms and Lectures</h3>
                 </div>
-                <div class="rail-card">
-                    <h3>My Programs</h3>
-                    <div id="workspace-course-switcher" class="workspace-course-switcher"></div>
-                </div>
-                <div class="rail-card">
-                    <h3>Modules</h3>
-                    <ul class="outline-list" id="workspace-outline-list"></ul>
-                </div>
-                <div class="rail-card workspace-rhythm-card">
-                    <h3>Study Rhythm</h3>
-                    <div class="study-rhythm-list">
-                        <span>1. Read the lesson</span>
-                        <span>2. Review key structures</span>
-                        <span>3. Move through every topic</span>
-                        <span>4. Answer questions after learning</span>
-                    </div>
-                </div>
+                <div id="outline"></div>
             </aside>
 
-            <article class="workspace-main reveal-on-scroll">
-                <div class="workspace-section lesson-viewer" id="lesson-viewer">
-                    <div class="module-header">
-                        <div>
-                            <p class="section-kicker" id="module-position-label">Current Module</p>
-                            <h2 id="module-title">Module title</h2>
-                        </div>
-                        <button class="btn-outline" id="mark-complete-btn">Mark Complete</button>
-                    </div>
-
-                    <div class="lesson-status-grid">
-                        <div>
-                            <span>Lesson Type</span>
-                            <strong id="module-lesson-type">Guided reading</strong>
-                        </div>
-                        <div>
-                            <span>Status</span>
-                            <strong id="module-status-label">Not started</strong>
-                        </div>
-                        <div>
-                            <span>Course</span>
-                            <strong id="module-check-label">Learning</strong>
-                        </div>
-                    </div>
-
-                    <div class="module-grid">
-                        <div class="module-copy-panel">
-                            <div class="learning-objective">
-                                <strong>Objective</strong>
-                                <span id="module-objective"></span>
-                            </div>
-                            <p id="module-body" class="module-copy"></p>
-                            <div class="clinical-pearl">
-                                <h4 id="module-pearl-title">Clinical Pearl</h4>
-                                <p id="module-pearl-body"></p>
-                            </div>
-                            <h3>Key Structures</h3>
-                            <ul id="module-structures" class="structure-card-list"></ul>
-                            <div class="lesson-completion-gate" id="lesson-completion-gate">
-                                <strong>Lesson progress</strong>
-                                <span id="lesson-completion-hint">Scroll through the full lesson to enable completion.</span>
-                            </div>
-                        </div>
-                        <aside class="avatar-guide-card avatar-side-panel" id="avatar-guide-card" aria-label="Avatar tutor">
-                            <div class="avatar-guide-face" aria-hidden="true">AI</div>
-                            <div>
-                                <span class="section-kicker">Avatar tutor</span>
-                                <strong id="avatar-guide-title">Guided lesson</strong>
-                                <p id="avatar-guide-message">Your tutor will introduce this module, explain the clinical link, and guide you to the checkpoint question.</p>
-                            </div>
-                        </aside>
-                    </div>
+            <article class="lms-player">
+                <div class="lms-video-frame" id="videoFrame">
+                    <p class="lms-kicker" style="color:#d7b55d;">Bite-sized Lecture</p>
+                    <h2 id="lessonTitle">Lecture</h2>
+                    <p id="lessonSubtitle"></p>
                 </div>
 
-                <div class="workspace-section assessment-workspace" id="course-final-test">
-                    <div class="notes-header">
-                        <div>
-                            <p class="section-kicker">Module Assessment</p>
-                            <h3>Checkpoint questions</h3>
-                        </div>
-                        <button type="button" class="btn-outline" id="toggle-quiz-btn" aria-expanded="false">Complete lessons first</button>
-                    </div>
-                    <div class="sample-quiz hidden" id="module-quiz-panel">
-                        <h4>Module Knowledge Check</h4>
-                        <p id="quiz-prompt"></p>
-                        <div class="quiz-options"></div>
-                        <button class="btn-primary check-answer-btn">Check My Understanding</button>
-                        <div class="quiz-feedback"></div>
-                    </div>
+                <div class="lms-actions" style="margin:1rem 0;">
+                    <button type="button" class="lms-button" id="startLectureBtn">Start Lecture</button>
+                    <button type="button" class="lms-secondary" id="bookmarkBtn">Bookmark</button>
+                    <button type="button" class="lms-secondary" id="prevBtn">Previous</button>
+                    <button type="button" class="lms-secondary" id="nextBtn">Next</button>
                 </div>
 
-                <div class="workspace-section final-assessment-card">
-                    <div class="module-header">
-                        <div>
-                            <p class="section-kicker">Final Assessment</p>
-                            <h3>Final exam readiness</h3>
-                        </div>
-                        <a class="btn-outline" href="exam-lobby/exam-lobby.html">Open Final Exam Center</a>
-                    </div>
-                    <div class="final-readiness-panel" id="final-readiness-panel"></div>
-                </div>
+                <section>
+                    <p class="lms-kicker">Lesson Notes</p>
+                    <h2 id="lessonObjective">Objective</h2>
+                    <p class="lms-lesson-body" id="lessonBody"></p>
+                    <div class="lms-concepts" id="conceptList"></div>
+                </section>
 
-                <div class="navigation-buttons">
-                    <button class="btn-secondary" id="prev-module-btn">Previous Module</button>
-                    <button class="btn-primary" id="next-module-btn">Next Module</button>
-                </div>
+                <section class="lms-panel" style="padding:1rem; margin-top:1rem;">
+                    <p class="lms-kicker">Checkpoint</p>
+                    <h2>Pass to unlock the next lecture</h2>
+                    <p class="lms-muted" id="checkpointGate">Watch the lecture and read the lesson before attempting the checkpoint.</p>
+                    <div id="quizArea" class="hidden">
+                        <p id="quizPrompt"></p>
+                        <div class="lms-options" id="quizOptions"></div>
+                        <button type="button" class="lms-button" id="checkAnswerBtn">Check Answer</button>
+                        <p id="quizFeedback" class="lms-feedback"></p>
+                    </div>
+                </section>
+
+                <section class="lms-panel" style="padding:1rem; margin-top:1rem;">
+                    <p class="lms-kicker">Performance Report</p>
+                    <h2>Readiness Snapshot</h2>
+                    <div class="lms-report-grid" id="reportGrid"></div>
+                    <div class="lms-actions" style="margin-top:1rem;">
+                        <a class="lms-secondary" id="certificateLink" href="#">Certificate Locked</a>
+                    </div>
+                </section>
             </article>
+
+            <aside class="lms-right-rail">
+                <section class="lms-tutor">
+                    <img class="lms-avatar" src="https://images.unsplash.com/photo-1559839734335-3ec2b8521d45?auto=format&fit=crop&q=80&w=600" alt="Nurse tutor">
+                    <p class="lms-kicker" style="margin-top:1rem;">Nurse Tutor</p>
+                    <h3>Guided Support</h3>
+                    <p class="lms-muted" id="tutorText">Start the lecture when ready.</p>
+                    <button type="button" class="lms-button" id="voiceBtn">Start Tutor Voice</button>
+                </section>
+
+                <section class="lms-notebook">
+                    <p class="lms-kicker">Notebook</p>
+                    <h3>Notes and Flashcards</h3>
+                    <textarea class="lms-textarea" id="noteText" rows="5" placeholder="Write your clinical notes here..."></textarea>
+                    <div class="lms-actions" style="margin-top:0.6rem;">
+                        <button type="button" class="lms-button" id="saveNoteBtn">Save Note</button>
+                        <button type="button" class="lms-secondary" id="makeFlashcardBtn">Make Flashcard</button>
+                    </div>
+                    <div class="lms-note-list" id="noteList" style="margin-top:1rem;"></div>
+                    <div class="lms-flashcards" id="flashcardList" style="margin-top:1rem;"></div>
+                </section>
+            </aside>
         </section>
     </main>
-
-    <footer class="main-footer">
-        <div>&copy; 2026 Global NursePrep - Nursing education &amp; community.</div>
-        <div class="powered-by">Powered by Teams Technologies</div>
-    </footer>
 </body>
 </html>

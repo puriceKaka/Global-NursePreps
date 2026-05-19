@@ -7,6 +7,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <link rel="stylesheet" href="Dashboard.css">
         <link rel="stylesheet" href="drawer.css">
+        <link rel="stylesheet" href="EXAMINATION%20PREP%20SITE/lms-courses.css">
         <link rel="stylesheet" href="css/site-loader.css">
         <script>
             (() => {
@@ -21,6 +22,8 @@
             })();
         </script>
     <script src="js/site-loader.js"></script>
+    <script defer src="learning-core.js"></script>
+    <script defer src="EXAMINATION%20PREP%20SITE/lms-data.js"></script>
 </head>
     <body>
         <section class="header">
@@ -76,6 +79,42 @@
         </aside>
 
         <section class="main">
+            <section class="lms-panel" style="padding:1rem; margin-bottom:1rem;">
+                <div class="lms-hero" style="padding:0; border:0;">
+                    <div>
+                        <p class="lms-kicker">Lecture Center</p>
+                        <h1>Live classes, bite-sized review lectures, and lecture-based practice.</h1>
+                        <p class="lms-muted">Use this area to join scheduled lecturer sessions, review course lectures, save weak topics, and generate practice questions from lecture notes.</p>
+                    </div>
+                    <div class="lms-hero-metrics" id="lectureMetrics"></div>
+                </div>
+                <div class="lms-toolbar">
+                    <input class="lms-input" id="lectureSearch" type="search" placeholder="Search lecture, system, subject, or concept">
+                    <select class="lms-select" id="lectureCourseFilter"></select>
+                    <button type="button" class="lms-secondary" id="refreshLecturesBtn">Refresh</button>
+                </div>
+                <div class="lms-study-grid">
+                    <section>
+                        <p class="lms-kicker">Scheduled Live Lectures</p>
+                        <div class="lms-note-list" id="scheduledLectures"></div>
+                    </section>
+                    <section>
+                        <p class="lms-kicker">Lecture Library</p>
+                        <div class="lms-note-list" id="lectureLibrary"></div>
+                    </section>
+                    <section>
+                        <p class="lms-kicker">Generate Practice</p>
+                        <label class="lms-note" id="lectureDropArea">
+                            <strong>Upload lecture notes</strong>
+                            <span class="lms-muted" id="lectureFileName">No file selected</span>
+                            <input id="lectureFileElem" type="file" accept=".txt,.md,.rtf,.pdf,.doc,.docx" style="margin-top:0.6rem;">
+                        </label>
+                        <button type="button" class="lms-button" id="lectureGenerateBtn" disabled style="margin-top:0.6rem;">Generate Questions</button>
+                        <div class="lms-note-list" id="lectureQuestionsPreview" style="margin-top:0.8rem;"></div>
+                    </section>
+                </div>
+            </section>
+
             <div class="hero-card">
                 <div id="heroIntro">
                     <h2 id="meetingTitle">Create a live meeting</h2>
@@ -271,5 +310,6 @@
     <script src="drawer.js"></script>
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script src="Dashboard.js"></script>
+    <script src="meetings-lectures.js"></script>
 </body>
 </html>

@@ -168,6 +168,12 @@
             if ($('#rememberMe')) $('#rememberMe').checked = true;
         }
         const params = new URLSearchParams(window.location.search);
+        const next = window.GnpUtils?.getNextUrl?.('');
+        if (next) {
+            document.querySelectorAll('a[href="register.html"]').forEach((link) => {
+                link.href = `register.html?next=${encodeURIComponent(next)}`;
+            });
+        }
         if (params.get('registered') === '1') {
             showError('Account created. Please login with your email and password.');
             const email = params.get('email');
