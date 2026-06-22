@@ -517,14 +517,19 @@ function DashboardTab({ portal, onNavigate }) {
 }
 
 function PaymentTab({ portal, onRefresh }) {
-  const [amount, setAmount] = useState('');
+  const dailyInstallment = Number(portal.product?.dailyInstallment || 0);
+  const defaultAmount = dailyInstallment > 0 ? String(dailyInstallment) : '';
+  const [amount, setAmount] = useState(defaultAmount);
   const [phone, setPhone] = useState(portal.customer?.phone || '');
   const [message, setMessage] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const suggestions = useMemo(() => {
-    const daily = Number(portal.product?.dailyInstallment || 0);
-    return [daily, daily * 3, daily * 7].filter(Boolean);
+    return [dailyInstallment, dailyInstallment * 3, dailyInstallment * 7].filter(Boolean);
   }, [portal.product?.dailyInstallment]);
+
+  useEffect(() => {
+    setAmount(defaultAmount);
+  }, [defaultAmount]);
 
   async function submit() {
     setMessage('');
@@ -532,7 +537,7 @@ function PaymentTab({ portal, onRefresh }) {
     try {
       await customerPortalService.createPaymentRequest({ amount: Number(amount), phone });
       setMessage('Payment request sent.');
-      setAmount('');
+      setAmount(defaultAmount);
       await onRefresh();
     } catch (error) {
       setMessage(error.message);
@@ -553,7 +558,7 @@ function PaymentTab({ portal, onRefresh }) {
             </Pressable>
           ))}
         </View>
-        <Field label="Amount in KES" value={amount} onChangeText={setAmount} placeholder="Enter amount" keyboardType="numeric" />
+        <Field label="Amount in KES" value={amount} onChangeText={setAmount} placeholder={defaultAmount || 'Enter amount'} keyboardType="numeric" />
         <Field label="Payment phone" value={phone} onChangeText={setPhone} placeholder="Enter M-PESA phone" />
         {message ? <Text style={styles.greenText}>{message}</Text> : null}
         <Button icon={CreditCard} onPress={submit} disabled={submitting} style={styles.fullButton}>

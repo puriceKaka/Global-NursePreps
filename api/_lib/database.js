@@ -1056,11 +1056,16 @@ export async function createCustomerPaymentRequest(user, body) {
     throw error;
   }
 
-  const amount = Number(body.amount || 0);
+  const balance = Number(customer.balance || 0);
+  const dailyInstallment = Number(customer.daily_installment || 0);
+  const requestedAmount = Number(body.amount || 0);
+  const amount = requestedAmount > 0
+    ? requestedAmount
+    : Math.min(dailyInstallment > 0 ? dailyInstallment : balance, balance || dailyInstallment);
   const phone = String(body.phone || customer.customer_phone || '').trim();
 
   if (!amount || amount <= 0 || !phone) {
-    const error = new Error('Enter a valid amount and payment phone number.');
+    const error = new Error('Enter a valid payment phone number. The payment amount should follow the daily installment set by the agent.');
     error.statusCode = 400;
     throw error;
   }
