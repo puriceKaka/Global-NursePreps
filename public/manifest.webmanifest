@@ -3,7 +3,7 @@
   "short_name": "Bumu Paygo",
   "description": "Customer and agent PAYGO product portals for Bumu Paygo.",
   "id": "/",
-  "start_url": "/",
+  "start_url": "/portal-entry",
   "scope": "/",
   "display": "standalone",
   "display_override": ["window-controls-overlay", "standalone", "minimal-ui", "browser"],

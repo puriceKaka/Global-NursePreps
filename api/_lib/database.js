@@ -69,11 +69,11 @@ function formatKes(value) {
   return Number(value || 0).toLocaleString('en-KE');
 }
 
-async function findCustomerByPhone(phone) {
+function buildPhoneCandidates(phone) {
   const digits = String(phone || '').replace(/\D/g, '');
   const normalizedPhone = normalizePhone(phone);
   const rawPhone = nonEmpty(phone);
-  const candidates = [...new Set([
+  return [...new Set([
     rawPhone,
     normalizedPhone,
     digits,
@@ -85,7 +85,10 @@ async function findCustomerByPhone(phone) {
     digits.length === 9 ? `0${digits}` : '',
     digits.length === 9 ? `254${digits}` : ''
   ].filter(Boolean))];
+}
 
+async function findCustomerByPhone(phone) {
+  const candidates = buildPhoneCandidates(phone);
   for (const candidate of candidates) {
     const result = await getSupabase()
       .from('customers')
@@ -2239,24 +2242,44 @@ export async function acceptNextOfKinOtp(customerId, body) {
 }
 
 export async function acceptNextOfKinByPhone(phone) {
-  const normalized = String(phone || '').replace(/\D/g, '');
-  if (!normalized) {
+  const candidates = buildPhoneCandidates(phone);
+  if (candidates.length === 0) {
     const error = new Error('Next-of-kin phone is required.');
     error.statusCode = 400;
     throw error;
   }
 
-  const candidates = await getSupabase()
+  const now = new Date().toISOString();
+
+  for (const candidate of candidates) {
+    const result = await getSupabase()
+      .from('customers')
+      .select('*')
+      .eq('next_of_kin_phone', candidate)
+      .eq('next_of_kin_otp_status', 'sent')
+      .gt('next_of_kin_otp_expires_at', now)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (result.error) throw mapSupabaseError(result.error);
+    if (result.data) {
+      return completeNextOfKinAcceptance({ customerId: result.data.id, otp: '', agent: null, trustedPhoneAcceptance: true });
+    }
+  }
+
+  const candidatesResult = await getSupabase()
     .from('customers')
     .select('*')
     .eq('next_of_kin_otp_status', 'sent')
-    .gt('next_of_kin_otp_expires_at', new Date().toISOString())
+    .gt('next_of_kin_otp_expires_at', now)
     .order('created_at', { ascending: false })
-    .limit(100);
+    .limit(500);
 
-  if (candidates.error) throw mapSupabaseError(candidates.error);
+  if (candidatesResult.error) throw mapSupabaseError(candidatesResult.error);
 
-  const customer = (candidates.data || []).find((item) => {
+  const normalized = String(phone || '').replace(/\D/g, '');
+  const customer = (candidatesResult.data || []).find((item) => {
     const candidate = String(item.next_of_kin_phone || '').replace(/\D/g, '');
     return candidate && (
       normalized.endsWith(candidate) ||

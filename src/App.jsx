@@ -10,6 +10,7 @@ import { ReportsScreen } from './screens/ReportsScreen.jsx';
 import { ReconciliationScreen } from './screens/ReconciliationScreen.jsx';
 import { NotificationsScreen } from './screens/NotificationsScreen.jsx';
 import { SettingsScreen } from './screens/SettingsScreen.jsx';
+import { PortalEntryScreen } from './screens/PortalEntryScreen.jsx';
 import { PortalLandingScreen } from './screens/PortalLandingScreen.jsx';
 import { CustomerPortalScreen } from './screens/CustomerPortalScreen.jsx';
 import { AgentPortalScreen } from './screens/AgentPortalScreen.jsx';
@@ -41,6 +42,14 @@ function isBackOfficePath() {
   return path === '/backoffice' || path.startsWith('/backoffice/');
 }
 
+function isStandaloneDisplay() {
+  return window.matchMedia?.('(display-mode: standalone)').matches || window.navigator.standalone === true;
+}
+
+function isPortalEntryRoute() {
+  return window.location.hash === '#/portal-entry';
+}
+
 function applyCleanPortalRoute() {
   const path = cleanPortalPath();
   if (path === '/finance-bumu' && window.location.hash === '#/finance/login') {
@@ -54,11 +63,17 @@ function applyCleanPortalRoute() {
     '/admin-bumu': '#/admin/login',
     '/finance-bumu': '#/login',
     '/customer-bumu': '#/customer',
-    '/agent-bumu': '#/agent'
+    '/agent-bumu': '#/agent',
+    '/portal-entry': '#/portal-entry'
   };
   const hashRoute = routeByPath[path];
   if (hashRoute) {
     window.history.replaceState(null, '', `${window.location.pathname}${hashRoute}`);
+    return;
+  }
+
+  if (isStandaloneDisplay() && !window.location.hash) {
+    window.history.replaceState(null, '', `${window.location.pathname}#/portal-entry`);
   }
 }
 
@@ -99,6 +114,15 @@ function isNextOfKinRoute() {
 }
 
 function portalMetaForRoute() {
+  if (isPortalEntryRoute()) {
+    return {
+      title: 'Bumu Paygo Portal Login',
+      manifest: '/manifest.webmanifest',
+      appleTitle: 'Bumu Paygo',
+      description: 'Choose the Bumu Paygo portal you want to sign in to.'
+    };
+  }
+
   if (isBackOfficePath()) {
     return {
       title: 'Bumu Paygo Back Office',
@@ -251,6 +275,7 @@ export function App() {
   const [authenticated, setAuthenticated] = useState(() => Boolean(getAuthToken()));
   const [authChecked, setAuthChecked] = useState(false);
   const [authRouteActive, setAuthRouteActive] = useState(isAuthRoute);
+  const [portalEntryRouteActive, setPortalEntryRouteActive] = useState(isPortalEntryRoute);
   const [customerRouteActive, setCustomerRouteActive] = useState(isCustomerRoute);
   const [agentRouteActive, setAgentRouteActive] = useState(isAgentRoute);
   const [adminRouteActive, setAdminRouteActive] = useState(isAdminRoute);
@@ -311,6 +336,7 @@ export function App() {
   useEffect(() => {
     function handleHashChange() {
       setAuthRouteActive(isAuthRoute());
+      setPortalEntryRouteActive(isPortalEntryRoute());
       setCustomerRouteActive(isCustomerRoute());
       setAgentRouteActive(isAgentRoute());
       setAdminRouteActive(isAdminRoute());
@@ -336,7 +362,7 @@ export function App() {
     manifestLink?.setAttribute('href', meta.manifest);
     appleTitle?.setAttribute('content', meta.appleTitle);
     description?.setAttribute('content', meta.description);
-  }, [customerRouteActive, agentRouteActive, adminRouteActive, backOfficeRouteActive, nextOfKinRouteActive, authRouteActive]);
+  }, [customerRouteActive, agentRouteActive, adminRouteActive, backOfficeRouteActive, nextOfKinRouteActive, authRouteActive, portalEntryRouteActive]);
 
   useEffect(() => {
     document.documentElement.dataset.theme = themeMode;
@@ -448,6 +474,16 @@ export function App() {
       <>
         <BackOfficePortalScreen />
         <FloatingInstallButton visible={canInstall} onPress={install} />
+      </>
+    );
+  }
+
+  if (portalEntryRouteActive) {
+    return (
+      <>
+        <PortalEntryScreen />
+        <FloatingInstallButton visible={canInstall} onPress={install} />
+        <SupportChatWidget />
       </>
     );
   }

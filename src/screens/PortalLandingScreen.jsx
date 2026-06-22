@@ -44,7 +44,7 @@ const portals = [
     icon: ShieldCheck,
     tone: '#0f766e',
     status: 'Secure',
-    path: '/backoffice/overview'
+    path: '/backoffice/login'
   }
 ];
 
