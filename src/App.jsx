@@ -42,9 +42,14 @@ function isBackOfficePath() {
 }
 
 function applyCleanPortalRoute() {
+  const path = cleanPortalPath();
+  if (path === '/finance-bumu' && window.location.hash === '#/finance/login') {
+    window.history.replaceState(null, '', `${window.location.pathname}#/login`);
+    return;
+  }
+
   if (window.location.hash) return;
 
-  const path = cleanPortalPath();
   const routeByPath = {
     '/admin-bumu': '#/admin/login',
     '/finance-bumu': '#/login',
