@@ -204,15 +204,14 @@ export async function sendOtpSms({ phone, otp }) {
   });
 }
 
-export async function sendNextOfKinAcceptanceSms({ phone, otp, customerName, acceptUrl }) {
-  const actionText = acceptUrl
-    ? `Open this link and press YES I ACCEPT: ${acceptUrl}`
-    : `Reply 1/YES to accept, or give OTP ${otp} to the agent.`;
+export function buildNextOfKinAcceptanceMessage({ customerName }) {
+  return `Bumu Paygo request: ${customerName || 'A customer'} has named you as next-of-kin. Reply 1 or YES to accept. Reply only if you agree to be recorded as next-of-kin.`;
+}
+
+export async function sendNextOfKinAcceptanceSms({ phone, customerName }) {
   return sendSms({
     to: phone,
-    message: acceptUrl
-      ? `Bumu Paygo request: ${customerName || 'A customer'} has named you as next-of-kin. ${actionText} Link expires in 10 minutes.`
-      : `Bumu Paygo request: ${customerName || 'A customer'} has named you as next-of-kin. ${actionText} OTP ${otp}. Valid for 10 minutes.`
+    message: buildNextOfKinAcceptanceMessage({ customerName })
   });
 }
 

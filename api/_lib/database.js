@@ -1598,12 +1598,10 @@ export async function resendNextOfKinAcceptance(user, customerId) {
 
   if (otpUpdate.error) throw mapSupabaseError(otpUpdate.error);
 
-  const acceptUrl = `${publicAppBaseUrl()}/?next-of-kin=1&customer=${encodeURIComponent(customer.data.id)}&otp=${encodeURIComponent(nextOfKinOtp)}`;
   const otpDelivery = await sendNextOfKinAcceptanceSms({
     phone: nextOfKinPhone,
     otp: nextOfKinOtp,
-    customerName: customer.data.customer_name || customer.data.customerName || 'Customer',
-    acceptUrl
+    customerName: customer.data.customer_name || customer.data.customerName || 'Customer'
   }).catch((deliveryError) => ({
     configured: true,
     delivered: false,
@@ -1856,12 +1854,10 @@ export async function createAgentCustomer(user, body) {
   }
 
   if (nextOfKinOtp) {
-    const acceptUrl = `${publicAppBaseUrl()}/?next-of-kin=1&customer=${encodeURIComponent(data.id)}&otp=${encodeURIComponent(nextOfKinOtp)}`;
     nextOfKinOtpDelivery = await sendNextOfKinAcceptanceSms({
       phone: nextOfKinPhone,
       otp: nextOfKinOtp,
-      customerName,
-      acceptUrl
+      customerName
     }).catch((deliveryError) => ({
       configured: true,
       delivered: false,
@@ -2769,7 +2765,7 @@ export async function runAutomatedFollowUps({ dryRun = false } = {}) {
           title: 'Next-of-kin acceptance pending',
           message,
           issue: 'Customer onboarding cannot continue until next-of-kin accepts.',
-          followUp: 'Agent should contact the next-of-kin and confirm they received the SMS link.',
+          followUp: 'Agent should contact the next-of-kin and confirm they received the reply-by-SMS request.',
           severity: 'warning',
           amount: 0,
           overdueDays: 0,

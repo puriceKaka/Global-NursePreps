@@ -694,7 +694,7 @@ function RegisterTab({ portal, onRefresh }) {
           <Bell size={22} color={colors.success} />
           <View>
             <Text style={styles.panelTitle}>Next-of-kin acceptance</Text>
-            <Text style={styles.panelText}>Use this only if support gives you the manual next-of-kin OTP. The normal flow is for next-of-kin to accept through the SMS link.</Text>
+            <Text style={styles.panelText}>Use this only if support gives you the manual next-of-kin OTP. The normal flow is for next-of-kin to reply 1 or YES to the SMS.</Text>
           </View>
         </View>
         <Field label="Next-of-kin OTP" value={nextOfKinOtp} onChangeText={setNextOfKinOtp} placeholder="Enter 6-digit OTP" />
