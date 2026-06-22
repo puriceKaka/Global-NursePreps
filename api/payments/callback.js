@@ -70,7 +70,9 @@ export default async function handler(req, res) {
         amount: result.paidAmount,
         receipt: transactionId,
         balance: result.nextBalance,
-        repaymentPct: result.repaymentPct
+        repaymentPct: result.repaymentPct,
+        accountReference: result.customer.national_id || result.customer.id,
+        payerPhone: phone
       }).catch(() => null);
     } else {
       await failPaymentRequest(paymentRequest.id, {

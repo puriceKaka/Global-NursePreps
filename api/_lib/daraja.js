@@ -1,5 +1,6 @@
 const DARAJA_LIVE_URL = 'https://api.safaricom.co.ke';
 const DARAJA_SANDBOX_URL = 'https://sandbox.safaricom.co.ke';
+const DEFAULT_PAYBILL_SHORT_CODE = '4050421';
 
 function envValue(name) {
   return String(process.env[name] || '').trim();
@@ -26,7 +27,7 @@ function businessShortCode() {
 }
 
 function c2bShortCode() {
-  return envValue('DARAJA_C2B_SHORT_CODE') || envValue('MPESA_C2B_SHORT_CODE') || businessShortCode();
+  return envValue('DARAJA_C2B_SHORT_CODE') || envValue('MPESA_C2B_SHORT_CODE') || DEFAULT_PAYBILL_SHORT_CODE;
 }
 
 function passkey() {

@@ -45,7 +45,9 @@ async function handlePaymentRequest(body, transactionId) {
       amount: result.paidAmount,
       receipt: transactionId,
       balance: result.nextBalance,
-      repaymentPct: result.repaymentPct
+      repaymentPct: result.repaymentPct,
+      accountReference: result.customer.national_id || result.customer.id,
+      payerPhone: phone
     }).catch(() => null);
   } else {
     await failPaymentRequest(paymentRequest.id, {
@@ -87,7 +89,9 @@ async function handleDirectC2BPayment(body, transactionId) {
     amount: result.paidAmount,
     receipt: transactionId,
     balance: result.nextBalance,
-    repaymentPct: result.repaymentPct
+    repaymentPct: result.repaymentPct,
+    accountReference: result.customer.national_id || result.customer.id,
+    payerPhone: phone
   }).catch(() => null);
 
   return true;

@@ -38,6 +38,8 @@ const emptyPortal = {
   paymentRequests: []
 };
 
+const directPaybillNumber = String(import.meta.env.VITE_PAYBILL_NUMBER || import.meta.env.VITE_DARAJA_C2B_SHORT_CODE || '4050421').trim();
+
 function formatKes(value) {
   return `KES ${Number(value || 0).toLocaleString('en-KE')}`;
 }
@@ -551,6 +553,11 @@ function PaymentTab({ portal, onRefresh }) {
       <View style={styles.panel}>
         <Text style={styles.panelTitle}>Payment request</Text>
         <Text style={styles.panelText}>The system will handle the M-PESA prompt and update your balance after confirmation.</Text>
+        <View style={styles.noticeBand}>
+          <Text style={styles.noticeText}>
+            Direct Paybill {directPaybillNumber} | Account number: {fallback(portal.customer?.nationalId, 'your National ID')}. Pay this way if you are using another phone or paying without the app.
+          </Text>
+        </View>
         <View style={styles.suggestionRow}>
           {suggestions.map((value) => (
             <Pressable key={value} onPress={() => setAmount(String(value))} style={styles.amountChip}>

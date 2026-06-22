@@ -54,7 +54,9 @@ export default async function handler(req, res) {
         amount: result.paidAmount,
         receipt: confirmation.transactionId,
         balance: result.nextBalance,
-        repaymentPct: result.repaymentPct
+        repaymentPct: result.repaymentPct,
+        accountReference: result.customer.national_id || result.customer.id,
+        payerPhone: confirmation.phone
       }).catch(() => null);
     }
 

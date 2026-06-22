@@ -65,6 +65,7 @@ const navItems = [
   ['About', 'about'],
   ['Products', 'products'],
   ['Services', 'services'],
+  ['Paybill', 'paybill'],
   ['Location', 'location'],
   ['Contact', 'contact']
 ];
@@ -111,6 +112,12 @@ const trustSignals = [
   'Kenya-wide dealer plan'
 ];
 
+const brandBlue = '#1667d8';
+const brandBlueDeep = '#0f4fb7';
+const brandGreen = '#0f7a4a';
+const brandGreenSoft = '#eaf8ef';
+const directPaybillNumber = String(import.meta.env.VITE_PAYBILL_NUMBER || import.meta.env.VITE_DARAJA_C2B_SHORT_CODE || '4050421').trim();
+
 export function PortalLandingScreen() {
   const [page, setPage] = useState('home');
 
@@ -146,6 +153,12 @@ export function PortalLandingScreen() {
               onPress={() => {
                 if (target === 'portals') {
                   openPortalPage();
+                  return;
+                }
+
+                if (target === 'paybill') {
+                  setPage('home');
+                  requestAnimationFrame(() => document.getElementById('paybill')?.scrollIntoView({ block: 'start' }));
                   return;
                 }
 
@@ -202,7 +215,7 @@ export function PortalLandingScreen() {
             <View style={styles.trustRow}>
               {trustSignals.map((item) => (
                 <View key={item} style={styles.trustItem}>
-                  <CheckCircle2 size={16} color="#d4a742" />
+                  <CheckCircle2 size={16} color={brandBlue} />
                   <Text style={styles.trustText}>{item}</Text>
                 </View>
               ))}
@@ -218,6 +231,27 @@ export function PortalLandingScreen() {
               <Text style={styles.visualText}>Products for work, mobility, home use, and everyday progress.</Text>
             </View>
           </View>
+        </View>
+      </View>
+
+      <View style={styles.paybillBand} id="paybill">
+        <View style={styles.paybillCopy}>
+          <Text style={styles.kicker}>Direct Paybill</Text>
+          <Text style={styles.sectionTitle}>Pay without the app</Text>
+          <Text style={styles.sectionText}>
+            Use Paybill {directPaybillNumber} and your National ID as the account number. The payment is matched to your customer record after M-PESA confirms it.
+          </Text>
+          <Pressable onPress={openPortalPage} style={styles.secondaryInlineAction}>
+            <Text style={styles.secondaryInlineText}>Open customer portal</Text>
+            <ArrowRight size={17} color={brandBlue} />
+          </Pressable>
+        </View>
+        <View style={styles.paybillCard}>
+          <Text style={styles.paybillLabel}>Paybill number</Text>
+          <Text style={styles.paybillValue}>{directPaybillNumber}</Text>
+          <Text style={styles.paybillLabel}>Account number</Text>
+          <Text style={styles.paybillValue}>National ID</Text>
+          <Text style={styles.paybillNote}>Works for payments from any M-PESA line.</Text>
         </View>
       </View>
 
@@ -586,7 +620,7 @@ function ContactPage({ onOpenPortals }) {
         <Text style={styles.kicker}>Contact</Text>
         <Text style={styles.detailTitle}>Talk to BUMU about PAYGO products, dealers, or portal access</Text>
         <Text style={styles.detailText}>
-          Use these placeholder channels for now. They can be replaced with official phone numbers, office address, and support inbox before launch.
+          Use the support channels below or open the portals directly from here.
         </Text>
       </View>
 
@@ -628,7 +662,7 @@ const styles = StyleSheet.create({
   root: {
     height: 'var(--app-vh)',
     width: '100%',
-    backgroundColor: '#f6f9fc',
+    backgroundColor: '#eef7f0',
     overflowY: 'auto'
   },
   content: {
@@ -640,8 +674,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 28,
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(28, 77, 145, 0.14)',
-    backgroundColor: 'rgba(255, 255, 255, 0.94)',
+    borderBottomColor: 'rgba(15, 122, 74, 0.18)',
+    backgroundColor: 'rgba(255, 255, 255, 0.96)',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -661,7 +695,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: colors.primary
+    borderColor: brandGreen
   },
   navTitle: {
     color: colors.text,
@@ -696,13 +730,13 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     justifyContent: 'center',
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(28, 77, 145, 0.18)',
-    backgroundColor: '#081a35'
+    borderBottomColor: 'rgba(15, 122, 74, 0.22)',
+    backgroundColor: '#0a5a35'
   },
   heroAccent: {
     position: 'absolute',
     inset: 0,
-    backgroundImage: 'linear-gradient(135deg, rgba(8,26,53,0.96), rgba(17,78,164,0.88) 48%, rgba(212,167,66,0.26))'
+    backgroundImage: 'linear-gradient(135deg, rgba(7, 76, 44, 0.98), rgba(15, 122, 74, 0.90) 42%, rgba(22, 103, 216, 0.32))'
   },
   heroInner: {
     width: '100%',
@@ -732,7 +766,7 @@ const styles = StyleSheet.create({
     height: 52,
     borderRadius: 8,
     borderWidth: 2,
-    borderColor: '#2f8cff'
+    borderColor: brandBlue
   },
   brandName: {
     fontSize: 18,
@@ -740,7 +774,7 @@ const styles = StyleSheet.create({
     color: '#ffffff'
   },
   brandMeta: {
-    color: '#bad2f2',
+    color: '#d0ecdd',
     marginTop: 2
   },
   title: {
@@ -753,7 +787,7 @@ const styles = StyleSheet.create({
     maxWidth: 620,
     fontSize: 19,
     lineHeight: 29,
-    color: '#d8e6f8'
+    color: '#e7f8ef'
   },
   heroActions: {
     flexDirection: 'row',
@@ -765,7 +799,7 @@ const styles = StyleSheet.create({
     minHeight: 46,
     borderRadius: 8,
     paddingHorizontal: 16,
-    backgroundColor: '#1667d8',
+    backgroundColor: brandGreen,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -793,7 +827,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.08)'
   },
   trustText: {
-    color: '#eef6ff',
+    color: '#e7f8ef',
     fontSize: 13,
     fontWeight: '500'
   },
@@ -802,7 +836,7 @@ const styles = StyleSheet.create({
     minWidth: 300,
     minHeight: 430,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.18)',
+    borderColor: 'rgba(255,255,255,0.22)',
     borderRadius: 8,
     backgroundColor: 'rgba(255,255,255,0.10)',
     overflow: 'hidden',
@@ -818,7 +852,7 @@ const styles = StyleSheet.create({
   heroPhotoShade: {
     position: 'absolute',
     inset: 0,
-    backgroundImage: 'linear-gradient(180deg, rgba(8,26,53,0.06), rgba(8,26,53,0.88))'
+    backgroundImage: 'linear-gradient(180deg, rgba(7,76,44,0.06), rgba(7,76,44,0.88))'
   },
   heroVisualCaption: {
     position: 'relative',
@@ -826,7 +860,7 @@ const styles = StyleSheet.create({
     gap: 7
   },
   visualKicker: {
-    color: '#d4a742',
+    color: '#bfe0ff',
     fontSize: 12,
     fontWeight: '700',
     textTransform: 'uppercase'
@@ -838,7 +872,7 @@ const styles = StyleSheet.create({
     fontWeight: '600'
   },
   visualText: {
-    color: '#d8e6f8',
+    color: '#d9f3e4',
     lineHeight: 22
   },
   portalPage: {
@@ -863,10 +897,58 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: colors.text
   },
+  paybillBand: {
+    width: '100%',
+    maxWidth: 1180,
+    marginHorizontal: 'auto',
+    paddingHorizontal: 28,
+    paddingVertical: 28,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 16,
+    alignItems: 'stretch',
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(15, 122, 74, 0.18)',
+    backgroundColor: brandGreenSoft
+  },
+  paybillCopy: {
+    flex: 1.1,
+    minWidth: 280,
+    gap: 12,
+    justifyContent: 'center'
+  },
+  paybillCard: {
+    flex: 0.75,
+    minWidth: 260,
+    borderWidth: 1,
+    borderColor: 'rgba(15, 122, 74, 0.22)',
+    borderRadius: 8,
+    backgroundColor: '#ffffff',
+    padding: 18,
+    gap: 6,
+    justifyContent: 'center'
+  },
+  paybillLabel: {
+    color: brandGreen,
+    fontSize: 12,
+    fontWeight: '700',
+    textTransform: 'uppercase'
+  },
+  paybillValue: {
+    color: colors.text,
+    fontSize: 22,
+    lineHeight: 28,
+    fontWeight: '600',
+    marginBottom: 6
+  },
+  paybillNote: {
+    color: colors.slate,
+    lineHeight: 21
+  },
   backHomeButton: {
     minHeight: 40,
     borderWidth: 1,
-    borderColor: '#cfe0fb',
+    borderColor: 'rgba(15, 122, 74, 0.18)',
     borderRadius: 8,
     paddingHorizontal: 14,
     alignItems: 'center',
@@ -875,7 +957,7 @@ const styles = StyleSheet.create({
     cursor: 'pointer'
   },
   backHomeText: {
-    color: colors.primary,
+    color: brandGreen,
     fontWeight: '600'
   },
   marketGrid: {
@@ -1032,7 +1114,7 @@ const styles = StyleSheet.create({
     minHeight: 44,
     borderRadius: 8,
     paddingHorizontal: 15,
-    backgroundColor: colors.primary,
+    backgroundColor: brandBlue,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -1095,9 +1177,9 @@ const styles = StyleSheet.create({
   },
   statementBand: {
     borderWidth: 1,
-    borderColor: '#d3e2f2',
+    borderColor: 'rgba(15, 122, 74, 0.18)',
     borderRadius: 8,
-    backgroundColor: '#eef6ff',
+    backgroundColor: '#eefaf2',
     padding: 22,
     gap: 8
   },
@@ -1233,9 +1315,9 @@ const styles = StyleSheet.create({
   },
   contactBand: {
     borderWidth: 1,
-    borderColor: '#d3e2f2',
+    borderColor: 'rgba(15, 122, 74, 0.18)',
     borderRadius: 8,
-    backgroundColor: '#eef6ff',
+    backgroundColor: '#eefaf2',
     padding: 22,
     gap: 18,
     flexDirection: 'row',
@@ -1256,7 +1338,7 @@ const styles = StyleSheet.create({
     marginBottom: 24
   },
   kicker: {
-    color: colors.primary,
+    color: brandGreen,
     fontSize: 13,
     fontWeight: '600',
     textTransform: 'uppercase'
@@ -1314,7 +1396,7 @@ const styles = StyleSheet.create({
   metricValue: {
     fontSize: 30,
     fontWeight: '600',
-    color: '#1667d8'
+    color: brandBlue
   },
   metricLabel: {
     color: colors.slate,
@@ -1343,7 +1425,7 @@ const styles = StyleSheet.create({
     gap: 9
   },
   productNumber: {
-    color: '#d4a742',
+    color: brandGreen,
     fontSize: 13,
     fontWeight: '700'
   },
@@ -1397,11 +1479,11 @@ const styles = StyleSheet.create({
     lineHeight: 22
   },
   processBand: {
-    backgroundColor: '#edf5ff',
+    backgroundColor: '#eefaf2',
     borderTopWidth: 1,
-    borderTopColor: '#d7e4f2',
+    borderTopColor: 'rgba(15, 122, 74, 0.18)',
     borderBottomWidth: 1,
-    borderBottomColor: '#d7e4f2'
+    borderBottomColor: 'rgba(15, 122, 74, 0.18)'
   },
   steps: {
     flexDirection: 'row',
@@ -1422,7 +1504,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 8,
-    backgroundColor: '#0f4fb7',
+    backgroundColor: brandBlueDeep,
     alignItems: 'center',
     justifyContent: 'center'
   },
@@ -1445,9 +1527,9 @@ const styles = StyleSheet.create({
     gap: 24,
     alignItems: 'center',
     borderTopWidth: 1,
-    borderTopColor: '#d7e4f2',
+    borderTopColor: 'rgba(15, 122, 74, 0.18)',
     borderBottomWidth: 1,
-    borderBottomColor: '#d7e4f2'
+    borderBottomColor: 'rgba(15, 122, 74, 0.18)'
   },
   locationCopy: {
     flex: 1.1,
@@ -1461,13 +1543,13 @@ const styles = StyleSheet.create({
     gap: 8,
     minHeight: 36,
     borderWidth: 1,
-    borderColor: '#cfe0fb',
+    borderColor: 'rgba(15, 122, 74, 0.18)',
     borderRadius: 8,
     paddingHorizontal: 12,
-    backgroundColor: colors.primarySoft
+    backgroundColor: brandGreenSoft
   },
   locationBadgeText: {
-    color: colors.primary,
+    color: brandGreen,
     fontWeight: '600'
   },
   locationGrid: {
@@ -1503,8 +1585,8 @@ const styles = StyleSheet.create({
   },
   footer: {
     borderTopWidth: 1,
-    borderTopColor: '#dbe5ef',
-    backgroundColor: '#07152b',
+    borderTopColor: 'rgba(15, 122, 74, 0.18)',
+    backgroundColor: '#08311d',
     paddingHorizontal: 28,
     paddingVertical: 24
   },

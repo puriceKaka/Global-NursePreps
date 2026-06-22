@@ -254,10 +254,12 @@ export async function sendScreeningSms({ action, customer, agent, reason, activa
   };
 }
 
-export async function sendPaymentConfirmedSms({ customer, amount, receipt, balance, repaymentPct }) {
+export async function sendPaymentConfirmedSms({ customer, amount, receipt, balance, repaymentPct, accountReference, payerPhone }) {
+  const accountText = accountReference ? ` on account ${accountReference}` : '';
+  const payerText = payerPhone ? ` from ${normalizePhone(payerPhone)}` : '';
   return sendSms({
     to: customer?.customer_phone,
-    message: `Payment confirmed! KES ${Number(amount || 0).toLocaleString('en-KE')} received for your Bumu Paygo account. Ref: ${receipt || 'pending'}. New balance: KES ${Number(balance || 0).toLocaleString('en-KE')}. Progress: ${Math.round(Number(repaymentPct || 0))}% paid.`
+    message: `Payment confirmed! KES ${Number(amount || 0).toLocaleString('en-KE')} received for your Bumu Paygo account${accountText}${payerText}. Ref: ${receipt || 'pending'}. New balance: KES ${Number(balance || 0).toLocaleString('en-KE')}. Progress: ${Math.round(Number(repaymentPct || 0))}% paid.`
   });
 }
 

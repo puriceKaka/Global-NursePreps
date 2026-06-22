@@ -8,7 +8,8 @@ import {
   sendNextOfKinAcceptanceSms,
   sendOtpSms,
   sendPaymentReminderSms,
-  sendScreeningSms
+  sendScreeningSms,
+  sendSms
 } from './africastalking.js';
 import { getSupabase } from './supabase.js';
 import { initiateB2CPayout, initiateStkPush } from './daraja.js';
@@ -58,6 +59,149 @@ function mapDisplayStatus(value, fallback = 'Pending') {
   const normalized = String(value || '').trim();
   if (!normalized) return fallback;
   return normalized.charAt(0).toUpperCase() + normalized.slice(1).replaceAll('_', ' ');
+}
+
+function paymentAccountReference(customer) {
+  return nonEmpty(customer?.national_id) || nonEmpty(customer?.id) || nonEmpty(customer?.customer_id);
+}
+
+function formatKes(value) {
+  return Number(value || 0).toLocaleString('en-KE');
+}
+
+async function findCustomerByPhone(phone) {
+  const digits = String(phone || '').replace(/\D/g, '');
+  const normalizedPhone = normalizePhone(phone);
+  const rawPhone = nonEmpty(phone);
+  const candidates = [...new Set([
+    rawPhone,
+    normalizedPhone,
+    digits,
+    digits.startsWith('254') ? `+${digits}` : '',
+    digits.startsWith('254') ? `0${digits.slice(3)}` : '',
+    digits.startsWith('0') ? `+254${digits.slice(1)}` : '',
+    digits.startsWith('0') ? `254${digits.slice(1)}` : '',
+    digits.length === 9 ? `+254${digits}` : '',
+    digits.length === 9 ? `0${digits}` : '',
+    digits.length === 9 ? `254${digits}` : ''
+  ].filter(Boolean))];
+
+  for (const candidate of candidates) {
+    const result = await getSupabase()
+      .from('customers')
+      .select('id, customer_name, customer_phone, national_id')
+      .eq('customer_phone', candidate)
+      .maybeSingle();
+
+    if (result.error) throw mapSupabaseError(result.error);
+    if (result.data) return result.data;
+  }
+
+  return null;
+}
+
+async function queuePaymentNotifications({
+  customer,
+  customerId,
+  paymentId,
+  amount,
+  balance,
+  repaymentPct,
+  receipt,
+  payerPhone,
+  sourcePortal,
+  accountReference,
+  paidAt,
+  financeType,
+  financeTitle,
+  financeMessage,
+  financeIssue,
+  financeFollowUp,
+  financeSourcePortal
+}) {
+  const customerPhone = normalizePhone(customer?.customer_phone);
+  const normalizedPayerPhone = normalizePhone(payerPhone);
+  const reference = nonEmpty(accountReference) || paymentAccountReference(customer) || customerId;
+  const payerDifferent = Boolean(normalizedPayerPhone) && normalizedPayerPhone !== customerPhone;
+  const amountText = formatKes(amount);
+  const balanceText = formatKes(balance);
+  const progressText = `${Math.round(Number(repaymentPct || 0))}%`;
+  const payerNote = payerDifferent ? ` from ${normalizedPayerPhone}` : '';
+  const payeeMessage = `Payment of KES ${amountText} was confirmed on account ${reference}${payerNote}. Ref: ${receipt || 'pending'}. New balance: KES ${balanceText}. Progress: ${progressText} paid.`;
+
+  const tasks = [
+    getSupabase()
+      .from('customer_notifications')
+      .insert({
+        customer_id: customerId,
+        title: 'Payment confirmed',
+        message: payeeMessage,
+        type: 'payment',
+        status: 'unread'
+      }),
+    getSupabase()
+      .from('finance_notifications')
+      .insert({
+        type: financeType || 'payment_confirmed',
+        title: financeMessage?.title || financeTitle || 'Payment confirmed',
+        message: financeMessage?.message || `${customer?.customer_name || 'Customer'} paid KES ${amountText}.`,
+        issue: financeIssue || 'Provider callback was received and matched to a customer.',
+        follow_up: financeFollowUp || 'Review reconciliation only if the amount or account looks unusual.',
+        customer_id: customerId,
+        customer_name: customer?.customer_name || '',
+        customer_phone: customer?.customer_phone || payerPhone || '',
+        agent_name: customer?.agent_name || null,
+        agent_code: customer?.agent_id || null,
+        amount,
+        balance,
+        overdue_days: Number(customer?.overdue_days || 0),
+        source_portal: financeSourcePortal || sourcePortal || 'backend',
+        severity: 'success',
+        status: 'unread'
+      }),
+    getSupabase()
+      .from('reconciliation')
+      .insert({
+        payment_id: paymentId || null,
+        receipt: receipt || null,
+        customer_name: customer?.customer_name || 'Customer',
+        national_id: customer?.national_id || null,
+        provider_amount: amount,
+        system_amount: amount,
+        date: String(paidAt || new Date().toISOString()).slice(0, 10),
+        status: 'matched',
+        source_portal: sourcePortal || 'backend'
+      })
+  ];
+
+  if (payerDifferent) {
+    let payerCustomer = null;
+    try {
+      payerCustomer = await findCustomerByPhone(normalizedPayerPhone);
+    } catch {
+      payerCustomer = null;
+    }
+
+    const payerMessage = `You paid KES ${amountText} for ${customer?.customer_name || 'a customer'} account ${reference}. Ref: ${receipt || 'pending'}. New balance: KES ${balanceText}.`;
+
+    if (payerCustomer && payerCustomer.id !== customerId) {
+      tasks.push(
+        getSupabase()
+          .from('customer_notifications')
+          .insert({
+            customer_id: payerCustomer.id,
+            title: 'Payment sent',
+            message: payerMessage,
+            type: 'payment',
+            status: 'unread'
+          })
+      );
+    } else if (hasAfricasTalkingSmsConfig()) {
+      tasks.push(sendSms({ to: normalizedPayerPhone, message: payerMessage }));
+    }
+  }
+
+  await Promise.allSettled(tasks);
 }
 
 export function hashOtp(identifier, otp) {
@@ -550,7 +694,7 @@ export async function completePaymentRequest(paymentRequest, {
       receipt: paymentReceipt,
       provider_reference: providerReference || paymentRequest.provider_reference || paymentRequest.backend_reference || null,
       provider_transaction_id: transactionId || null,
-      provider_account_reference: paymentRequest.customer_id,
+      provider_account_reference: paymentAccountReference(customer) || paymentRequest.customer_id,
       provider_payer_phone: String(phone || ''),
       provider_paid_at: completedAt,
       method,
@@ -575,54 +719,27 @@ export async function completePaymentRequest(paymentRequest, {
     .eq('id', paymentRequest.customer_id);
 
   if (updateCustomer.error) throw mapSupabaseError(updateCustomer.error);
-
-  const sideEffects = await Promise.all([
-    getSupabase()
-      .from('customer_notifications')
-      .insert({
-        customer_id: paymentRequest.customer_id,
-        title: 'Payment confirmed',
-        message: `Payment of KES ${paidAmount.toLocaleString('en-KE')} was confirmed.`,
-        type: 'payment',
-        status: 'unread'
-      }),
-    getSupabase()
-      .from('finance_notifications')
-      .insert({
-        type: 'payment_confirmed',
-        title: 'Payment confirmed',
-        message: `${customer.customer_name || 'Customer'} paid KES ${paidAmount.toLocaleString('en-KE')}.`,
-        issue: 'Provider callback was received and matched to a payment request.',
-        follow_up: 'Review reconciliation only if the amount or account looks unusual.',
-        customer_id: paymentRequest.customer_id,
-        customer_name: customer.customer_name || '',
-        customer_phone: customer.customer_phone || phone || '',
-        agent_name: customer.agent_name || null,
-        agent_code: customer.agent_id || null,
-        amount: paidAmount,
-        balance: nextBalance,
-        overdue_days: Number(customer.overdue_days || 0),
-        source_portal: paymentRequest.source_portal || 'backend',
-        severity: 'success',
-        status: 'unread'
-      }),
-    getSupabase()
-      .from('reconciliation')
-      .insert({
-        payment_id: insertPayment.data.id,
-        receipt: paymentReceipt,
-        customer_name: customer.customer_name || 'Customer',
-        national_id: customer.national_id || null,
-        provider_amount: paidAmount,
-        system_amount: paidAmount,
-        date: completedAt.slice(0, 10),
-        status: 'matched',
-        source_portal: 'backend'
-      })
-  ]);
-
-  sideEffects.forEach((result) => {
-    if (result.error) throw mapSupabaseError(result.error);
+  await queuePaymentNotifications({
+    customer,
+    customerId: paymentRequest.customer_id,
+    paymentId: insertPayment.data.id,
+    amount: paidAmount,
+    balance: nextBalance,
+    repaymentPct,
+    receipt: paymentReceipt,
+    payerPhone: phone,
+    sourcePortal: paymentRequest.source_portal || 'customer',
+    accountReference: paymentAccountReference(customer) || paymentRequest.customer_id,
+    paidAt: completedAt,
+    financeType: 'payment_confirmed',
+    financeTitle: 'Payment confirmed',
+    financeMessage: {
+      title: 'Payment confirmed',
+      message: `${customer.customer_name || 'Customer'} paid KES ${formatKes(paidAmount)}.`
+    },
+    financeIssue: 'Provider callback was received and matched to a payment request.',
+    financeFollowUp: 'Review reconciliation only if the amount or account looks unusual.',
+    financeSourcePortal: paymentRequest.source_portal || 'customer'
   });
 
   return {
@@ -752,7 +869,7 @@ export async function completeProviderC2BPayment({
       receipt: paymentReceipt,
       provider_reference: providerReference || transactionId || null,
       provider_transaction_id: transactionId || null,
-      provider_account_reference: accountReference || customer.id,
+      provider_account_reference: accountReference || paymentAccountReference(customer),
       provider_payer_phone: String(phone || ''),
       provider_paid_at: completedAt,
       method,
@@ -777,54 +894,27 @@ export async function completeProviderC2BPayment({
     .eq('id', customer.id);
 
   if (updateCustomer.error) throw mapSupabaseError(updateCustomer.error);
-
-  const sideEffects = await Promise.all([
-    getSupabase()
-      .from('customer_notifications')
-      .insert({
-        customer_id: customer.id,
-        title: 'Payment confirmed',
-        message: `Payment of KES ${paidAmount.toLocaleString('en-KE')} was confirmed.`,
-        type: 'payment',
-        status: 'unread'
-      }),
-    getSupabase()
-      .from('finance_notifications')
-      .insert({
-        type: 'payment_confirmed',
-        title: 'C2B payment confirmed',
-        message: `${customer.customer_name || 'Customer'} paid KES ${paidAmount.toLocaleString('en-KE')}.`,
-        issue: 'M-PESA C2B callback was received and matched to a customer.',
-        follow_up: 'Review reconciliation only if the amount or account looks unusual.',
-        customer_id: customer.id,
-        customer_name: customer.customer_name || '',
-        customer_phone: customer.customer_phone || phone || '',
-        agent_name: customer.agent_name || null,
-        agent_code: customer.agent_id || null,
-        amount: paidAmount,
-        balance: nextBalance,
-        overdue_days: Number(customer.overdue_days || 0),
-        source_portal: 'mpesa_c2b',
-        severity: 'success',
-        status: 'unread'
-      }),
-    getSupabase()
-      .from('reconciliation')
-      .insert({
-        payment_id: insertPayment.data.id,
-        receipt: paymentReceipt,
-        customer_name: customer.customer_name || 'Customer',
-        national_id: customer.national_id || null,
-        provider_amount: paidAmount,
-        system_amount: paidAmount,
-        date: completedAt.slice(0, 10),
-        status: 'matched',
-        source_portal: 'mpesa_c2b'
-      })
-  ]);
-
-  sideEffects.forEach((result) => {
-    if (result.error) throw mapSupabaseError(result.error);
+  await queuePaymentNotifications({
+    customer,
+    customerId: customer.id,
+    paymentId: insertPayment.data.id,
+    amount: paidAmount,
+    balance: nextBalance,
+    repaymentPct,
+    receipt: paymentReceipt,
+    payerPhone: phone,
+    sourcePortal: 'mpesa_c2b',
+    accountReference: accountReference || paymentAccountReference(customer),
+    paidAt: completedAt,
+    financeType: 'payment_confirmed',
+    financeTitle: 'C2B payment confirmed',
+    financeMessage: {
+      title: 'C2B payment confirmed',
+      message: `${customer.customer_name || 'Customer'} paid KES ${formatKes(paidAmount)}.`
+    },
+    financeIssue: 'M-PESA C2B callback was received and matched to a customer.',
+    financeFollowUp: 'Review reconciliation only if the amount or account looks unusual.',
+    financeSourcePortal: 'mpesa_c2b'
   });
 
   return {
@@ -1000,7 +1090,7 @@ async function startCustomerCheckoutRequest(customer, { amount, phone, sourcePor
     const provider = await initiateStkPush({
       amount,
       phone,
-      accountReference: customer.id,
+      accountReference: paymentAccountReference(customer),
       transactionDescription: narration || `Bumu Paygo ${customer.customer_name}`
     });
     const updated = await getSupabase()
