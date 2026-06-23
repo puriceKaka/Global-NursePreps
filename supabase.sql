@@ -757,7 +757,6 @@ left join public.payments p on (
   p.customer_id = c.id
   or p.provider_account_reference = c.id
   or p.provider_account_reference = c.national_id
-  or p.provider_account_reference = c.customer_id
 )
 group by c.id;
 
