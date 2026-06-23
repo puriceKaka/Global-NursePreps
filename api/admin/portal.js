@@ -10,10 +10,24 @@ function amount(payment) {
   return Number(payment.deposit_credit || 0) + Number(payment.paygo_payment || 0) || Number(payment.paid_amount || 0);
 }
 
+function paidAmount(payment) {
+  const status = String(payment.status || '').toLowerCase();
+  if (!['paid', 'completed'].includes(status)) return 0;
+  return amount(payment);
+}
+
 function countsForOutstanding(customer = {}) {
   const status = String(customer.status || '').toLowerCase();
   const applicationStatus = String(customer.application_status || '').toLowerCase();
   return status !== 'rejected' && applicationStatus !== 'rejected';
+}
+
+function derivedBalance(customer, paid = 0) {
+  const totalPayable = Number(customer.total_payable || 0);
+  if (Number.isFinite(totalPayable) && totalPayable > 0) {
+    return Math.max(totalPayable - paid, 0);
+  }
+  return Number(customer.balance || 0);
 }
 
 function parseStorageReference(reference) {
@@ -161,6 +175,12 @@ export default async function handler(req, res) {
     const customerRows = customers.data || [];
     const paymentRows = payments.data || [];
     const commissionRows = commissions.data || [];
+    const paidByCustomer = paymentRows.reduce((map, payment) => {
+      const customerId = String(payment.customer_id || '').trim();
+      if (!customerId) return map;
+      map.set(customerId, (map.get(customerId) || 0) + paidAmount(payment));
+      return map;
+    }, new Map());
     const normalizedApplicationRows = await ensureCustomerApplicationRows({
       customers: customerRows,
       applications: applications.data || []
@@ -226,7 +246,7 @@ export default async function handler(req, res) {
           activeProducts: (products.data || []).filter((item) => item.status !== 'sold').length,
           totalBalance: customerRows
             .filter(countsForOutstanding)
-            .reduce((total, item) => total + Number(item.balance || 0), 0),
+            .reduce((total, item) => total + derivedBalance(item, paidByCustomer.get(String(item.id || '').trim()) || 0), 0),
           todayCollections: paymentRows.filter((item) => String(item.date || '').startsWith(today)).reduce((total, item) => total + amount(item), 0),
           pendingCommissions: commissionRows.filter((item) => item.status !== 'paid').reduce((total, item) => total + Number(item.amount || 0), 0)
         },
@@ -268,7 +288,7 @@ export default async function handler(req, res) {
           },
           productType: item.product_type || 'product',
           productModel: item.product_model || item.bike_model || '',
-          balance: countsForOutstanding(item) ? Number(item.balance || 0) : 0,
+          balance: countsForOutstanding(item) ? derivedBalance(item, paidByCustomer.get(String(item.id || '').trim()) || 0) : 0,
           applicationStatus: item.application_status || item.status || 'active',
           repaymentStatus: item.status || 'active',
           status: item.status || 'active',
