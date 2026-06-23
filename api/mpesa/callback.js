@@ -107,7 +107,7 @@ export default async function handler(req, res) {
         throw error;
       }
 
-      if (!result.duplicate) {
+      if (!result.duplicate && result.customer) {
         await logPaymentEvent('mpesa_stk_payment_created', {
           checkoutRequestId: callback.checkoutRequestId || '',
           merchantRequestId: callback.merchantRequestId || '',
@@ -128,8 +128,17 @@ export default async function handler(req, res) {
           accountReference: result.customer.national_id || result.customer.id,
           payerPhone: callback.phone
         }).catch(() => null);
-      } else {
+      } else if (result.duplicate) {
         await logPaymentEvent('mpesa_stk_payment_duplicate', {
+          checkoutRequestId: callback.checkoutRequestId || '',
+          merchantRequestId: callback.merchantRequestId || '',
+          transactionId: callback.transactionId || '',
+          receipt: callback.receipt || '',
+          paymentRequestId: paymentRequest.id,
+          paymentId: result.payment?.id || ''
+        });
+      } else if (result.pendingMatch) {
+        await logPaymentEvent('mpesa_stk_payment_pending_match', {
           checkoutRequestId: callback.checkoutRequestId || '',
           merchantRequestId: callback.merchantRequestId || '',
           transactionId: callback.transactionId || '',

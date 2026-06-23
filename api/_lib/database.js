@@ -921,9 +921,69 @@ export async function completeProviderC2BPayment({
 
   const customer = await findCustomerForProviderPayment({ accountReference, phone });
   if (!customer) {
-    const error = new Error('No customer matched this C2B payment account reference or payer phone.');
-    error.statusCode = 404;
-    throw error;
+    const unmatchedCustomerName = nonEmpty(accountReference) || 'Unmatched paybill payment';
+    const unmatchedPayment = await getSupabase()
+      .from('payments')
+      .insert({
+        customer_id: null,
+        customer_name: unmatchedCustomerName,
+        customer_phone: phone || null,
+        product_type: 'product',
+        total_payable: 0,
+        paid_amount: paidAmount,
+        balance: 0,
+        date: completedAt,
+        receipt: paymentReceipt,
+        provider_reference: providerReference || transactionId || null,
+        provider_transaction_id: transactionId || null,
+        provider_account_reference: accountReference || null,
+        provider_payer_phone: String(phone || ''),
+        provider_paid_at: completedAt,
+        method,
+        status: 'unpaid',
+        source_portal: 'mpesa_c2b_unmatched'
+      })
+      .select()
+      .single();
+
+    if (unmatchedPayment.error) throw mapSupabaseError(unmatchedPayment.error);
+
+    const reconciliation = await getSupabase()
+      .from('reconciliation')
+      .insert({
+        payment_id: unmatchedPayment.data.id,
+        receipt: paymentReceipt,
+        customer_name: unmatchedCustomerName,
+        national_id: null,
+        provider_amount: paidAmount,
+        system_amount: 0,
+        date: completedAt.slice(0, 10),
+        status: 'unmatched',
+        source_portal: 'mpesa_c2b_unmatched'
+      })
+      .select()
+      .single();
+
+    if (reconciliation.error) throw mapSupabaseError(reconciliation.error);
+
+    await logPaymentEvent('mpesa_c2b_unmatched_recorded', {
+      paymentId: unmatchedPayment.data.id,
+      reconciliationId: reconciliation.data.id,
+      accountReference: accountReference || '',
+      phone: phone || '',
+      amount: paidAmount,
+      receipt: paymentReceipt
+    });
+
+    return {
+      duplicate: false,
+      pendingMatch: true,
+      payment: unmatchedPayment.data,
+      customer: null,
+      paidAmount,
+      nextBalance: 0,
+      repaymentPct: 0
+    };
   }
 
   const nextPaidAmount = Number(customer.paid_amount || 0) + paidAmount;
