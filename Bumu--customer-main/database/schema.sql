@@ -34,6 +34,8 @@ create table if not exists public.payments (
   amount numeric(12, 2) not null,
   phone_used text,
   mpesa_receipt text,
+  provider_account_reference text,
+  provider_payer_phone text,
   status text not null default 'pending',
   paid_at timestamptz not null default now(),
   created_at timestamptz not null default now()
@@ -96,7 +98,12 @@ select
   greatest(b.total_price - coalesce(sum(case when p.status = 'completed' then p.amount else 0 end), 0), 0) as computed_balance
 from public.customers c
 left join public.customer_bikes b on b.customer_id = c.id
-left join public.payments p on p.customer_id = c.id and (p.bike_id = b.id or p.bike_id is null)
+left join public.payments p on (
+  p.customer_id = c.id
+  or p.provider_account_reference = c.national_id
+  or p.provider_account_reference = c.id::text
+)
+and (p.bike_id = b.id or p.bike_id is null)
 group by c.id, b.id;
 
 alter table public.customers enable row level security;

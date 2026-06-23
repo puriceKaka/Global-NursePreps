@@ -65,6 +65,65 @@ function paymentAccountReference(customer) {
   return nonEmpty(customer?.national_id) || nonEmpty(customer?.id) || nonEmpty(customer?.customer_id);
 }
 
+function customerPaymentIdentifiers(customer = {}) {
+  const accountReferences = [
+    customer?.id,
+    customer?.customer_id,
+    customer?.national_id
+  ]
+    .map((value) => nonEmpty(value))
+    .flatMap((value) => [value, normalizeReferenceValue(value)])
+    .filter(Boolean);
+
+  const phoneValues = [
+    customer?.customer_phone,
+    ...(String(customer?.alternate_phones || '')
+      .split(/[\n,]/)
+      .map((value) => normalizePhone(value)))
+  ]
+    .map((value) => normalizePhone(value))
+    .filter(Boolean);
+
+  return {
+    accountReferences: [...new Set(accountReferences)],
+    phoneValues: [...new Set(phoneValues)]
+  };
+}
+
+export function paymentMatchesCustomer(payment, customer) {
+  if (!payment || !customer) return false;
+  if (String(payment.customer_id || '').trim() === String(customer.id || '').trim()) {
+    return true;
+  }
+
+  const customerIdentifiers = customerPaymentIdentifiers(customer);
+  const paymentAccountReferences = [
+    payment.customer_id,
+    payment.provider_account_reference
+  ]
+    .map((value) => nonEmpty(value))
+    .filter(Boolean);
+  const paymentPhones = [
+    payment.provider_payer_phone,
+    payment.customer_phone
+  ]
+    .map((value) => normalizePhone(value))
+    .filter(Boolean);
+
+  if (paymentAccountReferences.some((value) => {
+    const normalizedValue = normalizeReferenceValue(value);
+    return customerIdentifiers.accountReferences.includes(value) || customerIdentifiers.accountReferences.includes(normalizedValue);
+  })) {
+    return true;
+  }
+
+  if (paymentPhones.some((value) => customerIdentifiers.phoneValues.includes(value))) {
+    return true;
+  }
+
+  return false;
+}
+
 function formatKes(value) {
   return Number(value || 0).toLocaleString('en-KE');
 }
@@ -940,7 +999,7 @@ export async function completeProviderC2BPayment({
         provider_payer_phone: String(phone || ''),
         provider_paid_at: completedAt,
         method,
-        status: 'unpaid',
+        status: 'completed',
         source_portal: 'mpesa_c2b_unmatched'
       })
       .select()
@@ -1126,13 +1185,30 @@ export async function getCustomerPortal(user) {
     throw error;
   }
 
-  const [paymentsResult, notificationsResult, requestsResult] = await Promise.all([
+  const identifiers = customerPaymentIdentifiers(customer);
+  const [paymentsByCustomerResult, paymentsByAccountResult, paymentsByPhoneResult, notificationsResult, requestsResult] = await Promise.all([
     getSupabase()
       .from('payments')
       .select('*')
       .eq('customer_id', customer.id)
       .order('date', { ascending: false })
       .limit(100),
+    identifiers.accountReferences.length > 0
+      ? getSupabase()
+        .from('payments')
+        .select('*')
+        .in('provider_account_reference', identifiers.accountReferences)
+        .order('date', { ascending: false })
+        .limit(100)
+      : Promise.resolve({ data: [], error: null }),
+    identifiers.phoneValues.length > 0
+      ? getSupabase()
+        .from('payments')
+        .select('*')
+        .in('provider_payer_phone', identifiers.phoneValues)
+        .order('date', { ascending: false })
+        .limit(100)
+      : Promise.resolve({ data: [], error: null }),
     getSupabase()
       .from('customer_notifications')
       .select('*')
@@ -1147,11 +1223,21 @@ export async function getCustomerPortal(user) {
       .limit(20)
   ]);
 
-  [paymentsResult, notificationsResult, requestsResult].forEach(({ error }) => {
+  [paymentsByCustomerResult, paymentsByAccountResult, paymentsByPhoneResult, notificationsResult, requestsResult].forEach(({ error }) => {
     if (error) throw mapSupabaseError(error);
   });
 
-  const payments = paymentsResult.data || [];
+  const payments = [
+    ...(paymentsByCustomerResult.data || []),
+    ...(paymentsByAccountResult.data || []),
+    ...(paymentsByPhoneResult.data || [])
+  ].reduce((list, payment) => {
+    if (!payment?.id) return list;
+    if (!paymentMatchesCustomer(payment, customer)) return list;
+    if (list.some((item) => item.id === payment.id)) return list;
+    list.push(payment);
+    return list;
+  }, []).sort((first, second) => String(second.date || second.provider_paid_at || second.created_at || '').localeCompare(String(first.date || first.provider_paid_at || first.created_at || '')));
   const completedPayments = payments.filter((payment) => ['paid', 'completed'].includes(String(payment.status || '').toLowerCase()));
   const totalPaid = completedPayments.reduce((total, payment) => total + customerPaymentAmount(payment), 0);
   const totalPayable = Number(customer.total_payable || 0);

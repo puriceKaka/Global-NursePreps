@@ -753,7 +753,12 @@ select
     end
   ), 0), 0) as computed_balance
 from public.customers c
-left join public.payments p on p.customer_id = c.id
+left join public.payments p on (
+  p.customer_id = c.id
+  or p.provider_account_reference = c.id
+  or p.provider_account_reference = c.national_id
+  or p.provider_account_reference = c.customer_id
+)
 group by c.id;
 
 create or replace function public.finance_dashboard_summary(days_back integer default 30)

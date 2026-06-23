@@ -65,6 +65,41 @@ function mapStatus(value) {
   return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
 }
 
+function normalizeReference(value) {
+  return String(value || "").trim().replace(/[\s-]+/g, "");
+}
+
+function normalizePhone(value) {
+  const digits = String(value || "").replace(/\D/g, "");
+  if (!digits) return "";
+  if (digits.startsWith("254")) return `+${digits}`;
+  if (digits.startsWith("0") && digits.length === 10) return `+254${digits.slice(1)}`;
+  return value ? String(value).trim() : digits;
+}
+
+function paymentMatchesCustomer(payment, summaryRow, customerId) {
+  const accountReferences = [
+    customerId,
+    summaryRow?.national_id,
+    summaryRow?.customer_id
+  ].map(normalizeReference).filter(Boolean);
+  const phoneValues = [
+    summaryRow?.phone,
+    summaryRow?.support_phone
+  ].map(normalizePhone).filter(Boolean);
+  const paymentReferences = [
+    payment.customer_id,
+    payment.provider_account_reference
+  ].map(normalizeReference).filter(Boolean);
+  const paymentPhones = [
+    payment.phone_used,
+    payment.provider_payer_phone
+  ].map(normalizePhone).filter(Boolean);
+
+  return paymentReferences.some((value) => accountReferences.includes(value))
+    || paymentPhones.some((value) => phoneValues.includes(value));
+}
+
 export function emptyPortalData() {
   return {
     customer: null,
@@ -111,13 +146,40 @@ export async function loadCustomerPortal() {
 
   if (summaryError) throw summaryError;
 
-  const { data: payments, error: paymentsError } = await supabase
+  const { data: paymentsByCustomerId, error: paymentsByCustomerIdError } = await supabase
     .from("payments")
     .select("*")
     .eq("customer_id", customerId)
     .order("paid_at", { ascending: false });
 
-  if (paymentsError) throw paymentsError;
+  if (paymentsByCustomerIdError) throw paymentsByCustomerIdError;
+
+  const paymentAccountReferences = [
+    summaryRow.national_id,
+    customerId
+  ].map(normalizeReference).filter(Boolean);
+
+  const phoneReferences = [summaryRow.phone].map(normalizePhone).filter(Boolean);
+
+  const { data: paymentsByReference, error: paymentsByReferenceError } = paymentAccountReferences.length
+    ? await supabase
+      .from("payments")
+      .select("*")
+      .in("provider_account_reference", paymentAccountReferences)
+      .order("paid_at", { ascending: false })
+    : { data: [], error: null };
+
+  if (paymentsByReferenceError) throw paymentsByReferenceError;
+
+  const { data: paymentsByPhone, error: paymentsByPhoneError } = phoneReferences.length
+    ? await supabase
+      .from("payments")
+      .select("*")
+      .in("provider_payer_phone", phoneReferences)
+      .order("paid_at", { ascending: false })
+    : { data: [], error: null };
+
+  if (paymentsByPhoneError) throw paymentsByPhoneError;
 
   const { data: notifications, error: notificationsError } = await supabase
     .from("notifications")
@@ -165,7 +227,10 @@ export async function loadCustomerPortal() {
         balance,
         progress: totalPrice > 0 ? Math.min(100, Math.round((totalPaid / totalPrice) * 100)) : 0
       },
-      payments: (payments || []).map((payment) => ({
+      payments: [...(paymentsByCustomerId || []), ...(paymentsByReference || []), ...(paymentsByPhone || [])]
+        .filter((payment, index, all) => payment?.id && all.findIndex((candidate) => candidate.id === payment.id) === index)
+        .filter((payment) => paymentMatchesCustomer(payment, summaryRow, customerId))
+        .map((payment) => ({
         id: payment.id,
         date: formatDate(payment.paid_at),
         month: monthName(payment.paid_at),

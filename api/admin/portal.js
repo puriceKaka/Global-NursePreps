@@ -1,5 +1,6 @@
 import { sendJson } from '../_lib/http.js';
 import { getActiveAdminProfile, getSupabase, requirePortalUser } from '../_lib/supabase.js';
+import { paymentMatchesCustomer } from '../_lib/database.js';
 
 function formatDate(value) {
   if (!value) return '';
@@ -176,9 +177,9 @@ export default async function handler(req, res) {
     const paymentRows = payments.data || [];
     const commissionRows = commissions.data || [];
     const paidByCustomer = paymentRows.reduce((map, payment) => {
-      const customerId = String(payment.customer_id || '').trim();
-      if (!customerId) return map;
-      map.set(customerId, (map.get(customerId) || 0) + paidAmount(payment));
+      const matchedCustomer = customerRows.find((customer) => paymentMatchesCustomer(payment, customer));
+      if (!matchedCustomer) return map;
+      map.set(matchedCustomer.id, (map.get(matchedCustomer.id) || 0) + paidAmount(payment));
       return map;
     }, new Map());
     const normalizedApplicationRows = await ensureCustomerApplicationRows({
