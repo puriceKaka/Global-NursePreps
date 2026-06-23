@@ -92,7 +92,8 @@ select
   b.final_payment_date,
   b.status as bike_status,
   coalesce(sum(case when p.status = 'completed' then p.amount else 0 end), 0) as total_paid,
-  greatest(b.total_price - coalesce(sum(case when p.status = 'completed' then p.amount else 0 end), 0), 0) as balance
+  greatest(b.total_price - coalesce(sum(case when p.status = 'completed' then p.amount else 0 end), 0), 0) as balance,
+  greatest(b.total_price - coalesce(sum(case when p.status = 'completed' then p.amount else 0 end), 0), 0) as computed_balance
 from public.customers c
 left join public.customer_bikes b on b.customer_id = c.id
 left join public.payments p on p.customer_id = c.id and (p.bike_id = b.id or p.bike_id is null)

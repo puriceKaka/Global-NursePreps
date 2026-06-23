@@ -69,6 +69,19 @@ function formatKes(value) {
   return Number(value || 0).toLocaleString('en-KE');
 }
 
+function derivedCustomerBalance(customer) {
+  const totalPayable = Number(customer?.total_payable || 0);
+  const paidAmount = Number(customer?.paid_amount || 0);
+  if (Number.isFinite(totalPayable) && totalPayable > 0) {
+    return Math.max(totalPayable - paidAmount, 0);
+  }
+  return Number(customer?.balance || 0);
+}
+
+function normalizeReferenceValue(value) {
+  return nonEmpty(value).replace(/[\s-]+/g, '');
+}
+
 function buildPhoneCandidates(phone) {
   const digits = String(phone || '').replace(/\D/g, '');
   const normalizedPhone = normalizePhone(phone);
@@ -243,8 +256,8 @@ async function sendOtpEmail(email, otp) {
     body: JSON.stringify({
       from: process.env.OTP_FROM_EMAIL,
       to: email,
-      subject: 'Bumu Paygo password reset OTP',
-      text: `Your Bumu Paygo OTP is ${otp}. It expires in 10 minutes.`
+      subject: 'Security code for your account',
+      text: `Your security code is ${otp}. It expires in 10 minutes. If you did not request it, ignore this message.`
     })
   });
   const data = await response.json().catch(() => ({}));
@@ -442,10 +455,10 @@ function buildDashboard(payments, customers, commissions, reconciliation) {
   const expectedAmount = collectibleCustomers.reduce((total, customer) => total + Number(customer.total_payable || 0), 0);
   const overdueAmount = collectibleCustomers
     .filter((customer) => Number(customer.overdue_days || 0) > 0 || customer.status === 'defaulted')
-    .reduce((total, customer) => total + Number(customer.balance || 0), 0);
+    .reduce((total, customer) => total + derivedCustomerBalance(customer), 0);
   const pendingPayments = collectibleCustomers
-    .filter((customer) => Number(customer.balance || 0) > 0)
-    .reduce((total, customer) => total + Number(customer.balance || 0), 0);
+    .filter((customer) => derivedCustomerBalance(customer) > 0)
+    .reduce((total, customer) => total + derivedCustomerBalance(customer), 0);
 
   return {
     summary: {
@@ -657,8 +670,8 @@ export async function completePaymentRequest(paymentRequest, {
   }
 
   const nextPaidAmount = Number(customer.paid_amount || 0) + paidAmount;
-  const nextBalance = Math.max(Number(customer.balance || customer.total_payable || 0) - paidAmount, 0);
   const totalPayable = Number(customer.total_payable || 0);
+  const nextBalance = Math.max(totalPayable - nextPaidAmount, 0);
   const repaymentPct = totalPayable > 0 ? Math.min(100, (nextPaidAmount / totalPayable) * 100) : 0;
   const isDeposit = paymentRequest.source_portal === 'agent';
   const completedAt = paidAt || new Date().toISOString();
@@ -755,15 +768,25 @@ export async function completePaymentRequest(paymentRequest, {
   };
 }
 
-async function findCustomerForProviderPayment({ accountReference, phone }) {
+export async function findCustomerForProviderPayment({ accountReference, phone }) {
   const reference = nonEmpty(accountReference);
+  const normalizedReference = normalizeReferenceValue(accountReference);
   const normalizedPhone = normalizePhone(phone);
   const rawPhone = nonEmpty(phone);
 
-  if (reference) {
-    const referenceLookups = looksLikeUuid(reference)
-      ? [['id', reference], ['national_id', reference]]
-      : [['national_id', reference]];
+  const referenceCandidates = [...new Set([
+    reference,
+    normalizedReference
+  ].filter(Boolean))];
+  const phoneCandidates = buildPhoneCandidates(phone);
+
+  for (const candidate of referenceCandidates) {
+    const referenceLookups = [];
+    if (looksLikeUuid(candidate)) referenceLookups.push(['id', candidate]);
+    referenceLookups.push(['national_id', candidate]);
+    referenceLookups.push(['customer_id', candidate]);
+    referenceLookups.push(['customer_phone', candidate]);
+
     for (const [column, value] of referenceLookups) {
       const result = await getSupabase()
         .from('customers')
@@ -775,7 +798,6 @@ async function findCustomerForProviderPayment({ accountReference, phone }) {
     }
   }
 
-  const phoneCandidates = [...new Set([normalizedPhone, rawPhone].filter(Boolean))];
   for (const candidate of phoneCandidates) {
     const result = await getSupabase()
       .from('customers')
@@ -794,10 +816,42 @@ async function findCustomerForProviderPayment({ accountReference, phone }) {
   if (recentCustomers.error) throw mapSupabaseError(recentCustomers.error);
 
   return (recentCustomers.data || []).find((customer) => {
-    if (reference && [customer.id, customer.national_id, customer.customer_phone].some((value) => String(value || '').trim() === reference)) {
+    const customerReferenceCandidates = [
+      customer.id,
+      customer.customer_id,
+      customer.national_id,
+      customer.customer_phone
+    ]
+      .map((value) => nonEmpty(value))
+      .filter(Boolean);
+    const customerReferenceNormalizedCandidates = customerReferenceCandidates
+      .map((value) => normalizeReferenceValue(value))
+      .filter(Boolean);
+
+    const customerAlternatePhones = String(customer.alternate_phones || '')
+      .split(/[\n,]/)
+      .map((value) => normalizePhone(value))
+      .filter(Boolean);
+
+    if (referenceCandidates.some((candidate) => {
+      const normalizedCandidate = normalizeReferenceValue(candidate);
+      return customerReferenceCandidates.includes(candidate)
+        || customerReferenceCandidates.includes(normalizedCandidate)
+        || customerReferenceNormalizedCandidates.includes(candidate)
+        || customerReferenceNormalizedCandidates.includes(normalizedCandidate);
+    })) {
       return true;
     }
-    return normalizedPhone && normalizePhone(customer.customer_phone) === normalizedPhone;
+
+    if (normalizedPhone && [customer.customer_phone, ...customerAlternatePhones].some((value) => normalizePhone(value) === normalizedPhone)) {
+      return true;
+    }
+
+    if (rawPhone && [customer.customer_phone, ...customerAlternatePhones].some((value) => nonEmpty(value) === rawPhone)) {
+      return true;
+    }
+
+    return false;
   }) || null;
 }
 
@@ -846,8 +900,8 @@ export async function completeProviderC2BPayment({
   }
 
   const nextPaidAmount = Number(customer.paid_amount || 0) + paidAmount;
-  const nextBalance = Math.max(Number(customer.balance || customer.total_payable || 0) - paidAmount, 0);
   const totalPayable = Number(customer.total_payable || 0);
+  const nextBalance = Math.max(totalPayable - nextPaidAmount, 0);
   const repaymentPct = totalPayable > 0 ? Math.min(100, (nextPaidAmount / totalPayable) * 100) : 0;
 
   const insertPayment = await getSupabase()
@@ -1014,7 +1068,7 @@ export async function getCustomerPortal(user) {
   const completedPayments = payments.filter((payment) => ['paid', 'completed'].includes(String(payment.status || '').toLowerCase()));
   const totalPaid = completedPayments.reduce((total, payment) => total + customerPaymentAmount(payment), 0);
   const totalPayable = Number(customer.total_payable || 0);
-  const balance = Number(customer.balance || Math.max(totalPayable - totalPaid, 0));
+  const balance = Math.max(totalPayable - totalPaid, 0);
   const dailyInstallment = Number(customer.daily_installment || 0);
 
   return {
@@ -1149,7 +1203,7 @@ export async function createCustomerPaymentRequest(user, body) {
     throw error;
   }
 
-  const balance = Number(customer.balance || 0);
+  const balance = derivedCustomerBalance(customer);
   const dailyInstallment = Number(customer.daily_installment || 0);
   const requestedAmount = Number(body.amount || 0);
   const amount = requestedAmount > 0
@@ -1478,7 +1532,7 @@ export async function getAgentPortal(user) {
   const tasks = tasksResult.data || [];
   const assignedBalance = customers
     .filter((customer) => customer.status !== 'rejected' && customer.application_status !== 'rejected')
-    .reduce((total, customer) => total + Number(customer.balance || 0), 0);
+    .reduce((total, customer) => total + derivedCustomerBalance(customer), 0);
   const paidCommissions = commissions
     .filter((commission) => commission.status === 'paid')
     .reduce((total, commission) => total + Number(commission.amount || 0), 0);
@@ -1520,7 +1574,7 @@ export async function getAgentPortal(user) {
       chassisNumber: customer.chassis_number || '',
       totalPayable: Number(customer.total_payable || 0),
       paidAmount: Number(customer.paid_amount || 0),
-      balance: Number(customer.balance || 0),
+      balance: derivedCustomerBalance(customer),
       dueDate: customer.due_date || '',
       status: mapDisplayStatus(customer.status, 'Active'),
       overdueDays: Number(customer.overdue_days || 0)
@@ -2704,7 +2758,7 @@ function daysBetween(dateValue, now = new Date()) {
 
 function customerReminderAmount(customer) {
   const dailyInstallment = Number(customer.daily_installment || 0);
-  const balance = Number(customer.balance || 0);
+  const balance = derivedCustomerBalance(customer);
   if (dailyInstallment > 0 && balance > 0) return Math.min(dailyInstallment, balance);
   return balance;
 }
@@ -2791,7 +2845,7 @@ async function createFinanceFollowUpNotification({ customer, type, title, messag
       agent_name: customer.agent_name,
       agent_code: customer.agent_id,
       amount,
-      balance: Number(customer.balance || 0),
+      balance: derivedCustomerBalance(customer),
       overdue_days: overdueDays,
       source_portal: 'backend',
       severity,
@@ -2870,7 +2924,7 @@ export async function runAutomatedFollowUps({ dryRun = false } = {}) {
   for (const customer of customers.data || []) {
     const overdueDays = Math.max(0, daysBetween(customer.due_date, now));
     const dueToday = String(customer.due_date || '').slice(0, 10) === today;
-    const balance = Number(customer.balance || 0);
+    const balance = derivedCustomerBalance(customer);
     const amount = customerReminderAmount(customer);
 
     if (customer.status === 'next_of_kin_pending') {

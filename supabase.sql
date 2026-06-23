@@ -741,6 +741,16 @@ select
       end
       else 0
     end
+  ), 0), 0) as balance,
+  greatest(c.total_payable - coalesce(sum(
+    case when p.status in ('paid', 'completed')
+      then case
+        when coalesce(p.deposit_credit, 0) + coalesce(p.paygo_payment, 0) > 0
+          then coalesce(p.deposit_credit, 0) + coalesce(p.paygo_payment, 0)
+        else coalesce(p.paid_amount, 0)
+      end
+      else 0
+    end
   ), 0), 0) as computed_balance
 from public.customers c
 left join public.payments p on p.customer_id = c.id

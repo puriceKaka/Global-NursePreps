@@ -133,7 +133,7 @@ export async function loadCustomerPortal() {
 
   const totalPrice = Number(summaryRow.total_price || 0);
   const totalPaid = Number(summaryRow.total_paid || 0);
-  const balance = Number(summaryRow.balance || 0);
+  const balance = Number(summaryRow.balance ?? summaryRow.computed_balance ?? 0);
   const dailyInstallment = Number(summaryRow.daily_installment || 0);
 
   return {
