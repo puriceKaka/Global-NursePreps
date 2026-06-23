@@ -1,6 +1,6 @@
 import { sendPaymentConfirmedSms } from '../_lib/africastalking.js';
 import { isCallbackAuthorized } from '../_lib/callbackAuth.js';
-import { completePaymentRequest, failPaymentRequest } from '../_lib/database.js';
+import { completePaymentRequest, failPaymentRequest, logPaymentEvent } from '../_lib/database.js';
 import { parseDarajaStkCallback } from '../_lib/daraja.js';
 import { readJson, sendJson } from '../_lib/http.js';
 import { getSupabase } from '../_lib/supabase.js';
@@ -56,29 +56,69 @@ export default async function handler(req, res) {
     const callback = parseDarajaStkCallback(body);
 
     if (!callback?.checkoutRequestId && !callback?.merchantRequestId) {
+      await logPaymentEvent('mpesa_stk_missing_reference', { rawBody: body });
       sendJson(res, 400, { message: 'Missing Daraja STK callback reference.' });
       return;
     }
 
+    await logPaymentEvent('mpesa_stk_callback_received', {
+      checkoutRequestId: callback.checkoutRequestId || '',
+      merchantRequestId: callback.merchantRequestId || '',
+      transactionId: callback.transactionId || '',
+      receipt: callback.receipt || '',
+      amount: Number(callback.amount || 0),
+      phone: callback.phone || ''
+    });
+
     const paymentRequest = await findPaymentRequest(callback);
     if (!paymentRequest) {
+      await logPaymentEvent('mpesa_stk_payment_request_not_found', {
+        checkoutRequestId: callback.checkoutRequestId || '',
+        merchantRequestId: callback.merchantRequestId || '',
+        transactionId: callback.transactionId || '',
+        receipt: callback.receipt || ''
+      });
       sendJson(res, 404, { message: 'Payment request not found.' });
       return;
     }
 
     if (callback.success) {
-      const result = await completePaymentRequest(paymentRequest, {
-        amount: callback.amount || paymentRequest.amount,
-        phone: callback.phone || paymentRequest.phone,
-        receipt: callback.receipt || callback.transactionId,
-        providerReference: callback.checkoutRequestId || callback.merchantRequestId,
-        providerTransactionId: callback.receipt || callback.transactionId,
-        providerResponse: body,
-        paidAt: mpesaDateToIso(callback.raw?.Body?.stkCallback?.CallbackMetadata?.Item?.find((item) => item.Name === 'TransactionDate')?.Value),
-        method: 'mpesa_stk_push'
-      });
+      let result;
+      try {
+        result = await completePaymentRequest(paymentRequest, {
+          amount: callback.amount || paymentRequest.amount,
+          phone: callback.phone || paymentRequest.phone,
+          receipt: callback.receipt || callback.transactionId,
+          providerReference: callback.checkoutRequestId || callback.merchantRequestId,
+          providerTransactionId: callback.receipt || callback.transactionId,
+          providerResponse: body,
+          paidAt: mpesaDateToIso(callback.raw?.Body?.stkCallback?.CallbackMetadata?.Item?.find((item) => item.Name === 'TransactionDate')?.Value),
+          method: 'mpesa_stk_push'
+        });
+      } catch (error) {
+        await logPaymentEvent('mpesa_stk_callback_failed', {
+          checkoutRequestId: callback.checkoutRequestId || '',
+          merchantRequestId: callback.merchantRequestId || '',
+          transactionId: callback.transactionId || '',
+          receipt: callback.receipt || '',
+          paymentRequestId: paymentRequest.id,
+          error: error.message
+        });
+        throw error;
+      }
 
       if (!result.duplicate) {
+        await logPaymentEvent('mpesa_stk_payment_created', {
+          checkoutRequestId: callback.checkoutRequestId || '',
+          merchantRequestId: callback.merchantRequestId || '',
+          transactionId: callback.transactionId || '',
+          receipt: callback.receipt || '',
+          paymentId: result.payment?.id || '',
+          customerId: result.customer?.id || '',
+          customerName: result.customer?.customer_name || '',
+          amount: result.paidAmount,
+          balance: result.nextBalance
+        });
         await sendPaymentConfirmedSms({
           customer: { ...result.customer, customer_phone: result.customer.customer_phone || callback.phone },
           amount: result.paidAmount,
@@ -88,11 +128,28 @@ export default async function handler(req, res) {
           accountReference: result.customer.national_id || result.customer.id,
           payerPhone: callback.phone
         }).catch(() => null);
+      } else {
+        await logPaymentEvent('mpesa_stk_payment_duplicate', {
+          checkoutRequestId: callback.checkoutRequestId || '',
+          merchantRequestId: callback.merchantRequestId || '',
+          transactionId: callback.transactionId || '',
+          receipt: callback.receipt || '',
+          paymentRequestId: paymentRequest.id,
+          paymentId: result.payment?.id || ''
+        });
       }
     } else {
       await failPaymentRequest(paymentRequest.id, {
         reason: callback.resultDescription || 'M-PESA payment failed.',
         providerResponse: body
+      });
+      await logPaymentEvent('mpesa_stk_payment_failed', {
+        checkoutRequestId: callback.checkoutRequestId || '',
+        merchantRequestId: callback.merchantRequestId || '',
+        transactionId: callback.transactionId || '',
+        receipt: callback.receipt || '',
+        paymentRequestId: paymentRequest.id,
+        reason: callback.resultDescription || 'M-PESA payment failed.'
       });
     }
 

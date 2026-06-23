@@ -69,6 +69,14 @@ function formatKes(value) {
   return Number(value || 0).toLocaleString('en-KE');
 }
 
+function safeJson(value) {
+  try {
+    return JSON.parse(JSON.stringify(value));
+  } catch {
+    return null;
+  }
+}
+
 function derivedCustomerBalance(customer) {
   const totalPayable = Number(customer?.total_payable || 0);
   const paidAmount = Number(customer?.paid_amount || 0);
@@ -80,6 +88,25 @@ function derivedCustomerBalance(customer) {
 
 function normalizeReferenceValue(value) {
   return nonEmpty(value).replace(/[\s-]+/g, '');
+}
+
+export async function logPaymentEvent(action, details = {}) {
+  const payload = {
+    actor_user_id: null,
+    actor_email: null,
+    action,
+    target_table: 'payments',
+    target_id: details.paymentId || details.customerId || details.reference || action,
+    details: safeJson(details) || {}
+  };
+
+  console.log('[payment-event]', action, payload.details);
+
+  try {
+    await getSupabase().from('admin_audit_logs').insert(payload);
+  } catch (error) {
+    console.error('[payment-event-log-failed]', action, error?.message || error);
+  }
 }
 
 function buildPhoneCandidates(phone) {
