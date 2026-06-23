@@ -32,7 +32,7 @@ export default async function handler(req, res) {
         accountReference,
         phone: payerPhone
       });
-      sendJson(res, 200, { ResultCode: 1, ResultDesc: 'Missing account reference or phone.' });
+      sendJson(res, 200, { ResultCode: 0, ResultDesc: 'Accepted' });
       return;
     }
 
@@ -46,7 +46,7 @@ export default async function handler(req, res) {
         accountReference,
         phone: payerPhone
       });
-      sendJson(res, 200, { ResultCode: 1, ResultDesc: 'Customer account not found.' });
+      sendJson(res, 200, { ResultCode: 0, ResultDesc: 'Accepted' });
       return;
     }
 
