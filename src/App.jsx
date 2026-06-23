@@ -297,10 +297,6 @@ export function App() {
   const [appLayout, setAppLayout] = useState('App view');
   const [toastMessage, setToastMessage] = useState('');
   const [notifications, setNotifications] = useState([]);
-  const [customerLookupDraft, setCustomerLookupDraft] = useState({
-    agentName: '',
-    agentId: ''
-  });
   const { canInstall, install } = useInstallPrompt();
 
   const refreshDailyPaymentNotifications = useCallback(() => {
@@ -543,12 +539,7 @@ export function App() {
           <DashboardScreen onNavigate={setActiveScreen} notifications={notifications} />
         )}
         {activeScreen === 'payments' && <PaymentsScreen onPaymentRecordsChange={refreshPaymentActivity} />}
-        {activeScreen === 'customers' && (
-          <CustomersScreen
-            lookupDraft={customerLookupDraft}
-            onLookupDraftChange={setCustomerLookupDraft}
-          />
-        )}
+        {activeScreen === 'customers' && <CustomersScreen />}
         {activeScreen === 'commissions' && <CommissionsScreen />}
         {activeScreen === 'reports' && <ReportsScreen />}
         {activeScreen === 'reconciliation' && <ReconciliationScreen />}

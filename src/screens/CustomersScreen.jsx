@@ -12,6 +12,32 @@ import { buildMonthlyPaygoCommissions, formatPercent } from '../utils/commission
 import { Header } from './PaymentsScreen.jsx';
 
 const NO_DATA = 'No data yet';
+const AGENT_LOOKUP_DRAFT_KEY = 'bumu-riders-agent-lookup-draft';
+
+function loadAgentLookupDraft() {
+  try {
+    return JSON.parse(window.sessionStorage.getItem(AGENT_LOOKUP_DRAFT_KEY) || '{}');
+  } catch {
+    return {};
+  }
+}
+
+function saveAgentLookupDraft(nextDraft) {
+  try {
+    window.sessionStorage.setItem(AGENT_LOOKUP_DRAFT_KEY, JSON.stringify(nextDraft));
+  } catch {
+    // Keep the form usable even when browser storage is unavailable.
+  }
+}
+
+function clearAgentLookupDraft() {
+  try {
+    window.sessionStorage.removeItem(AGENT_LOOKUP_DRAFT_KEY);
+  } catch {
+    // Keep the search flow usable even when browser storage is unavailable.
+  }
+}
+
 function hasValue(value) {
   return value !== null && value !== undefined && value !== '';
 }
@@ -36,20 +62,24 @@ function identifierForPayment(payment) {
   return payment.chassisNumber || payment.serialNumber;
 }
 
-export function CustomersScreen({ lookupDraft, onLookupDraftChange }) {
+export function CustomersScreen() {
   const [query, setQuery] = useState('');
+  const [agentLookupDraft, setAgentLookupDraft] = useState(loadAgentLookupDraft);
   const [hasSearched, setHasSearched] = useState(false);
   const [agentPayments, setAgentPayments] = useState([]);
   const [searchedAgentName, setSearchedAgentName] = useState('');
   const [searchedAgentId, setSearchedAgentId] = useState('');
-  const agentName = lookupDraft?.agentName || '';
-  const agentId = lookupDraft?.agentId || '';
+  const agentName = agentLookupDraft.agentName || '';
+  const agentId = agentLookupDraft.agentId || '';
 
   function updateLookupDraft(field, value) {
-    onLookupDraftChange?.({
-      agentName,
-      agentId,
-      [field]: value
+    setAgentLookupDraft((current) => {
+      const nextDraft = {
+        ...current,
+        [field]: value
+      };
+      saveAgentLookupDraft(nextDraft);
+      return nextDraft;
     });
   }
 
@@ -105,7 +135,8 @@ export function CustomersScreen({ lookupDraft, onLookupDraftChange }) {
     setHasSearched(true);
     setSearchedAgentName(nextAgentName);
     setSearchedAgentId(nextAgentId);
-    onLookupDraftChange?.({ agentName: '', agentId: '' });
+    setAgentLookupDraft({ agentName: '', agentId: '' });
+    clearAgentLookupDraft();
     setQuery('');
   }
 
