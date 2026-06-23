@@ -36,14 +36,22 @@ function identifierForPayment(payment) {
   return payment.chassisNumber || payment.serialNumber;
 }
 
-export function CustomersScreen() {
+export function CustomersScreen({ lookupDraft, onLookupDraftChange }) {
   const [query, setQuery] = useState('');
-  const [agentName, setAgentName] = useState('');
-  const [agentId, setAgentId] = useState('');
   const [hasSearched, setHasSearched] = useState(false);
   const [agentPayments, setAgentPayments] = useState([]);
   const [searchedAgentName, setSearchedAgentName] = useState('');
   const [searchedAgentId, setSearchedAgentId] = useState('');
+  const agentName = lookupDraft?.agentName || '';
+  const agentId = lookupDraft?.agentId || '';
+
+  function updateLookupDraft(field, value) {
+    onLookupDraftChange?.({
+      agentName,
+      agentId,
+      [field]: value
+    });
+  }
 
   const payments = useMemo(() => {
     const value = query.toLowerCase();
@@ -97,10 +105,7 @@ export function CustomersScreen() {
     setHasSearched(true);
     setSearchedAgentName(nextAgentName);
     setSearchedAgentId(nextAgentId);
-    if (records.length > 0) {
-      setAgentName('');
-      setAgentId('');
-    }
+    onLookupDraftChange?.({ agentName: '', agentId: '' });
     setQuery('');
   }
 
@@ -135,14 +140,14 @@ export function CustomersScreen() {
         <View style={styles.lookupForm}>
           <TextInput
             value={agentName}
-            onChangeText={setAgentName}
+            onChangeText={(value) => updateLookupDraft('agentName', value)}
             style={styles.formInput}
             placeholder="Agent name"
             placeholderTextColor="var(--app-muted)"
           />
           <TextInput
             value={agentId}
-            onChangeText={setAgentId}
+            onChangeText={(value) => updateLookupDraft('agentId', value)}
             style={styles.formInput}
             placeholder="Agent ID"
             placeholderTextColor="var(--app-muted)"
