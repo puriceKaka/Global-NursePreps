@@ -1,0 +1,57 @@
+body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: aliceblue;
+}
+#mywatch{
+    font-family: Arial,sans-serif;
+    font-color: 25%;
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 5px solid;
+    padding: 20px;
+    border-radius: 30px;
+    gap: 0.75rem;
+    margin: 1px;
+    background-color: white;
+} 
+#display{
+    font-size: 5rem;
+    font-family: monospace;
+    text-shadow: 2px 2px 2px rgba(0, 0%, 0%, 0.75);
+}
+.container button{
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 10px 5px;
+    min-width: 125px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    color: white;
+}
+#start{
+    background-color: green;
+}
+#start:hover{
+    background-color: rgb(8, 205, 8);
+    opacity: 10px;
+}
+#reset{
+    background-color: blue;
+}
+#reset:hover{
+    background-color: rgb(107, 107, 249);
+    opacity: 10px;
+}
+#stop{
+    background-color: red;
+}
+#stop:hover{
+    background-color: rgb(249, 110, 110);
+    opacity: 10px;
+}

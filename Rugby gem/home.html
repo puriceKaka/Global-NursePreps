@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rugby Gem | Home Portal</title>
+  <link rel="stylesheet" href="home.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+  <div class="portal-layout" id="portalLayout">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-title">
+          <img src="logo/logoInage.jpeg" alt="Rugby Gem Logo" class="brand-logo">
+          <h1>Rugby Gem</h1>
+        </div>
+        <p>Rugby Hub</p>
+      </div>
+
+      <nav class="menu">
+        <a href="#" class="menu-item active" data-section="dashboard"><i class="fa-solid fa-house"></i> Dashboard</a>
+        <a href="#" class="menu-item" data-section="players"><i class="fa-solid fa-users"></i> Players</a>
+        <a href="#" class="menu-item" data-section="profile"><i class="fa-solid fa-id-badge"></i> Profile</a>
+        <a href="#" class="menu-item" data-section="fixtures"><i class="fa-solid fa-calendar-days"></i> Fixtures</a>
+        <a href="#" class="menu-item" data-section="training"><i class="fa-solid fa-dumbbell"></i> Training</a>
+        <a href="#" class="menu-item" data-section="performance"><i class="fa-solid fa-chart-line"></i> Performance</a>
+        <a href="#" class="menu-item" data-section="payments"><i class="fa-solid fa-money-bill-wave"></i> Monthly Payment</a>
+        <a href="login.html" class="menu-item" id="logoutLink"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button id="menuToggle" class="menu-toggle" aria-label="Open menu">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="portal-title">
+            <img src="logo/logoInage.jpeg" alt="Rugby Gem Logo" class="portal-logo">
+            <h2>Rugby Gem Portal</h2>
+          </div>
+        </div>
+        <div class="user-pill">
+          <img id="topUserAvatar" class="top-user-avatar" alt="Profile">
+          <span id="portalUsername">Username</span>
+        </div>
+      </header>
+
+      <section class="portal-section active" id="section-dashboard">
+        <section class="stats-grid">
+          <article class="card">
+            <p>Registered Players</p>
+            <h3>38</h3>
+          </article>
+          <article class="card">
+            <p>Upcoming Fixtures</p>
+            <h3>20</h3>
+          </article>
+          <article class="card">
+            <p>Avg Team Possession</p>
+            <h3>58%</h3>
+          </article>
+        </section>
+
+        <section class="panel">
+          <h3>Team News and Updates</h3>
+          <ul>
+            <li>Team camp starts next Monday.</li>
+            <li>New training kits distributed this week.</li>
+            <li>Weekend fixture lineup will be released tomorrow.</li>
+          </ul>
+        </section>
+
+        <section class="panel">
+          <h3>Dashboard Samples</h3>
+          <div class="dashboard-samples">
+            <article class="sample-box">
+              <h4>Players</h4>
+              <p>Captain: R. Ouma</p>
+              <p>Injured: 2 players</p>
+            </article>
+            <article class="sample-box">
+              <h4>Fixtures</h4>
+              <p>Next: SHAMBERERE vs RONGO</p>
+              <p>Date: 11-Apr</p>
+            </article>
+            <article class="sample-box">
+              <h4>Training</h4>
+              <p>Day: Wednesday</p>
+              <p>Type: Contact Drills</p>
+            </article>
+            <article class="sample-box">
+              <h4>Performance</h4>
+              <p>Speed: 8.2/10</p>
+              <p>Tackling: 7.4/10</p>
+            </article>
+          </div>
+        </section>
+      </section>
+
+      <section class="portal-section" id="section-players">
+        <section class="panel">
+          <h3>Players</h3>
+          <div class="player-actions">
+            <button type="button" class="player-btn active" data-player-group="captain">Captain</button>
+            <button type="button" class="player-btn" data-player-group="injured">Injured Players</button>
+            <button type="button" class="player-btn" data-player-group="suspended">Suspended Players</button>
+            <button type="button" class="player-btn" id="openComplaintBtn">Write Complains</button>
+          </div>
+
+          <div class="player-group active" id="player-captain">
+            <p class="section-note">Team leadership</p>
+            <ul>
+              <li>No captain data yet.</li>
+            </ul>
+          </div>
+
+          <div class="player-group" id="player-injured">
+            <p class="section-note">Currently injured players</p>
+            <ul>
+              <li>No injured player data yet.</li>
+            </ul>
+          </div>
+
+          <div class="player-group" id="player-suspended">
+            <p class="section-note">Suspension list</p>
+            <ul>
+              <li>No suspended player data yet.</li>
+            </ul>
+          </div>
+
+          <div class="complaint-box" id="complaintBox">
+            <p class="section-note">Send your complaint to team management.</p>
+            <form id="complaintForm" class="complaint-form" novalidate>
+              <textarea id="complaintText" placeholder="Write your complaint here..." rows="4" required></textarea>
+              <button type="submit" class="complaint-btn">Submit Complaint</button>
+              <p id="complaintMessage" class="complaint-message" aria-live="polite"></p>
+            </form>
+          </div>
+        </section>
+      </section>
+
+      <section class="portal-section" id="section-profile">
+        <section class="panel">
+          <h3>Player Profile</h3>
+          <p class="section-note">Registration details and player background.</p>
+          <form id="profileForm" class="profile-form" novalidate>
+            <div class="profile-grid">
+              <label for="profileUsernameInput">Username</label>
+              <input type="text" id="profileUsernameInput" readonly>
+
+              <label for="profileImageInput">Profile Photo</label>
+              <input type="file" id="profileImageInput" accept="image/*">
+              <img id="profileImagePreview" class="profile-image-preview" alt="Profile Preview">
+
+              <label for="profilePhoneInput">Phone</label>
+              <input type="tel" id="profilePhoneInput" placeholder="Phone No" pattern="^\\+?\\d{10,15}$" required>
+
+              <label for="profileOriginInput">Where From</label>
+              <input type="text" id="profileOriginInput" placeholder="Home Town / County" required>
+
+              <button type="button" class="profile-save-btn profile-inline-btn" id="submitPlayerDetailsBtn">Submit Player Details</button>
+              <label for="profileParentGuardianInput">Parent / Guardian</label>
+              <input type="text" id="profileParentGuardianInput" placeholder="Parent / Guardian Name" required>
+
+              <label for="profileParentGuardianPhoneInput">Parent / Guardian Phone</label>
+              <input type="tel" id="profileParentGuardianPhoneInput" placeholder="Phone No" pattern="^\\+?\\d{10,15}$" required>
+            </div>
+            <button type="button" class="profile-save-btn" id="submitParentGuardianBtn">Submit Parent/Guardian Details</button>
+            <p id="profileMessage" class="profile-message" aria-live="polite"></p>
+          </form>
+        </section>
+      </section>
+
+      <section class="portal-section" id="section-fixtures">
+        <section class="panel">
+          <h3>Fixtures</h3>
+          <p class="section-note">Official season schedule with dates and games.</p>
+          <div class="fixtures-columns">
+            <div>
+              <h4 class="sub-title">Men Fixtures</h4>
+              <div class="fixture-table-wrap">
+                <table class="fixture-table">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Game / Tournament</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>14-Mar</td><td>JACKALS vs SHANZU MERLINS</td></tr>
+                    <tr><td>24-26 Jul</td><td>PRINSLOO 7s</td></tr>
+                    <tr><td>1-2 Aug</td><td>DALA 7s</td></tr>
+                    <tr><td>14-16 Aug</td><td>KABEBERI 7s</td></tr>
+                    <tr><td>21-23 Aug</td><td>DRIFTWOOD 7s</td></tr>
+                    <tr><td>5-6 Sep</td><td>EMBU 7s</td></tr>
+                    <tr><td>11-13 Sep</td><td>CHRISTIES 7s</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div>
+              <h4 class="sub-title">Women Fixtures</h4>
+              <div class="fixture-table-wrap">
+                <table class="fixture-table">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Game / Tournament</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>21-Mar</td><td>QUINS vs RONGO</td></tr>
+                    <tr><td>28-Mar</td><td>RONGO vs NORTHERN SUBURBS</td></tr>
+                    <tr><td>11-Apr</td><td>SHAMBERERE vs RONGO</td></tr>
+                    <tr><td>18-Apr</td><td>RONGO vs MWAMBA</td></tr>
+                    <tr><td>02-May</td><td>KENYA CUP SEMIS</td></tr>
+                    <tr><td>09-May</td><td>KENYA CUP FINALS</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div>
+              <h4 class="sub-title">KSSSA Men and Women</h4>
+              <div class="fixture-table-wrap">
+                <table class="fixture-table">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Game / Tournament</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>4-7 Mar</td><td>KSSSA 15s COUNTIES</td></tr>
+                    <tr><td>11-13 Mar</td><td>KSSSA 15s REGIONALS</td></tr>
+                    <tr><td>17-21 Mar</td><td>KSSSA 15s REGIONALS</td></tr>
+                    <tr><td>5-13 Apr</td><td>KSSSA 15s & JSS 7s NATIONALS</td></tr>
+                    <tr><td>3-6 Jun</td><td>KSSSA 7s SUB COUNTIES</td></tr>
+                    <tr><td>17-20 Jun</td><td>KSSSA 7s COUNTIES</td></tr>
+                    <tr><td>7-11 Jul</td><td>KSSSA 7s REGIONALS</td></tr>
+                    <tr><td>10-12 Jul</td><td>DBA FUTURES CUP</td></tr>
+                    <tr><td>26 Jul - 3 Aug</td><td>KSSSA 7s NATIONALS</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section class="portal-section" id="section-training">
+        <section class="panel">
+          <h3>Training</h3>
+          <p class="section-note">Weekly training plan and recovery schedule.</p>
+          <div class="training-table-wrap">
+            <table class="training-table">
+              <thead>
+                <tr>
+                  <th>Training Day</th>
+                  <th>Resting Day</th>
+                  <th>Type of Training</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Monday</td>
+                  <td>Tuesday</td>
+                  <td>Strength and Conditioning</td>
+                </tr>
+                <tr>
+                  <td>Wednesday</td>
+                  <td>Thursday</td>
+                  <td>Contact Drills and Set Pieces</td>
+                </tr>
+                <tr>
+                  <td>Friday</td>
+                  <td>Saturday</td>
+                  <td>Match Simulation and Recovery</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section class="portal-section" id="section-performance">
+        <section class="panel">
+          <h3>Performance</h3>
+          <p class="section-note">Player ratings table (0 to 10).</p>
+          <div class="performance-table-wrap">
+            <table class="performance-table">
+              <thead>
+                <tr>
+                  <th>Metric</th>
+                  <th>Rating (0-10)</th>
+                  <th>Comment</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td colspan="3">No performance details entered yet.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p class="section-note">Training attendance graph (days attended this week).</p>
+          <div class="days-scale">
+            <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span>
+          </div>
+          <div class="days-graph" data-max-days="7">
+            <div class="days-row">
+              <span class="days-name" id="userDaysName">User</span>
+              <div class="days-track"><div class="days-fill" id="userDaysFill" data-days="0"></div></div>
+              <span class="days-value" id="userDaysValue">No details yet</span>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <section class="portal-section" id="section-payments">
+        <section class="panel">
+          <h3>Monthly Payment</h3>
+          <form id="paymentForm" class="payment-form" novalidate>
+            <div class="payment-grid">
+              <label for="payUser">Player Username</label>
+              <input type="text" id="payUser" name="payUser" placeholder="Username" required readonly>
+
+              <label for="payMonth">Payment Month</label>
+              <input type="month" id="payMonth" name="payMonth" required>
+
+              <label for="payAmount">Amount (KES)</label>
+              <input type="number" id="payAmount" name="payAmount" min="1" step="0.01" placeholder="0.00" required>
+
+              <label for="payMethod">Method</label>
+              <select id="payMethod" name="payMethod" required>
+                <option value="M-Pesa">M-Pesa</option>
+                <option value="Card">Card</option>
+                <option value="Bank">Bank Transfer</option>
+                <option value="Cash">Cash</option>
+              </select>
+
+              <label for="payPhone">Phone Number</label>
+              <input type="tel" id="payPhone" name="payPhone" placeholder="Phone No" required>
+
+            </div>
+            <p id="payAmountPreview" class="amount-preview"></p>
+            <button type="submit" class="pay-btn">Pay and Save</button>
+            <p id="paymentMessage" class="payment-message" aria-live="polite"></p>
+          </form>
+
+          <div class="payment-summary">
+            Total Paid: <strong id="paymentTotal">KES 0.00</strong>
+          </div>
+
+          <div class="payment-table-wrap">
+            <table class="payment-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Month</th>
+                  <th>User</th>
+                  <th>Phone</th>
+                  <th>Method</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody id="paymentTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <script src="home.js"></script>
+</body>
+</html>

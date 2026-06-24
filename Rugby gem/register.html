@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rugby Gem | Register</title>
+  <link rel="stylesheet" href="register.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+  <main class="auth-page">
+    <form id="registerForm" class="auth-card" novalidate>
+      <div class="auth-brand">
+        <img src="logo/logoInage.jpeg" alt="Rugby Gem Logo" class="auth-logo">
+      </div>
+      <h1>Rugby Gem</h1>
+      <p class="subtitle">Create a new account</p>
+
+      <label class="field" for="username">
+        <span>Username</span>
+        <div class="input-wrap">
+          <i class="fa-solid fa-user"></i>
+          <input type="text" id="username" name="username" placeholder="Username" required>
+        </div>
+      </label>
+
+      <label class="field" for="phone">
+        <span>Phone</span>
+        <div class="input-wrap">
+          <i class="fa-solid fa-phone"></i>
+          <input type="tel" id="phone" name="phone" placeholder="Phone No" pattern="^\\+?\\d{10,15}$" required>
+        </div>
+      </label>
+
+      <label class="field" for="regPassword">
+        <span>Password</span>
+        <div class="input-wrap">
+          <i class="fa-solid fa-key"></i>
+          <input type="password" id="regPassword" name="password" placeholder="At least 8 chars (Aa1!)" required>
+        </div>
+      </label>
+
+      <label class="field" for="confirmPassword">
+        <span>Confirm password</span>
+        <div class="input-wrap">
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter password" required>
+        </div>
+      </label>
+
+      <div class="terms-row">
+        <label class="remember" for="terms">
+          <input type="checkbox" id="terms" required>
+          <span>I agree to the Terms and Conditions</span>
+        </label>
+        <button type="button" class="terms-view-btn" id="viewTermsBtn">View Terms</button>
+      </div>
+
+      <button type="submit" class="btn">Register</button>
+      <p id="registerMessage" class="message" aria-live="polite"></p>
+
+      <p class="switch-link">Already have an account? <a href="login.html">Back to login</a></p>
+    </form>
+  </main>
+
+  <div class="terms-modal" id="termsModal" aria-hidden="true">
+    <div class="terms-modal-card" role="dialog" aria-modal="true" aria-labelledby="termsTitle">
+      <div class="terms-modal-header">
+        <h2 id="termsTitle">Rugby Gem Terms and Conditions</h2>
+        <button type="button" class="terms-close-btn" id="closeTermsBtn" aria-label="Close terms">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="terms-content">
+        <p>By creating an account, you agree to use Rugby Gem responsibly and with respect to other users.</p>
+        <p>You must provide accurate registration details and keep your login credentials private.</p>
+        <p>Any abusive behavior, fake information, or misuse of team resources may lead to account suspension.</p>
+        <p>Payment records and profile details are stored to support team operations and communication.</p>
+        <p>You can request profile updates through team management when needed.</p>
+        <p>Rugby Gem may update these terms from time to time. Continued use means you accept the latest version.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="register.js"></script>
+</body>
+</html>

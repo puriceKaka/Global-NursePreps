@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global NursePrep | Nursing Hub</title>
+    <link rel="stylesheet" href="homepage.css">
+</head>
+<body>
+    <header class="topbar">
+        <button type="button" class="icon-button" id="menuToggle" aria-label="Open menu">
+            <span class="hamburger" aria-hidden="true"></span>
+        </button>
+
+        <div class="brand">
+            <span class="brand-logo">
+                <img src="logo/Screenshot_20260421-123818.jpg" alt="Global NursePrep logo">
+            </span>
+            <div>
+                <h1>Global NursePrep</h1>
+                <p>Nursing education • Career growth • Community</p>
+            </div>
+        </div>
+
+        <div class="topbar-actions">
+            <button type="button" class="secondary-button" id="logoutBtn">Logout</button>
+        </div>
+    </header>
+
+    <div class="drawer-overlay hidden" id="drawerOverlay" tabindex="-1" aria-hidden="true"></div>
+
+    <aside class="drawer hidden" id="drawer" aria-label="Side menu">
+        <div class="drawer-header">
+                <div class="drawer-user">
+                <div class="avatar" id="drawerAvatar" aria-hidden="true">N</div>
+                <div>
+                    <strong id="drawerName">Member</strong>
+                    <div class="muted" id="drawerEmail">—</div>
+                </div>
+            </div>
+            <button type="button" class="icon-button" id="drawerClose" aria-label="Close menu">×</button>
+        </div>
+
+        <nav class="drawer-nav" aria-label="Navigation">
+            <button type="button" class="drawer-link" data-target="top">Home</button>
+            <button type="button" class="drawer-link" data-target="career">Career Paths</button>
+            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/courses.html" target="_blank" rel="noopener">Courses</a>
+            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/exam-interface/exam-interface.html" target="_blank" rel="noopener">Exams</a>
+            <a class="drawer-link" href="questions.html" target="_blank" rel="noopener">Questions</a>
+            <a class="drawer-link" href="my-learnings.html" target="_blank" rel="noopener">My Learnings</a>
+            <a class="drawer-link" href="Profile.html" target="_blank" rel="noopener">Profile</a>
+            <a class="drawer-link" href="Membership.html" target="_blank" rel="noopener">Membership</a>
+            <a class="drawer-link" href="Dashboard.html" target="_blank" rel="noopener">Meeting and Lecturese</a>
+            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/landing.html" target="_blank" rel="noopener">Examamination</a>
+            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/exam-lobby/exam-lobby.html" target="_blank" rel="noopener">Examiniation</a>
+        </nav>
+
+        <div class="drawer-footer">
+            <div class="muted small">Tip: Enroll in a course to track progress in My Learnings.</div>
+            <div class="muted small">Theme: Navy blue &amp; white-blue.</div>
+        </div>
+    </aside>
+
+    <main class="page">
+        <section class="hero" id="top">
+            <div class="hero-copy">
+                <div class="hero-kicker">Your nursing learning home</div>
+                <h2>Study smarter. Practice confidently. Grow your career.</h2>
+                <p>
+                    Global NursePrep brings together structured courses, progress tracking, and career guidance —
+                    all in one place.
+                </p>
+                <div class="hero-actions">
+                    <a class="primary-button" href="#courses" data-target="courses">Start learning</a>
+                    <a class="pill-button" href="my-learnings.html">My Learnings</a>
+                </div>
+
+                <div class="hero-stats" aria-label="Highlights">
+                    <div class="stat-card">
+                        <strong>Courses</strong>
+                        <span class="muted">Fundamentals → Critical care</span>
+                    </div>
+                    <div class="stat-card">
+                        <strong>Progress</strong>
+                        <span class="muted">Track learning step-by-step</span>
+                    </div>
+                    <div class="stat-card">
+                        <strong>Certificates</strong>
+                        <span class="muted">Download a PDF on completion</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-media" aria-hidden="true">
+                <img src="logo/home%20image.jpg" alt="" loading="lazy">
+            </div>
+        </section>
+
+        <section class="quick-grid" aria-label="Quick links">
+            <a class="quick-card" href="#courses" data-target="courses">
+                <img src="assets/icon-courses.svg" alt="" aria-hidden="true">
+                <div>
+                    <strong>Courses</strong>
+                    <span class="muted">Start a module today</span>
+                </div>
+            </a>
+            <a class="quick-card" href="#career" data-target="career">
+                <img src="assets/icon-career.svg" alt="" aria-hidden="true">
+                <div>
+                    <strong>Career goals</strong>
+                    <span class="muted">Plan your next step</span>
+                </div>
+            </a>
+            <a class="quick-card" href="my-learnings.html">
+                <img src="assets/icon-community.svg" alt="" aria-hidden="true">
+                <div>
+                    <strong>My Learnings</strong>
+                    <span class="muted">See progress &amp; certificates</span>
+                </div>
+            </a>
+        </section>
+
+        <section class="section-card" id="courses">
+            <header class="section-header">
+                <div>
+                    <h3>Courses</h3>
+                    <p class="muted">Search, filter, and enroll in learning tracks.</p>
+                </div>
+                <div class="section-tools">
+                    <input type="search" id="courseSearch" placeholder="Search courses (e.g., Anatomy, ICU)">
+                    <select id="courseCategory" aria-label="Filter by category">
+                        <option value="all">All categories</option>
+                    </select>
+                    <select id="courseLevel" aria-label="Filter by level">
+                        <option value="all">All levels</option>
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                    </select>
+                </div>
+            </header>
+            <div class="card-grid" id="courseGrid" aria-live="polite"></div>
+        </section>
+
+        <section class="section-card" id="career">
+            <header class="section-header">
+                <div>
+                    <h3>Career Paths</h3>
+                    <p class="muted">Explore specialties and set career goals you can actually follow.</p>
+                </div>
+            </header>
+
+            <div class="two-col">
+                <div class="info-card">
+                    <strong>Popular nursing pathways</strong>
+                    <div class="pill-row" id="careerPills"></div>
+                    <p class="muted small">Select a pathway to see details below.</p>
+                    <div class="career-detail" id="careerDetail"></div>
+                </div>
+
+                <div class="info-card">
+                    <strong>Career goals (your planner)</strong>
+                    <form class="row-form" id="goalForm">
+                        <input type="text" id="goalInput" placeholder="Add a goal (e.g., Master IV cannulation)">
+                        <input type="date" id="goalDate">
+                        <button type="submit" class="primary-button small">Add</button>
+                    </form>
+                    <div class="goals" id="goalsList"></div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="muted">© <span id="yearLabel"></span> Global NursePrep — Nursing education &amp; community.</div>
+            <div class="muted small">Powered by Teams Technologies</div>
+        </footer>
+    </main>
+
+    <script src="learning-core.js"></script>
+    <script src="homepage.js"></script>
+</body>
+</html>
