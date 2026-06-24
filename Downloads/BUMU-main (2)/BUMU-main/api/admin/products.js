@@ -52,8 +52,8 @@ export default async function handler(req, res) {
       });
     }
 
-    const normalizedImeis = [imei1, imei2].filter(Boolean);
     if (productType === 'phone') {
+      const normalizedImeis = [imei1, imei2].filter(Boolean);
       if (normalizedImeis.length === 0) {
         sendJson(res, 400, { message: 'At least one IMEI is required for a phone.' });
         return;
@@ -82,11 +82,14 @@ export default async function handler(req, res) {
     }
 
     try {
-      await ensureUniqueField('imei_1', imei1, 'IMEI 1');
-      await ensureUniqueField('imei_2', imei2, 'IMEI 2');
-      await ensureUniqueField('locker_id', lockerId, 'Locker ID');
-      await ensureUniqueField('serial_number', serialNumber, 'Serial number');
-      await ensureUniqueField('chassis_number', chassisNumber, 'Chassis number');
+      if (productType === 'phone') {
+        await ensureUniqueField('imei_1', imei1, 'IMEI 1');
+        await ensureUniqueField('imei_2', imei2, 'IMEI 2');
+        await ensureUniqueField('locker_id', lockerId, 'Locker ID');
+      } else {
+        await ensureUniqueField('serial_number', serialNumber, 'Serial number');
+        await ensureUniqueField('chassis_number', chassisNumber, 'Chassis number');
+      }
     } catch (uniqueError) {
       if (uniqueError.message === 'duplicate') return;
       throw uniqueError;
@@ -111,11 +114,11 @@ export default async function handler(req, res) {
       .insert({
         product_type: productType,
         product_model: productModel,
-        serial_number: productType === 'phone' ? imei1 : serialNumber,
-        chassis_number: productType === 'phone' ? (imei2 || null) : (chassisNumber || null),
-        imei_1: imei1 || null,
-        imei_2: imei2 || null,
-        locker_id: lockerId || null,
+        serial_number: productType === 'phone' ? null : (serialNumber || null),
+        chassis_number: productType === 'phone' ? null : (chassisNumber || null),
+        imei_1: productType === 'phone' ? (imei1 || null) : null,
+        imei_2: productType === 'phone' ? (imei2 || null) : null,
+        locker_id: productType === 'phone' ? (lockerId || null) : null,
         branch,
         assigned_agent_id: assignedAgent?.id || null,
         assigned_agent_code: assignedAgent?.agent_code || null,

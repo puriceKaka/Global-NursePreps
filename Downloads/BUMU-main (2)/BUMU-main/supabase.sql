@@ -74,6 +74,65 @@ create table if not exists public.inventory_products (
   updated_at timestamptz not null default now()
 );
 
+create table if not exists public.inventory_phone_profiles (
+  product_id text primary key references public.inventory_products(id) on delete cascade,
+  imei_1 text not null,
+  imei_2 text,
+  locker_id text,
+  storage_gb numeric(6,2),
+  ram_gb numeric(6,2),
+  color text,
+  sim_slot_count integer not null default 2,
+  locker_sync_status text not null default 'pending' check (locker_sync_status in ('pending', 'synced', 'failed')),
+  locker_last_synced_at timestamptz,
+  locker_last_error text,
+  source_portal text not null default 'admin',
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists public.inventory_bike_profiles (
+  product_id text primary key references public.inventory_products(id) on delete cascade,
+  serial_number text not null,
+  chassis_number text,
+  engine_number text,
+  frame_number text,
+  registration_number text,
+  tracker_id text,
+  color text,
+  odometer_km numeric(12,2) not null default 0,
+  service_due_date date,
+  mechanical_status text not null default 'ready' check (mechanical_status in ('ready', 'inspection', 'maintenance', 'repossessed', 'retired')),
+  source_portal text not null default 'admin',
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists public.inventory_product_backups (
+  id text primary key default ('INV-BK-' || upper(substr(replace(gen_random_uuid()::text, '-', ''), 1, 10))),
+  product_id text,
+  product_type text not null,
+  action text not null check (action in ('insert', 'update', 'delete')),
+  snapshot jsonb not null default '{}'::jsonb,
+  source_portal text not null default 'system',
+  created_at timestamptz not null default now()
+);
+
+create table if not exists public.inventory_replication_outbox (
+  id text primary key default ('INV-OUT-' || upper(substr(replace(gen_random_uuid()::text, '-', ''), 1, 10))),
+  product_id text references public.inventory_products(id) on delete set null,
+  product_type text not null,
+  event_type text not null,
+  payload jsonb not null default '{}'::jsonb,
+  attempts integer not null default 0,
+  status text not null default 'pending' check (status in ('pending', 'processing', 'done', 'failed')),
+  error_message text,
+  processed_at timestamptz,
+  source_portal text not null default 'system',
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
 alter table public.inventory_products drop constraint if exists inventory_products_product_type_check;
 alter table public.inventory_products add constraint inventory_products_product_type_check
   check (product_type in ('product', 'bike', 'phone'));
@@ -508,6 +567,10 @@ update public.inventory_products
   set imei_1 = coalesce(imei_1, serial_number),
       imei_2 = coalesce(imei_2, chassis_number)
 where product_type = 'phone';
+update public.inventory_products
+  set serial_number = null,
+      chassis_number = null
+where product_type = 'phone';
 alter table public.inventory_products drop constraint if exists inventory_products_status_check;
 alter table public.inventory_products add constraint inventory_products_status_check
   check (status in ('available', 'assigned', 'reserved', 'sold', 'maintenance', 'inactive'));
@@ -516,8 +579,15 @@ alter table public.inventory_products add constraint inventory_products_required
   check (
     nullif(trim(product_type), '') is not null
     and nullif(trim(product_model), '') is not null
-    and nullif(trim(serial_number), '') is not null
     and nullif(trim(branch), '') is not null
+    and (
+      product_type <> 'phone'
+      or nullif(trim(imei_1), '') is not null
+    )
+    and (
+      product_type <> 'bike'
+      or nullif(trim(serial_number), '') is not null
+    )
   ) not valid;
 alter table public.inventory_products drop constraint if exists inventory_products_phone_imei_check;
 alter table public.inventory_products add constraint inventory_products_phone_imei_check
@@ -529,6 +599,83 @@ alter table public.inventory_products add constraint inventory_products_phone_im
       and (nullif(trim(imei_2), '') is null or char_length(regexp_replace(imei_2, '\D', '', 'g')) = 15)
     )
   ) not valid;
+alter table public.inventory_products drop constraint if exists inventory_products_bike_serial_check;
+alter table public.inventory_products add constraint inventory_products_bike_serial_check
+  check (
+    product_type <> 'bike'
+    or (
+      nullif(trim(serial_number), '') is not null
+      and (nullif(trim(chassis_number), '') is null or length(trim(chassis_number)) >= 6)
+    )
+  ) not valid;
+
+update public.inventory_phone_profiles p
+  set imei_1 = coalesce(p.imei_1, ip.imei_1, ip.serial_number),
+      imei_2 = coalesce(p.imei_2, ip.imei_2, ip.chassis_number),
+      locker_id = coalesce(p.locker_id, ip.locker_id),
+      source_portal = coalesce(p.source_portal, ip.source_portal, 'admin'),
+      updated_at = now()
+from public.inventory_products ip
+where p.product_id = ip.id
+  and ip.product_type = 'phone';
+
+insert into public.inventory_phone_profiles (
+  product_id,
+  imei_1,
+  imei_2,
+  locker_id,
+  source_portal,
+  created_at,
+  updated_at
+)
+select
+  ip.id,
+  coalesce(ip.imei_1, ip.serial_number),
+  coalesce(ip.imei_2, ip.chassis_number),
+  ip.locker_id,
+  ip.source_portal,
+  ip.created_at,
+  ip.updated_at
+from public.inventory_products ip
+where ip.product_type = 'phone'
+on conflict (product_id) do update set
+  imei_1 = excluded.imei_1,
+  imei_2 = excluded.imei_2,
+  locker_id = excluded.locker_id,
+  source_portal = excluded.source_portal,
+  updated_at = excluded.updated_at;
+
+update public.inventory_bike_profiles p
+  set serial_number = coalesce(p.serial_number, ip.serial_number),
+      chassis_number = coalesce(p.chassis_number, ip.chassis_number),
+      source_portal = coalesce(p.source_portal, ip.source_portal, 'admin'),
+      updated_at = now()
+from public.inventory_products ip
+where p.product_id = ip.id
+  and ip.product_type in ('bike', 'product');
+
+insert into public.inventory_bike_profiles (
+  product_id,
+  serial_number,
+  chassis_number,
+  source_portal,
+  created_at,
+  updated_at
+)
+select
+  ip.id,
+  coalesce(ip.serial_number, ip.imei_1),
+  coalesce(ip.chassis_number, ip.imei_2),
+  ip.source_portal,
+  ip.created_at,
+  ip.updated_at
+from public.inventory_products ip
+where ip.product_type in ('bike', 'product')
+on conflict (product_id) do update set
+  serial_number = excluded.serial_number,
+  chassis_number = excluded.chassis_number,
+  source_portal = excluded.source_portal,
+  updated_at = excluded.updated_at;
 alter table public.customers drop constraint if exists customers_required_fields;
 alter table public.customers add constraint customers_required_fields
   check (
@@ -620,6 +767,234 @@ begin
 end;
 $$;
 
+create or replace function public.capture_inventory_product_backup()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_product_id text;
+  v_product_type text;
+  v_source_portal text;
+  v_snapshot jsonb;
+  v_product jsonb;
+  v_phone_profile jsonb;
+  v_bike_profile jsonb;
+begin
+  if tg_op = 'DELETE' then
+    v_product_id := old.id;
+    v_product_type := coalesce(nullif(trim(old.product_type), ''), 'product');
+    v_source_portal := coalesce(old.source_portal, 'system');
+    v_product := to_jsonb(old);
+  else
+    v_product_id := new.id;
+    v_product_type := coalesce(nullif(trim(new.product_type), ''), 'product');
+    v_source_portal := coalesce(new.source_portal, 'system');
+    v_product := to_jsonb(new);
+  end if;
+
+  select to_jsonb(p)
+    into v_phone_profile
+  from public.inventory_phone_profiles p
+  where p.product_id = v_product_id;
+
+  select to_jsonb(b)
+    into v_bike_profile
+  from public.inventory_bike_profiles b
+  where b.product_id = v_product_id;
+
+  v_snapshot := jsonb_build_object(
+    'operation', lower(tg_op),
+    'product', v_product,
+    'phone_profile', v_phone_profile,
+    'bike_profile', v_bike_profile,
+    'captured_at', now()
+  );
+
+  insert into public.inventory_product_backups (
+    product_id,
+    product_type,
+    action,
+    snapshot,
+    source_portal
+  ) values (
+    v_product_id,
+    v_product_type,
+    lower(tg_op),
+    v_snapshot,
+    v_source_portal
+  );
+
+  insert into public.inventory_replication_outbox (
+    product_id,
+    product_type,
+    event_type,
+    payload,
+    status,
+    source_portal
+  ) values (
+    v_product_id,
+    v_product_type,
+    'inventory_product.' || lower(tg_op),
+    v_snapshot,
+    'pending',
+    v_source_portal
+  );
+
+  if tg_op = 'DELETE' then
+    return old;
+  end if;
+
+  return new;
+end;
+$$;
+
+create or replace function public.sync_inventory_product_profiles()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_product_type text;
+  v_source_portal text;
+  v_phone_profile public.inventory_phone_profiles%rowtype;
+  v_bike_profile public.inventory_bike_profiles%rowtype;
+begin
+  if tg_op = 'DELETE' then
+    delete from public.inventory_phone_profiles
+    where product_id = old.id;
+
+    delete from public.inventory_bike_profiles
+    where product_id = old.id;
+
+    return old;
+  end if;
+
+  v_product_type := coalesce(nullif(trim(new.product_type), ''), 'product');
+  v_source_portal := coalesce(new.source_portal, 'admin');
+
+  if v_product_type = 'phone' then
+    select *
+      into v_phone_profile
+    from public.inventory_phone_profiles
+    where product_id = new.id;
+
+    insert into public.inventory_phone_profiles (
+      product_id,
+      imei_1,
+      imei_2,
+      locker_id,
+      storage_gb,
+      ram_gb,
+      color,
+      sim_slot_count,
+      locker_sync_status,
+      locker_last_synced_at,
+      locker_last_error,
+      source_portal,
+      created_at,
+      updated_at
+    )
+    values (
+      new.id,
+      coalesce(nullif(trim(new.imei_1), ''), nullif(trim(new.serial_number), ''), v_phone_profile.imei_1),
+      coalesce(nullif(trim(new.imei_2), ''), nullif(trim(new.chassis_number), ''), v_phone_profile.imei_2),
+      nullif(trim(new.locker_id), ''),
+      coalesce(v_phone_profile.storage_gb, null),
+      coalesce(v_phone_profile.ram_gb, null),
+      coalesce(v_phone_profile.color, null),
+      coalesce(v_phone_profile.sim_slot_count, 2),
+      'pending',
+      null,
+      null,
+      v_source_portal,
+      coalesce(v_phone_profile.created_at, new.created_at, now()),
+      now()
+    )
+    on conflict (product_id) do update set
+      imei_1 = excluded.imei_1,
+      imei_2 = excluded.imei_2,
+      locker_id = excluded.locker_id,
+      storage_gb = coalesce(excluded.storage_gb, public.inventory_phone_profiles.storage_gb),
+      ram_gb = coalesce(excluded.ram_gb, public.inventory_phone_profiles.ram_gb),
+      color = coalesce(excluded.color, public.inventory_phone_profiles.color),
+      sim_slot_count = coalesce(excluded.sim_slot_count, public.inventory_phone_profiles.sim_slot_count),
+      locker_sync_status = 'pending',
+      locker_last_synced_at = null,
+      locker_last_error = null,
+      source_portal = excluded.source_portal,
+      updated_at = now();
+
+    delete from public.inventory_bike_profiles
+    where product_id = new.id;
+  elsif v_product_type in ('bike', 'product') then
+    select *
+      into v_bike_profile
+    from public.inventory_bike_profiles
+    where product_id = new.id;
+
+    insert into public.inventory_bike_profiles (
+      product_id,
+      serial_number,
+      chassis_number,
+      engine_number,
+      frame_number,
+      registration_number,
+      tracker_id,
+      color,
+      odometer_km,
+      service_due_date,
+      mechanical_status,
+      source_portal,
+      created_at,
+      updated_at
+    )
+    values (
+      new.id,
+      coalesce(nullif(trim(new.serial_number), ''), nullif(trim(new.imei_1), ''), v_bike_profile.serial_number),
+      coalesce(nullif(trim(new.chassis_number), ''), nullif(trim(new.imei_2), ''), v_bike_profile.chassis_number),
+      coalesce(v_bike_profile.engine_number, null),
+      coalesce(v_bike_profile.frame_number, null),
+      coalesce(v_bike_profile.registration_number, null),
+      coalesce(v_bike_profile.tracker_id, null),
+      coalesce(v_bike_profile.color, null),
+      coalesce(v_bike_profile.odometer_km, 0),
+      coalesce(v_bike_profile.service_due_date, null),
+      coalesce(v_bike_profile.mechanical_status, 'ready'),
+      v_source_portal,
+      coalesce(v_bike_profile.created_at, new.created_at, now()),
+      now()
+    )
+    on conflict (product_id) do update set
+      serial_number = excluded.serial_number,
+      chassis_number = excluded.chassis_number,
+      engine_number = coalesce(excluded.engine_number, public.inventory_bike_profiles.engine_number),
+      frame_number = coalesce(excluded.frame_number, public.inventory_bike_profiles.frame_number),
+      registration_number = coalesce(excluded.registration_number, public.inventory_bike_profiles.registration_number),
+      tracker_id = coalesce(excluded.tracker_id, public.inventory_bike_profiles.tracker_id),
+      color = coalesce(excluded.color, public.inventory_bike_profiles.color),
+      odometer_km = coalesce(excluded.odometer_km, public.inventory_bike_profiles.odometer_km),
+      service_due_date = coalesce(excluded.service_due_date, public.inventory_bike_profiles.service_due_date),
+      mechanical_status = coalesce(excluded.mechanical_status, public.inventory_bike_profiles.mechanical_status),
+      source_portal = excluded.source_portal,
+      updated_at = now();
+
+    delete from public.inventory_phone_profiles
+    where product_id = new.id;
+  else
+    delete from public.inventory_phone_profiles
+    where product_id = new.id;
+
+    delete from public.inventory_bike_profiles
+    where product_id = new.id;
+  end if;
+
+  return new;
+end;
+$$;
+
 drop trigger if exists customers_set_updated_at on public.customers;
 create trigger customers_set_updated_at before update on public.customers
 for each row execute function public.set_updated_at();
@@ -643,6 +1018,26 @@ for each row execute function public.set_updated_at();
 drop trigger if exists inventory_products_set_updated_at on public.inventory_products;
 create trigger inventory_products_set_updated_at before update on public.inventory_products
 for each row execute function public.set_updated_at();
+
+drop trigger if exists inventory_phone_profiles_set_updated_at on public.inventory_phone_profiles;
+create trigger inventory_phone_profiles_set_updated_at before update on public.inventory_phone_profiles
+for each row execute function public.set_updated_at();
+
+drop trigger if exists inventory_bike_profiles_set_updated_at on public.inventory_bike_profiles;
+create trigger inventory_bike_profiles_set_updated_at before update on public.inventory_bike_profiles
+for each row execute function public.set_updated_at();
+
+drop trigger if exists inventory_replication_outbox_set_updated_at on public.inventory_replication_outbox;
+create trigger inventory_replication_outbox_set_updated_at before update on public.inventory_replication_outbox
+for each row execute function public.set_updated_at();
+
+drop trigger if exists inventory_products_capture_backup on public.inventory_products;
+create trigger inventory_products_capture_backup before insert or update or delete on public.inventory_products
+for each row execute function public.capture_inventory_product_backup();
+
+drop trigger if exists inventory_products_sync_profiles on public.inventory_products;
+create trigger inventory_products_sync_profiles before insert or update or delete on public.inventory_products
+for each row execute function public.sync_inventory_product_profiles();
 
 drop trigger if exists payments_set_updated_at on public.payments;
 create trigger payments_set_updated_at before update on public.payments
@@ -723,6 +1118,14 @@ create index if not exists idx_finance_notifications_status_created on public.fi
 create unique index if not exists idx_inventory_products_imei_1 on public.inventory_products (imei_1) where nullif(trim(imei_1), '') is not null;
 create unique index if not exists idx_inventory_products_imei_2 on public.inventory_products (imei_2) where nullif(trim(imei_2), '') is not null;
 create unique index if not exists idx_inventory_products_locker_id on public.inventory_products (locker_id) where nullif(trim(locker_id), '') is not null;
+create index if not exists idx_inventory_phone_profiles_locker_sync on public.inventory_phone_profiles (locker_sync_status, updated_at desc);
+create index if not exists idx_inventory_bike_profiles_mechanical_status on public.inventory_bike_profiles (mechanical_status, updated_at desc);
+create index if not exists idx_inventory_product_backups_product_created on public.inventory_product_backups (product_id, created_at desc);
+create index if not exists idx_inventory_product_backups_type_created on public.inventory_product_backups (product_type, created_at desc);
+create index if not exists idx_inventory_product_backups_action_created on public.inventory_product_backups (action, created_at desc);
+create index if not exists idx_inventory_replication_outbox_status_created on public.inventory_replication_outbox (status, created_at desc);
+create index if not exists idx_inventory_replication_outbox_product_created on public.inventory_replication_outbox (product_id, created_at desc);
+create index if not exists idx_inventory_replication_outbox_type_created on public.inventory_replication_outbox (product_type, created_at desc);
 create index if not exists idx_finance_notifications_type_created on public.finance_notifications (type, created_at desc);
 create index if not exists idx_finance_notifications_customer on public.finance_notifications (customer_id, created_at desc);
 create index if not exists idx_payment_requests_customer_created on public.payment_requests (customer_id, created_at desc);
@@ -745,6 +1148,94 @@ create index if not exists idx_admin_audit_logs_target on public.admin_audit_log
 create index if not exists idx_customer_applications_status on public.customer_applications (status, created_at desc);
 create index if not exists idx_customer_applications_customer on public.customer_applications (customer_id);
 create index if not exists idx_customer_applications_national_id on public.customer_applications (national_id);
+
+create or replace view public.inventory_phone_feed as
+select
+  ip.id,
+  ip.product_type,
+  ip.product_model,
+  ip.serial_number,
+  ip.chassis_number,
+  ip.imei_1,
+  ip.imei_2,
+  ip.locker_id,
+  ip.branch,
+  ip.assigned_customer_id,
+  ip.assigned_agent_id,
+  ip.assigned_agent_code,
+  ip.status,
+  ip.source_portal,
+  ip.created_at,
+  ip.updated_at,
+  p.storage_gb,
+  p.ram_gb,
+  p.color,
+  p.sim_slot_count,
+  p.locker_sync_status,
+  p.locker_last_synced_at,
+  p.locker_last_error
+from public.inventory_products ip
+left join public.inventory_phone_profiles p on p.product_id = ip.id
+where ip.product_type = 'phone';
+
+create or replace view public.inventory_bike_feed as
+select
+  ip.id,
+  ip.product_type,
+  ip.product_model,
+  ip.serial_number,
+  ip.chassis_number,
+  ip.imei_1,
+  ip.imei_2,
+  ip.locker_id,
+  ip.branch,
+  ip.assigned_customer_id,
+  ip.assigned_agent_id,
+  ip.assigned_agent_code,
+  ip.status,
+  ip.source_portal,
+  ip.created_at,
+  ip.updated_at,
+  b.engine_number,
+  b.frame_number,
+  b.registration_number,
+  b.tracker_id,
+  b.color,
+  b.odometer_km,
+  b.service_due_date,
+  b.mechanical_status
+from public.inventory_products ip
+left join public.inventory_bike_profiles b on b.product_id = ip.id
+where ip.product_type in ('bike', 'product');
+
+insert into public.inventory_product_backups (
+  product_id,
+  product_type,
+  action,
+  snapshot,
+  source_portal
+)
+select
+  ip.id,
+  ip.product_type,
+  'insert',
+  jsonb_build_object(
+    'operation', 'initial_snapshot',
+    'product', to_jsonb(ip),
+    'phone_profile', to_jsonb(php),
+    'bike_profile', to_jsonb(bbp),
+    'captured_at', now()
+  ),
+  coalesce(ip.source_portal, 'system')
+from public.inventory_products ip
+left join public.inventory_phone_profiles php on php.product_id = ip.id
+left join public.inventory_bike_profiles bbp on bbp.product_id = ip.id
+where not exists (
+  select 1
+  from public.inventory_product_backups backups
+  where backups.product_id = ip.id
+    and backups.action = 'insert'
+);
 
 create or replace view public.customer_portal_summary as
 select
@@ -816,7 +1307,7 @@ as $$
   ),
   customer_summary as (
     select
-      coalesce(sum(total_payable), 0) as expected_amount,
+      coalesce(sum(balance) filter (where balance > 0), 0) as expected_amount,
       coalesce(sum(balance) filter (where balance > 0), 0) as pending_payments,
       coalesce(sum(balance) filter (where overdue_days > 0 or status = 'defaulted'), 0) as overdue_amount,
       count(*) filter (where status <> 'paid') as active_accounts
@@ -886,6 +1377,10 @@ alter table public.admin_profiles enable row level security;
 alter table public.system_settings enable row level security;
 alter table public.branches enable row level security;
 alter table public.inventory_products enable row level security;
+alter table public.inventory_phone_profiles enable row level security;
+alter table public.inventory_bike_profiles enable row level security;
+alter table public.inventory_product_backups enable row level security;
+alter table public.inventory_replication_outbox enable row level security;
 alter table public.admin_audit_logs enable row level security;
 
 create table if not exists public.api_rate_limits (
@@ -977,12 +1472,24 @@ revoke all on table public.admin_profiles from anon, authenticated;
 revoke all on table public.system_settings from anon, authenticated;
 revoke all on table public.branches from anon, authenticated;
 revoke all on table public.inventory_products from anon, authenticated;
+revoke all on table public.inventory_phone_profiles from anon, authenticated;
+revoke all on table public.inventory_bike_profiles from anon, authenticated;
+revoke all on table public.inventory_product_backups from anon, authenticated;
+revoke all on table public.inventory_replication_outbox from anon, authenticated;
+revoke all on table public.inventory_phone_feed from anon, authenticated;
+revoke all on table public.inventory_bike_feed from anon, authenticated;
 revoke all on table public.admin_audit_logs from anon, authenticated;
 revoke all on table public.customer_portal_summary from anon, authenticated;
 revoke all on table public.api_rate_limits from public, anon, authenticated;
 revoke all on function public.consume_api_rate_limit(text, integer, integer) from public, anon, authenticated;
 grant all on table public.api_rate_limits to service_role;
 grant all on table public.system_settings to service_role;
+grant all on table public.inventory_phone_profiles to service_role;
+grant all on table public.inventory_bike_profiles to service_role;
+grant all on table public.inventory_product_backups to service_role;
+grant all on table public.inventory_replication_outbox to service_role;
+grant select on table public.inventory_phone_feed to service_role;
+grant select on table public.inventory_bike_feed to service_role;
 grant execute on function public.consume_api_rate_limit(text, integer, integer) to service_role;
 
 -- Portals should access these tables through secured server-side APIs using SUPABASE_SERVICE_ROLE_KEY.

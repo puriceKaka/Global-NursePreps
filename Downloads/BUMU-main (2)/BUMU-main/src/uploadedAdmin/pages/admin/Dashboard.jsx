@@ -58,7 +58,6 @@ export default function Dashboard() {
   const reservedPhones = bikes.filter((item) => item.status === "reserved" && item.productType === "phone").length;
   const assignedPhones = bikes.filter((item) => item.status === "assigned" && item.productType === "phone").length;
 
-  const totalDeposits = applications.reduce((sum, application) => sum + application.depositAmount, 0);
   const collectibleCustomers = customers.filter((customer) => customer.applicationStatus !== "rejected" && customer.repaymentStatus !== "rejected");
   const totalBalances = collectibleCustomers.reduce((sum, customer) => sum + customer.balance, 0);
   const unpaidCommissions = agents.reduce((sum, agent) => sum + agent.commissionBalance, 0);
@@ -70,7 +69,7 @@ export default function Dashboard() {
     ["unmatched", "manual_review"].includes(payment.reconciliationStatus)
   ).length;
   const unreadNotifications = notifications.filter((notification) => notification.status === "unread").length;
-  const expectedCollections = totalBalances + totalDeposits;
+  const expectedCollections = totalBalances;
 
   const screeningRows = applications
     .filter((item) => ["pending_screening", "info_required"].includes(item.status))
@@ -212,7 +211,7 @@ export default function Dashboard() {
 
           <div className="finance-grid">
             <StatCard icon={WalletCards} label="Total collected" value={formatKes(totalCollected)} detail="Successful payments" to="/admin/finance" />
-            <StatCard icon={WalletCards} label="Expected collections" value={formatKes(expectedCollections)} detail="Deposits plus balances" to="/admin/finance" />
+            <StatCard icon={WalletCards} label="Expected collections" value={formatKes(expectedCollections)} detail="Outstanding balance" to="/admin/finance" />
             <StatCard icon={ReceiptText} label="Pending payments" value={pendingPayments} detail="Payment records pending" tone="warning" to="/admin/finance" />
             <StatCard icon={AlertTriangle} label="Reconciliation flags" value={unmatchedPayments} detail="Unmatched/manual review" tone="warning" to="/admin/finance" />
             <StatCard icon={BadgeDollarSign} label="Unpaid commissions" value={formatKes(unpaidCommissions)} detail="Agent commission balance" to="/admin/finance" />

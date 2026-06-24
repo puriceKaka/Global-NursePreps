@@ -138,6 +138,7 @@ export function buildPaymentRows({ agents, customers, payments }) {
       "Customer Phone": customer?.phone || "",
       "Agent Name": agent?.name || "",
       Amount: payment.amount,
+      Balance: payment.balance ?? 0,
       "Formatted Amount": formatKes(payment.amount),
       Receipt: payment.receipt,
       Status: statusLabel(payment.status),

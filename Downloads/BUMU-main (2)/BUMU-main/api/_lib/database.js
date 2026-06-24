@@ -403,6 +403,20 @@ function applyRange(request, query = {}, fallbackLimit = 500) {
   return request.range(offset, offset + limit - 1);
 }
 
+function normalizeInventoryProductType(value) {
+  const normalized = String(value || '').trim().toLowerCase();
+  if (['phone', 'phones'].includes(normalized)) return 'phone';
+  if (['bike', 'bikes'].includes(normalized)) return 'bike';
+  if (['product', 'all', ''].includes(normalized)) return '';
+  return normalized;
+}
+
+function inventorySourceForType(productType) {
+  if (productType === 'phone') return 'inventory_phone_feed';
+  if (productType === 'bike') return 'inventory_bike_feed';
+  return 'inventory_products';
+}
+
 function inferProductType(record) {
   const value = String(record.product_type || record.asset_type || record.bike_model || record.product_model || '').toLowerCase();
   if (value.includes('phone') || value.includes('tecno') || value.includes('samsung') || value.includes('infinix')) return 'phone';
@@ -479,13 +493,11 @@ function buildDashboard(payments, customers, commissions, reconciliation) {
   }, new Map());
 
   const totalCollected = payments.reduce((total, payment) => total + paymentAmount(payment), 0);
-  const expectedAmount = collectibleCustomers.reduce((total, customer) => total + Number(customer.total_payable || 0), 0);
+  const expectedAmount = collectibleCustomers.reduce((total, customer) => total + derivedCustomerBalance(customer), 0);
   const overdueAmount = collectibleCustomers
     .filter((customer) => Number(customer.overdue_days || 0) > 0 || customer.status === 'defaulted')
     .reduce((total, customer) => total + derivedCustomerBalance(customer), 0);
-  const pendingPayments = collectibleCustomers
-    .filter((customer) => derivedCustomerBalance(customer) > 0)
-    .reduce((total, customer) => total + derivedCustomerBalance(customer), 0);
+  const pendingPayments = expectedAmount;
 
   return {
     summary: {
@@ -2666,11 +2678,13 @@ export async function listCustomerPaymentRecords(query = {}) {
 }
 
 export async function listInventory(query = {}) {
+  const productType = normalizeInventoryProductType(query.productType || query.product_type || query.type);
   let request = getSupabase()
-    .from('inventory_products')
+    .from(inventorySourceForType(productType))
     .select('*')
     .order('created_at', { ascending: false });
 
+  if (productType) request = request.eq('product_type', productType);
   if (query.status) request = request.eq('status', query.status);
   if (query.agentCode) request = request.eq('assigned_agent_code', query.agentCode);
 
