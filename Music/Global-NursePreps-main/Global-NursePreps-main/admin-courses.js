@@ -1,0 +1,165 @@
+(() => {
+    const $ = (selector) => document.querySelector(selector);
+
+    function slugify(value) {
+        return String(value || "course")
+            .trim()
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-+|-+$/g, "") || "course";
+    }
+
+    function readFileAsDataUrl(file) {
+        return new Promise((resolve, reject) => {
+            if (!file) {
+                resolve("");
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = () => resolve(String(reader.result || ""));
+            reader.onerror = () => reject(new Error("Failed to read video file"));
+            reader.readAsDataURL(file);
+        });
+    }
+
+    function readFileAsText(file) {
+        return new Promise((resolve, reject) => {
+            if (!file) {
+                resolve("");
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = () => resolve(String(reader.result || ""));
+            reader.onerror = () => reject(new Error("Failed to read notes file"));
+            reader.readAsText(file);
+        });
+    }
+
+    function cleanNotesText(value) {
+        return String(value || "")
+            .replace(/\r\n/g, "\n")
+            .replace(/\n{3,}/g, "\n\n")
+            .trim();
+    }
+
+    function renderCourses() {
+        const grid = $("#adminCourseGrid");
+        const core = window.GnpLearning;
+        if (!grid || !core) return;
+
+        const courses = core.getCourses ? core.getCourses() : core.COURSE_META || [];
+        grid.innerHTML = "";
+
+        courses.forEach((course) => {
+            const card = document.createElement("article");
+            card.className = "admin-course-card";
+
+            const image = document.createElement("img");
+            image.src = course.image || "assets/course-images/default.jpg";
+            image.alt = course.title;
+
+            const badges = document.createElement("div");
+            badges.className = "badge-row";
+
+            const category = document.createElement("span");
+            category.className = "badge";
+            category.textContent = course.category;
+
+            const difficulty = document.createElement("span");
+            difficulty.className = "badge alt";
+            difficulty.textContent = course.difficulty;
+
+            const modules = document.createElement("span");
+            modules.className = "badge alt";
+            modules.textContent = `${course.moduleCount} modules`;
+
+            badges.append(category, difficulty, modules);
+
+            const title = document.createElement("h4");
+            title.textContent = course.title;
+
+            const summary = document.createElement("p");
+            summary.className = "muted";
+            summary.textContent = course.summary;
+
+            const remove = document.createElement("button");
+            remove.type = "button";
+            remove.className = "danger-button";
+            remove.textContent = "Delete course";
+            remove.addEventListener("click", () => {
+                const ok = window.confirm(`Delete "${course.title}" from the homepage catalog?`);
+                if (!ok) return;
+                core.deleteCourse(course.id);
+                renderCourses();
+            });
+
+            card.append(image, badges, title, summary, remove);
+            grid.appendChild(card);
+        });
+    }
+
+    async function onSubmit(event) {
+        event.preventDefault();
+        const core = window.GnpLearning;
+        if (!core) return;
+
+        const title = ($("#titleInput")?.value || "").trim();
+        const category = ($("#categoryInput")?.value || "").trim();
+        const difficulty = ($("#difficultyInput")?.value || "Beginner").trim();
+        const moduleCount = Number($("#moduleCountInput")?.value || 1);
+        const image = ($("#imageInput")?.value || "assets/course-images/default.jpg").trim();
+        const videoUrl = ($("#videoUrlInput")?.value || "").trim();
+        const videoFile = $("#videoFileInput")?.files?.[0] || null;
+        const lectureVideo = videoFile ? await readFileAsDataUrl(videoFile) : videoUrl;
+        const notesFile = $("#notesFileInput")?.files?.[0] || null;
+        const summary = ($("#summaryInput")?.value || "").trim();
+        const rawNotes = cleanNotesText($("#contentNotesInput")?.value || "");
+        const extractedNotes = notesFile && /\.(txt|md|rtf)$/i.test(notesFile.name)
+            ? cleanNotesText(await readFileAsText(notesFile))
+            : "";
+        const contentNotes = extractedNotes || rawNotes || (notesFile ? `Uploaded study file: ${notesFile.name}\nUse the notes field to paste the extracted lecture text so students get full generated study notes.` : "");
+
+        if (!title || !category || !summary) return;
+
+        core.addCourse({
+            id: `${slugify(title)}-${Date.now().toString(36)}`,
+            title,
+            category,
+            difficulty,
+            moduleCount,
+            image,
+            summary,
+            contentNotes,
+            uploadedDocument: notesFile ? {
+                name: notesFile.name,
+                type: notesFile.type,
+                size: notesFile.size
+            } : null,
+            lectureVideo,
+            lectureVideoName: videoFile?.name || "",
+            badge: "Admin Added",
+            format: "Self-paced",
+            durationHours: 0,
+            questions: 0,
+            exams: 0
+        });
+
+        event.target.reset();
+        $("#imageInput").value = "assets/course-images/default.jpg";
+        $("#moduleCountInput").value = "3";
+        $("#videoUrlInput").value = "";
+        $("#contentNotesInput").value = "";
+        renderCourses();
+    }
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        const user = await window.GnpAdminAuth?.requireAdmin?.("admin.html");
+        if (!user) return;
+        $("#courseForm")?.addEventListener("submit", onSubmit);
+        renderCourses();
+        if (window.GnpLearning?.refreshCourses) {
+            void window.GnpLearning.refreshCourses().then(() => renderCourses());
+        }
+        window.addEventListener("gnp-courses-updated", renderCourses);
+    });
+})();

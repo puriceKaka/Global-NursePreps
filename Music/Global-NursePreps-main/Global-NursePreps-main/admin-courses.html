@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Courses | Global NursePrep</title>
+    <link rel="stylesheet" href="homepage.css">
+    <link rel="stylesheet" href="admin-courses.css">
+    <script defer src="js/admin-api.js"></script>
+    <script defer src="js/admin-auth.js"></script>
+    <script defer src="js/supabase-config.js"></script>
+    <script defer src="js/supabase-bridge.js"></script>
+    <script defer src="learning-core.js"></script>
+    <script defer src="admin-courses.js"></script>
+    <link rel="stylesheet" href="css/site-loader.css">
+    <script src="js/site-loader.js"></script>
+</head>
+<body>
+    <header class="topbar">
+        <div class="brand">
+            <span class="brand-logo">
+                <img src="logo/finalLogo.jpg" alt="Global NursePrep logo">
+            </span>
+            <div>
+                <h1>Global <span class="brand-nurse">Nurse</span>Prep</h1>
+                <p>Admin courses • Learning catalog</p>
+            </div>
+        </div>
+        <div class="topbar-actions">
+            <a class="pill-button" href="homepage.html">Homepage</a>
+        </div>
+    </header>
+
+    <main class="page admin-page">
+        <section class="section-card">
+            <header class="section-header">
+                <div>
+                    <h3>Add Learning Course</h3>
+                    <p class="muted">Courses saved here appear on the homepage course list.</p>
+                </div>
+            </header>
+
+            <form class="admin-form" id="courseForm">
+                <label class="field">
+                    <span>Course title</span>
+                    <input type="text" id="titleInput" placeholder="e.g., Emergency Nursing Review" required>
+                </label>
+                <label class="field">
+                    <span>Category</span>
+                    <input type="text" id="categoryInput" placeholder="e.g., Emergency Care" required>
+                </label>
+                <label class="field">
+                    <span>Difficulty</span>
+                    <select id="difficultyInput">
+                        <option>Beginner</option>
+                        <option>Intermediate</option>
+                        <option>Advanced</option>
+                    </select>
+                </label>
+                <label class="field">
+                    <span>Modules</span>
+                    <input type="number" id="moduleCountInput" min="1" value="3" required>
+                </label>
+                <label class="field">
+                    <span>Image path</span>
+                    <input type="text" id="imageInput" value="assets/course-images/default.jpg" required>
+                </label>
+                <label class="field">
+                    <span>Lecture video URL</span>
+                    <input type="url" id="videoUrlInput" placeholder="https://..." >
+                </label>
+                <label class="field">
+                    <span>Upload lecture video</span>
+                    <input type="file" id="videoFileInput" accept="video/*">
+                </label>
+                <label class="field field-wide">
+                    <span>Lecture notes / source text</span>
+                    <textarea id="contentNotesInput" rows="6" placeholder="Paste the lecture notes, PDF text, or teaching script here so the system can generate the study notes."></textarea>
+                </label>
+                <label class="field">
+                    <span>Upload notes file</span>
+                    <input type="file" id="notesFileInput" accept=".txt,.md,.rtf,.pdf,.doc,.docx,text/plain,application/pdf">
+                </label>
+                <label class="field field-wide">
+                    <span>Summary</span>
+                    <textarea id="summaryInput" rows="3" placeholder="Describe what students will learn." required></textarea>
+                </label>
+                <button type="submit" class="primary-button">Add course</button>
+            </form>
+        </section>
+
+        <section class="section-card">
+            <header class="section-header">
+                <div>
+                    <h3>Current Courses</h3>
+                    <p class="muted">Delete a course to remove it from the homepage catalog.</p>
+                </div>
+            </header>
+            <div class="admin-course-grid" id="adminCourseGrid"></div>
+        </section>
+    </main>
+</body>
+</html>

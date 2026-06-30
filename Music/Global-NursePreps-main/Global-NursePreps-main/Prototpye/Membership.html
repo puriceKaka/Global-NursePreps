@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memberships | Global NursePrep</title>
+    <link rel="stylesheet" href="Membership.css">
+    <link rel="stylesheet" href="drawer.css">
+    <link rel="stylesheet" href="../css/site-loader.css">
+    <script src="../js/site-loader.js"></script>
+</head>
+<body>
+    <header class="topbar">
+        <button type="button" id="menuToggle" aria-label="Open menu">
+            <span class="hamburger" aria-hidden="true"></span>
+        </button>
+        <div class="brand">
+            <span class="brand-logo">
+                <img src="logo/finalLogo.jpg" alt="Global NursePrep logo">
+            </span>
+            <div>
+                <h1>Global NursePrep</h1>
+                <p>Memberships, groups, and community learning</p>
+            </div>
+        </div>
+
+        <div class="actions">
+            <a class="pill-button" href="homepage.html">Homepage</a>
+            <a class="pill-button" href="Dashboard.html">Meetings</a>
+            <button type="button" class="secondary-button" id="logoutBtn">Logout</button>
+        </div>
+    </header>
+
+    <div class="drawer-overlay hidden" id="drawerOverlay" tabindex="-1" aria-hidden="true"></div>
+
+    <aside class="drawer hidden" id="drawer" aria-label="Side menu">
+        <div class="drawer-header">
+            <div class="drawer-user">
+                <div class="avatar" id="drawerAvatar" aria-hidden="true">N</div>
+                <div>
+                    <strong id="drawerName">Member</strong>
+                    <div class="muted small" id="drawerEmail">—</div>
+                </div>
+            </div>
+            <button type="button" id="drawerClose" aria-label="Close menu">×</button>
+        </div>
+
+        <nav class="drawer-nav" aria-label="Navigation">
+            <a class="drawer-link" href="homepage.html" target="_blank" rel="noopener">Home</a>
+            <a class="drawer-link" href="homepage.html#career" target="_blank" rel="noopener">Career Paths</a>
+            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/courses.html" target="_blank" rel="noopener">Courses</a>
+            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/exam-interface/exam-interface.html" target="_blank" rel="noopener">Exams</a>
+            <a class="drawer-link" href="questions.html" target="_blank" rel="noopener">Questions</a>
+            <a class="drawer-link" href="my-learnings.html" target="_blank" rel="noopener">My Learnings</a>
+            <a class="drawer-link" href="Profile.html" target="_blank" rel="noopener">Profile</a>
+            <a class="drawer-link" href="Membership.html" target="_blank" rel="noopener">Membership</a>
+            <a class="drawer-link" href="Dashboard.html" target="_blank" rel="noopener">Meetings and Lectures</a>
+            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/landing.html" target="_blank" rel="noopener">Exam Prep</a>
+            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/exam-lobby/exam-lobby.html" target="_blank" rel="noopener">Exam Lobby</a>
+        </nav>
+
+        <div class="drawer-footer">
+            <div class="muted small">Tip: Use “Meetings” to host or join your group lecture sessions.</div>
+        </div>
+    </aside>
+
+    <main class="page">
+        <section class="hero">
+            <div>
+                <div class="kicker">Community that makes you better</div>
+                <h2>Join a membership and learn with others.</h2>
+                <p class="muted">
+                    Pick a membership plan, then join specialty groups for weekly sessions, study support,
+                    and focused practice.
+                </p>
+            </div>
+            <div class="hero-icon" aria-hidden="true">
+                <img src="assets/icon-community.svg" alt="">
+            </div>
+        </section>
+
+        <section class="section-card">
+            <header class="section-header">
+                <div>
+                    <h3>Membership Plans</h3>
+                    <p class="muted">Choose what fits your level and goals.</p>
+                </div>
+                <div class="status">
+                    <span class="badge">Selected:</span>
+                    <strong id="selectedPlanLabel">Not selected</strong>
+                </div>
+            </header>
+
+            <div class="card-grid" id="plansGrid"></div>
+        </section>
+
+        <section class="section-card">
+            <header class="section-header">
+                <div>
+                    <h3>Specialty Groups</h3>
+                    <p class="muted">Join one or more groups for targeted practice.</p>
+                </div>
+            </header>
+
+            <div class="group-grid" id="groupsGrid"></div>
+        </section>
+
+        <footer class="footer">
+            <div class="muted">Tip: Use “Meetings” to host or join your group lecture sessions.</div>
+            <div class="muted small">Powered by Teams Technologies</div>
+        </footer>
+    </main>
+
+    <script src="drawer.js"></script>
+    <script src="Membership.js"></script>
+</body>
+</html>

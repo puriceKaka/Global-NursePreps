@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="Pharmacology intensive course">
+  <rect width="800" height="450" fill="#F5F9FC"/><rect x="0" y="0" width="800" height="150" fill="#0F4C81"/><g transform="translate(130 110) rotate(-18)">
+  <rect width="170" height="72" rx="36" fill="#4CAF50"/><rect x="85" width="85" height="72" rx="36" fill="#d7b55d"/></g>
+  <g transform="translate(410 110) rotate(22)"><rect width="190" height="76" rx="38" fill="#1E88E5"/><path d="M95 0v76" stroke="#fff" stroke-width="10"/></g>
+  <rect x="110" y="270" width="580" height="72" rx="18" fill="#EAF4FC"/><path d="M150 306h500" stroke="#0F4C81" stroke-width="16" stroke-linecap="round"/>
+  <text x="70" y="410" fill="#0F4C81" font-family="Arial" font-size="40" font-weight="700">Pharmacology Intensive</text>
+</svg>

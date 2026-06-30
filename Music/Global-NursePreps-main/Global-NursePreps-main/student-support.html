@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Support | Global NursePrep</title>
+    <link rel="stylesheet" href="homepage.css">
+    <link rel="stylesheet" href="student-support.css">
+    <link rel="stylesheet" href="css/site-loader.css">
+    <script defer src="js/auth-guard.js" data-login="login.html"></script>
+    <script src="js/site-loader.js"></script>
+</head>
+<body>
+    <header class="topbar">
+        <button type="button" class="icon-button" id="menuToggle" aria-label="Open menu">
+            <span class="hamburger" aria-hidden="true"></span>
+        </button>
+
+        <div class="brand">
+            <span class="brand-logo">
+                <img src="logo/finalLogo.jpg" alt="Global NursePrep logo">
+            </span>
+            <div>
+                <h1>Global <span class="brand-nurse">Nurse</span>Prep</h1>
+                <p>Student support • Account help • Learning guidance</p>
+            </div>
+        </div>
+
+        <div class="topbar-actions">
+            <a class="pill-button" href="homepage.html">Dashboard</a>
+            <button type="button" class="secondary-button" id="logoutBtn">Logout</button>
+        </div>
+    </header>
+
+    <div class="drawer-overlay hidden" id="drawerOverlay" tabindex="-1" aria-hidden="true"></div>
+
+    <aside class="drawer hidden" id="drawer" aria-label="Side menu">
+        <div class="drawer-header">
+            <div class="drawer-user">
+                <div class="avatar" id="drawerAvatar" aria-hidden="true">N</div>
+                <div>
+                    <strong id="drawerName">Member</strong>
+                    <div class="muted" id="drawerEmail">-</div>
+                </div>
+            </div>
+            <button type="button" class="icon-button" id="drawerClose" aria-label="Close menu">x</button>
+        </div>
+
+        <nav class="drawer-nav" aria-label="Navigation">
+            <a class="drawer-link" href="homepage.html">Dashboard</a>
+            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/courses.html">Courses</a>
+            <a class="drawer-link" href="student-licensing.html">Licensing</a>
+            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/exam-lobby/exam-lobby.html">Exams</a>
+            <a class="drawer-link" href="research-consultation.html">Research Support</a>
+            <a class="drawer-link" href="my-learnings.html">My Learnings</a>
+            <a class="drawer-link" href="Profile.html">Profile</a>
+            <a class="drawer-link active" href="student-support.html">Help &amp; Support</a>
+        </nav>
+
+        <div class="drawer-footer">
+            <div class="muted small">Get help without leaving your student workspace.</div>
+        </div>
+    </aside>
+
+    <main class="page student-support-page">
+        <section class="student-support-hero">
+            <div>
+                <div class="hero-kicker">Student help center</div>
+                <h2>Get support for your courses, exams, licensing prep, and account.</h2>
+                <p>This support area is for logged-in students, so help stays connected to your learning progress and account details.</p>
+                <div class="hero-actions">
+                    <a class="primary-button" href="purice-ai.html">Open Purice AI</a>
+                    <a class="pill-button" href="mailto:support@globalnurseprep.com">Email Support</a>
+                </div>
+            </div>
+            <div class="support-status-card">
+                <strong>Logged-in support</strong>
+                <span>Use this page for student help instead of returning to the public contact page.</span>
+            </div>
+        </section>
+
+        <section class="section-card">
+            <header class="section-header">
+                <div>
+                    <h3>What do you need help with?</h3>
+                    <p class="muted">Choose the area that matches your issue so support can guide you faster.</p>
+                </div>
+            </header>
+
+            <div class="support-grid">
+                <article class="support-card">
+                    <strong>Course Access</strong>
+                    <p class="muted">Enrollment, course workspace, module progress, and study continuation.</p>
+                    <a class="primary-button small" href="EXAMINATION%20PREP%20SITE/courses.html">Open Courses</a>
+                </article>
+                <article class="support-card">
+                    <strong>Licensing Prep</strong>
+                    <p class="muted">NCK, NCLEX-RN, UK CBT, Australia registration, and readiness guidance.</p>
+                    <a class="primary-button small" href="student-licensing.html">Open Licensing</a>
+                </article>
+                <article class="support-card">
+                    <strong>Exam Help</strong>
+                    <p class="muted">Mock exams, practice results, weak topics, and exam readiness checks.</p>
+                    <a class="primary-button small" href="EXAMINATION%20PREP%20SITE/exam-lobby/exam-lobby.html">Open Exams</a>
+                </article>
+                <article class="support-card">
+                    <strong>Certificates</strong>
+                    <p class="muted">Completion certificates, PDF downloads, and course completion status.</p>
+                    <a class="primary-button small" href="my-learnings.html">View Learning</a>
+                </article>
+                <article class="support-card">
+                    <strong>Account Profile</strong>
+                    <p class="muted">Profile details, login access, student information, and account updates.</p>
+                    <a class="primary-button small" href="Profile.html">Open Profile</a>
+                </article>
+                <article class="support-card">
+                    <strong>Direct Support</strong>
+                    <p class="muted">Send your issue to the support team from your student workspace.</p>
+                    <a class="primary-button small" href="mailto:support@globalnurseprep.com">Message Support</a>
+                </article>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="muted">© <span id="yearLabel"></span> Global NursePrep — Nursing education &amp; community.</div>
+            <div class="muted small">Powered by Teams Technologies</div>
+        </footer>
+    </main>
+
+    <script src="drawer.js"></script>
+    <script src="learning-core.js"></script>
+    <script src="homepage.js"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="Exam icon">
+  <rect x="12" y="12" width="104" height="104" rx="28" fill="#eef4ff"/>
+  <path d="M44 38h40l10 10v52a10 10 0 0 1-10 10H44a10 10 0 0 1-10-10V48a10 10 0 0 1 10-10z" fill="#ffffff" stroke="#0b1f3a" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M84 38v12h12" fill="none" stroke="#0b1f3a" stroke-width="6" stroke-linecap="round"/>
+  <path d="M46 64l10 10 18-22" fill="none" stroke="#1a73e8" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M46 88h36" stroke="#0b1f3a" stroke-width="6" stroke-linecap="round" opacity="0.65"/>
+</svg>
+

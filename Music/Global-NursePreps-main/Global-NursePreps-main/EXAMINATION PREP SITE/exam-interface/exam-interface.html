@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Interface | GlobalNursePrep</title>
+    <link rel="stylesheet" href="../../css/design-system.css">
+    <link rel="stylesheet" href="exam-interface.css">
+    <link rel="stylesheet" href="../../css/exam-prep-theme.css">
+    <link rel="stylesheet" href="../../drawer.css">
+    <script defer src="exam-interface.js"></script>
+    <script defer src="../../js/auth-guard.js" data-login="../../login.html"></script>
+    <script defer src="../../drawer.js"></script>
+    <link rel="stylesheet" href="../../css/site-loader.css">
+    <script src="../../js/site-loader.js"></script>
+</head>
+<body>
+    <div class="exam-top-bar">
+        <div class="exam-brand">
+            <span class="brand-logo">
+                <img src="../../logo/finalLogo.jpg" alt="Global NursePrep logo">
+            </span>
+            <span class="exam-name">NCLEX-RN Mock Exam</span>
+        </div>
+        <div class="exam-top-actions">
+            <span class="countdown-timer">01:59:59</span>
+            <span class="camera-indicator">Proctoring Active</span>
+        </div>
+    </div>
+
+    <div class="drawer-overlay hidden" id="drawerOverlay" tabindex="-1" aria-hidden="true"></div>
+
+    <aside class="drawer hidden" id="drawer" aria-label="Side menu">
+        <div class="drawer-header">
+            <div class="drawer-user">
+                <div class="avatar" id="drawerAvatar" aria-hidden="true">N</div>
+                <div>
+                    <strong id="drawerName">Member</strong>
+                    <div class="muted small" id="drawerEmail">—</div>
+                </div>
+            </div>
+            <button type="button" id="drawerClose" aria-label="Close menu">×</button>
+        </div>
+
+        <nav class="drawer-nav" aria-label="Navigation">
+            <a class="drawer-link" href="../../homepage.html" target="_blank" rel="noopener">Home</a>
+            <a class="drawer-link" href="../../homepage.html#career" target="_blank" rel="noopener">Career Paths</a>
+            <a class="drawer-link" href="../courses.html" target="_blank" rel="noopener">Courses</a>
+            <a class="drawer-link" href="exam-interface.html" target="_blank" rel="noopener">Exams</a>
+            <a class="drawer-link" href="../../my-learnings.html" target="_blank" rel="noopener">My Learnings</a>
+            <a class="drawer-link" href="../../Profile.html" target="_blank" rel="noopener">Profile</a>
+            <a class="drawer-link" href="../../Membership.html" target="_blank" rel="noopener">Membership</a>
+            <a class="drawer-link" href="../../meetings.html" target="_blank" rel="noopener">Meetings and Lectures</a>
+            <a class="drawer-link" href="../landing.html" target="_blank" rel="noopener">Exam Prep</a>
+            <a class="drawer-link" href="../exam-lobby/exam-lobby.html" target="_blank" rel="noopener">Exam Lobby</a>
+        </nav>
+
+        <div class="drawer-footer">
+            <div class="muted small">Tip: Keep calm and pace yourself one question at a time.</div>
+        </div>
+    </aside>
+    <div class="exam-layout">
+        <aside class="question-navigator">
+            <h3>Questions</h3>
+            <div id="question-grid"></div>
+        </aside>
+        <main class="question-area">
+            <div id="question-content"></div>
+            <div class="bottom-nav">
+                <button id="prev-btn">Previous</button>
+                <button id="next-btn">Next</button>
+                <button id="flag-btn">Flag</button>
+            </div>
+        </main>
+        <aside class="right-panel">
+            <div class="notes-section">
+                <h4>Notes</h4>
+                <textarea id="notes" placeholder="Type your notes here..."></textarea>
+            </div>
+            <div class="live-proctoring card">
+                <h4>Live Feed</h4>
+                <video id="proctor-video" autoplay muted></video>
+                <div class="mic-meter">Mic: Active</div>
+            </div>
+            <div class="warnings-section">
+                <h4>Warnings</h4>
+                <div id="warning-messages"></div>
+            </div>
+            <div class="autosave-indicator">Saved</div>
+        </aside>
+    </div>
+
+    <footer class="simple-footer">
+        <div>Powered by Teams Technologies</div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!-- Exam Lobby HTML for GlobalNursePrep -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Exam Lobby | GlobalNursePrep</title>
+        <link rel="stylesheet" href="../../css/design-system.css">
+        <link rel="stylesheet" href="exam-lobby.css">
+        <link rel="stylesheet" href="../../css/exam-prep-theme.css">
+        <link rel="stylesheet" href="../../drawer.css">
+        <script defer src="exam-lobby.js"></script>
+        <script defer src="../../js/auth-guard.js" data-login="../../login.html"></script>
+        <script defer src="../../drawer.js"></script>
+        <link rel="stylesheet" href="../../css/site-loader.css">
+    <script src="../../js/site-loader.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo-container">
+            <button type="button" id="menuToggle" aria-label="Open menu">
+                <span class="hamburger" aria-hidden="true"></span>
+            </button>
+            <span class="brand-logo">
+                <img src="../../logo/finalLogo.jpg" alt="Global NursePrep logo">
+            </span>
+            <span class="logo-text">Global <span class="highlight">Nurse</span>Prep</span>
+        </div>
+        <ul>
+            <li><a href="../../homepage.html">Main Homepage</a></li>
+            <li><a href="../landing.html">Home</a></li>
+            <li><a href="exam-lobby.html">Exam Lobby</a></li>
+            <li><a href="../exam-interface/exam-interface.html">Exams</a></li>
+        </ul>
+    </nav>
+
+    <div class="drawer-overlay hidden" id="drawerOverlay" tabindex="-1" aria-hidden="true"></div>
+
+    <aside class="drawer hidden" id="drawer" aria-label="Side menu">
+        <div class="drawer-header">
+            <div class="drawer-user">
+                <div class="avatar" id="drawerAvatar" aria-hidden="true">N</div>
+                <div>
+                    <strong id="drawerName">Member</strong>
+                    <div class="muted small" id="drawerEmail">—</div>
+                </div>
+            </div>
+            <button type="button" id="drawerClose" aria-label="Close menu">×</button>
+        </div>
+
+        <nav class="drawer-nav" aria-label="Navigation">
+            <a class="drawer-link" href="../../homepage.html" target="_blank" rel="noopener">Home</a>
+            <a class="drawer-link" href="../../homepage.html#career" target="_blank" rel="noopener">Career Paths</a>
+            <a class="drawer-link" href="../courses.html" target="_blank" rel="noopener">Courses</a>
+            <a class="drawer-link" href="../exam-interface/exam-interface.html" target="_blank" rel="noopener">Exams</a>
+            <a class="drawer-link" href="../../my-learnings.html" target="_blank" rel="noopener">My Learnings</a>
+            <a class="drawer-link" href="../../Profile.html" target="_blank" rel="noopener">Profile</a>
+            <a class="drawer-link" href="../../Membership.html" target="_blank" rel="noopener">Membership</a>
+            <a class="drawer-link" href="../../meetings.html" target="_blank" rel="noopener">Meetings and Lectures</a>
+            <a class="drawer-link" href="../landing.html" target="_blank" rel="noopener">Exam Prep</a>
+            <a class="drawer-link" href="exam-lobby.html" target="_blank" rel="noopener">Exam Lobby</a>
+        </nav>
+
+        <div class="drawer-footer">
+            <div class="muted small">Tip: Run system checks before starting an exam.</div>
+        </div>
+    </aside>
+
+    <main class="lobby-container">
+        <section class="lobby-hero">
+            <div class="hero-content">
+                <h1>Exam Lobby</h1>
+                <p class="proctoring-notice">
+                    Run checks, pick an exam, and start when your setup is ready.
+                </p>
+            </div>
+        </section>
+
+        <section class="exam-summary-grid" aria-label="Exam categories and instructions">
+            <article class="exam-summary-card">
+                <strong>Exam Categories</strong>
+                <span>NCLEX, NCK, fundamentals, pharmacology, pediatrics, med-surg, and emergency care.</span>
+            </article>
+            <article class="exam-summary-card">
+                <strong>Timer Section</strong>
+                <span>Each mock exam uses timing rules to build real exam discipline.</span>
+            </article>
+            <article class="exam-summary-card">
+                <strong>Instructions</strong>
+                <span>Check camera, microphone, browser readiness, and consent before beginning.</span>
+            </article>
+        </section>
+
+        <div class="lobby-grid-main">
+            <div class="left-panel">
+                <!-- Exam Tracker Section -->
+                <section class="exam-tracker card">
+                    <h3>My Exams & Courses</h3>
+                    <div class="tracker-tabs">
+                        <button class="tab-btn active" onclick="showTab('upcoming', this)">Upcoming Exams</button>
+                        <button class="tab-btn" onclick="showTab('done', this)">Exam History</button>
+                        <button class="tab-btn" onclick="showTab('courses', this)">Registered Courses</button>
+                    </div>
+                    <div id="tracker-content" class="tracker-content">
+                        <!-- Populated by JS -->
+                    </div>
+                </section>
+
+            </div>
+
+            <div class="right-panel">
+                <section class="system-checks card">
+                    <h3>System Ready Check</h3>
+                    <ul>
+                        <li>Camera: <span id="camera-status">Checking...</span></li>
+                        <li>Microphone: <span id="mic-status">Checking...</span></li>
+                        <li>Internet: <span id="internet-status">Checking...</span></li>
+                        <li>Browser Lock: <span id="browser-status">Checking...</span></li>
+                    </ul>
+                </section>
+                <section class="face-verification card">
+                    <h3>Face Verification</h3>
+                    <video id="camera-preview" autoplay muted></video>
+                    <div id="face-status">Verifying...</div>
+                </section>
+                <section class="consent-box card">
+                    <label>
+                        <input type="checkbox" id="consent-checkbox"> 
+                        I agree to proctoring and browser lockdown.
+                    </label>
+                </section>
+                <button id="start-exam-btn" class="btn-primary" disabled>Start Selected Exam</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <p>&copy; 2026 GlobalNursePrep. All rights reserved. | <a href="#">Privacy Policy</a></p>
+        <p class="powered-by">Powered by Teams Technologies</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global NursePrep | My Learnings</title>
+    <link rel="stylesheet" href="homepage.css">
+    <link rel="stylesheet" href="my-learnings.css">
+    <link rel="stylesheet" href="../css/site-loader.css">
+    <script src="../js/site-loader.js"></script>
+</head>
+<body>
+    <header class="topbar">
+        <button type="button" class="icon-button" id="menuToggle" aria-label="Open menu">
+            <span class="hamburger" aria-hidden="true"></span>
+        </button>
+
+        <div class="brand">
+            <span class="brand-logo">
+                <img src="logo/finalLogo.jpg" alt="Global NursePrep logo">
+            </span>
+            <div>
+                <h1>Global NursePrep</h1>
+                <p>My Learnings • Progress • Certificates</p>
+            </div>
+        </div>
+
+        <div class="topbar-actions">
+            <a class="pill-button" href="homepage.html">Home</a>
+            <button type="button" class="secondary-button" id="logoutBtn">Logout</button>
+        </div>
+    </header>
+
+    <div class="drawer-overlay hidden" id="drawerOverlay" tabindex="-1" aria-hidden="true"></div>
+
+    <aside class="drawer hidden" id="drawer" aria-label="Side menu">
+        <div class="drawer-header">
+            <div class="drawer-user">
+                <div class="avatar" id="drawerAvatar" aria-hidden="true">N</div>
+                <div>
+                    <strong id="drawerName">Member</strong>
+                    <div class="muted" id="drawerEmail">—</div>
+                </div>
+            </div>
+            <button type="button" class="icon-button" id="drawerClose" aria-label="Close menu">×</button>
+        </div>
+
+        <nav class="drawer-nav" aria-label="Navigation">
+            <button type="button" class="drawer-link" data-target="top">My Learnings</button>
+            <a class="drawer-link" href="homepage.html" target="_blank" rel="noopener">Home</a>
+            <a class="drawer-link" href="homepage.html#career" target="_blank" rel="noopener">Career Paths</a>
+            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/courses.html" target="_blank" rel="noopener">Courses</a>
+            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/exam-interface/exam-interface.html" target="_blank" rel="noopener">Exams</a>
+            <a class="drawer-link" href="questions.html" target="_blank" rel="noopener">Questions</a>
+            <a class="drawer-link" href="Profile.html" target="_blank" rel="noopener">Profile</a>
+            <a class="drawer-link" href="Membership.html" target="_blank" rel="noopener">Membership</a>
+            <a class="drawer-link" href="Dashboard.html" target="_blank" rel="noopener">Meetings and Lectures</a>
+            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/landing.html" target="_blank" rel="noopener">Exam Prep</a>
+            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/exam-lobby/exam-lobby.html" target="_blank" rel="noopener">Exam Lobby</a>
+        </nav>
+
+        <div class="drawer-footer">
+            <div class="muted small">Finish all modules (and quizzes) to unlock a certificate.</div>
+        </div>
+    </aside>
+
+    <main class="page">
+        <section class="section-card" id="top">
+            <header class="section-header">
+                <div>
+                    <h3>My Learnings</h3>
+                    <p class="muted">Track module progress, resume where you left off, and unlock certificates at 100%.</p>
+                </div>
+                <div class="section-actions">
+                    <a class="pill-button" href="EXAMINATION%20PREP%20SITE/courses.html" target="_blank" rel="noopener">Open Courses</a>
+                </div>
+            </header>
+
+            <div class="learning-summary" aria-label="Learning summary">
+                <div class="info-card">
+                    <strong>Enrolled</strong>
+                    <div class="metric" id="enrolledCount">0</div>
+                    <div class="muted small">Courses you selected.</div>
+                </div>
+                <div class="info-card">
+                    <strong>Completed</strong>
+                    <div class="metric" id="completedCount">0</div>
+                    <div class="muted small">Ready for certificates.</div>
+                </div>
+                <div class="info-card">
+                    <strong>Certificates</strong>
+                    <div class="metric" id="certCount">0</div>
+                    <div class="muted small">PDF downloads available.</div>
+                </div>
+            </div>
+
+            <div class="learning-grid" id="learningsGrid" aria-live="polite"></div>
+        </section>
+
+        <footer class="footer">
+            <div class="muted">© <span id="yearLabel"></span> Global NursePrep.</div>
+            <div class="muted small">Powered by Teams Technologies</div>
+        </footer>
+    </main>
+
+    <script src="learning-core.js"></script>
+    <script src="my-learnings.js"></script>
+</body>
+</html>

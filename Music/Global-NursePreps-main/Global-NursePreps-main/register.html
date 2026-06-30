@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | Global NursePrep</title>
+    <link rel="stylesheet" href="register.css">
+    <link rel="stylesheet" href="drawer.css">
+    <script defer src="js/utils.js"></script>
+    <script defer src="js/supabase-config.js"></script>
+    <script defer src="js/supabase-bridge.js"></script>
+    <link rel="stylesheet" href="css/site-loader.css">
+    <script src="js/site-loader.js"></script>
+</head>
+<body>
+    <header class="public-nav">
+        <a class="public-brand" href="Dashboard.html">
+            <span class="brand-logo">
+                <img src="logo/finalLogo.jpg" alt="Global NursePrep logo">
+            </span>
+            <span>Global <span class="brand-nurse">Nurse</span>Prep</span>
+        </a>
+        <nav aria-label="Primary navigation">
+            <a href="Dashboard.html#home">Home</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact Us</a>
+        </nav>
+    </header>
+
+    <div class="drawer-overlay hidden" id="drawerOverlay" tabindex="-1" aria-hidden="true"></div>
+
+    <aside class="drawer hidden" id="drawer" aria-label="Side menu">
+        <div class="drawer-header">
+            <div class="drawer-user">
+                <div class="avatar" id="drawerAvatar" aria-hidden="true">N</div>
+                <div>
+                    <strong id="drawerName">Member</strong>
+                    <div class="muted small" id="drawerEmail">—</div>
+                </div>
+            </div>
+            <button type="button" id="drawerClose" aria-label="Close menu">×</button>
+        </div>
+
+        <nav class="drawer-nav" aria-label="Navigation">
+            <a class="drawer-link" href="homepage.html">Home</a>
+            <a class="drawer-link" href="homepage.html#career">Career Paths</a>
+            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/courses.html">Courses</a>
+            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/exam-interface/exam-interface.html">Exams</a>
+            <a class="drawer-link" href="my-learnings.html">My Learnings</a>
+            <a class="drawer-link" href="Profile.html">Profile</a>
+            <a class="drawer-link" href="Membership.html">Membership</a>
+            <a class="drawer-link" href="meetings.html">Meetings and Lectures</a>
+            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/landing.html">Exam Prep</a>
+            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/exam-lobby/exam-lobby.html">Exam Lobby</a>
+        </nav>
+
+        <div class="drawer-footer">
+            <div class="muted small">Create an account to save your progress.</div>
+        </div>
+    </aside>
+
+    <main class="auth-shell">
+        <section class="auth-card">
+            <div class="auth-left" aria-hidden="true">
+                <div class="brand">
+                    <span class="brand-logo">
+                        <img src="logo/finalLogo.jpg" alt="">
+                    </span>
+                    <div>
+                        <h1>Global <span class="brand-nurse">Nurse</span>Prep</h1>
+                        <p>Nursing education • Career paths • Questions</p>
+                    </div>
+                </div>
+
+                <div class="left-content">
+                    <h2>Create your account</h2>
+                    <p class="muted">
+                        Register once to access the nursing homepage, save course enrollments, track goals,
+                        and post questions.
+                    </p>
+
+                    <div class="feature-list">
+                        <div class="feature"><span class="dot"></span>Personalized learning profile</div>
+                        <div class="feature"><span class="dot"></span>Membership selection</div>
+                        <div class="feature"><span class="dot"></span>Career goals planner</div>
+                        <div class="feature"><span class="dot"></span>Study groups and meetings</div>
+                    </div>
+
+                    <div class="preview">
+                        <img src="logo/home%20image.jpg" alt="">
+                    </div>
+                </div>
+            </div>
+
+            <div class="auth-right">
+                <h2>Register</h2>
+                <p class="muted">Use a real email so you can log in again on this device.</p>
+
+                <form id="registerForm" class="form">
+                    <label class="field">
+                        <span>Full name</span>
+                        <input type="text" id="nameInput" autocomplete="name" placeholder="Your name" required>
+                    </label>
+
+                    <label class="field">
+                        <span>Email</span>
+                        <input type="email" id="emailInput" autocomplete="email" placeholder="Your email" required>
+                    </label>
+
+                    <label class="field">
+                        <span>Password</span>
+                        <div class="password-row">
+                            <input type="password" id="passwordInput" autocomplete="new-password" placeholder="Create a password" required>
+                            <button type="button" class="pill-button" id="togglePasswordBtn" aria-label="Show password">Show</button>
+                        </div>
+                        <div class="muted small" id="passwordPolicy">Use at least 8 characters with uppercase, lowercase, a number, and a symbol.</div>
+                    </label>
+
+                    <label class="field">
+                        <span>Confirm password</span>
+                        <div class="password-row">
+                            <input type="password" id="confirmInput" autocomplete="new-password" placeholder="Repeat password" required>
+                            <button type="button" class="pill-button" data-toggle-password="confirmInput" aria-label="Show password">Show</button>
+                        </div>
+                    </label>
+
+                    <div class="error hidden" id="errorBox" role="alert"></div>
+
+                    <button type="submit" class="primary-button" id="registerBtn">Create account</button>
+                </form>
+
+                <div class="links">
+                    <a href="login.html">Already have an account? Login</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="auth-footer">
+        <div class="muted">© <span id="yearLabel" data-year></span> Global NursePrep - Nursing education &amp; community.</div>
+        <div class="muted small">Powered by Teams Technologies</div>
+    </footer>
+
+    <script src="drawer.js"></script>
+    <script src="js/auth-security.js"></script>
+    <script src="register.js"></script>
+    <script src="js/app-shell.js"></script>
+</body>
+</html>

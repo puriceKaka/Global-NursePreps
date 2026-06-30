@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login | Global NursePrep</title>
+        <link rel="stylesheet" href="login.css">
+        <link rel="stylesheet" href="drawer.css">
+        <script defer src="js/utils.js"></script>
+        <script defer src="js/supabase-config.js"></script>
+        <script defer src="js/supabase-bridge.js"></script>
+        <link rel="stylesheet" href="css/site-loader.css">
+    <script src="js/site-loader.js"></script>
+</head>
+    <body>
+        <header class="public-nav">
+            <a class="public-brand" href="Dashboard.html">
+                <span class="brand-logo">
+                    <img src="logo/finalLogo.jpg" alt="Global NursePrep logo">
+                </span>
+                <span>Global <span class="brand-nurse">Nurse</span>Prep</span>
+            </a>
+            <nav aria-label="Primary navigation">
+                <a href="Dashboard.html#home">Home</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact Us</a>
+            </nav>
+        </header>
+
+        <div class="drawer-overlay hidden" id="drawerOverlay" tabindex="-1" aria-hidden="true"></div>
+
+        <aside class="drawer hidden" id="drawer" aria-label="Side menu">
+            <div class="drawer-header">
+                <div class="drawer-user">
+                    <div class="avatar" id="drawerAvatar" aria-hidden="true">N</div>
+                    <div>
+                        <strong id="drawerName">Member</strong>
+                        <div class="muted small" id="drawerEmail">—</div>
+                    </div>
+                </div>
+                <button type="button" id="drawerClose" aria-label="Close menu">×</button>
+            </div>
+
+            <nav class="drawer-nav" aria-label="Navigation">
+                <a class="drawer-link" href="homepage.html">Home</a>
+                <a class="drawer-link" href="homepage.html#career">Career Paths</a>
+                <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/courses.html">Courses</a>
+                <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/exam-interface/exam-interface.html">Exams</a>
+                <a class="drawer-link" href="my-learnings.html">My Learnings</a>
+                <a class="drawer-link" href="Profile.html">Profile</a>
+                <a class="drawer-link" href="Membership.html">Membership</a>
+                <a class="drawer-link" href="meetings.html">Meetings and Lectures</a>
+                <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/landing.html">Exam Prep</a>
+                <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/exam-lobby/exam-lobby.html">Exam Lobby</a>
+            </nav>
+
+            <div class="drawer-footer">
+                <div class="muted small">Log in to save enrollments and progress.</div>
+            </div>
+        </aside>
+
+        <main class="auth-shell">
+            <section class="auth-card">
+                <div class="auth-left" aria-hidden="true">
+                    <div class="brand">
+                        <span class="brand-logo">
+                        <img src="logo/finalLogo.jpg" alt="">
+                    </span>
+                    <div>
+                        <h1>Global <span class="brand-nurse">Nurse</span>Prep</h1>
+                        <p>Nursing education • Career goals • Community</p>
+                    </div>
+                </div>
+
+                <div class="left-content">
+                    <h2>Welcome back</h2>
+                    <p class="muted">
+                        Log in to access your nursing homepage with courses, exam prep, career paths,
+                        memberships, and questions.
+                    </p>
+
+                    <div class="feature-list">
+                        <div class="feature"><span class="dot"></span>Structured learning courses</div>
+                        <div class="feature"><span class="dot"></span>Exam checklist and practice strategy</div>
+                        <div class="feature"><span class="dot"></span>Career goals planner</div>
+                        <div class="feature"><span class="dot"></span>Ask &amp; answer nursing questions</div>
+                    </div>
+
+                    <div class="preview">
+                        <img src="logo/home%20image.jpg" alt="" loading="lazy">
+                    </div>
+                </div>
+            </div>
+
+            <div class="auth-right">
+                <h2>Login</h2>
+                <p class="muted">Use the email and password you registered with.</p>
+
+                <form id="loginForm" class="form">
+                    <label class="field">
+                        <span>Email</span>
+                        <input type="email" id="emailInput" autocomplete="email" placeholder="Your email" required>
+                    </label>
+
+                    <label class="field">
+                        <span>Password</span>
+                        <div class="password-row">
+                            <input type="password" id="passwordInput" autocomplete="current-password" placeholder="Your password" required>
+                            <button type="button" class="pill-button" id="togglePasswordBtn" aria-label="Show password">Show</button>
+                        </div>
+                    </label>
+
+                    <label class="remember-row">
+                        <input type="checkbox" id="rememberMe">
+                        <span>Remember me</span>
+                    </label>
+
+                    <div class="error hidden" id="errorBox" role="alert"></div>
+
+                    <button type="submit" class="primary-button" id="loginBtn">Login</button>
+                </form>
+
+                <div class="auth-divider"><span>or continue with</span></div>
+                <div class="social-login-row" aria-label="Social sign in options">
+                    <button type="button" class="social-button" data-provider="Google">
+                        <span class="social-icon google-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" focusable="false">
+                                <path fill="#4285F4" d="M22.6 12.2c0-.8-.1-1.6-.2-2.3H12v4.4h5.9c-.3 1.4-1 2.5-2.1 3.2v2.7h3.4c2-1.9 3.4-4.6 3.4-8z"></path>
+                                <path fill="#34A853" d="M12 23c3 0 5.5-1 7.3-2.7l-3.4-2.7c-.9.6-2.2 1-3.8 1-2.9 0-5.4-2-6.3-4.7H2.2v2.8C4 20.4 7.7 23 12 23z"></path>
+                                <path fill="#FBBC05" d="M5.7 13.9c-.2-.6-.3-1.2-.3-1.9s.1-1.3.3-1.9V7.3H2.2C1.4 8.7 1 10.3 1 12s.4 3.3 1.2 4.7l3.5-2.8z"></path>
+                                <path fill="#EA4335" d="M12 5.4c1.6 0 3.1.6 4.2 1.7l3.1-3.1C17.5 2.1 15 1 12 1 7.7 1 4 3.6 2.2 7.3l3.5 2.8C6.6 7.4 9.1 5.4 12 5.4z"></path>
+                            </svg>
+                        </span>
+                        <span>Google</span>
+                    </button>
+                    <button type="button" class="social-button" data-provider="Microsoft">
+                        <span class="social-icon microsoft-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" focusable="false">
+                                <path fill="#F25022" d="M2 2h9.5v9.5H2z"></path>
+                                <path fill="#7FBA00" d="M12.5 2H22v9.5h-9.5z"></path>
+                                <path fill="#00A4EF" d="M2 12.5h9.5V22H2z"></path>
+                                <path fill="#FFB900" d="M12.5 12.5H22V22h-9.5z"></path>
+                            </svg>
+                        </span>
+                        <span>Microsoft</span>
+                    </button>
+                    <button type="button" class="social-button" data-provider="Apple">
+                        <span class="social-icon apple-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" focusable="false">
+                                <path d="M16.4 13.1c0-2.1 1.7-3.1 1.8-3.2-1-1.5-2.5-1.7-3-1.7-1.3-.1-2.5.8-3.1.8-.7 0-1.7-.8-2.8-.7-1.4 0-2.8.8-3.5 2.1-1.5 2.6-.4 6.4 1.1 8.5.7 1 1.5 2.2 2.7 2.1 1.1 0 1.5-.7 2.8-.7s1.7.7 2.8.7c1.2 0 1.9-1 2.6-2.1.8-1.2 1.1-2.3 1.1-2.4 0 0-2.5-1-2.5-3.4zM14.4 6.8c.6-.7 1-1.7.9-2.8-.9 0-1.9.6-2.5 1.3-.6.7-1 1.7-.9 2.7 1 0 1.9-.5 2.5-1.2z"></path>
+                            </svg>
+                        </span>
+                        <span>Apple</span>
+                    </button>
+                </div>
+
+                <div class="links">
+                    <a href="register.html">Create an account</a>
+                    <a href="forgot-password.html">Forgot password?</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="auth-footer">
+        <div class="muted">© <span id="yearLabel" data-year></span> Global NursePrep - Nursing education &amp; community.</div>
+        <div class="muted small">Powered by Teams Technologies</div>
+    </footer>
+
+    <script src="drawer.js"></script>
+    <script src="js/auth-security.js"></script>
+    <script src="login.js"></script>
+    <script src="js/app-shell.js"></script>
+</body>
+</html>
