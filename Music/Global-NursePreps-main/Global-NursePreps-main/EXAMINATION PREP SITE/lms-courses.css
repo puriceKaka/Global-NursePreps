@@ -301,14 +301,38 @@ body.lms-body.guest-view #workspaceBtn {
     display: grid;
     gap: 0.85rem;
     margin-top: 1.1rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--lms-border);
+    padding: 1rem;
+    border: 1px solid rgba(0, 140, 149, 0.14);
+    border-radius: 26px;
+    background:
+        linear-gradient(180deg, rgba(15, 76, 129, 0.06), rgba(255, 255, 255, 0.82)),
+        #ffffff;
+    box-shadow: 0 16px 30px rgba(10, 35, 66, 0.05);
 }
 
 .course-group:first-child {
     margin-top: 0;
-    padding-top: 0;
-    border-top: 0;
+}
+
+.course-group:nth-child(3n + 1) {
+    border-color: rgba(32, 166, 122, 0.22);
+    background:
+        linear-gradient(180deg, rgba(32, 166, 122, 0.10), rgba(255, 255, 255, 0.82)),
+        #ffffff;
+}
+
+.course-group:nth-child(3n + 2) {
+    border-color: rgba(215, 181, 93, 0.24);
+    background:
+        linear-gradient(180deg, rgba(215, 181, 93, 0.12), rgba(255, 255, 255, 0.82)),
+        #ffffff;
+}
+
+.course-group:nth-child(3n) {
+    border-color: rgba(10, 35, 66, 0.16);
+    background:
+        linear-gradient(180deg, rgba(10, 35, 66, 0.08), rgba(255, 255, 255, 0.82)),
+        #ffffff;
 }
 
 .course-group-head {
@@ -321,7 +345,7 @@ body.lms-body.guest-view #workspaceBtn {
 .course-group-head h3 {
     margin: 0.1rem 0 0;
     color: var(--lms-navy);
-    font-size: 1.1rem;
+    font-size: 1.25rem;
 }
 
 .lms-card {
@@ -342,7 +366,7 @@ body.lms-body.guest-view #workspaceBtn {
     content: "";
     position: absolute;
     inset: 0 0 auto 0;
-    height: 6px;
+    height: 8px;
     background: linear-gradient(90deg, var(--lms-teal), var(--lms-gold));
 }
 
@@ -356,6 +380,10 @@ body.lms-body.guest-view #workspaceBtn {
 
 .lms-card:nth-child(3n)::before {
     background: linear-gradient(90deg, #0a2342, #5b72d6);
+}
+
+.course-group .lms-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 
 .lms-card:hover {
@@ -681,6 +709,10 @@ body.lms-body.guest-view #workspaceBtn {
     .lms-meta-grid,
     .lms-study-grid,
     .lms-report-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .course-group .lms-grid {
         grid-template-columns: 1fr;
     }
 
