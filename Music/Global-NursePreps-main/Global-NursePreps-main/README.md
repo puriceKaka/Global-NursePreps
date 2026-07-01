@@ -75,6 +75,8 @@ Database starter schema:
 Production notes:
 - `docs/production-readiness.md`
 - `js/api-client.js` provides a token-aware API client for future backend calls.
+- `npm run build` regenerates `js/supabase-config.js` from `SUPABASE_URL` and `SUPABASE_ANON_KEY` during Vercel deploys.
+- The admin layer falls back to browser storage when `/api/admin/*` is not available, so the static Vercel deployment still runs.
 
 Frontend deployment:
 - The site is static-friendly and can be deployed to Vercel without a build step.
@@ -85,6 +87,7 @@ Frontend deployment:
 Supabase migration note:
 - The current frontend still persists learning state in browser storage.
 - To move to Supabase, connect the auth and learning flows to a backend service and replace the local storage adapters.
+- Set `SUPABASE_URL` and `SUPABASE_ANON_KEY` before deploying if you want the login/register and learning sync code to use Supabase.
 
 3. To create a new meeting:
    - Click "New meeting"

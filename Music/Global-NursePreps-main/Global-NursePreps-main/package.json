@@ -4,13 +4,16 @@
   "description": "A Google Meet clone with WebRTC video calling",
   "main": "server.js",
   "scripts": {
+    "build": "node scripts/generate-supabase-config.js",
+    "vercel-build": "npm run build",
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.2",
-    "socket.io": "^4.7.2",
-    "cors": "^2.8.5"
+    "pdf-parse": "^2.4.5",
+    "socket.io": "^4.7.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
