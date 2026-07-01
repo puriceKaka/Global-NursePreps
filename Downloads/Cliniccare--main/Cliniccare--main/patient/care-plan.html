@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Care Plan — Patient Portal — ClinicCare</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="patient.css" />
+    <link rel="stylesheet" href="care-plan.css" />
+  </head>
+  <body>
+    <div class="portal-shell">
+
+      <aside class="sidebar">
+        <a class="brand" href="../index.html">
+          <span class="brand-mark">CC</span>
+          ClinicCare
+        </a>
+        <nav class="portal-nav">
+          <a href="dashboard.html">Dashboard</a>
+          <a href="appointments.html">Appointments</a>
+          <a href="records.html">My Records</a>
+          <a href="billing.html">Billing</a>
+          <a class="active" href="care-plan.html">Care Plan</a>
+          <a href="messages.html">Messages</a>
+          <a href="profile.html">Profile</a>
+          <a class="logout" href="../login.html">Logout</a>
+        </nav>
+      </aside>
+
+      <main class="portal-main">
+        <header class="topbar">
+          <div class="page-header-left">
+            <p class="eyebrow">Patient Portal</p>
+            <h1>My Care Plan</h1>
+          </div>
+          <div class="user-chip">
+            <div class="user-chip-avatar">JD</div>
+            <div><strong>John Doe</strong><small>Patient</small></div>
+          </div>
+        </header>
+
+        <div class="content-grid">
+
+          <!-- CURRENT MEDICATIONS -->
+          <article class="panel">
+            <h2>Current Medications</h2>
+            <div class="medication-item">
+              <div class="med-icon">Am</div>
+              <div class="med-info">
+                <strong>Amlodipine</strong>
+                <span>5mg — Once daily (morning)</span>
+              </div>
+              <span class="badge badge-green">Active</span>
+            </div>
+            <div class="medication-item">
+              <div class="med-icon">As</div>
+              <div class="med-info">
+                <strong>Aspirin</strong>
+                <span>75mg — Once daily (with food)</span>
+              </div>
+              <span class="badge badge-green">Active</span>
+            </div>
+          </article>
+
+          <!-- DOCTOR'S INSTRUCTIONS -->
+          <article class="panel">
+            <h2>Doctor's Instructions</h2>
+            <ul class="instruction-list">
+              <li>Monitor blood pressure daily and log readings.</li>
+              <li>Maintain a low-sodium diet.</li>
+              <li>Avoid strenuous exercise until next review.</li>
+              <li>Bring all medication bottles to your next visit.</li>
+              <li>Contact the clinic if BP exceeds 160/100.</li>
+            </ul>
+          </article>
+
+          <!-- UPCOMING TESTS -->
+          <article class="panel panel-wide">
+            <h2>Upcoming Tests &amp; Follow-ups</h2>
+            <div class="upcoming-list">
+              <div class="upcoming-item">
+                <div class="upcoming-date">
+                  <span class="upcoming-day">08</span>
+                  <span class="upcoming-month">Jul</span>
+                </div>
+                <div class="upcoming-details">
+                  <strong>General Checkup</strong>
+                  <p>Bring BP log · Dr. Emily Chen · 09:00 AM</p>
+                </div>
+                <span class="badge badge-blue">Scheduled</span>
+              </div>
+              <div class="upcoming-item">
+                <div class="upcoming-date">
+                  <span class="upcoming-day">02</span>
+                  <span class="upcoming-month">Aug</span>
+                </div>
+                <div class="upcoming-details">
+                  <strong>Fasting Blood Panel</strong>
+                  <p>No food 8 hrs before · Dr. Emily Chen · 11:00 AM</p>
+                </div>
+                <span class="badge badge-yellow">Pending</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- CARE NOTES -->
+          <article class="panel panel-wide">
+            <h2>Clinical Notes</h2>
+            <div class="care-note">
+              <div class="care-note-header">
+                <strong>Hypertension Management — May 20, 2026</strong>
+                <span>Dr. Emily Chen</span>
+              </div>
+              <p>Patient presents with stable blood pressure readings averaging 138/88 over the past month. Continue current medication regimen. Dietary compliance reported as good. Patient advised to reduce sodium intake further and maintain exercise log. Follow-up in 6 weeks.</p>
+            </div>
+            <div class="care-note">
+              <div class="care-note-header">
+                <strong>ECG Review — Mar 10, 2026</strong>
+                <span>Dr. Emily Chen</span>
+              </div>
+              <p>ECG results within normal range. No abnormalities detected. Resting heart rate 72 bpm. Patient to continue current medication and report any chest discomfort or palpitations immediately.</p>
+            </div>
+          </article>
+
+        </div>
+      </main>
+    </div>
+
+    <script src="patient.js"></script>
+  </body>
+</html>

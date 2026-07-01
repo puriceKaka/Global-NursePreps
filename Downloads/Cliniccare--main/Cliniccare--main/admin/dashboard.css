@@ -1,0 +1,8 @@
+.chart-labels {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 8px;
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-weight: 600;
+}

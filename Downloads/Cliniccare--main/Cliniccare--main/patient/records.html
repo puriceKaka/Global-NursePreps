@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Records — Patient Portal — ClinicCare</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="patient.css" />
+    <link rel="stylesheet" href="records.css" />
+  </head>
+  <body>
+    <div class="portal-shell">
+
+      <aside class="sidebar">
+        <a class="brand" href="../index.html">
+          <span class="brand-mark">CC</span>
+          ClinicCare
+        </a>
+        <nav class="portal-nav">
+          <a href="dashboard.html">Dashboard</a>
+          <a href="appointments.html">Appointments</a>
+          <a class="active" href="records.html">My Records</a>
+          <a href="billing.html">Billing</a>
+          <a href="care-plan.html">Care Plan</a>
+          <a href="messages.html">Messages</a>
+          <a href="profile.html">Profile</a>
+          <a class="logout" href="../login.html">Logout</a>
+        </nav>
+      </aside>
+
+      <main class="portal-main">
+        <header class="topbar">
+          <div class="page-header-left">
+            <p class="eyebrow">Patient Portal</p>
+            <h1>My Health Records</h1>
+          </div>
+          <div class="user-chip">
+            <div class="user-chip-avatar">JD</div>
+            <div><strong>John Doe</strong><small>Patient</small></div>
+          </div>
+        </header>
+
+        <div class="records-filter-row">
+          <button class="appt-tab active" data-filter="all">All</button>
+          <button class="appt-tab" data-filter="ready">Ready</button>
+          <button class="appt-tab" data-filter="archived">Archived</button>
+        </div>
+
+        <div class="section-actions">
+          <input class="portal-search" type="search" id="recordSearch" placeholder="Search records…" />
+        </div>
+
+        <div class="records-grid" id="recordsGrid">
+
+          <article class="record-card" data-status="ready">
+            <div class="record-icon record-icon-blue">BT</div>
+            <div class="record-info">
+              <h3>Blood Test Report</h3>
+              <p>May 15, 2026 · Dr. Emily Chen</p>
+            </div>
+            <span class="badge badge-green">Ready</span>
+            <button class="btn btn-ghost btn-sm">View</button>
+          </article>
+
+          <article class="record-card" data-status="ready">
+            <div class="record-icon record-icon-purple">Rx</div>
+            <div class="record-info">
+              <h3>Prescription</h3>
+              <p>May 09, 2026 · Dr. Emily Chen</p>
+            </div>
+            <span class="badge badge-green">Ready</span>
+            <button class="btn btn-ghost btn-sm">View</button>
+          </article>
+
+          <article class="record-card" data-status="archived">
+            <div class="record-icon record-icon-gray">VS</div>
+            <div class="record-info">
+              <h3>Visit Summary</h3>
+              <p>Apr 21, 2026 · Dr. Emily Chen</p>
+            </div>
+            <span class="badge badge-blue">Archived</span>
+            <button class="btn btn-ghost btn-sm">View</button>
+          </article>
+
+          <article class="record-card" data-status="archived">
+            <div class="record-icon record-icon-gray">EC</div>
+            <div class="record-info">
+              <h3>ECG Report</h3>
+              <p>Mar 10, 2026 · Dr. Emily Chen</p>
+            </div>
+            <span class="badge badge-blue">Archived</span>
+            <button class="btn btn-ghost btn-sm">View</button>
+          </article>
+
+          <article class="record-card" data-status="ready">
+            <div class="record-icon record-icon-blue">BP</div>
+            <div class="record-info">
+              <h3>BP Monitoring Log</h3>
+              <p>Jun 01, 2026 · Dr. Emily Chen</p>
+            </div>
+            <span class="badge badge-green">Ready</span>
+            <button class="btn btn-ghost btn-sm">View</button>
+          </article>
+
+          <article class="record-card" data-status="archived">
+            <div class="record-icon record-icon-purple">Rx</div>
+            <div class="record-info">
+              <h3>Prescription — Jan 2026</h3>
+              <p>Jan 14, 2026 · Dr. Emily Chen</p>
+            </div>
+            <span class="badge badge-blue">Archived</span>
+            <button class="btn btn-ghost btn-sm">View</button>
+          </article>
+
+        </div>
+      </main>
+    </div>
+
+    <script src="patient.js"></script>
+    <script src="records.js"></script>
+  </body>
+</html>

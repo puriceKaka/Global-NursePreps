@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patient Dashboard — ClinicCare</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="patient.css" />
+  </head>
+  <body>
+    <div class="portal-shell">
+      <aside class="sidebar">
+        <a class="brand" href="../index.html">
+          <span class="brand-mark">CC</span>
+          ClinicCare
+        </a>
+        <nav class="portal-nav">
+          <a class="active" href="dashboard.html">Dashboard</a>
+          <a href="appointments.html">Appointments</a>
+          <a href="records.html">My Records</a>
+          <a href="billing.html">Billing</a>
+          <a href="care-plan.html">Care Plan</a>
+          <a href="messages.html">Messages</a>
+          <a href="profile.html">Profile</a>
+          <a class="logout" href="../login.html">Logout</a>
+        </nav>
+      </aside>
+
+      <main class="portal-main">
+        <header class="topbar">
+          <div class="page-header-left">
+            <p class="eyebrow">Patient Portal</p>
+            <h1 data-cc-greeting>Good morning, there</h1>
+          </div>
+          <div class="user-chip">
+            <div class="user-chip-avatar" data-cc-initials>PT</div>
+            <div>
+              <strong data-cc-name>Patient</strong>
+              <small>Patient</small>
+            </div>
+          </div>
+        </header>
+
+        <div class="stats-grid">
+          <article class="stat-card">
+            <p>Upcoming Appointments</p>
+            <strong data-dashboard-appointments>--</strong>
+            <span class="good" data-dashboard-appointments-note>Loading data...</span>
+          </article>
+          <article class="stat-card">
+            <p>Outstanding Balance</p>
+            <strong data-dashboard-balance>--</strong>
+            <span class="warn" data-dashboard-balance-note>Loading data...</span>
+          </article>
+          <article class="stat-card">
+            <p>Unread Messages</p>
+            <strong data-dashboard-messages>--</strong>
+            <span class="good" data-dashboard-messages-note>Loading data...</span>
+          </article>
+          <article class="stat-card">
+            <p>Medical Records</p>
+            <strong data-dashboard-records>--</strong>
+            <span data-dashboard-records-note>Loading data...</span>
+          </article>
+        </div>
+
+        <div class="content-grid">
+          <article class="panel">
+            <div class="panel-header">
+              <h2>Next Appointment</h2>
+              <a class="btn btn-ghost btn-sm" href="appointments.html">View all</a>
+            </div>
+            <div class="appointment-card" data-dashboard-next-appointment>
+              <div class="appointment-date">
+                <span class="day">--</span>
+                <span class="month">--</span>
+              </div>
+              <div class="appointment-details">
+                <h4>Loading appointment...</h4>
+                <p>Please wait while we fetch your data.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-header">
+              <h2>Recent Messages</h2>
+              <a class="btn btn-ghost btn-sm" href="messages.html">View all</a>
+            </div>
+            <div class="message-list" data-dashboard-messages-list>
+              <div class="message-item">
+                <div class="message-content">
+                  <h4>Loading messages...</h4>
+                  <p>Please wait while we fetch your inbox.</p>
+                  <span class="message-time">--</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel panel-wide">
+            <div class="panel-header">
+              <h2>Quick Actions</h2>
+            </div>
+            <div class="section-actions">
+              <a class="btn btn-primary" href="appointments.html">Book Appointment</a>
+              <a class="btn btn-ghost" href="records.html">View Records</a>
+              <a class="btn btn-ghost" href="billing.html">Pay Bill</a>
+              <a class="btn btn-ghost" href="profile.html">Update Profile</a>
+            </div>
+          </article>
+        </div>
+      </main>
+    </div>
+
+    <script src="../assets/js/auth-guard.js"></script>
+    <script src="patient.js"></script>
+  </body>
+</html>

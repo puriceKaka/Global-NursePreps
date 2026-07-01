@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClinicCare | Healthcare Management System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/site.css" />
+
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="navbar container">
+        <a class="brand" href="index.html">
+          <span class="brand-mark">CC</span>
+          <span>ClinicCare</span>
+        </a>
+        <div class="nav-links">
+          <a href="#features">Features</a>
+          <a href="#portals">Portals</a>
+          <a href="#how-it-works">How it works</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <div class="nav-actions">
+          <a class="btn btn-ghost" href="login.html">Sign In</a>
+          <a class="btn btn-primary" href="signup.html">Get Started Free</a>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </nav>
+      <div class="mobile-menu" id="mobileMenu">
+        <a href="#features">Features</a>
+        <a href="#portals">Portals</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact">Contact</a>
+        <a href="login.html">Sign In</a>
+        <a class="btn btn-primary" href="signup.html">Get Started Free</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <canvas class="hero-mesh" id="heroMesh" aria-hidden="true"></canvas>
+        <div class="hero-orbit orbit-one" aria-hidden="true"></div>
+        <div class="hero-orbit orbit-two" aria-hidden="true"></div>
+
+        <div class="container hero-inner">
+          <div class="hero-copy">
+            <div class="hero-badge">
+              <span class="badge-dot"></span>
+              Trusted by 500+ healthcare providers
+            </div>
+            <h1>
+              Modern care,
+              <span class="gradient-text">managed beautifully.</span>
+            </h1>
+            <p>
+              ClinicCare brings appointments, patient records, billing, prescriptions, and secure role-based portals into one fast clinical workspace.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary btn-lg" href="signup.html">
+                Start for Free
+                <span aria-hidden="true">-&gt;</span>
+              </a>
+              <a class="btn btn-ghost btn-lg" href="login.html">Sign In to Portal</a>
+            </div>
+            <div class="hero-stats">
+              <div class="stat-pill">
+                <strong><span class="counter" data-target="10000">0</span>+</strong>
+                <span>Active patients</span>
+              </div>
+              <div class="stat-pill">
+                <strong><span class="counter" data-target="500">0</span>+</strong>
+                <span>Providers</span>
+              </div>
+              <div class="stat-pill">
+                <strong>99.9%</strong>
+                <span>Uptime</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-media" id="heroTilt">
+            <div class="hero-3d-card">
+              <img src="assets/hero-doctor.jpg" alt="Doctor consulting with patient" />
+              <div class="hero-screen">
+                <div class="screen-top">
+                  <span></span><span></span><span></span>
+                </div>
+                <div class="screen-row wide"></div>
+                <div class="screen-row"></div>
+                <div class="screen-grid">
+                  <span></span><span></span><span></span>
+                </div>
+              </div>
+              <div class="float-card float-card-top" data-depth="0.08">
+                <div class="float-icon success">OK</div>
+                <div>
+                  <strong>Appointment confirmed</strong>
+                  <span>Today, 10:30 AM</span>
+                </div>
+              </div>
+              <div class="float-card float-card-bottom" data-depth="0.12">
+                <div class="float-icon info">Rx</div>
+                <div>
+                  <strong>Prescription ready</strong>
+                  <span>2 items added</span>
+                </div>
+              </div>
+              <div class="float-card float-card-side" data-depth="0.06">
+                <div class="float-icon violet">Lab</div>
+                <div>
+                  <strong>Lab results uploaded</strong>
+                  <span>View record</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="trust-bar">
+        <div class="container trust-inner reveal">
+          <span class="trust-label">Trusted by leading clinics</span>
+          <div class="trust-logos">
+            <span>MedCore</span>
+            <span>HealthFirst</span>
+            <span>CareUnity</span>
+            <span>NovaMed</span>
+            <span>PrimeCare</span>
+          </div>
+        </div>
+      </div>
+
+      <section class="section" id="features">
+        <div class="container">
+          <div class="section-header reveal">
+            <p class="eyebrow">Core Features</p>
+            <h2>Everything your clinic needs in one place</h2>
+            <p class="section-sub">Designed for the full clinic workflow, from first booking to final billing.</p>
+          </div>
+          <div class="feature-grid">
+            <article class="feature-card reveal-stagger"><div class="feature-icon">01</div><h3>Smart Scheduling</h3><p>Book, confirm, and track appointments with clean daily views and automatic reminders.</p></article>
+            <article class="feature-card reveal-stagger"><div class="feature-icon">02</div><h3>Digital Records</h3><p>Keep notes, diagnosis history, lab results, and prescriptions organized in one secure profile.</p></article>
+            <article class="feature-card reveal-stagger"><div class="feature-icon">03</div><h3>Billing Workflow</h3><p>Create invoices, track payment status, and review revenue summaries without spreadsheet chaos.</p></article>
+            <article class="feature-card reveal-stagger"><div class="feature-icon">04</div><h3>Role Portals</h3><p>Separate workspaces for administrators, doctors, and patients so each user sees what matters.</p></article>
+            <article class="feature-card reveal-stagger"><div class="feature-icon">05</div><h3>Secure Messaging</h3><p>Keep clinic communication in one place with patient and care-team message history.</p></article>
+            <article class="feature-card reveal-stagger"><div class="feature-icon">06</div><h3>Analytics</h3><p>Track appointments, patient activity, billing, and operational performance in real time.</p></article>
+            <article class="feature-card reveal-stagger"><div class="feature-icon">07</div><h3>Data Security</h3><p>Role-based access, audit logs, and encryption patterns built for sensitive health data.</p></article>
+            <article class="feature-card reveal-stagger"><div class="feature-icon">08</div><h3>Care Plans</h3><p>Manage follow-ups, instructions, medication tracking, and long-term patient progress.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-muted" id="how-it-works">
+        <div class="container">
+          <div class="section-header reveal">
+            <p class="eyebrow">How it works</p>
+            <h2>Up and running in minutes</h2>
+            <p class="section-sub">A clear setup flow your team can understand quickly.</p>
+          </div>
+          <div class="steps-grid">
+            <article class="step-card reveal-stagger"><span>01</span><h3>Create accounts</h3><p>Patients, doctors, and admins sign up with role-specific access.</p></article>
+            <div class="step-connector" aria-hidden="true"></div>
+            <article class="step-card reveal-stagger"><span>02</span><h3>Configure clinic</h3><p>Admins add staff, schedules, departments, and billing settings.</p></article>
+            <div class="step-connector" aria-hidden="true"></div>
+            <article class="step-card reveal-stagger"><span>03</span><h3>Manage care</h3><p>Book visits, write notes, issue prescriptions, and track payments.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="portals">
+        <div class="container">
+          <div class="section-header reveal">
+            <p class="eyebrow">Portal Access</p>
+            <h2>Three focused workspaces</h2>
+            <p class="section-sub">Each role gets a purpose-built dashboard without unnecessary clutter.</p>
+          </div>
+          <div class="portal-grid">
+            <article class="portal-card portal-admin reveal-stagger"><div class="portal-icon">AD</div><h3>Admin Portal</h3><p>Clinic-wide dashboards, user management, reports, billing, and settings.</p><ul><li>User management</li><li>Revenue reports</li><li>System settings</li></ul><a href="admin/dashboard.html">Open Admin Portal</a></article>
+            <article class="portal-card portal-doctor portal-featured reveal-stagger"><div class="portal-badge">Most Used</div><div class="portal-icon">DR</div><h3>Doctor Portal</h3><p>Daily schedule, assigned patients, consultations, prescriptions, and notes.</p><ul><li>Patient records</li><li>Prescriptions</li><li>Consultation notes</li></ul><a href="doctor/dashboard.html">Open Doctor Portal</a></article>
+            <article class="portal-card portal-patient reveal-stagger"><div class="portal-icon">PT</div><h3>Patient Portal</h3><p>Appointments, records, invoices, care plans, and secure messaging.</p><ul><li>Book appointments</li><li>View records</li><li>Pay bills</li></ul><a href="patient/dashboard.html">Open Patient Portal</a></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-muted" id="testimonials">
+        <div class="container">
+          <div class="section-header reveal">
+            <p class="eyebrow">Testimonials</p>
+            <h2>Loved by busy clinics</h2>
+            <p class="section-sub">Feedback from teams using ClinicCare to run smoother daily operations.</p>
+          </div>
+          <div class="testimonial-grid">
+            <blockquote class="testimonial-card reveal-stagger"><div class="stars">*****</div><p>"ClinicCare transformed how we run appointments. The portal is clean, fast, and our staff needed very little training."</p><footer><span>SM</span><div><strong>Dr. Sarah Mills</strong><small>Cardiologist, MedCore Clinic</small></div></footer></blockquote>
+            <blockquote class="testimonial-card reveal-stagger"><div class="stars">*****</div><p>"Patients can book appointments, check results, and message us without calling the front desk every time."</p><footer><span>JK</span><div><strong>James Kwame</strong><small>Clinic Administrator, HealthFirst</small></div></footer></blockquote>
+            <blockquote class="testimonial-card reveal-stagger"><div class="stars">*****</div><p>"Billing used to take hours. Now invoices and revenue visibility are available before morning meetings."</p><footer><span>LN</span><div><strong>Linda Nkosi</strong><small>Practice Manager, CareUnity</small></div></footer></blockquote>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="pricing">
+        <div class="container">
+          <div class="section-header reveal">
+            <p class="eyebrow">Pricing</p>
+            <h2>Simple plans for growing clinics</h2>
+            <p class="section-sub">Transparent plans for small practices, growing clinics, and larger teams.</p>
+          </div>
+          <div class="pricing-grid">
+            <article class="price-card reveal-stagger"><h3>Starter</h3><div class="price"><strong>$199</strong><span>/mo</span></div><p>For small practices going digital.</p><ul><li>Up to 3 doctors</li><li>500 patients</li><li>Appointments and billing</li><li>Patient portal</li></ul><a class="btn btn-ghost btn-block" href="signup.html">Get Started</a></article>
+            <article class="price-card featured reveal-stagger"><div class="price-badge">Most Popular</div><h3>Professional</h3><div class="price"><strong>$499</strong><span>/mo</span></div><p>For growing clinics that need full workflow visibility.</p><ul><li>Up to 15 doctors</li><li>Unlimited patients</li><li>Analytics suite</li><li>Priority support</li></ul><a class="btn btn-primary btn-block" href="signup.html">Get Started</a></article>
+            <article class="price-card reveal-stagger"><h3>Enterprise</h3><div class="price"><strong>Custom</strong></div><p>For hospitals and multi-branch healthcare teams.</p><ul><li>Unlimited doctors</li><li>Multi-branch support</li><li>Custom integrations</li><li>Dedicated manager</li></ul><a class="btn btn-ghost btn-block" href="#contact">Contact Sales</a></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta-band">
+        <div class="container cta-inner reveal">
+          <div>
+            <h2>Ready to transform your clinic workflow?</h2>
+            <p>Start with the core tools your clinic needs, then scale as your team grows.</p>
+          </div>
+          <div class="cta-actions">
+            <a class="btn btn-light btn-lg" href="signup.html">Create Free Account</a>
+            <a class="btn btn-cta-ghost btn-lg" href="login.html">Sign In</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="contact">
+        <div class="container contact-grid">
+          <div class="contact-copy reveal">
+            <p class="eyebrow">Contact</p>
+            <h2>Get in touch</h2>
+            <p>Our team can help your clinic modernize operations without disrupting daily care.</p>
+            <div class="contact-details">
+              <div><span>@</span> contact@cliniccare.com</div>
+              <div><span>Tel</span> +1 (555) 123-4567</div>
+              <div><span>HQ</span> 123 Healthcare Ave, Medical District</div>
+            </div>
+          </div>
+          <form class="contact-form reveal" id="contactForm">
+            <label>Full Name<input type="text" placeholder="Jane Smith" required /></label>
+            <label>Email Address<input type="email" placeholder="jane@clinic.com" required /></label>
+            <label>Message<textarea rows="4" placeholder="Tell us about your clinic and what you need" required></textarea></label>
+            <button type="submit" class="btn btn-primary btn-block">Send Message</button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-top container">
+        <div class="footer-brand">
+          <a class="brand" href="index.html"><span class="brand-mark">CC</span><span>ClinicCare</span></a>
+          <p>A complete clinical management platform built for modern healthcare teams.</p>
+        </div>
+        <div class="footer-links">
+          <div><h4>Platform</h4><a href="#features">Features</a><a href="#portals">Portals</a><a href="#pricing">Pricing</a></div>
+          <div><h4>Portals</h4><a href="admin/dashboard.html">Admin</a><a href="doctor/dashboard.html">Doctor</a><a href="patient/dashboard.html">Patient</a></div>
+          <div><h4>System</h4><a href="doctor/appointments.html">Appointments</a><a href="patient/billing.html">Billing</a><a href="patient/records.html">Records</a></div>
+          <div><h4>Company</h4><a href="#contact">Contact</a><a href="#">Privacy Policy</a><a href="#">Support</a></div>
+        </div>
+      </div>
+      <div class="footer-bottom container">
+        <p>&copy; 2026 ClinicCare. All rights reserved.</p>
+        <p>Built for modern healthcare management.</p>
+      </div>
+    </footer>
+
+    <script src="assets/js/site.js"></script>
+    <script>CC.initLanding();</script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

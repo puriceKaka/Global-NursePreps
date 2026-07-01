@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Messages — Patient Portal — ClinicCare</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="patient.css" />
+    <link rel="stylesheet" href="messages.css" />
+  </head>
+  <body>
+    <div class="portal-shell">
+
+      <aside class="sidebar">
+        <a class="brand" href="../index.html">
+          <span class="brand-mark">CC</span>
+          ClinicCare
+        </a>
+        <nav class="portal-nav">
+          <a href="dashboard.html">Dashboard</a>
+          <a href="appointments.html">Appointments</a>
+          <a href="records.html">My Records</a>
+          <a href="billing.html">Billing</a>
+          <a href="care-plan.html">Care Plan</a>
+          <a class="active" href="messages.html">Messages</a>
+          <a href="profile.html">Profile</a>
+          <a class="logout" href="../login.html">Logout</a>
+        </nav>
+      </aside>
+
+      <main class="portal-main">
+        <header class="topbar">
+          <div class="page-header-left">
+            <p class="eyebrow">Patient Portal</p>
+            <h1>Messages</h1>
+          </div>
+          <div class="user-chip">
+            <div class="user-chip-avatar">JD</div>
+            <div><strong>John Doe</strong><small>Patient</small></div>
+          </div>
+        </header>
+
+        <div class="messages-layout">
+
+          <!-- INBOX LIST -->
+          <aside class="inbox-panel">
+            <div class="inbox-header">
+              <h2>Inbox</h2>
+              <button class="btn btn-primary btn-sm" id="openComposeModal">+ New</button>
+            </div>
+            <input class="portal-search" type="search" id="msgSearch" placeholder="Search messages…" style="margin-bottom:12px" />
+            <ul class="inbox-list" id="inboxList">
+              <li class="inbox-item active" data-msg="clinic">
+                <div class="inbox-avatar">CL</div>
+                <div class="inbox-info">
+                  <strong>Clinic</strong>
+                  <p>Your July 8 appointment has been confirmed.</p>
+                  <span>Today</span>
+                </div>
+                <span class="unread-dot"></span>
+              </li>
+              <li class="inbox-item" data-msg="dr-chen">
+                <div class="inbox-avatar">EC</div>
+                <div class="inbox-info">
+                  <strong>Dr. Emily Chen</strong>
+                  <p>Please upload your home blood pressure readings…</p>
+                  <span>Yesterday</span>
+                </div>
+                <span class="unread-dot"></span>
+              </li>
+              <li class="inbox-item" data-msg="billing">
+                <div class="inbox-avatar">BL</div>
+                <div class="inbox-info">
+                  <strong>Billing</strong>
+                  <p>Invoice INV-204 for $120 is due on July 15.</p>
+                  <span>Jun 30</span>
+                </div>
+              </li>
+              <li class="inbox-item" data-msg="lab">
+                <div class="inbox-avatar">LB</div>
+                <div class="inbox-info">
+                  <strong>Lab Team</strong>
+                  <p>Your May 15 blood test results are now available.</p>
+                  <span>Jun 15</span>
+                </div>
+              </li>
+            </ul>
+          </aside>
+
+          <!-- MESSAGE THREAD -->
+          <section class="thread-panel">
+            <div class="thread-header" id="threadHeader">
+              <div class="thread-avatar" id="threadAvatar">CL</div>
+              <div>
+                <strong id="threadSender">Clinic</strong>
+                <p id="threadDate">Today</p>
+              </div>
+            </div>
+
+            <div class="thread-body" id="threadBody">
+              <div class="message-bubble received" id="msg-clinic">
+                <p>Your July 8 appointment has been confirmed. Please arrive 10 minutes early and bring your insurance card and any recent test results.</p>
+                <span class="msg-time">Today · 09:14 AM</span>
+              </div>
+              <div class="message-bubble received hidden" id="msg-dr-chen">
+                <p>Please upload your home blood pressure readings before your next visit on July 8. You can attach them via the records section or bring a printed copy.</p>
+                <span class="msg-time">Yesterday · 02:45 PM</span>
+              </div>
+              <div class="message-bubble received hidden" id="msg-billing">
+                <p>Invoice INV-204 for $120 is due on July 15. Please settle at reception or contact the billing team for alternative payment options.</p>
+                <span class="msg-time">Jun 30 · 10:00 AM</span>
+              </div>
+              <div class="message-bubble received hidden" id="msg-lab">
+                <p>Your May 15 blood test results are now available in My Records. Please log in to view them or speak with Dr. Emily Chen at your next appointment.</p>
+                <span class="msg-time">Jun 15 · 08:30 AM</span>
+              </div>
+            </div>
+
+            <div class="thread-reply">
+              <textarea id="replyText" placeholder="Type a reply…" rows="2"></textarea>
+              <button class="btn btn-primary" id="sendReply">Send</button>
+            </div>
+          </section>
+
+        </div>
+      </main>
+    </div>
+
+    <!-- COMPOSE MODAL -->
+    <div class="modal-backdrop" id="composeModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h2>New Message</h2>
+          <button class="modal-close" id="closeComposeModal">✕</button>
+        </div>
+        <form id="composeForm">
+          <div class="form-grid cols-1">
+            <div class="form-group">
+              <label for="msgTo">To</label>
+              <select id="msgTo">
+                <option>Clinic</option>
+                <option>Dr. Emily Chen</option>
+                <option>Billing</option>
+                <option>Lab Team</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="msgSubject">Subject</label>
+              <input type="text" id="msgSubject" placeholder="Enter subject…" />
+            </div>
+            <div class="form-group">
+              <label for="msgBody">Message</label>
+              <textarea id="msgBody" rows="5" placeholder="Write your message…"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-ghost" id="cancelCompose">Cancel</button>
+            <button type="submit" class="btn btn-primary">Send Message</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="patient.js"></script>
+    <script src="messages.js"></script>
+  </body>
+</html>

@@ -1,0 +1,86 @@
+/* billing.css — Billing page specific styles */
+
+.billing-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  background: var(--yellow-tint);
+  border: 1.5px solid rgba(217,119,6,0.25);
+  margin-bottom: 22px;
+}
+
+.billing-alert-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--yellow);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.billing-alert strong {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--yellow);
+  margin-bottom: 3px;
+}
+
+.billing-alert p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--subtle);
+  line-height: 1.5;
+}
+
+.billing-filter-tab {
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.84rem;
+  cursor: pointer;
+  transition: all 0.18s;
+}
+
+.billing-filter-tab:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+  background: var(--blue-tint);
+}
+
+.billing-filter-tab.active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+  box-shadow: 0 3px 10px var(--blue-glow);
+}
+
+.invoice-id {
+  font-family: 'Courier New', monospace;
+  font-size: 0.83rem;
+  font-weight: 700;
+  color: var(--blue);
+  background: var(--blue-tint);
+  padding: 2px 8px;
+  border-radius: 5px;
+}
+
+.amount {
+  font-weight: 700;
+  color: var(--text) !important;
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  border-radius: 7px;
+}

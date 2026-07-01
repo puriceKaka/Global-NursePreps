@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile — Patient Portal — ClinicCare</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="patient.css" />
+    <link rel="stylesheet" href="profile.css" />
+  </head>
+  <body>
+    <div class="portal-shell">
+
+      <aside class="sidebar">
+        <a class="brand" href="../index.html">
+          <span class="brand-mark">CC</span>
+          ClinicCare
+        </a>
+        <nav class="portal-nav">
+          <a href="dashboard.html">Dashboard</a>
+          <a href="appointments.html">Appointments</a>
+          <a href="records.html">My Records</a>
+          <a href="billing.html">Billing</a>
+          <a href="care-plan.html">Care Plan</a>
+          <a href="messages.html">Messages</a>
+          <a class="active" href="profile.html">Profile</a>
+          <a class="logout" href="../login.html">Logout</a>
+        </nav>
+      </aside>
+
+      <main class="portal-main">
+        <header class="topbar">
+          <div class="page-header-left">
+            <p class="eyebrow">Patient Portal</p>
+            <h1>My Profile</h1>
+          </div>
+          <div class="user-chip">
+            <div class="user-chip-avatar" data-cc-initials>JD</div>
+            <div><strong data-cc-name>John Doe</strong><small>Patient</small></div>
+          </div>
+        </header>
+
+        <div class="profile-layout">
+
+          <!-- PERSONAL INFORMATION -->
+          <article class="panel">
+            <div class="panel-header">
+              <h2>Personal Information</h2>
+              <button class="btn btn-ghost btn-sm" id="editPersonalBtn">Edit</button>
+            </div>
+            <form class="form-grid" id="personalForm">
+              <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" data-cc-name-input value="John Doe" disabled />
+              </div>
+              <div class="form-group">
+                <label for="dob">Date of Birth</label>
+                <input type="date" id="dob" value="1985-03-14" disabled />
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" data-cc-email value="patient@cliniccare.com" disabled />
+              </div>
+              <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" value="+1 (555) 987-6543" disabled />
+              </div>
+              <div class="form-group">
+                <label for="insurance">Insurance Provider</label>
+                <input type="text" id="insurance" value="Aetna Health" disabled />
+              </div>
+              <div class="form-group">
+                <label for="bloodType">Blood Type</label>
+                <select id="bloodType" disabled>
+                  <option>A+</option>
+                  <option>A-</option>
+                  <option>B+</option>
+                  <option>B-</option>
+                  <option>AB+</option>
+                  <option>AB-</option>
+                  <option selected>O+</option>
+                  <option>O-</option>
+                </select>
+              </div>
+            </form>
+            <div class="profile-form-actions hidden" id="personalActions">
+              <button class="btn btn-ghost" id="cancelPersonalBtn">Cancel</button>
+              <button class="btn btn-primary" id="savePersonalBtn">Save Changes</button>
+            </div>
+          </article>
+
+          <!-- EMERGENCY CONTACT -->
+          <article class="panel">
+            <div class="panel-header">
+              <h2>Emergency Contact</h2>
+              <button class="btn btn-ghost btn-sm" id="editEmergencyBtn">Edit</button>
+            </div>
+            <form class="form-grid cols-1" id="emergencyForm">
+              <div class="form-group">
+                <label for="emergencyName">Contact Name</label>
+                <input type="text" id="emergencyName" value="Jane Doe" disabled />
+              </div>
+              <div class="form-group">
+                <label for="relationship">Relationship</label>
+                <input type="text" id="relationship" value="Spouse" disabled />
+              </div>
+              <div class="form-group">
+                <label for="emergencyPhone">Phone</label>
+                <input type="tel" id="emergencyPhone" value="+1 (555) 123-9876" disabled />
+              </div>
+            </form>
+            <div class="profile-form-actions hidden" id="emergencyActions">
+              <button class="btn btn-ghost" id="cancelEmergencyBtn">Cancel</button>
+              <button class="btn btn-primary" id="saveEmergencyBtn">Save Changes</button>
+            </div>
+          </article>
+
+          <!-- SECURITY SETTINGS -->
+          <article class="panel">
+            <div class="panel-header">
+              <h2>Security Settings</h2>
+            </div>
+            <form class="form-grid cols-1" id="securityForm">
+              <div class="form-group">
+                <label for="currentPassword">Current Password</label>
+                <input type="password" id="currentPassword" placeholder="Enter current password" />
+              </div>
+              <div class="form-group">
+                <label for="newPassword">New Password</label>
+                <input type="password" id="newPassword" placeholder="Enter new password" />
+              </div>
+              <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" placeholder="Confirm new password" />
+              </div>
+            </form>
+            <div class="profile-form-actions">
+              <button class="btn btn-primary" id="changePasswordBtn">Change Password</button>
+            </div>
+          </article>
+
+          <!-- NOTIFICATION PREFERENCES -->
+          <article class="panel">
+            <div class="panel-header">
+              <h2>Notification Preferences</h2>
+            </div>
+            <div class="notification-settings">
+              <label class="notification-item">
+                <input type="checkbox" checked />
+                <div class="notification-info">
+                  <strong>Email Notifications</strong>
+                  <span>Receive updates about appointments and test results via email</span>
+                </div>
+              </label>
+              <label class="notification-item">
+                <input type="checkbox" />
+                <div class="notification-info">
+                  <strong>SMS Alerts</strong>
+                  <span>Get text message reminders for upcoming appointments</span>
+                </div>
+              </label>
+              <label class="notification-item">
+                <input type="checkbox" checked />
+                <div class="notification-info">
+                  <strong>Appointment Reminders</strong>
+                  <span>24-hour reminders for scheduled appointments</span>
+                </div>
+              </label>
+              <label class="notification-item">
+                <input type="checkbox" checked />
+                <div class="notification-info">
+                  <strong>Billing Alerts</strong>
+                  <span>Notifications when invoices are due or payments are received</span>
+                </div>
+              </label>
+            </div>
+            <div class="profile-form-actions">
+              <button class="btn btn-primary" id="saveNotificationsBtn">Save Preferences</button>
+            </div>
+          </article>
+
+          <!-- ACCOUNT ACTIONS -->
+          <article class="panel">
+            <div class="panel-header">
+              <h2>Account Actions</h2>
+            </div>
+            <div class="danger-zone">
+              <div class="danger-item">
+                <div>
+                  <strong>Download My Data</strong>
+                  <p>Download a copy of all your health records and account data</p>
+                </div>
+                <button class="btn btn-ghost">Download</button>
+              </div>
+              <div class="danger-item">
+                <div>
+                  <strong>Deactivate Account</strong>
+                  <p>Temporarily disable your account access</p>
+                </div>
+                <button class="btn btn-danger">Deactivate</button>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </main>
+    </div>
+
+    <script src="patient.js"></script>
+    <script src="profile.js"></script>
+  </body>
+</html>

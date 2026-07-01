@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Billing — Patient Portal — ClinicCare</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="patient.css" />
+    <link rel="stylesheet" href="billing.css" />
+  </head>
+  <body>
+    <div class="portal-shell">
+
+      <aside class="sidebar">
+        <a class="brand" href="../index.html">
+          <span class="brand-mark">CC</span>
+          ClinicCare
+        </a>
+        <nav class="portal-nav">
+          <a href="dashboard.html">Dashboard</a>
+          <a href="appointments.html">Appointments</a>
+          <a href="records.html">My Records</a>
+          <a class="active" href="billing.html">Billing</a>
+          <a href="care-plan.html">Care Plan</a>
+          <a href="messages.html">Messages</a>
+          <a href="profile.html">Profile</a>
+          <a class="logout" href="../login.html">Logout</a>
+        </nav>
+      </aside>
+
+      <main class="portal-main">
+        <header class="topbar">
+          <div class="page-header-left">
+            <p class="eyebrow">Patient Portal</p>
+            <h1>Billing</h1>
+          </div>
+          <div class="user-chip">
+            <div class="user-chip-avatar">JD</div>
+            <div><strong>John Doe</strong><small>Patient</small></div>
+          </div>
+        </header>
+
+        <!-- BILLING STATS -->
+        <div class="stats-grid cols-3">
+          <article class="stat-card">
+            <p>Total Billed</p>
+            <strong>$650</strong>
+            <span>All time</span>
+          </article>
+          <article class="stat-card">
+            <p>Amount Paid</p>
+            <strong>$530</strong>
+            <span class="good">Settled</span>
+          </article>
+          <article class="stat-card">
+            <p>Outstanding</p>
+            <strong>$120</strong>
+            <span class="warn">Due Jul 15</span>
+          </article>
+        </div>
+
+        <!-- OUTSTANDING ALERT -->
+        <div class="billing-alert">
+          <div class="billing-alert-icon">!</div>
+          <div>
+            <strong>Payment Due</strong>
+            <p>Invoice INV-204 for $120 is due on July 15, 2026. Please settle at reception or contact the billing team.</p>
+          </div>
+        </div>
+
+        <!-- INVOICE TABLE -->
+        <div class="section-actions">
+          <input class="portal-search" type="search" id="billingSearch" placeholder="Search invoices…" />
+          <button class="billing-filter-tab active" data-filter="all">All</button>
+          <button class="billing-filter-tab" data-filter="pending">Pending</button>
+          <button class="billing-filter-tab" data-filter="paid">Paid</button>
+          <button class="billing-filter-tab" data-filter="overdue">Overdue</button>
+        </div>
+
+        <div class="table-panel">
+          <table>
+            <thead>
+              <tr>
+                <th>Invoice</th>
+                <th>Service</th>
+                <th>Amount</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="billingTable">
+              <tr data-status="pending">
+                <td><span class="invoice-id">INV-204</span></td>
+                <td>General Checkup</td>
+                <td class="amount">$120</td>
+                <td>Jul 15, 2026</td>
+                <td><span class="badge badge-yellow">Pending</span></td>
+                <td><button class="btn btn-primary btn-sm">Pay Now</button></td>
+              </tr>
+              <tr data-status="paid">
+                <td><span class="invoice-id">INV-188</span></td>
+                <td>Lab Review</td>
+                <td class="amount">$80</td>
+                <td>—</td>
+                <td><span class="badge badge-green">Paid</span></td>
+                <td><button class="btn btn-ghost btn-sm">Receipt</button></td>
+              </tr>
+              <tr data-status="paid">
+                <td><span class="invoice-id">INV-175</span></td>
+                <td>Follow-up Visit</td>
+                <td class="amount">$95</td>
+                <td>—</td>
+                <td><span class="badge badge-green">Paid</span></td>
+                <td><button class="btn btn-ghost btn-sm">Receipt</button></td>
+              </tr>
+              <tr data-status="paid">
+                <td><span class="invoice-id">INV-160</span></td>
+                <td>ECG Test</td>
+                <td class="amount">$355</td>
+                <td>—</td>
+                <td><span class="badge badge-green">Paid</span></td>
+                <td><button class="btn btn-ghost btn-sm">Receipt</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+
+    <script src="patient.js"></script>
+    <script src="billing.js"></script>
+  </body>
+</html>

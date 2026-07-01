@@ -1,0 +1,25 @@
+.settings-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(420px,1fr)); gap:1.5rem; }
+.settings-section { background:#fff; border:1px solid var(--border); border-radius:12px; padding:1.5rem; }
+.settings-section h2 { font-size:1rem; font-weight:700; margin:0 0 1.25rem; }
+.settings-form { display:flex; flex-direction:column; gap:1rem; }
+.form-group { display:flex; flex-direction:column; gap:.35rem; }
+.form-group label { font-size:.8rem; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:.04em; }
+.form-group input { padding:.5rem .75rem; border:1px solid var(--border); border-radius:8px; font-size:.9rem; }
+
+/* Toggles */
+.toggle-list { display:flex; flex-direction:column; gap:.75rem; }
+.toggle-row { display:flex; align-items:center; justify-content:space-between; cursor:pointer; }
+.toggle-row input[type=checkbox] { display:none; }
+.toggle-switch { width:40px; height:22px; background:#d1d5db; border-radius:999px; position:relative; transition:background .2s; flex-shrink:0; }
+.toggle-switch::after { content:''; position:absolute; top:3px; left:3px; width:16px; height:16px; background:#fff; border-radius:50%; transition:transform .2s; }
+.toggle-row input:checked + .toggle-switch { background:var(--primary,#2563eb); }
+.toggle-row input:checked + .toggle-switch::after { transform:translateX(18px); }
+
+/* System actions */
+.system-actions { display:flex; flex-direction:column; gap:1rem; }
+.system-action-row { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:.75rem 0; border-bottom:1px solid var(--border); }
+.system-action-row:last-child { border-bottom:none; }
+.system-action-row div strong { font-size:.9rem; display:block; }
+.system-action-row div p { font-size:.8rem; color:var(--text-muted); margin:.2rem 0 0; }
+.portal-btn-danger { padding:.4rem .9rem; border:1px solid #ef4444; background:#fef2f2; color:#dc2626; border-radius:8px; font-size:.8rem; font-weight:600; cursor:pointer; }
+.portal-btn-danger:hover { background:#fee2e2; }

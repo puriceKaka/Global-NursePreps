@@ -1,0 +1,5 @@
+.reports-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1.25rem; margin-bottom:1.5rem; }
+.report-card { background:#fff; border:1px solid var(--border); border-radius:12px; padding:1.5rem; display:flex; flex-direction:column; gap:.75rem; }
+.report-icon { width:44px; height:44px; background:var(--primary-light,#eff6ff); border-radius:10px; display:flex; align-items:center; justify-content:center; color:var(--primary,#2563eb); }
+.report-card h3 { font-size:1rem; font-weight:600; margin:0; }
+.report-card p { font-size:.875rem; color:var(--text-muted); margin:0; flex:1; }

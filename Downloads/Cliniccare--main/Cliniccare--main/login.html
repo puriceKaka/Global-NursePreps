@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign In — ClinicCare</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/site.css" />
+  </head>
+  <body class="auth-page">
+
+    <div class="auth-shell">
+
+      <!-- LEFT PANEL -->
+      <aside class="auth-side">
+        <a class="brand auth-brand" href="index.html">
+          <span class="brand-mark">CC</span>
+          <span>ClinicCare</span>
+        </a>
+        <div class="auth-side-body">
+          <h2>Healthcare made<br/>simple &amp; smart.</h2>
+          <p>One platform for patients, doctors, and clinic admins — all working together seamlessly.</p>
+          <ul class="auth-benefits">
+            <li>
+              <span class="auth-benefit-icon">📅</span>
+              <div><strong>Easy Scheduling</strong><span>Book appointments in seconds with instant confirmations.</span></div>
+            </li>
+            <li>
+              <span class="auth-benefit-icon">🗂️</span>
+              <div><strong>Digital Records</strong><span>Access full patient history, labs, and notes anytime.</span></div>
+            </li>
+            <li>
+              <span class="auth-benefit-icon">🔒</span>
+              <div><strong>Role-Based Access</strong><span>Separate secure portals for every role.</span></div>
+            </li>
+            <li>
+              <span class="auth-benefit-icon">📊</span>
+              <div><strong>Live Dashboards</strong><span>Real-time data for every team member.</span></div>
+            </li>
+          </ul>
+        </div>
+        <div class="auth-side-footer">
+          <div class="auth-avatars">
+            <span>JS</span><span>MC</span><span>ER</span><span>+1k</span>
+          </div>
+          <p>Trusted by 1,200+ healthcare professionals</p>
+        </div>
+      </aside>
+
+      <!-- RIGHT PANEL -->
+      <main class="auth-form-side">
+        <div class="auth-form-wrap">
+          <a class="auth-back" href="index.html">← Back to Home</a>
+
+          <p class="eyebrow" style="margin-top:24px">Secure Access</p>
+          <h1 class="auth-title">Welcome back</h1>
+          <p class="auth-subtitle">Sign in to your ClinicCare account to continue.</p>
+
+          <div id="errorMessage" class="error-alert" hidden></div>
+
+          <form id="loginForm" class="auth-form">
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <div class="input-icon-wrap">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                <input type="email" id="email" placeholder="you@cliniccare.com" autocomplete="email" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="password">Password</label>
+              <div class="input-icon-wrap password-row">
+                <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" required />
+                <button type="button" id="passwordToggle" class="pw-toggle">Show</button>
+              </div>
+            </div>
+
+            <div class="form-meta">
+              <label class="remember-label"><input type="checkbox" /> Remember me</label>
+              <a href="#" class="forgot-link">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block auth-submit">Sign In</button>
+          </form>
+
+          <p class="auth-switch">Don't have an account? <a href="signup.html">Create one free</a></p>
+        </div>
+      </main>
+
+    </div>
+
+    <script src="assets/js/login.js"></script>
+  </body>
+</html>
