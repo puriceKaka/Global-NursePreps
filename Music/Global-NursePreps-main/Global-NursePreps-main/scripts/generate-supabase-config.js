@@ -27,5 +27,10 @@ const anonKey = pickEnv([
 const outputPath = path.join(__dirname, "..", "js", "supabase-config.js");
 const content = `window.GNP_SUPABASE_CONFIG = window.GNP_SUPABASE_CONFIG || {\n    url: ${JSON.stringify(url)},\n    anonKey: ${JSON.stringify(anonKey)}\n};\n`;
 
+if (!url && !anonKey && fs.existsSync(outputPath)) {
+    console.log(`Skipped Supabase config generation because no Supabase environment variables were set.`);
+    process.exit(0);
+}
+
 fs.writeFileSync(outputPath, content, "utf8");
 console.log(`Wrote Supabase config to ${outputPath}`);

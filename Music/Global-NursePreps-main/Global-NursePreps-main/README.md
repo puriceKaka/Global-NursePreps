@@ -1,17 +1,14 @@
-# Google Meet Clone
+# Global NursePrep
 
-A complete video conferencing application similar to Google Meet, built with WebRTC, Socket.IO, and PeerJS.
+A multi-page nursing learning platform with public marketing pages, student dashboard screens, admin course management, and optional backend scaffolding for auth and progress data.
 
 ## Features
 
-- **Video Calling**: Real-time video communication using WebRTC
-- **Audio Calling**: High-quality audio with echo cancellation
-- **Screen Sharing**: Share your screen with other participants
-- **Real-time Chat**: Send messages during meetings
-- **Room Management**: Create and join meetings with unique codes
-- **Participant Management**: See who's in the meeting
-- **Meeting Controls**: Mute/unmute mic, turn camera on/off, leave meeting
-- **Responsive Design**: Works on desktop and mobile devices
+- **Public Site**: Marketing, contact, policy, and support pages
+- **Student Area**: Dashboard, courses, exams, profiles, and learning progress
+- **Admin Tools**: Course management and learning content scaffolding
+- **Static Deployment**: Works on Vercel without a backend
+- **Optional Backend**: Firebase/Supabase-ready client and server stubs
 
 ## Prerequisites
 
@@ -75,7 +72,6 @@ Database starter schema:
 Production notes:
 - `docs/production-readiness.md`
 - `js/api-client.js` provides a token-aware API client for future backend calls.
-- `npm run build` regenerates `js/supabase-config.js` from `SUPABASE_URL` and `SUPABASE_ANON_KEY` during Vercel deploys.
 - The admin layer falls back to browser storage when `/api/admin/*` is not available, so the static Vercel deployment still runs.
 
 Frontend deployment:
@@ -83,6 +79,10 @@ Frontend deployment:
 - Public course browsing works without login.
 - Enrollment, workspace access, and progress tracking remain locked to authenticated users.
 - Admin access is cookie-based and server-verified. Configure `ADMIN_SETUP_KEY` in `.env` before creating the first admin account.
+- If you deploy on Vercel, use the repository root as the project directory and keep `vercel.json` in place so clean URLs and the static entry page resolve correctly.
+- Vercel should deploy the repository root directly as a static site.
+- Do not set an output directory for the frontend. The HTML, CSS, JS, and images already live in the root tree.
+- If Supabase env vars are omitted, the committed fallback config keeps the site working in local-storage mode.
 
 Supabase migration note:
 - The current frontend still persists learning state in browser storage.

@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Research consultation support for Global NursePrep students and lecturers.">
+    <title>Research Consultation | Global NursePrep</title>
+    <link rel="stylesheet" href="css/site-loader.css">
+    <script defer src="js/site-loader.js"></script>
+    <style>
+        :root {
+            color-scheme: light;
+            --bg: #f4f7fb;
+            --panel: rgba(255, 255, 255, 0.92);
+            --text: #172033;
+            --muted: #5f6c84;
+            --line: rgba(23, 32, 51, 0.12);
+            --accent: #114b8b;
+            --accent-strong: #08335f;
+            --accent-soft: #dbeafe;
+            --shadow: 0 20px 60px rgba(16, 38, 70, 0.12);
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at top left, rgba(17, 75, 139, 0.10), transparent 30%),
+                radial-gradient(circle at top right, rgba(8, 51, 95, 0.08), transparent 28%),
+                var(--bg);
+        }
+
+        a { color: inherit; text-decoration: none; }
+        img { max-width: 100%; display: block; }
+
+        .shell {
+            width: min(1120px, calc(100% - 32px));
+            margin: 0 auto;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            padding: 22px 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .brand-mark {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            background: white;
+            flex: 0 0 auto;
+        }
+
+        .nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .nav a,
+        .button {
+            border-radius: 999px;
+            padding: 11px 16px;
+            border: 1px solid transparent;
+            transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+        }
+
+        .nav a:hover,
+        .button:hover {
+            transform: translateY(-1px);
+        }
+
+        .nav a {
+            color: var(--muted);
+            background: rgba(255, 255, 255, 0.7);
+            border-color: var(--line);
+        }
+
+        .nav a.active {
+            color: var(--accent-strong);
+            background: white;
+            border-color: rgba(17, 75, 139, 0.18);
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 22px;
+            align-items: stretch;
+            padding: 28px 0 42px;
+        }
+
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 28px;
+            box-shadow: var(--shadow);
+        }
+
+        .hero-copy {
+            padding: 34px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            background: var(--accent-soft);
+            border-radius: 999px;
+            padding: 8px 12px;
+        }
+
+        h1 {
+            margin: 18px 0 14px;
+            font-size: clamp(2.3rem, 5vw, 4.3rem);
+            line-height: 0.98;
+            letter-spacing: -0.04em;
+        }
+
+        .lead {
+            margin: 0;
+            font-size: 1.04rem;
+            line-height: 1.7;
+            color: var(--muted);
+            max-width: 58ch;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .button.primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+            color: white;
+        }
+
+        .button.secondary {
+            background: white;
+            border-color: rgba(17, 75, 139, 0.18);
+            color: var(--accent-strong);
+        }
+
+        .hero-side {
+            display: grid;
+            gap: 16px;
+            padding: 18px;
+        }
+
+        .stat {
+            padding: 22px;
+            border-radius: 22px;
+            background: linear-gradient(160deg, rgba(17, 75, 139, 0.12), rgba(255, 255, 255, 0.96));
+            border: 1px solid rgba(17, 75, 139, 0.14);
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 2rem;
+            margin-bottom: 6px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            padding-bottom: 42px;
+        }
+
+        .card {
+            padding: 24px;
+        }
+
+        .card h2,
+        .section h2 {
+            margin: 0 0 12px;
+            font-size: 1.3rem;
+        }
+
+        .card p,
+        .section p,
+        .card li {
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .section {
+            padding: 0 0 46px;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .step {
+            padding: 20px;
+            border-radius: 22px;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.86);
+        }
+
+        .step span {
+            display: inline-flex;
+            width: 36px;
+            height: 36px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: var(--accent-soft);
+            color: var(--accent-strong);
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .footer {
+            padding: 0 0 40px;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 900px) {
+            .topbar,
+            .hero,
+            .grid,
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                display: grid;
+            }
+
+            .nav {
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="shell">
+        <header class="topbar">
+            <a class="brand" href="index.html" aria-label="Global NursePrep home">
+                <span class="brand-mark">
+                    <img src="logo/finalLogo.jpg" alt="Global NursePrep logo">
+                </span>
+                <span>Global <b>Nurse</b>Prep</span>
+            </a>
+            <nav class="nav" aria-label="Primary navigation">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+                <a class="active" href="research-consultation.html">Research Support</a>
+                <a href="student-support.html">Help &amp; Support</a>
+            </nav>
+        </header>
+
+        <main>
+            <section class="hero">
+                <article class="panel hero-copy">
+                    <span class="eyebrow">Research consultation</span>
+                    <h1>Structured academic support for proposals, reports, and presentations.</h1>
+                    <p class="lead">
+                        Use this service for topic refinement, concept papers, proposal guidance, data collection tools,
+                        analysis planning, dissertation support, and presentation review. The goal is practical
+                        nursing-focused support, not generic editing.
+                    </p>
+                    <div class="actions">
+                        <a class="button primary" href="contact.html">Request consultation</a>
+                        <a class="button secondary" href="student-support.html">Open student support</a>
+                    </div>
+                </article>
+
+                <aside class="panel hero-side" aria-label="Research support summary">
+                    <div class="stat">
+                        <strong>4</strong>
+                        <span>core stages: topic, proposal, data, presentation</span>
+                    </div>
+                    <div class="stat">
+                        <strong>1:1</strong>
+                        <span>guided feedback for learner drafts and corrections</span>
+                    </div>
+                    <div class="stat">
+                        <strong>24/7</strong>
+                        <span>support discovery through the platform and contact channels</span>
+                    </div>
+                </aside>
+            </section>
+
+            <section class="section">
+                <div class="grid">
+                    <article class="panel card">
+                        <h2>What we help with</h2>
+                        <p>We can support proposal structure, literature framing, research questions, objectives, methodology, and presentation flow.</p>
+                    </article>
+                    <article class="panel card">
+                        <h2>How to start</h2>
+                        <p>Open the contact page, describe the study topic, and include your deadline, level, and what you already have drafted.</p>
+                    </article>
+                    <article class="panel card">
+                        <h2>What to share</h2>
+                        <p>Topic area, course level, marking rubric, and any supervisor instructions help the team give faster guidance.</p>
+                    </article>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Typical consultation flow</h2>
+                <div class="steps">
+                    <article class="step">
+                        <span>1</span>
+                        <strong>Submit the brief</strong>
+                        <p>Send the topic, deadline, and support area.</p>
+                    </article>
+                    <article class="step">
+                        <span>2</span>
+                        <strong>Review scope</strong>
+                        <p>Identify whether the issue is topic selection, writing, analysis, or presentation.</p>
+                    </article>
+                    <article class="step">
+                        <span>3</span>
+                        <strong>Get guidance</strong>
+                        <p>Receive a practical outline or revision plan.</p>
+                    </article>
+                    <article class="step">
+                        <span>4</span>
+                        <strong>Complete the work</strong>
+                        <p>Refine the draft and continue through support or student workspace.</p>
+                    </article>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>Global NursePrep research consultation supports academic work, nursing proposals, and presentation preparation.</p>
+        </footer>
+    </div>
+</body>
+</html>
