@@ -1,17 +1,14 @@
-# Google Meet Clone
+# Global NursePrep
 
-A complete video conferencing application similar to Google Meet, built with WebRTC, Socket.IO, and PeerJS.
+A multi-page nursing learning platform with public marketing pages, student dashboard screens, admin course management, and optional backend scaffolding for auth and progress data.
 
 ## Features
 
-- **Video Calling**: Real-time video communication using WebRTC
-- **Audio Calling**: High-quality audio with echo cancellation
-- **Screen Sharing**: Share your screen with other participants
-- **Real-time Chat**: Send messages during meetings
-- **Room Management**: Create and join meetings with unique codes
-- **Participant Management**: See who's in the meeting
-- **Meeting Controls**: Mute/unmute mic, turn camera on/off, leave meeting
-- **Responsive Design**: Works on desktop and mobile devices
+- **Public Site**: Marketing, contact, policy, and support pages
+- **Student Area**: Dashboard, courses, exams, profiles, and learning progress
+- **Admin Tools**: Course management and learning content scaffolding
+- **Static Deployment**: Works on Vercel without a backend
+- **Optional Backend**: Firebase/Supabase-ready client and server stubs
 
 ## Prerequisites
 
@@ -65,59 +62,22 @@ Database starter schema:
 Production notes:
 - `docs/production-readiness.md`
 - `js/api-client.js` provides a token-aware API client for future backend calls.
+- The admin layer falls back to browser storage when `/api/admin/*` is not available, so the static Vercel deployment still runs.
 
-3. To create a new meeting:
-   - Click "New meeting"
-   - Enter a meeting title
-   - Click "Start meeting"
+Frontend deployment:
+- The site is static-friendly and can be deployed to Vercel without a build step.
+- Public course browsing works without login.
+- Enrollment, workspace access, and progress tracking remain locked to authenticated users.
+- Admin access is cookie-based and server-verified. Configure `ADMIN_SETUP_KEY` in `.env` before creating the first admin account.
+- Deploy the repository root directly as a static site.
+- Keep `vercel.json` for clean URLs only.
+- Do not set an output directory for the frontend. The HTML, CSS, JS, and images already live in the root tree.
+- If Supabase env vars are omitted, the committed fallback config keeps the site working in local-storage mode.
 
-4. To join an existing meeting:
-   - Click "Join meeting"
-   - Enter the meeting code or paste the meeting link
-   - Enter your name
-   - Click "Join"
-
-## How It Works
-
-### Architecture
-
-- **Frontend**: HTML, CSS, JavaScript
-- **WebRTC**: Peer-to-peer video/audio communication
-- **PeerJS**: Simplified WebRTC connections
-- **Socket.IO**: Signaling server for room management and chat
-- **Express**: Web server
-
-### Signaling Server
-
-The signaling server handles:
-- Room creation and joining
-- User connection/disconnection events
-- Chat message broadcasting
-- WebRTC signaling (through PeerJS)
-
-### WebRTC Flow
-
-1. User requests access to camera and microphone
-2. PeerJS establishes peer connections
-3. Socket.IO handles signaling for WebRTC handshake
-4. Video/audio streams are exchanged directly between peers
-5. Screen sharing replaces video stream when activated
-
-## Browser Support
-
-- Chrome 72+
-- Firefox 66+
-- Safari 12+
-- Edge 79+
-
-## Security Notes
-
-This is a demo implementation. For production use, consider:
-- HTTPS for secure connections
-- User authentication
-- Room access controls
-- Encrypted signaling
-- Rate limiting
+Supabase migration note:
+- The current frontend still persists learning state in browser storage.
+- To move to Supabase, connect the auth and learning flows to a backend service and replace the local storage adapters.
+- Set `SUPABASE_URL` and `SUPABASE_ANON_KEY` before deploying if you want the login/register and learning sync code to use Supabase.
 
 ## Troubleshooting
 
