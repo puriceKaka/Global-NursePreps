@@ -59,6 +59,10 @@ Endpoints:
 Database starter schema:
 - `data/database-schema.sql`
 
+Supabase-ready schema:
+- `data/supabase-schema.sql`
+- `docs/supabase-setup.md`
+
 Production notes:
 - `docs/production-readiness.md`
 - `js/api-client.js` provides a token-aware API client for future backend calls.
@@ -78,6 +82,8 @@ Supabase migration note:
 - The current frontend still persists learning state in browser storage.
 - To move to Supabase, connect the auth and learning flows to a backend service and replace the local storage adapters.
 - Set `SUPABASE_URL` and `SUPABASE_ANON_KEY` before deploying if you want the login/register and learning sync code to use Supabase.
+- Use `SUPABASE_SERVICE_ROLE_KEY` only on the server.
+- Import `data/supabase-schema.sql` into your Supabase SQL editor before wiring the UI to live data.
 
 ## Troubleshooting
 

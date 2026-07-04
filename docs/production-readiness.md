@@ -32,4 +32,6 @@ This project is prepared for a backend/database migration while still running as
 ## Database Ready Files
 
 - `data/database-schema.sql` contains starter tables for users, courses, enrollments, payments, and learning states.
+- `data/supabase-schema.sql` defines the Supabase/Postgres schema, RLS policies, and storage buckets for the full app.
+- `docs/supabase-setup.md` explains where profiles, courses, lectures, uploads, payments, progress, and support records are stored.
 - `server.js` exposes scaffold endpoints for auth and learning state persistence.
