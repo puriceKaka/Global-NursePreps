@@ -1,35 +1,26 @@
 # Global NursePrep Production Readiness
 
-This project is prepared for a backend/database migration while still running as a static frontend.
+This project is ready to run as a static Vercel frontend with Supabase for data.
 
-## Authentication
+## Database files
 
-- New passwords require at least 8 characters with uppercase, lowercase, number, and symbol.
-- Password records use salted PBKDF2 hashes in the server scaffold.
-- Registration redirects to login; users must officially log in after account creation.
-- Frontend "Remember me" stores only email, not plaintext passwords.
-- Login sessions store bearer-style access tokens, refresh tokens, issue time, and expiry time.
-- The API scaffold includes `/api/auth/verify` for future server-side token validation.
-- `js/api-client.js` adds reusable authenticated requests with bearer headers, timeout, and retry support.
+- `data/supabase-schema.sql` is the main SQL file for Supabase.
+- `data/database-schema.sql` is the older starter schema kept for reference.
 
-## Fault Tolerance
+## Deployment
 
-- API routes use centralized async error handling.
-- Responses include `requestId` for support tracing.
-- Health endpoints:
-  - `GET /api/health`
-  - `GET /api/ready`
-- The server handles `SIGINT` and `SIGTERM` for graceful shutdown.
+- Use the repository root as the Vercel project root.
+- Build command: `npm run build`
+- Output directory: `dist`
+- Add `SUPABASE_URL` and `SUPABASE_ANON_KEY` in Vercel.
 
-## Scalability And Stateless Deployment
+## Storage
 
-- Run multiple Node instances behind Nginx, AWS ALB, Render, Railway, or another load balancer.
-- Store users, learning states, payments, and enrollments in PostgreSQL/MySQL/Firestore instead of in-memory fallback.
-- Use Redis or a Socket.IO adapter for multi-instance live class rooms.
-- Keep uploaded videos/PDFs in object storage such as S3, Firebase Storage, Cloudinary, or Azure Blob.
-- Keep secrets in environment variables, never in frontend files.
+- Keep uploads in Supabase Storage, not in HTML or JSON.
+- Use the `course-videos` bucket for lecture videos.
+- Use `course-documents` for PDFs and study files.
 
-## Database Ready Files
+## Security
 
-- `data/database-schema.sql` contains starter tables for users, courses, enrollments, payments, and learning states.
-- `server.js` exposes scaffold endpoints for auth and learning state persistence.
+- Never expose `SUPABASE_SERVICE_ROLE_KEY` to the browser.
+- Use the anon key in frontend pages only.

@@ -75,19 +75,22 @@ Production notes:
 - The admin layer falls back to browser storage when `/api/admin/*` is not available, so the static Vercel deployment still runs.
 
 Frontend deployment:
-- The site is static-friendly and can be deployed to Vercel without a build step.
+- The site is static-friendly and can be deployed to Vercel with a build step.
 - Public course browsing works without login.
 - Enrollment, workspace access, and progress tracking remain locked to authenticated users.
 - Admin access is cookie-based and server-verified. Configure `ADMIN_SETUP_KEY` in `.env` before creating the first admin account.
 - If you deploy on Vercel, use the repository root as the project directory and keep `vercel.json` in place so clean URLs and the static entry page resolve correctly.
-- Vercel should deploy the repository root directly as a static site.
-- Do not set an output directory for the frontend. The HTML, CSS, JS, and images already live in the root tree.
+- Vercel should run `npm run build` and publish the `dist` output directory.
+- The build step generates `js/supabase-config.js` from your environment variables before copying the site into `dist`.
 - If Supabase env vars are omitted, the committed fallback config keeps the site working in local-storage mode.
 
 Supabase migration note:
 - The current frontend still persists learning state in browser storage.
 - To move to Supabase, connect the auth and learning flows to a backend service and replace the local storage adapters.
 - Set `SUPABASE_URL` and `SUPABASE_ANON_KEY` before deploying if you want the login/register and learning sync code to use Supabase.
+- Use `SUPABASE_SERVICE_ROLE_KEY` only on the server.
+- Import `data/supabase-schema.sql` into your Supabase SQL editor before wiring the UI to live data.
+- See `docs/supabase-setup.md` for the exact tables, buckets, and Vercel settings.
 
 3. To create a new meeting:
    - Click "New meeting"

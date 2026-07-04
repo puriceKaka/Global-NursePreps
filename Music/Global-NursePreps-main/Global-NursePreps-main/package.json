@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "Global NursePreps learning platform",
   "scripts": {
+    "build": "node scripts/generate-supabase-config.js && node scripts/build-static.js",
+    "vercel-build": "npm run build",
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
