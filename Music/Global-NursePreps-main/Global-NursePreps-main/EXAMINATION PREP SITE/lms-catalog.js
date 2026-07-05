@@ -43,7 +43,9 @@
         if (/community/.test(text)) return "Community Health";
         if (/leadership|research/.test(text)) return "Professional Growth";
         if (/bsn|bscn/.test(text)) return "BSN";
-        return course?.category || "General Nursing";
+        if (/professional lecture|lecture series/.test(text)) return "Professional Growth";
+        if (/clinical practice/.test(text)) return "Clinical Practice";
+        return "General Nursing";
     }
 
     function getCourseSubunit(course) {
@@ -60,6 +62,26 @@
             return `${unit} - ${course.yearLabel}`;
         }
         return `${unit}${subunit && subunit !== unit ? ` • ${subunit}` : ""}`;
+    }
+
+    function getUnitSortRank(label) {
+        const value = String(label || "").toLowerCase();
+        const order = [
+            "bsn",
+            "licensing",
+            "nclex",
+            "anatomy",
+            "med-surg",
+            "pharmacology",
+            "pediatrics",
+            "mental health",
+            "community health",
+            "professional growth",
+            "clinical practice",
+            "general nursing"
+        ];
+        const index = order.findIndex((item) => value.startsWith(item));
+        return index === -1 ? order.length + value.localeCompare("") : index;
     }
 
     function getCatalogReturnPath() {
@@ -111,7 +133,7 @@
             enrolledTab.hidden = !loggedIn;
         }
 
-        const heroActions = document.querySelector("#selectedCourse .lms-actions");
+        const heroActions = document.querySelector("#selected-program .lms-actions");
         if (heroActions) {
             heroActions.classList.toggle("hidden", !loggedIn);
         }
@@ -286,7 +308,14 @@
             groups.get(key).push(course);
         });
 
-        $("#courseGrid").innerHTML = Array.from(groups.entries()).map(([label, items]) => `
+        const groupedCourses = Array.from(groups.entries())
+            .map(([label, items]) => ({
+                label,
+                items: items.slice().sort((left, right) => left.title.localeCompare(right.title))
+            }))
+            .sort((left, right) => getUnitSortRank(left.label) - getUnitSortRank(right.label));
+
+        $("#courseGrid").innerHTML = groupedCourses.map(({ label, items }) => `
             <section class="course-group">
                 <header class="course-group-head">
                     <div>
@@ -328,10 +357,26 @@
     }
 
     function initFilters() {
+        refreshFilters();
+    }
+
+    function refreshFilters() {
         const categories = ["All", ...new Set(window.GnpLmsData.courses.map((course) => getCourseUnit(course)))];
         const levels = ["All", ...new Set(window.GnpLmsData.courses.map((course) => course.level))];
-        $("#categoryFilter").innerHTML = categories.map((item) => `<option>${item}</option>`).join("");
-        $("#levelFilter").innerHTML = levels.map((item) => `<option>${item}</option>`).join("");
+        const categorySelect = $("#categoryFilter");
+        const levelSelect = $("#levelFilter");
+
+        if (categorySelect) {
+            const current = categorySelect.value || "All";
+            categorySelect.innerHTML = categories.map((item) => `<option>${item}</option>`).join("");
+            categorySelect.value = categories.includes(current) ? current : "All";
+        }
+
+        if (levelSelect) {
+            const current = levelSelect.value || "All";
+            levelSelect.innerHTML = levels.map((item) => `<option>${item}</option>`).join("");
+            levelSelect.value = levels.includes(current) ? current : "All";
+        }
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -350,7 +395,7 @@
             authLink.textContent = "Logout";
             authLink.href = "../login.html";
             authLink.addEventListener("click", () => {
-                localStorage.removeItem("nurseprep_session");
+                void fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
             });
         }
         const enrolledTab = document.querySelector('.lms-tab[data-view="enrolled"]');
@@ -359,9 +404,15 @@
         }
         render();
         if (window.GnpLearning?.refreshCourses) {
-            void window.GnpLearning.refreshCourses().then(() => render());
+            void window.GnpLearning.refreshCourses().then(() => {
+                refreshFilters();
+                render();
+            });
         }
-        window.addEventListener("gnp-courses-updated", render);
+        window.addEventListener("gnp-courses-updated", () => {
+            refreshFilters();
+            render();
+        });
         document.addEventListener("input", (event) => {
             if (event.target.matches("#courseSearch, #categoryFilter, #levelFilter")) render();
         });
@@ -377,7 +428,7 @@
                 state.selectedCourseId = preview.dataset.preview;
                 saveState(state);
                 render();
-                document.getElementById("selectedCourse")?.scrollIntoView({ behavior: "smooth" });
+                document.getElementById("selected-program")?.scrollIntoView({ behavior: "smooth" });
                 return;
             }
             const enrollButton = event.target.closest("[data-enroll], #enrollBtn");
