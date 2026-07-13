@@ -512,7 +512,7 @@ function initializeCatalogPage() {
         }
 
         grid.innerHTML = filteredCourses
-            .map((course) => renderCourseCard(course, latestState))
+            .map((course, index) => renderCourseCard(course, latestState, index))
             .join("");
 
         grid.querySelectorAll("[data-select-course]").forEach((button) => {
@@ -569,6 +569,7 @@ function initializeCourseDetailPage() {
     state.selectedCourseId = currentCourse.id;
     ensureCourseProgress(state, currentCourse.id);
     saveLearningState(state);
+    applyCourseTheme(document.querySelector(".workspace-hero"), currentCourse);
 
     if (!state.enrolledCourseIds.includes(currentCourse.id)) {
         window.alert("Enroll in this course first to open the learning workspace.");
@@ -850,11 +851,12 @@ function initializeCourseDetailPage() {
     }
 }
 
-function renderCourseCard(course, state) {
+function renderCourseCard(course, state, index = 0) {
     const isEnrolled = state.enrolledCourseIds.includes(course.id);
     const workspaceHref = isEnrolled ? `exam-lobby/anatomy.html?course=${course.id}` : `#selected-program`;
+    const themeStyle = courseThemeStyle(course, index);
     return `
-        <article class="course-card reveal-on-scroll">
+        <article class="course-card reveal-on-scroll" style="${themeStyle}">
             <div class="course-card-media">
                 <div class="card-frame">
                     <img src="${course.image}" alt="${course.title}" class="fit-image">
@@ -891,6 +893,7 @@ function renderSelectedProgram(course, state) {
     const progress = ensureCourseProgress(state, course.id);
     const percent = getProgressPercent(course.id, state);
     const enrolled = state.enrolledCourseIds.includes(course.id);
+    applyCourseTheme(document.getElementById("selected-program"), course);
 
     document.getElementById("selected-title").textContent = course.title;
     document.getElementById("selected-summary").textContent = course.summary;
@@ -1086,6 +1089,81 @@ function sortCourses(left, right, sortMode) {
         return left.title.localeCompare(right.title);
     }
     return right.exams - left.exams;
+}
+
+const COURSE_THEMES = [
+    {
+        match: /(nck|licensing)/i,
+        accent: "#0F4C81",
+        accentStrong: "#0A2342",
+        accentSoft: "#E7F1FB",
+        wash: "#F6FAFF"
+    },
+    {
+        match: /nclex/i,
+        accent: "#5B72D6",
+        accentStrong: "#293241",
+        accentSoft: "#EBEEFF",
+        wash: "#FBFCFF"
+    },
+    {
+        match: /lecture|professional/i,
+        accent: "#14679C",
+        accentStrong: "#0B3A62",
+        accentSoft: "#EAF4FD",
+        wash: "#F8FBFF"
+    },
+    {
+        match: /pharmacology|drug|medication/i,
+        accent: "#1FA67A",
+        accentStrong: "#5B4B8A",
+        accentSoft: "#EAF8F2",
+        wash: "#F7FCFA"
+    },
+    {
+        match: /pediatric/i,
+        accent: "#D85B89",
+        accentStrong: "#9B315B",
+        accentSoft: "#FCE8F0",
+        wash: "#FFF8FB"
+    },
+    {
+        match: /med[- ]?surg|clinical practice|critical care|emergency/i,
+        accent: "#20825F",
+        accentStrong: "#2F4858",
+        accentSoft: "#E6F6EE",
+        wash: "#F8FCF9"
+    }
+];
+
+const DEFAULT_COURSE_THEME = {
+    accent: "#14679C",
+    accentStrong: "#0A2342",
+    accentSoft: "#E7F1FB",
+    wash: "#F7FBFF"
+};
+
+function getCourseTheme(course, index = 0) {
+    const text = `${course?.id || ""} ${course?.title || ""} ${course?.category || ""} ${course?.summary || ""}`.toLowerCase();
+    const matched = COURSE_THEMES.find((theme) => theme.match.test(text));
+    return matched || COURSE_THEMES[index % COURSE_THEMES.length] || DEFAULT_COURSE_THEME;
+}
+
+function courseThemeStyle(course, index = 0) {
+    const theme = getCourseTheme(course, index);
+    return `--course-accent:${theme.accent}; --course-accent-strong:${theme.accentStrong}; --course-accent-soft:${theme.accentSoft}; --course-wash:${theme.wash};`;
+}
+
+function applyCourseTheme(element, course, index = 0) {
+    if (!element) {
+        return;
+    }
+
+    const theme = getCourseTheme(course, index);
+    element.style.setProperty("--course-accent", theme.accent);
+    element.style.setProperty("--course-accent-strong", theme.accentStrong);
+    element.style.setProperty("--course-accent-soft", theme.accentSoft);
+    element.style.setProperty("--course-wash", theme.wash);
 }
 
 function clampModuleIndex(index, length) {

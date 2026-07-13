@@ -92,6 +92,86 @@
         return `../${page}.html?next=${encodeURIComponent(getCatalogReturnPath())}`;
     }
 
+    const COURSE_THEMES = [
+        {
+            match: /(nck|licensing)/i,
+            accent: "#0F4C81",
+            accentStrong: "#0A2342",
+            accentSoft: "#E7F1FB",
+            wash: "#F6FAFF",
+            ink: "#FFFFFF"
+        },
+        {
+            match: /nclex/i,
+            accent: "#5B72D6",
+            accentStrong: "#293241",
+            accentSoft: "#EBEEFF",
+            wash: "#FBFCFF",
+            ink: "#FFFFFF"
+        },
+        {
+            match: /lecture|professional/i,
+            accent: "#14679C",
+            accentStrong: "#0B3A62",
+            accentSoft: "#EAF4FD",
+            wash: "#F8FBFF",
+            ink: "#FFFFFF"
+        },
+        {
+            match: /pharmacology|drug|medication/i,
+            accent: "#1FA67A",
+            accentStrong: "#5B4B8A",
+            accentSoft: "#EAF8F2",
+            wash: "#F7FCFA",
+            ink: "#FFFFFF"
+        },
+        {
+            match: /pediatric/i,
+            accent: "#D85B89",
+            accentStrong: "#9B315B",
+            accentSoft: "#FCE8F0",
+            wash: "#FFF8FB",
+            ink: "#FFFFFF"
+        },
+        {
+            match: /med[- ]?surg|clinical practice|critical care|emergency/i,
+            accent: "#20825F",
+            accentStrong: "#2F4858",
+            accentSoft: "#E6F6EE",
+            wash: "#F8FCF9",
+            ink: "#FFFFFF"
+        }
+    ];
+
+    const DEFAULT_COURSE_THEME = {
+        accent: "#14679C",
+        accentStrong: "#0A2342",
+        accentSoft: "#E7F1FB",
+        wash: "#F7FBFF",
+        ink: "#FFFFFF"
+    };
+
+    function getCourseTheme(course, index = 0) {
+        const text = `${course?.id || ""} ${course?.title || ""} ${course?.category || ""} ${course?.summary || ""}`.toLowerCase();
+        const matched = COURSE_THEMES.find((theme) => theme.match.test(text));
+        return matched || COURSE_THEMES[index % COURSE_THEMES.length] || DEFAULT_COURSE_THEME;
+    }
+
+    function courseThemeStyle(course, index = 0) {
+        const theme = getCourseTheme(course, index);
+        return `--course-accent:${theme.accent}; --course-accent-strong:${theme.accentStrong}; --course-accent-soft:${theme.accentSoft}; --course-wash:${theme.wash}; --course-ink:${theme.ink};`;
+    }
+
+    function applyCourseTheme(element, course, index = 0) {
+        if (!element) return;
+        const theme = getCourseTheme(course, index);
+        element.style.setProperty("--course-accent", theme.accent);
+        element.style.setProperty("--course-accent-strong", theme.accentStrong);
+        element.style.setProperty("--course-accent-soft", theme.accentSoft);
+        element.style.setProperty("--course-wash", theme.wash);
+        element.style.setProperty("--course-ink", theme.ink);
+    }
+
     function applySessionState(loggedIn) {
         document.body.classList.toggle("has-session", loggedIn);
         document.body.classList.toggle("guest-view", !loggedIn);
@@ -158,6 +238,7 @@
 
     function renderSelected(course, state) {
         const loggedIn = hasSession();
+        applyCourseTheme($("#selected-program"), course);
         $("#selectedTitle").textContent = course.title;
         $("#selectedSummary").textContent = course.summary;
         $("#selectedImage").src = course.image;
@@ -199,7 +280,7 @@
         }
     }
 
-    function courseCard(course, state) {
+    function courseCard(course, state, index = 0) {
         const enrolled = state.enrolledCourseIds.includes(course.id);
         const loggedIn = hasSession();
         const percent = getProgress(course.id, state);
@@ -207,9 +288,10 @@
         const moduleCount = Math.max(course.terms?.length || 0, 1);
         const progressLabel = loggedIn ? `${percent}% complete` : `0/${moduleCount} modules`;
         const accessLabel = enrolled ? "Enrolled" : "Free";
+        const themeStyle = courseThemeStyle(course, index);
         if (!loggedIn) {
             return `
-            <article class="lms-card" data-course-card="${course.id}">
+            <article class="lms-card" data-course-card="${course.id}" style="${themeStyle}">
                 <img class="course-card-image" src="${course.image}" alt="${course.title}" onerror="this.onerror=null;this.src='../assets/course-images/default.jpg';">
                 <div class="lms-chip-row">
                     <span class="lms-chip">${getCourseTrackLabel(course)}</span>
@@ -232,7 +314,7 @@
         `;
         }
         return `
-            <article class="lms-card" data-course-card="${course.id}">
+            <article class="lms-card" data-course-card="${course.id}" style="${themeStyle}">
                 <img class="course-card-image" src="${course.image}" alt="${course.title}" onerror="this.onerror=null;this.src='../assets/course-images/default.jpg';">
                 <div class="lms-chip-row">
                     <span class="lms-chip">${getCourseTrackLabel(course)}</span>
@@ -316,7 +398,7 @@
             .sort((left, right) => getUnitSortRank(left.label) - getUnitSortRank(right.label));
 
         $("#courseGrid").innerHTML = groupedCourses.map(({ label, items }) => `
-            <section class="course-group">
+            <section class="course-group" style="${courseThemeStyle(items[0] || {}, 0)}">
                 <header class="course-group-head">
                     <div>
                         <p class="lms-kicker">${category === "All" ? "Unit" : "Year / Focus"}</p>
@@ -325,7 +407,7 @@
                     <span class="lms-chip">${items.length} courses</span>
                 </header>
                 <div class="lms-grid">
-                    ${items.map((course) => courseCard(course, state)).join("")}
+                    ${items.map((course, itemIndex) => courseCard(course, state, itemIndex)).join("")}
                 </div>
             </section>
         `).join("");
