@@ -3,7 +3,6 @@ const { createServer } = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
 const crypto = require('crypto');
-const pdfParse = require('pdf-parse');
 const { initFirebaseAdmin } = require('./firebase-admin');
 
 const app = express();
@@ -642,6 +641,7 @@ app.post('/api/admin/pdf-to-lessons', asyncRoute(async (req, res) => {
 
     let text = '';
     try {
+        const pdfParse = require('pdf-parse');
         const data = await pdfParse(pdfDataUrlToBuffer(pdfDataUrl));
         text = cleanText(data?.text || '');
     } catch (error) {
