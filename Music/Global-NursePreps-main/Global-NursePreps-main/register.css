@@ -91,12 +91,12 @@ html, body {
 }
 
 .auth-card {
-    width: min(1040px, 100%);
+    width: min(960px, 100%);
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 16px;
     display: grid;
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    grid-template-columns: minmax(0, 1.08fr) minmax(340px, 0.82fr);
     overflow: hidden;
     box-shadow: var(--shadow);
     animation: auth-rise 0.65s ease both;
@@ -225,7 +225,7 @@ html, body {
 }
 
 .auth-right {
-    padding: 18px 16px;
+    padding: 18px 14px;
     display: grid;
     align-content: start;
     gap: 10px;

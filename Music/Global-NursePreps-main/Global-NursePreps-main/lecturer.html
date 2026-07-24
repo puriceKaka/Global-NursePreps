@@ -33,6 +33,15 @@
                 <p class="lecturer-kicker">Teaching portal</p>
                 <h1>Plan lessons, guide groups, and assess learners.</h1>
                 <p class="muted">Create membership groups, schedule teaching sessions, submit exams, and organize resources for the students you teach.</p>
+                <div class="feature-list">
+                    <div class="feature"><span class="dot"></span>Create unit-based course modules</div>
+                    <div class="feature"><span class="dot"></span>Upload notes, images, and videos</div>
+                    <div class="feature"><span class="dot"></span>Keep lectures grouped by topic</div>
+                    <div class="feature"><span class="dot"></span>Publish courses with a consistent card style</div>
+                </div>
+                <div class="preview">
+                    <img src="logo/home%20image.jpg" alt="Lecturer portal preview" loading="lazy">
+                </div>
             </div>
             <form class="lecturer-form" id="lecturerLoginForm">
                 <h2>Lecturer login</h2>
@@ -185,11 +194,29 @@
                     </div>
                     <form class="lecturer-form grid-form" id="publishCourseForm">
                         <label><span>Course title</span><input id="publishTitle" required></label>
+                        <label><span>Unit title</span><input id="publishUnit" placeholder="e.g. NCLEX, BSN, Licensing" required></label>
+                        <label><span>Subunit title</span><input id="publishSubunit" placeholder="e.g. NCK, Year 1, Foundations"></label>
                         <label><span>Category</span><input id="publishCategory" placeholder="e.g. Critical Care" required></label>
+                        <label><span>Faculty</span><input id="publishFaculty" placeholder="e.g. Nursing Sciences"></label>
+                        <label><span>Department</span><input id="publishDepartment" placeholder="e.g. Clinical Nursing"></label>
+                        <label><span>Course code</span><input id="publishCourseCode" placeholder="e.g. NUR 101"></label>
                         <label><span>Level</span><select id="publishLevel"><option>Beginner</option><option>Intermediate</option><option>Advanced</option></select></label>
                         <label><span>Access</span><select id="publishAccess"><option value="free">Free</option><option value="paid">Paid</option></select></label>
                         <label><span>Price (KES)</span><input id="publishPrice" type="number" min="0" value="0"></label>
+                        <label><span>Language</span><input id="publishLanguage" value="English"></label>
+                        <label><span>Module count</span><input id="publishModuleCount" type="number" min="1" value="3"></label>
+                        <label class="wide"><span>Module titles</span><textarea id="publishModuleTitles" rows="4" placeholder="One module per line."></textarea></label>
+                        <label class="wide"><span>Learning outcomes</span><textarea id="publishOutcomes" rows="3" placeholder="One outcome per line."></textarea></label>
+                        <label class="wide"><span>Prerequisites</span><textarea id="publishPrerequisites" rows="3" placeholder="One prerequisite per line."></textarea></label>
+                        <label class="wide"><span>Assignments</span><textarea id="publishAssignments" rows="3" placeholder="One assignment per line. Example:\nCase study submission | 2026-08-15 | 20 marks"></textarea></label>
+                        <label class="wide"><span>Assessments</span><textarea id="publishAssessments" rows="3" placeholder="One assessment per line. Example:\nFinal Examination | 100 marks | 80% pass"></textarea></label>
+                        <label class="wide"><span>Course resources</span><textarea id="publishResources" rows="3" placeholder="One resource per line. Example:\nReference PDF | PDF | assets/file.pdf"></textarea></label>
+                        <label class="wide"><span>Announcements</span><textarea id="publishAnnouncements" rows="2" placeholder="One announcement per line."></textarea></label>
                         <label><span>Document</span><input id="publishDocument" type="file" accept=".txt,.md,.pdf,.doc,.docx,.rtf"></label>
+                        <label><span>Document cover image</span><input id="publishDocumentImage" type="file" accept="image/*"></label>
+                        <label><span>Course image</span><input id="publishCourseImage" type="file" accept="image/*"></label>
+                        <label><span>Lecture video URL</span><input id="publishVideoUrl" type="url" placeholder="https://..."></label>
+                        <label><span>Upload lecture video</span><input id="publishVideoFile" type="file" accept="video/*"></label>
                         <label class="wide"><span>Course summary</span><textarea id="publishSummary" rows="3" required></textarea></label>
                         <label class="wide"><span>Course notes</span><textarea id="publishNotes" rows="8" placeholder="Paste the course notes here. Text files can also be loaded from the document field."></textarea></label>
                         <button class="primary-button" type="submit">Post course to students</button>

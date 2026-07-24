@@ -377,6 +377,56 @@
         }
     }
 
+    function readFileAsDataUrl(file) {
+        return new Promise((resolve, reject) => {
+            if (!file) {
+                resolve("");
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = () => resolve(String(reader.result || ""));
+            reader.onerror = () => reject(new Error("Failed to read uploaded file"));
+            reader.readAsDataURL(file);
+        });
+    }
+
+    function parseModuleTitles(rawValue, fallbackCount, courseTitle) {
+        const lines = String(rawValue || "")
+            .split(/\r?\n/)
+            .map((line) => line.replace(/^\s*[-*•\d.)]+\s*/, "").trim())
+            .filter(Boolean);
+
+        if (lines.length) {
+            return lines;
+        }
+
+        const count = Math.max(1, Number(fallbackCount || 1));
+        const base = String(courseTitle || "Course").trim();
+        return Array.from({ length: count }, (_, index) => `${base} Module ${index + 1}`);
+    }
+
+    function parseLines(rawValue) {
+        return String(rawValue || "")
+            .split(/\r?\n/)
+            .map((line) => line.trim())
+            .filter(Boolean);
+    }
+
+    function parseStructuredRows(rawValue, defaults = {}) {
+        return parseLines(rawValue).map((line, index) => {
+            const parts = line.split("|").map((part) => part.trim());
+            return {
+                id: `${defaults.prefix || "item"}-${index + 1}`,
+                title: parts[0] || `${defaults.label || "Item"} ${index + 1}`,
+                type: parts[1] || defaults.type || "",
+                dueDate: parts[1] && /marks?|pass|score/i.test(parts[2] || "") ? "" : (parts[1] || ""),
+                marks: parts[2] || defaults.marks || "",
+                link: parts[2] && !/marks?|pass|score/i.test(parts[2]) ? parts[2] : (parts[3] || ""),
+                instructions: parts[3] || defaults.instructions || ""
+            };
+        });
+    }
+
     function loadDocumentIntoNotes(file) {
         const message = $("#publishMessage");
         if (!file) return;
@@ -403,51 +453,114 @@
         event.preventDefault();
         const session = getSession();
         const file = $("#publishDocument").files?.[0] || null;
+        const documentImageFile = $("#publishDocumentImage").files?.[0] || null;
+        const courseImageFile = $("#publishCourseImage").files?.[0] || null;
+        const videoFile = $("#publishVideoFile").files?.[0] || null;
         const notes = $("#publishNotes").value.trim();
         const title = $("#publishTitle").value.trim();
         const price = Number($("#publishPrice").value || 0);
         const access = $("#publishAccess").value;
-        const course = {
-            id: `lecturer-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}-${Date.now().toString(36)}`,
-            title,
-            category: $("#publishCategory").value.trim(),
-            difficulty: $("#publishLevel").value,
-            access,
-            price: access === "paid" ? price : 0,
-            lecturer: session.name,
-            lecturerId: session.id,
-            badge: access === "paid" ? "Paid" : "Free",
-            durationHours: Math.max(12, Math.ceil((notes.length || 2400) / 1200)),
-            questions: 100,
-            exams: 1,
-            format: "Lecturer notes",
-            summary: $("#publishSummary").value.trim(),
-            image: "assets/course-images/default.jpg",
-            moduleCount: 10,
-            contentNotes: notes,
-            uploadedDocument: file ? { name: file.name, type: file.type, size: file.size } : null,
-            source: "lecturer"
-        };
-        addCourseToCatalog(course);
-        saveOwnItem(KEYS.resources, {
-            id: uid("resource"),
-            lecturerId: session.id,
-            lecturerName: session.name,
-            title: `${title} course notes`,
-            courseId: course.id,
-            courseTitle: title,
-            type: "Course Notes",
-            link: file?.name || "Manual notes",
-            createdAt: new Date().toISOString()
+        const unit = ($("#publishUnit").value || "").trim();
+        const subunit = ($("#publishSubunit").value || "").trim();
+        const moduleCount = Number($("#publishModuleCount").value || 1);
+        const moduleTitles = parseModuleTitles($("#publishModuleTitles").value || "", moduleCount, title);
+        const courseImagePromise = documentImageFile
+            ? readFileAsDataUrl(documentImageFile)
+            : (courseImageFile ? readFileAsDataUrl(courseImageFile) : Promise.resolve(""));
+        const videoPromise = videoFile
+            ? readFileAsDataUrl(videoFile)
+            : Promise.resolve(($("#publishVideoUrl").value || "").trim());
+
+        void Promise.all([courseImagePromise, videoPromise]).then(([courseImage, lectureVideo]) => {
+            const course = {
+                id: `lecturer-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}-${Date.now().toString(36)}`,
+                title,
+                unit,
+                subunit,
+                category: $("#publishCategory").value.trim(),
+                faculty: ($("#publishFaculty").value || "").trim(),
+                department: ($("#publishDepartment").value || "").trim(),
+                courseCode: ($("#publishCourseCode").value || "").trim(),
+                difficulty: $("#publishLevel").value,
+                access,
+                price: access === "paid" ? price : 0,
+                language: ($("#publishLanguage").value || "English").trim(),
+                prerequisites: parseLines($("#publishPrerequisites").value || ""),
+                learningOutcomes: parseLines($("#publishOutcomes").value || ""),
+                lecturer: session.name,
+                lecturerId: session.id,
+                badge: access === "paid" ? "Paid" : "Free",
+                durationHours: Math.max(12, Math.ceil((notes.length || 2400) / 1200)),
+                questions: 100,
+                exams: 1,
+                format: "Lecturer notes",
+                summary: $("#publishSummary").value.trim(),
+                image: courseImage || "assets/course-images/default.jpg",
+                courseImage: courseImage || "assets/course-images/default.jpg",
+                documentCoverImage: courseImage || "",
+                lessonBackgroundImage: courseImage || "assets/course-images/default.jpg",
+                moduleCount,
+                moduleTitles,
+                contentNotes: notes,
+                uploadedDocument: file ? { name: file.name, type: file.type, size: file.size } : null,
+                generatedLessons: moduleTitles.map((moduleTitle, index) => ({
+                    title: moduleTitle,
+                    lectureTitle: subunit || unit || "Lecturer module",
+                    objective: `Understand ${moduleTitle} within the ${unit || $("#publishCategory").value.trim() || "course"} unit.`,
+                    body: notes || `${moduleTitle} supports the learning path for ${title}.`,
+                    concepts: [moduleTitle, unit || subunit || $("#publishCategory").value.trim(), "Lecture notes"],
+                    summary: `${moduleTitle} for ${title}.`,
+                    materials: {
+                        videoLecture: lectureVideo || "",
+                        pdfNotes: file?.name || "",
+                        slides: "",
+                        downloads: file ? [{ title: file.name, type: file.type || "Document", link: file.name }] : [],
+                        discussion: true,
+                        assignment: null
+                    }
+                })),
+                assignments: parseStructuredRows($("#publishAssignments").value || "", { prefix: "assignment", label: "Assignment", type: "Assignment" }),
+                assessments: parseStructuredRows($("#publishAssessments").value || "", { prefix: "assessment", label: "Assessment", type: "Assessment" }),
+                resources: parseStructuredRows($("#publishResources").value || "", { prefix: "resource", label: "Resource" }),
+                announcements: parseLines($("#publishAnnouncements").value || "").map((message, index) => ({
+                    id: `announcement-${index + 1}`,
+                    title: `Announcement ${index + 1}`,
+                    message,
+                    createdAt: new Date().toISOString()
+                })),
+                lectureVideo,
+                lectureVideoName: videoFile?.name || "",
+                lectureVideoSource: videoFile?.name || ($("#publishVideoUrl").value || "").trim(),
+                source: "lecturer"
+            };
+
+            addCourseToCatalog(course);
+            saveOwnItem(KEYS.resources, {
+                id: uid("resource"),
+                lecturerId: session.id,
+                lecturerName: session.name,
+                title: `${title} course notes`,
+                courseId: course.id,
+                courseTitle: title,
+                type: "Course Notes",
+                link: file?.name || "Manual notes",
+                createdAt: new Date().toISOString()
+            });
+            event.currentTarget.reset();
+            populateCourseSelects();
+            renderAll();
+            const message = $("#publishMessage");
+            if (message) {
+                message.textContent = "Course posted to the student course catalog.";
+                message.className = "form-message success";
+            }
+        }).catch((error) => {
+            const message = $("#publishMessage");
+            if (message) {
+                message.textContent = error?.message || "Unable to post course.";
+                message.className = "form-message error";
+            }
         });
-        event.currentTarget.reset();
-        populateCourseSelects();
-        renderAll();
-        const message = $("#publishMessage");
-        if (message) {
-            message.textContent = "Course posted to the student course catalog.";
-            message.className = "form-message success";
-        }
     }
 
     function renderPayments() {

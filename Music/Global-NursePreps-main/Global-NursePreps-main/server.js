@@ -3,6 +3,7 @@ const { createServer } = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
 const crypto = require('crypto');
+const pdfParse = require('pdf-parse');
 const { initFirebaseAdmin } = require('./firebase-admin');
 
 const app = express();
@@ -29,6 +30,109 @@ function sendOk(res, data = {}, status = 200) {
 
 function sendError(res, status, message, code = 'REQUEST_FAILED') {
     res.status(status).json({ ok: false, requestId: res.locals.requestId, code, error: message });
+}
+
+function cleanText(value) {
+    return String(value || '')
+        .replace(/\r\n/g, '\n')
+        .replace(/\n{3,}/g, '\n\n')
+        .replace(/[ \t]{2,}/g, ' ')
+        .trim();
+}
+
+function splitSentences(value, limit = 4) {
+    return cleanText(value)
+        .split(/(?<=[.!?])\s+/)
+        .map((part) => part.trim())
+        .filter(Boolean)
+        .slice(0, limit);
+}
+
+function splitParagraphs(value) {
+    return cleanText(value)
+        .split(/\n{2,}/)
+        .map((part) => part.replace(/\s+\n/g, ' ').trim())
+        .filter(Boolean);
+}
+
+function titleCase(value) {
+    return String(value || '')
+        .split(/[\s_-]+/)
+        .map((part) => part ? part.charAt(0).toUpperCase() + part.slice(1).toLowerCase() : '')
+        .filter(Boolean)
+        .join(' ');
+}
+
+function extractKeywords(text, limit = 4) {
+    const stopwords = new Set([
+        'the', 'and', 'for', 'with', 'that', 'this', 'from', 'into', 'your', 'about', 'will', 'have', 'are', 'was',
+        'were', 'been', 'use', 'used', 'using', 'lesson', 'lessons', 'pdf', 'notes', 'course', 'nursing', 'patient',
+        'patients', 'study', 'teacher', 'student', 'students', 'clinical', 'care', 'should', 'would', 'could', 'also',
+        'their', 'there', 'then', 'than', 'when', 'what', 'which', 'where', 'while', 'after', 'before', 'over',
+        'under', 'through', 'during', 'each', 'more', 'most', 'less', 'very', 'into', 'onto', 'because', 'being'
+    ]);
+    const counts = new Map();
+    String(text || '')
+        .toLowerCase()
+        .split(/[^a-z0-9]+/g)
+        .map((word) => word.trim())
+        .filter((word) => word.length > 3 && !stopwords.has(word))
+        .forEach((word) => counts.set(word, (counts.get(word) || 0) + 1));
+    return [...counts.entries()]
+        .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+        .slice(0, limit)
+        .map(([word]) => titleCase(word));
+}
+
+function deriveLessonTitle(chunk, index) {
+    const firstLine = splitParagraphs(chunk)[0] || splitSentences(chunk, 1)[0] || `Lesson ${index + 1}`;
+    const cleaned = firstLine.replace(/^[\d.\-\s:]+/, '').trim();
+    const words = cleaned.split(/\s+/).slice(0, 6).join(' ');
+    return titleCase(words || `Lesson ${index + 1}`);
+}
+
+function buildGeneratedLessons(sourceText, fileName = 'Uploaded PDF') {
+    const text = cleanText(sourceText);
+    const paragraphs = splitParagraphs(text);
+    const chunks = [];
+    if (paragraphs.length >= 3) {
+        const perChunk = Math.ceil(paragraphs.length / 3);
+        for (let i = 0; i < 3; i += 1) {
+            chunks.push(paragraphs.slice(i * perChunk, (i + 1) * perChunk).join('\n\n'));
+        }
+    } else {
+        const words = text.split(/\s+/).filter(Boolean);
+        const perChunk = Math.max(1, Math.ceil(words.length / 3));
+        for (let i = 0; i < 3; i += 1) {
+            chunks.push(words.slice(i * perChunk, (i + 1) * perChunk).join(' '));
+        }
+    }
+
+    return chunks.map((chunk, index) => {
+        const lessonText = cleanText(chunk || text);
+        const title = deriveLessonTitle(lessonText || fileName, index);
+        const keywords = extractKeywords(lessonText, 3);
+        const overview = splitSentences(lessonText, 3);
+        return {
+            title: `${title}`,
+            lectureTitle: `PDF lesson ${index + 1}`,
+            objective: `Understand ${title} from the uploaded source and apply it in nursing practice.`,
+            body: lessonText || text || `Uploaded source material from ${fileName}.`,
+            concepts: [
+                keywords[0] || title,
+                keywords[1] || 'Assessment cues',
+                keywords[2] || 'Safe action'
+            ],
+            summary: overview.join(' ') || `Auto-generated lesson from ${fileName}.`
+        };
+    }).filter((lesson) => lesson.body);
+}
+
+function pdfDataUrlToBuffer(dataUrl) {
+    const value = String(dataUrl || '');
+    const match = value.match(/^data:application\/pdf(?:;charset=[^;]+)?;base64,(.+)$/i);
+    const base64 = match ? match[1] : value.replace(/^data:[^,]+,/, '');
+    return Buffer.from(base64, 'base64');
 }
 
 function hashPassword(password, salt = crypto.randomBytes(16).toString('hex'), iterations = 210000) {
@@ -127,8 +231,10 @@ const memoryAdminStore = {
     profile: null,
     state: null
 };
+const SESSION_COOKIE = 'gnp_session';
 const ADMIN_SESSION_COOKIE = 'gnp_admin_session';
 const ADMIN_SESSION_TTL_MS = 8 * 60 * 60 * 1000;
+const STUDENT_SESSION_TTL_MS = 8 * 60 * 60 * 1000;
 
 function buildDefaultAdminState() {
     const createdAt = new Date().toISOString();
@@ -213,6 +319,27 @@ function clearAdminCookie(res) {
     }));
 }
 
+function sessionCookieOptions() {
+    return {
+        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
+        path: '/',
+        maxAge: STUDENT_SESSION_TTL_MS / 1000
+    };
+}
+
+function issueSessionCookie(res, token) {
+    res.setHeader('Set-Cookie', serializeCookie(SESSION_COOKIE, token, sessionCookieOptions()));
+}
+
+function clearSessionCookie(res) {
+    res.setHeader('Set-Cookie', serializeCookie(SESSION_COOKIE, '', {
+        ...sessionCookieOptions(),
+        maxAge: 0,
+        expires: new Date(0)
+    }));
+}
+
 function getSessionFromRequest(req) {
     const token = getAuthToken(req);
     const decoded = verifySessionToken(token);
@@ -289,7 +416,7 @@ app.use(cors({
     origin: process.env.CORS_ORIGIN || false,
     credentials: true
 }));
-app.use(express.json({ limit: '1mb' }));
+app.use(express.json({ limit: '15mb' }));
 
 app.get('/', (req, res) => {
     res.sendFile(`${__dirname}/index.html`);
@@ -499,6 +626,37 @@ app.put('/api/admin/courses', asyncRoute(async (req, res) => {
     sendOk(res, { courses: nextState.courses });
 }));
 
+app.post('/api/admin/pdf-to-lessons', asyncRoute(async (req, res) => {
+    const session = getSessionFromRequest(req);
+    if (!session) {
+        sendError(res, 401, 'Admin login required.', 'ADMIN_AUTH_REQUIRED');
+        return;
+    }
+
+    const fileName = String(req.body?.fileName || 'uploaded.pdf').trim();
+    const pdfDataUrl = String(req.body?.pdfDataUrl || '').trim();
+    if (!pdfDataUrl) {
+        sendError(res, 400, 'A PDF file is required.', 'VALIDATION_ERROR');
+        return;
+    }
+
+    let text = '';
+    try {
+        const data = await pdfParse(pdfDataUrlToBuffer(pdfDataUrl));
+        text = cleanText(data?.text || '');
+    } catch (error) {
+        sendError(res, 400, 'The uploaded PDF could not be read.', 'PDF_PARSE_FAILED');
+        return;
+    }
+
+    const lessons = buildGeneratedLessons(text, fileName);
+    sendOk(res, {
+        fileName,
+        contentNotes: text,
+        generatedLessons: lessons
+    });
+}));
+
 app.delete('/api/admin/courses/:courseId', asyncRoute(async (req, res) => {
     const session = getSessionFromRequest(req);
     if (!session) {
@@ -552,7 +710,12 @@ app.post('/api/auth/register', asyncRoute(async (req, res) => {
         memoryUsers.set(email, user);
     }
 
-    sendOk(res, { user: { id: user.id, name: user.name, email: user.email, role: user.role } }, 201);
+    const token = createSessionToken(user);
+    issueSessionCookie(res, token);
+    sendOk(res, {
+        token,
+        user: { id: user.id, name: user.name, email: user.email, role: user.role }
+    }, 201);
 }));
 
 app.post('/api/auth/login', asyncRoute(async (req, res) => {
@@ -575,15 +738,16 @@ app.post('/api/auth/login', asyncRoute(async (req, res) => {
         return;
     }
 
+    const token = createSessionToken(user);
+    issueSessionCookie(res, token);
     sendOk(res, {
-        token: createSessionToken(user),
+        token,
         user: { id: user.id, name: user.name, email: user.email, role: user.role || 'student' }
     });
 }));
 
 app.get('/api/auth/verify', asyncRoute(async (req, res) => {
-    const header = String(req.headers.authorization || '');
-    const token = header.toLowerCase().startsWith('bearer ') ? header.slice(7).trim() : '';
+    const token = getAuthToken(req);
     const decoded = verifySessionToken(token);
     if (!decoded) {
         sendError(res, 401, 'Invalid or expired token.', 'INVALID_TOKEN');
@@ -598,6 +762,29 @@ app.get('/api/auth/verify', asyncRoute(async (req, res) => {
         },
         expiresAt: new Date(Number(decoded.exp) * 1000).toISOString()
     });
+}));
+
+app.get('/api/auth/me', asyncRoute(async (req, res) => {
+    const token = getAuthToken(req);
+    const decoded = verifySessionToken(token);
+    if (!decoded) {
+        sendError(res, 401, 'Invalid or expired token.', 'INVALID_TOKEN');
+        return;
+    }
+
+    sendOk(res, {
+        user: {
+            id: decoded.sub,
+            email: decoded.email,
+            role: decoded.role
+        },
+        expiresAt: new Date(Number(decoded.exp) * 1000).toISOString()
+    });
+}));
+
+app.post('/api/auth/logout', asyncRoute(async (req, res) => {
+    clearSessionCookie(res);
+    sendOk(res, { loggedOut: true });
 }));
 
 app.get('/api/learning/state', asyncRoute(async (req, res) => {
@@ -650,7 +837,15 @@ app.put('/api/learning/state', asyncRoute(async (req, res) => {
     sendOk(res, { saved: true, source: 'memory' });
 }));
 
-app.use(express.static('.'));
+app.use(express.static('.', {
+    setHeaders(res, filePath) {
+        if (/\.(?:html|css|js)$/i.test(filePath)) {
+            res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+            res.setHeader('Pragma', 'no-cache');
+            res.setHeader('Expires', '0');
+        }
+    }
+}));
 
 const rooms = new Map();
 

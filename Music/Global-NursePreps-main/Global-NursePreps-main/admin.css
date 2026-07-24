@@ -52,18 +52,26 @@
 .portal-shell {
     width: min(100%, 1440px);
     margin: 0 auto;
-    padding: 1rem;
+    padding: 1.35rem;
 }
 
 .auth-panel {
     display: grid;
-    grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.7fr);
-    gap: 1rem;
-    align-items: center;
-    min-height: calc(100vh - 86px);
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
+    gap: 0;
+    align-items: stretch;
+    width: min(880px, 100%);
+    margin: 0 auto;
+    padding: 0;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 18px 34px rgba(11, 31, 58, 0.12);
+    animation: auth-rise 0.65s ease both;
 }
 
-.auth-panel > div,
+.auth-copy,
 .portal-form,
 .portal-card,
 .data-card,
@@ -75,15 +83,67 @@
     box-shadow: 0 8px 18px rgba(11, 31, 58, 0.06);
 }
 
-.auth-panel > div {
-    padding: 1.3rem;
+.auth-copy {
+    padding: 28px;
+    background: linear-gradient(160deg, var(--ice-2), #ffffff);
+    border-right: 1px solid var(--border);
+    border-top: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.auth-form-panel {
+    display: grid;
+    align-items: start;
+    background: #ffffff;
+    min-height: 100%;
 }
 
 .auth-panel h1 {
     margin: 0;
     color: var(--navy);
-    font-size: clamp(2rem, 4vw, 3.8rem);
-    line-height: 1;
+    font-size: 36px;
+    line-height: 1.08;
+}
+
+.feature-list {
+    margin-top: 14px;
+    display: grid;
+    gap: 10px;
+}
+
+.feature {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    color: var(--navy);
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--blue);
+    flex: 0 0 auto;
+}
+
+.preview {
+    margin-top: 18px;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    background: var(--ice-2);
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+}
+
+.preview img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
 }
 
 .portal-kicker {
@@ -96,20 +156,30 @@
 }
 
 .portal-form {
-    padding: 1rem;
+    padding: 28px 24px;
     display: grid;
-    gap: 0.75rem;
+    gap: 0.9rem;
+}
+
+.auth-panel .portal-form {
+    align-content: start;
+    padding: 28px 24px;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: #ffffff;
+    min-height: 100%;
 }
 
 .portal-form h2 {
     margin: 0;
     color: var(--navy);
-    font-size: 1.25rem;
+    font-size: 1.75rem;
 }
 
 .portal-form label {
     display: grid;
-    gap: 0.35rem;
+    gap: 0.45rem;
     color: var(--navy);
     font-weight: 800;
 }
@@ -119,11 +189,26 @@
 .portal-form textarea {
     width: 100%;
     border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 0.7rem 0.75rem;
+    border-radius: 14px;
+    padding: 0.85rem 0.9rem;
     font: inherit;
+    font-weight: 500;
     color: var(--text);
     background: #fff;
+    outline: none;
+}
+
+.portal-form input::placeholder,
+.portal-form textarea::placeholder {
+    color: var(--muted);
+    opacity: 0.9;
+}
+
+.portal-form input:focus,
+.portal-form select:focus,
+.portal-form textarea:focus {
+    border-color: rgba(30, 136, 229, 0.6);
+    box-shadow: 0 0 0 4px rgba(30, 136, 229, 0.12);
 }
 
 .grid-form {
@@ -150,15 +235,36 @@
 }
 
 .link-button {
-    border: 0;
-    padding: 0;
-    width: fit-content;
-    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.78rem 1rem;
+    width: 100%;
+    background: var(--ice);
     color: var(--navy);
     cursor: pointer;
     font: inherit;
-    font-weight: 850;
-    text-decoration: underline;
+    font-weight: 900;
+    text-decoration: none;
+    text-align: center;
+}
+
+.link-button:hover {
+    background: #dfeef9;
+}
+
+.link-button:active {
+    transform: translateY(1px) scale(0.99);
+}
+
+@keyframes auth-rise {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .portal-app {
@@ -330,6 +436,29 @@
 
     .portal-sidebar {
         position: static;
+    }
+}
+
+@media (max-width: 720px) {
+    .auth-panel {
+        align-items: flex-start;
+        grid-template-columns: 1fr;
+        width: min(100%, 880px);
+        border-radius: 16px;
+    }
+
+    .auth-copy {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 22px 16px 0;
+    }
+
+    .auth-panel h1 {
+        font-size: 30px;
+    }
+
+    .portal-form {
+        padding: 20px 16px;
     }
 }
 

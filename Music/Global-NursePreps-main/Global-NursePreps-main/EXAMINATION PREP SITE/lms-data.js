@@ -217,6 +217,106 @@ window.GnpLmsData = (() => {
         };
     }
 
+    function normalizeGeneratedLesson(lessonItem, index, course) {
+        const title = String(lessonItem?.title || `Uploaded lesson ${index + 1}`).trim();
+        const body = String(lessonItem?.body || lessonItem?.objective || course.summary || "").trim();
+        const objective = String(lessonItem?.objective || title || course.summary || "").trim();
+        const lectureTitle = String(lessonItem?.lectureTitle || lessonItem?.title || title).trim();
+        const concepts = Array.isArray(lessonItem?.concepts)
+            ? lessonItem.concepts.map((concept) => String(concept || "").trim()).filter(Boolean).slice(0, 3)
+            : [];
+
+        return {
+            id: `${course.id}-uploaded-lesson-${index + 1}`,
+            title,
+            lectureTitle,
+            objective,
+            body,
+            concepts: [
+                concepts[0] || course.category || "Clinical focus",
+                concepts[1] || course.difficulty || "Lesson structure",
+                concepts[2] || "Guided practice"
+            ],
+            materials: lessonItem?.materials && typeof lessonItem.materials === "object"
+                ? lessonItem.materials
+                : {
+                    videoLecture: course.lectureVideo || "",
+                    pdfNotes: course.uploadedDocument?.name || "",
+                    slides: "",
+                    downloads: course.uploadedDocument ? [course.uploadedDocument] : [],
+                    keyConcepts: concepts,
+                    practiceQuestions: [],
+                    discussion: true,
+                    quiz: lessonItem?.quiz || null
+                }
+        };
+    }
+
+    function courseExtras(course) {
+        return {
+            faculty: course.faculty || "",
+            department: course.department || "",
+            courseCode: course.courseCode || "",
+            language: course.language || "English",
+            prerequisites: Array.isArray(course.prerequisites) ? course.prerequisites : [],
+            learningOutcomes: Array.isArray(course.learningOutcomes) ? course.learningOutcomes : (Array.isArray(course.outcomes) ? course.outcomes : []),
+            assignments: Array.isArray(course.assignments) ? course.assignments : [],
+            assessments: Array.isArray(course.assessments) ? course.assessments : [],
+            resources: Array.isArray(course.resources) ? course.resources : [],
+            announcements: Array.isArray(course.announcements) ? course.announcements : [],
+            discussions: Array.isArray(course.discussions) ? course.discussions : [],
+            analytics: course.analytics && typeof course.analytics === "object" ? course.analytics : {},
+            status: course.status || "published"
+        };
+    }
+
+    function buildUploadedCourse(course) {
+        const generatedLessons = Array.isArray(course.generatedLessons) ? course.generatedLessons : [];
+        const normalizedLessons = generatedLessons.length
+            ? generatedLessons.map((lessonItem, index) => normalizeGeneratedLesson(lessonItem, index, course))
+            : [
+                lesson(`${course.id}-uploaded-intro`, "Course Introduction", "Course overview", `Understand the purpose and structure of ${course.title || "this course"}.`, course.contentNotes || course.summary || "Review the uploaded lesson source, identify the main nursing concepts, and connect each concept to patient assessment and safe action.", "Course overview", "Assessment cues", "Safe action"),
+                lesson(`${course.id}-uploaded-practice`, "Guided Practice", "Rationale review", "Apply the uploaded course content to practice questions and rationales.", "Practice is where knowledge becomes decision making. Review each question by identifying the patient cue, the safest action, and the rationale for rejecting unsafe options.", "Practice questions", "Rationales", "Weak-topic repair"),
+                lesson(`${course.id}-uploaded-readiness`, "Readiness Check", "Final review", "Confirm readiness for the uploaded lesson assessment.", "Before the main assessment, check that you can explain the core concepts, identify urgent findings, and choose safe nursing interventions consistently.", "Readiness score", "Final review", "Assessment plan")
+            ];
+
+        return {
+            id: course.id,
+            title: course.title || "Uploaded Course",
+            ...courseExtras(course),
+            unit: String(course.unit || course.category || "Uploaded Study").trim(),
+            subunit: String(course.subunit || course.badge || course.category || "").trim(),
+            category: course.category || "Uploaded Study",
+            level: course.difficulty || "Beginner",
+            format: course.format || "Uploaded lesson",
+            durationHours: Number(course.durationHours || Math.max(12, normalizedLessons.length * 6)),
+            questions: Number(course.questions || 100),
+            image: course.documentCoverImage || course.lessonBackgroundImage || course.courseImage || course.image || fallbackCourseImages[0],
+            courseImage: course.documentCoverImage || course.lessonBackgroundImage || course.courseImage || course.image || fallbackCourseImages[0],
+            summary: course.summary || "Auto-generated lessons from uploaded source material.",
+            contentNotes: course.contentNotes || "",
+            uploadedDocument: course.uploadedDocument || null,
+            moduleTitles: Array.isArray(course.moduleTitles) ? course.moduleTitles : [],
+            documentCoverImage: course.documentCoverImage || "",
+            lectureVideo: course.lectureVideo || "",
+            lectureVideoName: course.lectureVideoName || "",
+            lectureVideoSource: course.lectureVideoSource || course.lectureVideoName || "",
+            outcomes: [
+                "Study the uploaded source as guided lessons",
+                "Complete the checkpoint questions",
+                "Review the background image as a visual cue"
+            ],
+            terms: [
+                {
+                    id: `${course.id}-uploaded-term`,
+                    title: course.subunit || course.category || "Uploaded Lessons",
+                    description: "Auto-generated lessons from the uploaded PDF or notes.",
+                    lessons: normalizedLessons
+                }
+            ]
+        };
+    }
+
     const anatomyExpansionCourses = [
         createCourseSeries({
             id: "anatomy-year-1-cells-tissues",
@@ -454,26 +554,35 @@ window.GnpLmsData = (() => {
         return courses.find((course) => course.id === courseId) || courses[0];
     }
 
-    (window.GnpLearning?.getCourses?.() || []).forEach((external) => {
-        if (!external?.id || courses.some((course) => course.id === external.id)) return;
-            courses.push({
-            id: external.id,
-            title: external.title || "Lecturer Course",
-            category: external.category || "Lecturer Published",
-            level: external.difficulty || "Beginner",
-            format: external.format || "Lecturer Notes",
-            durationHours: Number(external.durationHours || 12),
-            questions: Number(external.questions || 100),
-            image: externalImages[external.id] || fallbackCourseImages[courses.length % fallbackCourseImages.length],
-            summary: external.summary || "Lecturer-published nursing course.",
-            contentNotes: external.contentNotes || "",
-            uploadedDocument: external.uploadedDocument || null,
-            lectureVideo: external.lectureVideo || "",
-            lectureVideoName: external.lectureVideoName || "",
-            outcomes: ["Study lecturer notes", "Complete checkpoints", "Prepare for assessment"],
-            terms: [
-                {
-                    id: "lecturer-notes",
+    function upsertExternalCourses() {
+        (window.GnpLearning?.getCourses?.() || []).forEach((external) => {
+            if (!external?.id) return;
+            const nextCourse = Array.isArray(external.generatedLessons) && external.generatedLessons.length
+                ? buildUploadedCourse(external)
+                : {
+                id: external.id,
+                title: external.title || "Lecturer Course",
+                ...courseExtras(external),
+                unit: external.unit || external.category || "Lecturer",
+                subunit: external.subunit || "",
+                category: external.category || "Lecturer Published",
+                level: external.difficulty || "Beginner",
+                format: external.format || "Lecturer Notes",
+                durationHours: Number(external.durationHours || 12),
+                questions: Number(external.questions || 100),
+                image: external.documentCoverImage || external.lessonBackgroundImage || external.courseImage || external.image || externalImages[external.id] || fallbackCourseImages[courses.length % fallbackCourseImages.length],
+                summary: external.summary || "Lecturer-published nursing course.",
+                contentNotes: external.contentNotes || "",
+                uploadedDocument: external.uploadedDocument || null,
+                moduleTitles: Array.isArray(external.moduleTitles) ? external.moduleTitles : [],
+                documentCoverImage: external.documentCoverImage || "",
+                lectureVideo: external.lectureVideo || "",
+                lectureVideoName: external.lectureVideoName || "",
+                lectureVideoSource: external.lectureVideoSource || external.lectureVideo || "",
+                outcomes: ["Study lecturer notes", "Complete checkpoints", "Prepare for assessment"],
+                terms: [
+                    {
+                        id: "lecturer-notes",
                     title: "Lecturer Notes",
                     description: "Generated lessons from the lecturer course outline.",
                     lessons: [
@@ -483,8 +592,18 @@ window.GnpLmsData = (() => {
                     ]
                 }
             ]
+        };
+            const existingIndex = courses.findIndex((course) => course.id === nextCourse.id);
+            if (existingIndex === -1) {
+                courses.push(nextCourse);
+            } else {
+                courses[existingIndex] = { ...courses[existingIndex], ...nextCourse };
+            }
         });
-    });
+    }
+
+    upsertExternalCourses();
+    window.addEventListener("gnp-courses-updated", upsertExternalCourses);
 
     return { courses, getCourse, flattenLessons };
 })();

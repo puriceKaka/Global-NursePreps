@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Workspace | Global NursePrep</title>
-    <link rel="stylesheet" href="lms-courses.css?v=20260705">
-    <link rel="stylesheet" href="workspace-styles.css?v=20260705">
+    <link rel="stylesheet" href="lms-courses.css?v=20260724-full-width-cards">
+    <link rel="stylesheet" href="workspace-styles.css?v=20260724-lms-structure">
     <link rel="stylesheet" href="../css/site-loader.css">
     <script src="../js/site-loader.js"></script>
     <script defer src="../learning-core.js"></script>
     <script defer src="../js/auth-guard.js" data-login="../login.html"></script>
-    <script defer src="lms-data.js?v=20260705"></script>
-    <script defer src="lms-workspace.js?v=20260705"></script>
+    <script defer src="lms-data.js?v=20260724-lms-structure"></script>
+    <script defer src="lms-workspace.js?v=20260724-lms-structure"></script>
     <script defer src="avatar-voice.js?v=20260705"></script>
 </head>
 <body class="lms-body" data-lms-page="workspace">
@@ -99,6 +99,21 @@
                     <div id="avatar-guide-card"></div>
                 </div>
             </article>
+        </section>
+
+        <section class="lms-structure" id="courseStructure" aria-label="Course structure">
+            <div class="lms-structure-tabs" role="tablist" aria-label="Course details">
+                <button type="button" class="active" data-structure-panel="info">Course Info</button>
+                <button type="button" data-structure-panel="modules">Modules</button>
+                <button type="button" data-structure-panel="assignments">Assignments</button>
+                <button type="button" data-structure-panel="assessments">Assessments</button>
+                <button type="button" data-structure-panel="resources">Resources</button>
+                <button type="button" data-structure-panel="communication">Communication</button>
+                <button type="button" data-structure-panel="progress">Progress</button>
+                <button type="button" data-structure-panel="certificate">Certificate</button>
+                <button type="button" data-structure-panel="analytics">Analytics</button>
+            </div>
+            <div class="lms-structure-panels" id="structurePanels"></div>
         </section>
     </main>
 </body>

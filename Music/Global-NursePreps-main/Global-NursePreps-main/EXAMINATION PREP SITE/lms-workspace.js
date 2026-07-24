@@ -239,6 +239,9 @@
         progress.notes = progress.notes && typeof progress.notes === "object" ? progress.notes : {};
         progress.bookmarks = Array.isArray(progress.bookmarks) ? progress.bookmarks : [];
         progress.flashcards = Array.isArray(progress.flashcards) ? progress.flashcards : [];
+        progress.assignmentScores = progress.assignmentScores && typeof progress.assignmentScores === "object" ? progress.assignmentScores : {};
+        progress.assignmentSubmissions = progress.assignmentSubmissions && typeof progress.assignmentSubmissions === "object" ? progress.assignmentSubmissions : {};
+        progress.studyTimeMinutes = Number(progress.studyTimeMinutes || 0);
     }
 
     function isUnlocked(index) {
@@ -249,12 +252,153 @@
         return lessons.length ? Math.round((progress.completedLessons.length / lessons.length) * 100) : 0;
     }
 
+    function listItems(items, emptyText) {
+        return Array.isArray(items) && items.length
+            ? `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`
+            : `<p class="lms-muted">${escapeHtml(emptyText)}</p>`;
+    }
+
+    function objectCards(items, emptyText, renderer) {
+        return Array.isArray(items) && items.length
+            ? items.map(renderer).join("")
+            : `<article class="lms-structure-card"><p class="lms-muted">${escapeHtml(emptyText)}</p></article>`;
+    }
+
+    function defaultAssignments() {
+        return Array.isArray(course.assignments) && course.assignments.length ? course.assignments : [
+            { id: "assignment-1", title: "Case Study Submission", dueDate: "Set by lecturer", marks: "Ungraded", instructions: "Apply the course concepts to a nursing case scenario." }
+        ];
+    }
+
+    function defaultAssessments() {
+        return Array.isArray(course.assessments) && course.assessments.length ? course.assessments : [
+            { id: "midterm", title: "Midterm Test", type: "Quiz", marks: "30 marks", instructions: "Checkpoint performance contributes to readiness." },
+            { id: "final", title: "Final Examination", type: "Final", marks: "70 marks", instructions: "Complete all lessons and pass required quizzes before certification." }
+        ];
+    }
+
+    function defaultResources() {
+        const resources = Array.isArray(course.resources) ? [...course.resources] : [];
+        if (course.uploadedDocument?.name) {
+            resources.unshift({ title: course.uploadedDocument.name, type: course.uploadedDocument.type || "PDF Documents", link: course.uploadedDocument.name });
+        }
+        if (course.lectureVideoSource) {
+            resources.unshift({ title: course.lectureVideoName || "Lecture video", type: "Video", link: course.lectureVideoSource });
+        }
+        return resources;
+    }
+
+    function renderStructure() {
+        const panels = $("#structurePanels");
+        if (!panels) return;
+
+        const completed = progress.completedLessons.length;
+        const quizScores = Object.values(progress.quizScores || {}).filter((score) => Number.isFinite(Number(score)));
+        const averageQuiz = quizScores.length
+            ? Math.round(quizScores.reduce((sum, score) => sum + Number(score), 0) / quizScores.length)
+            : 0;
+        const certificateReady = percent() >= 100;
+        const analytics = course.analytics || {};
+        const enrollmentCount = Number(analytics.enrollmentCount || analytics.enrollments || 0);
+        const rating = analytics.rating || analytics.studentRatings || "Not rated";
+
+        panels.innerHTML = `
+            <section class="lms-structure-panel active" data-panel="info">
+                <div class="lms-structure-grid">
+                    ${[
+                        ["Course Title", course.title],
+                        ["Category", course.category],
+                        ["Faculty", course.faculty || "Not set"],
+                        ["Department", course.department || "Not set"],
+                        ["Course Code", course.courseCode || course.id],
+                        ["Lecturer / Instructor", course.lecturer || "Global NursePrep"],
+                        ["Skill Level", course.level || course.difficulty || "Beginner"],
+                        ["Study Duration", `${course.durationHours || 0} hours`],
+                        ["Language", course.language || "English"],
+                        ["Course Price", Number(course.price || 0) > 0 ? `KES ${Number(course.price).toLocaleString()}` : "Free"]
+                    ].map(([label, value]) => `<div class="lms-structure-card"><span>${label}</span><strong>${escapeHtml(value)}</strong></div>`).join("")}
+                </div>
+                <div class="lms-structure-split">
+                    <article><h3>Learning Outcomes</h3>${listItems(course.learningOutcomes || course.outcomes, "Learning outcomes will appear when the lecturer adds them.")}</article>
+                    <article><h3>Prerequisites</h3>${listItems(course.prerequisites, "No prerequisites listed.")}</article>
+                </div>
+            </section>
+            <section class="lms-structure-panel" data-panel="modules">
+                ${course.terms.map((term) => `
+                    <article class="lms-structure-card">
+                        <span>${escapeHtml(term.title)}</span>
+                        <strong>${escapeHtml(term.description || "Module")}</strong>
+                        <ul>${term.lessons.map((lesson) => `<li>${escapeHtml(lesson.title)} - video, notes, concepts, practice questions, discussion, and topic quiz</li>`).join("")}</ul>
+                    </article>
+                `).join("")}
+            </section>
+            <section class="lms-structure-panel" data-panel="assignments">
+                ${objectCards(defaultAssignments(), "No assignments posted yet.", (item) => `
+                    <article class="lms-structure-card"><span>${escapeHtml(item.dueDate || "No deadline")}</span><strong>${escapeHtml(item.title)}</strong><p>${escapeHtml(item.instructions || item.type || "Submission details will be posted by the lecturer.")}</p><small>${escapeHtml(item.marks || "Marks not set")}</small></article>
+                `)}
+            </section>
+            <section class="lms-structure-panel" data-panel="assessments">
+                ${objectCards(defaultAssessments(), "No assessments posted yet.", (item) => `
+                    <article class="lms-structure-card"><span>${escapeHtml(item.type || "Assessment")}</span><strong>${escapeHtml(item.title)}</strong><p>${escapeHtml(item.instructions || "Complete when released.")}</p><small>${escapeHtml(item.marks || "Score pending")}</small></article>
+                `)}
+            </section>
+            <section class="lms-structure-panel" data-panel="resources">
+                ${objectCards(defaultResources(), "No extra course resources uploaded yet.", (item) => `
+                    <article class="lms-structure-card"><span>${escapeHtml(item.type || "Resource")}</span><strong>${escapeHtml(item.title || item.name || "Course resource")}</strong><p>${escapeHtml(item.link || "Available in this course workspace.")}</p></article>
+                `)}
+            </section>
+            <section class="lms-structure-panel" data-panel="communication">
+                ${objectCards(course.announcements, "No announcements posted yet.", (item) => `
+                    <article class="lms-structure-card"><span>${escapeHtml(item.createdAt ? new Date(item.createdAt).toLocaleDateString() : "Announcement")}</span><strong>${escapeHtml(item.title || "Course announcement")}</strong><p>${escapeHtml(item.message || item.body || "")}</p></article>
+                `)}
+                <article class="lms-structure-card"><span>Questions and Answers</span><strong>Discussion forum</strong><p>Students can discuss the current topic and lecturer messages stay connected to this course.</p></article>
+            </section>
+            <section class="lms-structure-panel" data-panel="progress">
+                <div class="lms-structure-grid">
+                    ${[
+                        ["Topics Completed", `${completed}/${lessons.length}`],
+                        ["Quiz Average", `${averageQuiz}%`],
+                        ["Completion", `${percent()}%`],
+                        ["Time Spent", `${progress.studyTimeMinutes || 0} minutes`],
+                        ["Last Accessed", progress.lastVisited ? new Date(progress.lastVisited).toLocaleString() : "Today"]
+                    ].map(([label, value]) => `<div class="lms-structure-card"><span>${label}</span><strong>${escapeHtml(value)}</strong></div>`).join("")}
+                </div>
+            </section>
+            <section class="lms-structure-panel" data-panel="certificate">
+                <article class="lms-structure-card"><span>Completion Status</span><strong>${certificateReady ? "Eligible" : "Locked"}</strong><p>${certificateReady ? "All required lessons are complete." : "Complete all lessons and pass required checkpoints to unlock the certificate."}</p><small>Verification code: ${escapeHtml(progress.certificate?.id || "Generated after completion")}</small></article>
+            </section>
+            <section class="lms-structure-panel" data-panel="analytics">
+                <div class="lms-structure-grid">
+                    ${[
+                        ["Enrollment Count", enrollmentCount],
+                        ["Student Ratings", rating],
+                        ["Reviews", analytics.reviews || 0],
+                        ["Average Completion", analytics.averageCompletionRate || `${percent()}%`],
+                        ["Performance", averageQuiz ? `${averageQuiz}% quiz average` : "Collecting data"]
+                    ].map(([label, value]) => `<div class="lms-structure-card"><span>${label}</span><strong>${escapeHtml(value)}</strong></div>`).join("")}
+                </div>
+            </section>
+        `;
+    }
+
     function renderShell() {
         $("#courseKicker").textContent = course.category;
         $("#courseTitle").textContent = course.title;
         $("#courseSummary").textContent = course.summary;
         $("#courseImage").src = course.image;
         $("#courseImage").alt = course.title;
+        const videoFrame = $("#videoFrame");
+        const lessonBackground = String(course.lessonBackgroundImage || course.image || "").trim();
+        if (videoFrame) {
+            if (lessonBackground) {
+                const safeBackground = lessonBackground.replace(/'/g, "\\'");
+                videoFrame.classList.add("has-lesson-background");
+                videoFrame.style.backgroundImage = `linear-gradient(180deg, rgba(3, 17, 34, 0.18), rgba(3, 17, 34, 0.72)), url('${safeBackground}')`;
+            } else {
+                videoFrame.classList.remove("has-lesson-background");
+                videoFrame.style.backgroundImage = "";
+            }
+        }
         $("#courseMetrics").innerHTML = [
             ["Lectures", lessons.length],
             ["Questions", Number(course.questions).toLocaleString()],
@@ -418,6 +562,7 @@
         renderNotes();
         renderReport();
         renderOutline();
+        renderStructure();
         updateProgress();
     }
 
@@ -644,6 +789,11 @@
                 return;
             }
             if (event.target.closest("#voiceBtn")) speak();
+            const structureTab = event.target.closest("[data-structure-panel]");
+            if (structureTab) {
+                document.querySelectorAll("[data-structure-panel]").forEach((button) => button.classList.toggle("active", button === structureTab));
+                document.querySelectorAll(".lms-structure-panel").forEach((panel) => panel.classList.toggle("active", panel.dataset.panel === structureTab.dataset.structurePanel));
+            }
         });
     }
 

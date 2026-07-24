@@ -135,6 +135,20 @@
         });
     }
 
+    async function requestPasswordReset(email, redirectTo = "") {
+        if (!email) return null;
+        const body = {
+            email: String(email).trim()
+        };
+        if (redirectTo) {
+            body.redirect_to = String(redirectTo).trim();
+        }
+        return request("/auth/v1/recover", {
+            method: "POST",
+            body
+        });
+    }
+
     async function getUser(accessToken) {
         const user = await request("/auth/v1/user", {
             method: "GET",
@@ -144,9 +158,12 @@
     }
 
     function mapCourseRow(row) {
+        const metadata = row.metadata && typeof row.metadata === "object" ? row.metadata : {};
         return {
             id: String(row.id || "").trim(),
             title: String(row.title || "").trim(),
+            unit: String(row.unit || "").trim(),
+            subunit: String(row.subunit || "").trim(),
             category: String(row.category || "Nursing").trim(),
             difficulty: String(row.difficulty || "Beginner").trim(),
             badge: String(row.badge || "New").trim(),
@@ -156,13 +173,34 @@
             format: String(row.format || "Self-paced").trim(),
             summary: String(row.summary || "").trim(),
             image: String(row.image || "").trim(),
+            courseImage: String(row.course_image || row.courseImage || row.image || "").trim(),
             moduleCount: Number(row.module_count || 1),
+            moduleTitles: Array.isArray(row.module_titles) ? row.module_titles : [],
             access: String(row.access || "free").trim(),
             price: Number(row.price || 0),
             lecturer: String(row.lecturer || "").trim(),
             lecturerId: String(row.lecturer_id || "").trim(),
             contentNotes: String(row.content_notes || "").trim(),
             uploadedDocument: row.uploaded_document || null,
+            lessonBackgroundImage: String(row.lesson_background_image || "").trim(),
+            documentCoverImage: String(row.document_cover_image || "").trim(),
+            generatedLessons: Array.isArray(row.generated_lessons) ? row.generated_lessons : [],
+            lectureVideo: String(row.lecture_video || "").trim(),
+            lectureVideoName: String(row.lecture_video_name || "").trim(),
+            lectureVideoSource: String(row.lecture_video_source || "").trim(),
+            faculty: String(metadata.faculty || "").trim(),
+            department: String(metadata.department || "").trim(),
+            courseCode: String(metadata.courseCode || "").trim(),
+            language: String(metadata.language || "English").trim(),
+            prerequisites: Array.isArray(metadata.prerequisites) ? metadata.prerequisites : [],
+            learningOutcomes: Array.isArray(metadata.learningOutcomes) ? metadata.learningOutcomes : [],
+            assignments: Array.isArray(metadata.assignments) ? metadata.assignments : [],
+            assessments: Array.isArray(metadata.assessments) ? metadata.assessments : [],
+            resources: Array.isArray(metadata.resources) ? metadata.resources : [],
+            announcements: Array.isArray(metadata.announcements) ? metadata.announcements : [],
+            discussions: Array.isArray(metadata.discussions) ? metadata.discussions : [],
+            analytics: metadata.analytics && typeof metadata.analytics === "object" ? metadata.analytics : {},
+            status: String(row.status || metadata.status || "published").trim(),
             source: String(row.source || "supabase").trim(),
             updatedAt: String(row.updated_at || "")
         };
@@ -172,6 +210,8 @@
         return {
             id: String(course.id || "").trim(),
             title: String(course.title || "").trim(),
+            unit: String(course.unit || "").trim(),
+            subunit: String(course.subunit || "").trim(),
             category: String(course.category || "Nursing").trim(),
             difficulty: String(course.difficulty || "Beginner").trim(),
             badge: String(course.badge || "New").trim(),
@@ -181,14 +221,37 @@
             format: String(course.format || "Self-paced").trim(),
             summary: String(course.summary || "").trim(),
             image: String(course.image || "").trim(),
+            course_image: String(course.courseImage || course.image || "").trim(),
             module_count: Number(course.moduleCount || 1),
+            module_titles: Array.isArray(course.moduleTitles) ? course.moduleTitles : [],
             access: String(course.access || "free").trim(),
             price: Number(course.price || 0),
             lecturer: String(course.lecturer || "").trim(),
             lecturer_id: String(course.lecturerId || "").trim(),
             content_notes: String(course.contentNotes || "").trim(),
             uploaded_document: course.uploadedDocument || null,
+            lesson_background_image: String(course.lessonBackgroundImage || "").trim(),
+            document_cover_image: String(course.documentCoverImage || "").trim(),
+            generated_lessons: Array.isArray(course.generatedLessons) ? course.generatedLessons : [],
+            lecture_video: String(course.lectureVideo || "").trim(),
+            lecture_video_name: String(course.lectureVideoName || "").trim(),
+            lecture_video_source: String(course.lectureVideoSource || "").trim(),
             source: String(course.source || "admin").trim(),
+            status: String(course.status || "published").trim(),
+            metadata: {
+                faculty: String(course.faculty || "").trim(),
+                department: String(course.department || "").trim(),
+                courseCode: String(course.courseCode || "").trim(),
+                language: String(course.language || "English").trim(),
+                prerequisites: Array.isArray(course.prerequisites) ? course.prerequisites : [],
+                learningOutcomes: Array.isArray(course.learningOutcomes) ? course.learningOutcomes : [],
+                assignments: Array.isArray(course.assignments) ? course.assignments : [],
+                assessments: Array.isArray(course.assessments) ? course.assessments : [],
+                resources: Array.isArray(course.resources) ? course.resources : [],
+                announcements: Array.isArray(course.announcements) ? course.announcements : [],
+                discussions: Array.isArray(course.discussions) ? course.discussions : [],
+                analytics: course.analytics && typeof course.analytics === "object" ? course.analytics : {}
+            },
             updated_at: new Date().toISOString()
         };
     }
@@ -258,6 +321,7 @@
         signIn,
         refreshSession,
         signOut,
+        requestPasswordReset,
         getUser,
         loadCourses,
         saveCourses,

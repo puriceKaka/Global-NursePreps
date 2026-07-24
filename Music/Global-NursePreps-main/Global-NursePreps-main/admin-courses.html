@@ -46,8 +46,29 @@
                     <input type="text" id="titleInput" placeholder="e.g., Emergency Nursing Review" required>
                 </label>
                 <label class="field">
+                    <span>Unit title</span>
+                    <input type="text" id="unitInput" placeholder="e.g., Licensing, NCLEX, BSN" required>
+                </label>
+                <label class="field">
+                    <span>Subunit title</span>
+                    <input type="text" id="subunitInput" placeholder="e.g., NCK, Year 1, Foundations">
+                </label>
+                <label class="field">
                     <span>Category</span>
-                    <input type="text" id="categoryInput" placeholder="e.g., Emergency Care" required>
+                    <input type="text" id="categoryInput" list="categoryOptions" placeholder="e.g., Emergency Care" required>
+                </label>
+                <datalist id="categoryOptions"></datalist>
+                <label class="field">
+                    <span>Faculty</span>
+                    <input type="text" id="facultyInput" placeholder="e.g., Nursing Sciences">
+                </label>
+                <label class="field">
+                    <span>Department</span>
+                    <input type="text" id="departmentInput" placeholder="e.g., Clinical Nursing">
+                </label>
+                <label class="field">
+                    <span>Course code</span>
+                    <input type="text" id="courseCodeInput" placeholder="e.g., NUR 101">
                 </label>
                 <label class="field">
                     <span>Difficulty</span>
@@ -62,8 +83,60 @@
                     <input type="number" id="moduleCountInput" min="1" value="3" required>
                 </label>
                 <label class="field">
+                    <span>Study duration (hours)</span>
+                    <input type="number" id="durationInput" min="0" value="0">
+                </label>
+                <label class="field">
+                    <span>Language</span>
+                    <input type="text" id="languageInput" value="English">
+                </label>
+                <label class="field">
+                    <span>Course price (KES)</span>
+                    <input type="number" id="priceInput" min="0" value="0">
+                </label>
+                <label class="field field-wide">
+                    <span>Module titles</span>
+                    <textarea id="moduleTitlesInput" rows="4" placeholder="One module per line. Example:\nAssessment priorities\nMedication safety\nExam practice"></textarea>
+                </label>
+                <label class="field field-wide">
+                    <span>Learning outcomes</span>
+                    <textarea id="learningOutcomesInput" rows="3" placeholder="One outcome per line."></textarea>
+                </label>
+                <label class="field field-wide">
+                    <span>Prerequisites</span>
+                    <textarea id="prerequisitesInput" rows="3" placeholder="One prerequisite per line."></textarea>
+                </label>
+                <label class="field field-wide">
+                    <span>Assignments</span>
+                    <textarea id="assignmentsInput" rows="3" placeholder="One assignment per line. Example:\nCase study submission | 2026-08-15 | 20 marks"></textarea>
+                </label>
+                <label class="field field-wide">
+                    <span>Assessments</span>
+                    <textarea id="assessmentsInput" rows="3" placeholder="One assessment per line. Example:\nMidterm Test | 30 marks | 70% pass"></textarea>
+                </label>
+                <label class="field field-wide">
+                    <span>Resources</span>
+                    <textarea id="resourcesInput" rows="3" placeholder="One resource per line. Example:\nReference PDF | PDF Documents | assets/file.pdf"></textarea>
+                </label>
+                <label class="field field-wide">
+                    <span>Announcements</span>
+                    <textarea id="announcementsInput" rows="2" placeholder="One announcement per line."></textarea>
+                </label>
+                <label class="field">
                     <span>Image path</span>
                     <input type="text" id="imageInput" value="assets/course-images/default.jpg" required>
+                </label>
+                <label class="field">
+                    <span>Upload course image</span>
+                    <input type="file" id="courseImageInput" accept="image/*">
+                </label>
+                <label class="field">
+                    <span>Lesson background image</span>
+                    <input type="file" id="backgroundImageInput" accept="image/*">
+                </label>
+                <label class="field">
+                    <span>Document cover image</span>
+                    <input type="file" id="documentImageInput" accept="image/*">
                 </label>
                 <label class="field">
                     <span>Lecture video URL</span>
@@ -78,7 +151,7 @@
                     <textarea id="contentNotesInput" rows="6" placeholder="Paste the lecture notes, PDF text, or teaching script here so the system can generate the study notes."></textarea>
                 </label>
                 <label class="field">
-                    <span>Upload notes file</span>
+                    <span>Upload PDF or notes file</span>
                     <input type="file" id="notesFileInput" accept=".txt,.md,.rtf,.pdf,.doc,.docx,text/plain,application/pdf">
                 </label>
                 <label class="field field-wide">

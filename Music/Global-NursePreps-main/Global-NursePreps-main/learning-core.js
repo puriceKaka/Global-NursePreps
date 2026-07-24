@@ -128,30 +128,69 @@
             .slice(0, 60) || "course";
     }
 
+    function normalizeStringList(value) {
+        if (Array.isArray(value)) {
+            return value.map((item) => String(item || "").trim()).filter(Boolean);
+        }
+        return String(value || "")
+            .split(/\r?\n|,/)
+            .map((item) => item.trim())
+            .filter(Boolean);
+    }
+
+    function normalizeObjectList(value) {
+        return Array.isArray(value) ? value.filter((item) => item && typeof item === "object") : [];
+    }
+
     function normalizeCourse(course, fallback = {}) {
         const title = String(course?.title || fallback.title || "Untitled Course").trim();
         const id = String(course?.id || fallback.id || slugify(title)).trim();
         return {
             id,
             title,
+            unit: String(course?.unit || fallback.unit || "").trim(),
+            subunit: String(course?.subunit || fallback.subunit || "").trim(),
             category: String(course?.category || fallback.category || "Nursing").trim(),
+            faculty: String(course?.faculty || fallback.faculty || "").trim(),
+            department: String(course?.department || fallback.department || "").trim(),
+            courseCode: String(course?.courseCode || fallback.courseCode || "").trim(),
             difficulty: String(course?.difficulty || fallback.difficulty || "Beginner").trim(),
             badge: String(course?.badge || fallback.badge || "New").trim(),
             durationHours: Number(course?.durationHours || fallback.durationHours || 0),
+            language: String(course?.language || fallback.language || "English").trim(),
+            prerequisites: normalizeStringList(course?.prerequisites || fallback.prerequisites),
+            learningOutcomes: normalizeStringList(course?.learningOutcomes || course?.outcomes || fallback.learningOutcomes || fallback.outcomes),
             questions: Number(course?.questions || fallback.questions || 0),
             exams: Number(course?.exams || fallback.exams || 0),
             format: String(course?.format || fallback.format || "Self-paced").trim(),
             summary: String(course?.summary || fallback.summary || "Nursing learning course.").trim(),
             image: String(course?.image || fallback.image || COURSE_IMAGES.defaultCourse).trim(),
+            courseImage: String(course?.courseImage || fallback.courseImage || course?.image || fallback.image || COURSE_IMAGES.defaultCourse).trim(),
             moduleCount: Number(course?.moduleCount || fallback.moduleCount || 1),
+            moduleTitles: Array.isArray(course?.moduleTitles)
+                ? course.moduleTitles.map((item) => String(item || "").trim()).filter(Boolean)
+                : (Array.isArray(fallback.moduleTitles) ? fallback.moduleTitles : []),
             access: String(course?.access || fallback.access || (Number(course?.price || fallback.price || 0) > 0 ? "paid" : "free")).trim(),
             price: Number(course?.price || fallback.price || 0),
             lecturer: String(course?.lecturer || fallback.lecturer || "").trim(),
             lecturerId: String(course?.lecturerId || fallback.lecturerId || "").trim(),
             contentNotes: String(course?.contentNotes || fallback.contentNotes || "").trim(),
             uploadedDocument: course?.uploadedDocument || fallback.uploadedDocument || null,
+            lessonBackgroundImage: String(course?.lessonBackgroundImage || fallback.lessonBackgroundImage || "").trim(),
+            documentCoverImage: String(course?.documentCoverImage || fallback.documentCoverImage || "").trim(),
+            generatedLessons: Array.isArray(course?.generatedLessons)
+                ? course.generatedLessons
+                : (Array.isArray(fallback.generatedLessons) ? fallback.generatedLessons : []),
             lectureVideo: String(course?.lectureVideo || fallback.lectureVideo || "").trim(),
             lectureVideoName: String(course?.lectureVideoName || fallback.lectureVideoName || "").trim(),
+            lectureVideoSource: String(course?.lectureVideoSource || fallback.lectureVideoSource || "").trim(),
+            assignments: normalizeObjectList(course?.assignments || fallback.assignments),
+            assessments: normalizeObjectList(course?.assessments || fallback.assessments),
+            resources: normalizeObjectList(course?.resources || fallback.resources),
+            announcements: normalizeObjectList(course?.announcements || fallback.announcements),
+            discussions: normalizeObjectList(course?.discussions || fallback.discussions),
+            analytics: course?.analytics && typeof course.analytics === "object" ? course.analytics : (fallback.analytics || {}),
+            status: String(course?.status || fallback.status || "published").trim(),
             source: String(course?.source || fallback.source || "admin").trim()
         };
     }
@@ -209,7 +248,7 @@
     }
 
     function getSession() {
-        const session = safeJsonParse(localStorage.getItem("nurseprep_session"), null);
+        const session = window.GnpUtils?.getSession?.() || null;
         if (!session?.userId) return null;
         if (window.GnpAuthSecurity?.isSessionValid && !window.GnpAuthSecurity.isSessionValid(session)) {
             return null;
