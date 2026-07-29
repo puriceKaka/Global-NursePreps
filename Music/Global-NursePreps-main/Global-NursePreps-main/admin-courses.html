@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>window.location.replace("admin.html#courses");</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Courses | Global NursePrep</title>
+    <link rel="icon" type="image/jpeg" href="logo/finalLogo.jpg?v=20260729">
     <link rel="stylesheet" href="homepage.css">
     <link rel="stylesheet" href="admin-courses.css">
     <script defer src="js/admin-api.js"></script>
     <script defer src="js/admin-auth.js"></script>
     <script defer src="js/supabase-config.js"></script>
     <script defer src="js/supabase-bridge.js"></script>
+    <script defer src="js/course-materials.js"></script>
     <script defer src="learning-core.js"></script>
     <script defer src="admin-courses.js"></script>
     <link rel="stylesheet" href="css/site-loader.css">
@@ -151,8 +154,9 @@
                     <textarea id="contentNotesInput" rows="6" placeholder="Paste the lecture notes, PDF text, or teaching script here so the system can generate the study notes."></textarea>
                 </label>
                 <label class="field">
-                    <span>Upload PDF or notes file</span>
-                    <input type="file" id="notesFileInput" accept=".txt,.md,.rtf,.pdf,.doc,.docx,text/plain,application/pdf">
+                    <span>Upload learning material</span>
+                    <input type="file" id="notesFileInput" accept=".pdf,.pptx,.docx,.txt,.md,.rtf,application/pdf,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                    <small>PDF, PowerPoint, Word, or text will be converted into notes and modules.</small>
                 </label>
                 <label class="field field-wide">
                     <span>Summary</span>
