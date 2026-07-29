@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /admin-courses.html
+Disallow: /Dashboard.html
+Disallow: /Profile.html
+Disallow: /my-learnings.html
+Disallow: /payments.html
+Disallow: /certificate.html
+
+Sitemap: https://global-nurse-preps.vercel.app/sitemap.xml

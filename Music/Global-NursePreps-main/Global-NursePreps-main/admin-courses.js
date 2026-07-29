@@ -254,14 +254,19 @@
         const durationHours = Number($("#durationInput")?.value || 0);
         const language = ($("#languageInput")?.value || "English").trim();
         const price = Number($("#priceInput")?.value || 0);
-        const moduleTitles = parseModuleTitles($("#moduleTitlesInput")?.value || "", moduleCount, title);
+        let moduleTitles = parseModuleTitles($("#moduleTitlesInput")?.value || "", moduleCount, title);
+        const courseId = `${slugify(title)}-${Date.now().toString(36)}`;
         const image = ($("#imageInput")?.value || "assets/course-images/default.jpg").trim();
         const courseImageFile = $("#courseImageInput")?.files?.[0] || null;
         const backgroundImageFile = $("#backgroundImageInput")?.files?.[0] || null;
         const documentImageFile = $("#documentImageInput")?.files?.[0] || null;
         const videoUrl = ($("#videoUrlInput")?.value || "").trim();
         const videoFile = $("#videoFileInput")?.files?.[0] || null;
-        const lectureVideo = videoFile ? await readFileAsDataUrl(videoFile) : videoUrl;
+        let videoAsset = null;
+        if (videoFile) {
+            videoAsset = await window.GnpCourseMaterials.processVideo(videoFile, { courseId });
+        }
+        const lectureVideo = videoAsset?.link || videoUrl;
         const notesFile = $("#notesFileInput")?.files?.[0] || null;
         const summary = ($("#summaryInput")?.value || "").trim();
         const rawNotes = cleanNotesText($("#contentNotesInput")?.value || "");
@@ -274,26 +279,18 @@
         let contentNotes = rawNotes;
         let generatedLessons = [];
 
-        if (notesFile && looksLikePdf(notesFile)) {
+        let material = null;
+        if (notesFile) {
             try {
-                const pdfDataUrl = await readFileAsDataUrl(notesFile);
-                const result = await window.GnpAdminApi?.generateLessonsFromPdf?.({
-                    fileName: notesFile.name,
-                    pdfDataUrl
-                });
-                contentNotes = cleanNotesText(result?.contentNotes || rawNotes);
-                generatedLessons = normalizeLessons(result?.lessons || result?.generatedLessons);
+                material = await window.GnpCourseMaterials.processDocument(notesFile, { courseId });
+                contentNotes = rawNotes;
+                generatedLessons = normalizeLessons(material.generatedLessons);
+                if (material.moduleTitles.length) moduleTitles = material.moduleTitles;
             } catch (error) {
-                console.error("PDF lesson generation failed", error);
-                contentNotes = cleanNotesText(rawNotes || `Uploaded PDF: ${notesFile.name}`);
-                generatedLessons = [];
+                console.error("Learning-material conversion failed", error);
+                window.alert(error?.message || "Unable to upload and convert the learning material.");
+                return;
             }
-        } else if (notesFile && /\.(txt|md|rtf)$/i.test(notesFile.name)) {
-            contentNotes = cleanNotesText(await readFileAsText(notesFile));
-        }
-
-        if (!contentNotes && notesFile) {
-            contentNotes = `Uploaded study file: ${notesFile.name}\nUse the notes field to paste the extracted lecture text so students get full generated study notes.`;
         }
 
         if (!generatedLessons.length && contentNotes) {
@@ -314,7 +311,7 @@
         if (!title || !category || !summary) return;
 
         core.addCourse({
-            id: `${slugify(title)}-${Date.now().toString(36)}`,
+            id: courseId,
             title,
             unit,
             subunit,
@@ -336,15 +333,14 @@
             summary,
             contentNotes,
             moduleTitles,
-            uploadedDocument: notesFile ? {
-                name: notesFile.name,
-                type: notesFile.type,
-                size: notesFile.size
-            } : null,
+            uploadedDocument: material,
             generatedLessons,
             assignments: parseStructuredRows($("#assignmentsInput")?.value || "", { prefix: "assignment", label: "Assignment", type: "Assignment" }),
             assessments: parseStructuredRows($("#assessmentsInput")?.value || "", { prefix: "assessment", label: "Assessment", type: "Assessment" }),
-            resources: parseStructuredRows($("#resourcesInput")?.value || "", { prefix: "resource", label: "Resource" }),
+            resources: [
+                ...(material ? [material] : []),
+                ...parseStructuredRows($("#resourcesInput")?.value || "", { prefix: "resource", label: "Resource" })
+            ],
             announcements: parseLines($("#announcementsInput")?.value || "").map((message, index) => ({
                 id: `announcement-${index + 1}`,
                 title: `Announcement ${index + 1}`,
@@ -354,6 +350,7 @@
             lectureVideo,
             lectureVideoName: videoFile?.name || "",
             lectureVideoSource: videoFile?.name || videoUrl || "",
+            lectureVideoAsset: videoAsset,
             badge: "Admin Added",
             format: "Self-paced",
             durationHours,

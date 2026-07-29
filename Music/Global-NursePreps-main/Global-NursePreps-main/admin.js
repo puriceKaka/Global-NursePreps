@@ -179,7 +179,7 @@
             image: existing.image || "assets/course-images/default.jpg",
             moduleCount: generatedLessons.length || Number(existing.moduleCount || 1),
             moduleTitles: material?.moduleTitles?.length ? material.moduleTitles : (existing.moduleTitles || []),
-            contentNotes: material?.extractedNotes || existing.contentNotes || "",
+            contentNotes: existing.contentNotes || "",
             uploadedDocument: material || existing.uploadedDocument || null,
             generatedLessons,
             resources: material

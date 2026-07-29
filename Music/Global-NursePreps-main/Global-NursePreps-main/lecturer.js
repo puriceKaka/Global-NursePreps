@@ -467,7 +467,7 @@
                 const material = await window.GnpCourseMaterials.processDocument(file, { courseId: course.id });
                 resource = { ...resource, ...material, title: resource.title || material.title };
                 window.GnpLearning?.updateCourse?.(course.id, {
-                    contentNotes: [course.contentNotes, material.extractedNotes].filter(Boolean).join("\n\n"),
+                    contentNotes: course.contentNotes || "",
                     moduleTitles: [...(course.moduleTitles || []), ...(material.moduleTitles || [])],
                     generatedLessons: [...(course.generatedLessons || []), ...(material.generatedLessons || [])],
                     resources: [...(course.resources || []), resource],
@@ -547,22 +547,9 @@
     function loadDocumentIntoNotes(file) {
         const message = $("#publishMessage");
         if (!file) return;
-        const notes = $("#publishNotes");
-        if (/\.(txt|md|rtf)$/i.test(file.name)) {
-            const reader = new FileReader();
-            reader.addEventListener("load", () => {
-                notes.value = String(reader.result || "");
-                if (message) {
-                    message.textContent = "Document text loaded into the course notes.";
-                    message.className = "form-message success";
-                }
-            });
-            reader.readAsText(file);
-            return;
-        }
         if (message) {
-            message.textContent = "Document attached. For PDF or Word files, paste the main notes into the course notes box before posting.";
-            message.className = "form-message";
+            message.textContent = `${file.name} will be kept in its original format and organized into course modules.`;
+            message.className = "form-message success";
         }
     }
 
@@ -599,7 +586,7 @@
         void Promise.all([courseImagePromise, videoPromise, materialPromise]).then(([courseImage, videoAsset, material]) => {
             const lectureVideo = videoAsset?.link || ($("#publishVideoUrl").value || "").trim();
             if (material?.moduleTitles?.length) moduleTitles = material.moduleTitles;
-            const generatedNotes = material?.extractedNotes || notes;
+            const generatedNotes = notes;
             const course = {
                 id: courseId,
                 title,
