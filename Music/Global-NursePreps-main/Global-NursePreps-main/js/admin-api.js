@@ -163,12 +163,12 @@ window.GnpAdminApi = (() => {
         }
 
         if (method === "POST" && cleanPath === "/api/admin/bootstrap") {
+            const name = String(body.name || "").trim();
             const email = String(body.email || "").trim().toLowerCase();
             const password = String(body.password || "");
-            const setupKey = String(body.setupKey || "").trim();
             const passwordCheck = window.GnpAuthSecurity?.validatePassword?.(password);
-            if (!email || !setupKey || !passwordCheck?.ok) {
-                throw new Error(passwordCheck?.message || "A valid admin email, setup key, and strong password are required.");
+            if (!name || !email || !passwordCheck?.ok) {
+                throw new Error(passwordCheck?.message || "A valid administrator name, email, and strong password are required.");
             }
 
             const existing = getLocalAccount();
@@ -186,6 +186,7 @@ window.GnpAdminApi = (() => {
                 };
             const account = {
                 id: "admin_primary",
+                name,
                 email,
                 role: "admin",
                 ...record,
@@ -197,7 +198,7 @@ window.GnpAdminApi = (() => {
             setLocalSession({
                 id: "admin_session",
                 userId: account.id,
-                name: email,
+                name: account.name || email,
                 email,
                 role: "admin",
                 provider: "local-admin",
@@ -236,7 +237,7 @@ window.GnpAdminApi = (() => {
             setLocalSession({
                 id: "admin_session",
                 userId: account.id,
-                name: account.email,
+                name: account.name || account.email,
                 email: account.email,
                 role: "admin",
                 provider: "local-admin",
@@ -388,14 +389,25 @@ window.GnpAdminApi = (() => {
             method: "POST",
             body: { email, password }
         })),
-        bootstrap: ({ email, password, setupKey }) => withFallback("/api/admin/bootstrap", {
+        bootstrap: ({ name, email, password }) => withFallback("/api/admin/bootstrap", {
             method: "POST",
-            body: { email, password, setupKey }
+            body: { name, email, password }
         }, () => requestLocal("/api/admin/bootstrap", {
             method: "POST",
-            body: { email, password, setupKey }
+            body: { name, email, password }
         })),
-        logout: () => withFallback("/api/admin/logout", { method: "POST" }, () => requestLocal("/api/admin/logout", { method: "POST" })),
+        logout: async () => {
+            try {
+                return await withFallback(
+                    "/api/admin/logout",
+                    { method: "POST" },
+                    () => requestLocal("/api/admin/logout", { method: "POST" })
+                );
+            } finally {
+                // Never leave the local fallback session available after logout.
+                setLocalSession(null);
+            }
+        },
         loadState: () => withFallback("/api/admin/state", { method: "GET" }, () => requestLocal("/api/admin/state", { method: "GET" })),
         saveState: (state) => withFallback("/api/admin/state", {
             method: "PUT",

@@ -166,9 +166,18 @@ body.lecturer-authenticated .lecturer-shell {
     align-content: start;
     min-height: 100%;
     padding: 28px 24px;
+    gap: 1.25rem;
     border: 0;
     border-radius: 0;
     box-shadow: none;
+}
+
+.lecturer-auth-forms .lecturer-form label + label {
+    margin-top: 0.5rem;
+}
+
+.lecturer-auth-forms .lecturer-form > .primary-button {
+    margin-top: 1rem;
 }
 
 .lecturer-auth-forms .lecturer-form.hidden,

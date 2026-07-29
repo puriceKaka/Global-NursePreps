@@ -10,6 +10,7 @@
     };
     const STUDENT_SESSION_KEY = "nurseprep_session";
     const ADMIN_SESSION_KEY = "gnp_admin_session";
+    const LECTURER_RESET_KEY = "gnp_lecturer_accounts_reset_20260729";
 
     const $ = (selector) => document.querySelector(selector);
     const $$ = (selector) => Array.from(document.querySelectorAll(selector));
@@ -25,6 +26,18 @@
 
     function writeJson(key, value) {
         localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    function resetExistingLecturerAccountsOnce() {
+        if (localStorage.getItem(LECTURER_RESET_KEY) === "complete") return;
+
+        localStorage.removeItem(KEYS.session);
+        localStorage.removeItem(KEYS.lecturers);
+        localStorage.removeItem("gnp_last_lecturer_application");
+
+        const adminState = readJson("gnp_admin_state", {});
+        writeJson("gnp_admin_state", { ...adminState, lecturers: [] });
+        localStorage.setItem(LECTURER_RESET_KEY, "complete");
     }
 
     function uid(prefix) {
@@ -867,6 +880,12 @@
     }
 
     function main() {
+        resetExistingLecturerAccountsOnce();
+
+        // Do not restore lecturer access after a reload or a new page visit.
+        // Credentials must be entered again for every portal page lifetime.
+        localStorage.removeItem(KEYS.session);
+
         $$(".tab-button").forEach((button) => {
             const label = button.querySelector("span:nth-child(2)")?.textContent?.trim();
             if (label) {
@@ -907,12 +926,7 @@
         window.addEventListener("gnp:assessment-updated", renderAssessmentControl);
         document.addEventListener("click", handleTabs);
 
-        if (getSession()?.role === "lecturer" && currentLecturer()?.status === "approved") {
-            showApp();
-        } else {
-            localStorage.removeItem(KEYS.session);
-            showAuth();
-        }
+        showAuth();
     }
 
     document.addEventListener("DOMContentLoaded", main);
