@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lecturer Portal | Global NursePrep</title>
     <link rel="stylesheet" href="homepage.css">
-    <link rel="stylesheet" href="lecturer.css">
+    <link rel="stylesheet" href="lecturer.css?v=20260729-compact-padding">
     <script defer src="js/supabase-config.js"></script>
     <script defer src="js/supabase-bridge.js"></script>
+    <script defer src="js/course-materials.js"></script>
+    <script defer src="js/assessment-control.js?v=20260729-assessment-control"></script>
     <script defer src="learning-core.js"></script>
     <script defer src="js/auth-security.js"></script>
-    <script defer src="lecturer.js"></script>
+    <script defer src="lecturer.js?v=20260729-icon-rail"></script>
     <link rel="stylesheet" href="css/site-loader.css">
     <script src="js/site-loader.js"></script>
 </head>
@@ -43,40 +45,52 @@
                     <img src="logo/home%20image.jpg" alt="Lecturer portal preview" loading="lazy">
                 </div>
             </div>
-            <form class="lecturer-form" id="lecturerLoginForm">
-                <h2>Lecturer login</h2>
-                <label><span>Email</span><input type="email" id="lecturerEmail" autocomplete="username" required></label>
-                <label><span>Password</span><input type="password" id="lecturerPassword" autocomplete="current-password" required minlength="6"></label>
-                <button class="primary-button" type="submit">Login to lecturer portal</button>
-                <p class="hint">Use the lecturer account you registered with. New accounts wait for admin approval.</p>
-                <p class="form-message" id="lecturerLoginMessage" aria-live="polite"></p>
-                <button class="link-button" type="button" id="showLecturerRegister">Create lecturer account</button>
-            </form>
-            <form class="lecturer-form hidden" id="lecturerRegisterForm">
-                <h2>Create lecturer account</h2>
-                <label><span>Lecturer name</span><input id="lecturerRegisterName" autocomplete="name" required></label>
-                <label><span>Email</span><input type="email" id="lecturerRegisterEmail" autocomplete="username" required></label>
-                <label><span>Password</span><input type="password" id="lecturerRegisterPassword" autocomplete="new-password" required minlength="6"></label>
-                <button class="primary-button" type="submit">Register lecturer account</button>
-                <p class="hint">After registration you will return to lecturer login.</p>
-                <p class="form-message" id="lecturerRegisterMessage" aria-live="polite"></p>
-                <button class="link-button" type="button" id="showLecturerLogin">Back to login</button>
-            </form>
+            <div class="lecturer-auth-forms">
+                <form class="lecturer-form" id="lecturerLoginForm">
+                    <p class="lecturer-kicker">Secure access</p>
+                    <h2>Lecturer login</h2>
+                    <label><span>Email</span><input type="email" id="lecturerEmail" autocomplete="username" placeholder="Enter lecturer email" required></label>
+                    <label><span>Password</span><input type="password" id="lecturerPassword" autocomplete="current-password" placeholder="Enter password" required minlength="8"></label>
+                    <button class="primary-button" type="submit">Sign in as lecturer</button>
+                    <p class="hint">Only administrator-approved lecturer accounts can enter the teaching workspace.</p>
+                    <p class="form-message" id="lecturerLoginMessage" aria-live="polite"></p>
+                    <button class="link-button" type="button" id="showLecturerRegister">Create lecturer account</button>
+                </form>
+                <form class="lecturer-form hidden" id="lecturerRegisterForm">
+                    <p class="lecturer-kicker">Lecturer application</p>
+                    <h2>Create lecturer account</h2>
+                    <label><span>Full name</span><input id="lecturerRegisterName" autocomplete="name" placeholder="Enter full name" required></label>
+                    <label><span>Email</span><input type="email" id="lecturerRegisterEmail" autocomplete="username" placeholder="Enter email" required></label>
+                    <label><span>Password</span><input type="password" id="lecturerRegisterPassword" autocomplete="new-password" placeholder="Create a strong password" required minlength="8"></label>
+                    <button class="primary-button" type="submit">Submit for admin approval</button>
+                    <p class="hint">Registration creates a pending application. An administrator must approve it before login.</p>
+                    <p class="form-message" id="lecturerRegisterMessage" aria-live="polite"></p>
+                    <button class="link-button" type="button" id="showLecturerLogin">Back to login</button>
+                </form>
+            </div>
         </section>
 
         <section class="lecturer-app hidden" id="lecturerApp">
             <aside class="lecturer-sidebar">
-                <div>
-                    <strong id="lecturerDisplayName">Lecturer</strong>
-                    <p class="muted small" id="lecturerDisplayEmail"></p>
+                <div class="lecturer-sidebar-heading">
+                    <span class="lecturer-sidebar-mark">GN</span>
+                    <div>
+                        <strong id="lecturerDisplayName">Lecturer</strong>
+                        <p class="muted small" id="lecturerDisplayEmail"></p>
+                    </div>
                 </div>
-                <button class="tab-button active" data-panel="dashboardPanel">Dashboard</button>
-                <button class="tab-button" data-panel="subscriptionPanel">Teaching Payment</button>
-                <button class="tab-button" data-panel="groupsPanel">Membership Groups</button>
-                <button class="tab-button" data-panel="meetingsPanel">Meetings</button>
-                <button class="tab-button" data-panel="examsPanel">Submit Exams</button>
-                <button class="tab-button" data-panel="publishPanel">Publish Course</button>
-                <button class="tab-button" data-panel="resourcesPanel">Course Resources</button>
+                <nav class="lecturer-sidebar-menu" aria-label="Lecturer sections">
+                    <button class="tab-button active" data-panel="dashboardPanel"><span class="nav-icon">▦</span><span>Dashboard</span><span class="nav-arrow">›</span></button>
+                    <button class="tab-button" data-panel="subscriptionPanel"><span class="nav-icon">▰</span><span>Teaching payment</span><span class="nav-arrow">›</span></button>
+                    <button class="tab-button" data-panel="groupsPanel"><span class="nav-icon">♧</span><span>Student groups</span><span class="nav-arrow">›</span></button>
+                    <button class="tab-button" data-panel="meetingsPanel"><span class="nav-icon">◉</span><span>Meetings</span><span class="nav-arrow">›</span></button>
+                    <button class="tab-button" data-panel="examsPanel"><span class="nav-icon">✓</span><span>Submit exams</span><span class="nav-arrow">›</span></button>
+                    <button class="tab-button" data-panel="publishPanel"><span class="nav-icon">▤</span><span>Publish course</span><span class="nav-arrow">›</span></button>
+                    <button class="tab-button" data-panel="resourcesPanel"><span class="nav-icon">⬆</span><span>Course resources</span><span class="nav-arrow">›</span></button>
+                    <button class="tab-button" data-panel="studentsPanel"><span class="nav-icon">♟</span><span>My students</span><span class="nav-arrow">›</span></button>
+                    <button class="tab-button" data-panel="invigilationPanel"><span class="nav-icon">◉</span><span>Live invigilation</span><span class="nav-arrow">›</span></button>
+                    <button class="tab-button" data-panel="markingPanel"><span class="nav-icon">▥</span><span>Marking & results</span><span class="nav-arrow">›</span></button>
+                </nav>
             </aside>
 
             <div class="lecturer-content">
@@ -88,16 +102,6 @@
                         </div>
                     </div>
                     <div class="stat-grid" id="lecturerStats"></div>
-                    <div class="split-grid">
-                        <article class="lecturer-card">
-                            <h3>Your records</h3>
-                            <p class="muted">Groups, meetings, exams, and resources stay attached to your lecturer account.</p>
-                        </article>
-                        <article class="lecturer-card">
-                            <h3>Course payments</h3>
-                            <p class="muted">Free courses open immediately. Paid courses require a recorded M-Pesa, PayPal, card, or wallet reference.</p>
-                        </article>
-                    </div>
                 </section>
 
                 <section class="panel" id="subscriptionPanel">
@@ -179,7 +183,8 @@
                         <label><span>Resource title</span><input id="resourceTitle" required></label>
                         <label><span>Course</span><select id="resourceCourse"></select></label>
                         <label><span>Type</span><select id="resourceType"><option>Lecture Notes</option><option>Video</option><option>Worksheet</option><option>Question Bank</option></select></label>
-                        <label><span>URL or path</span><input id="resourceLink" placeholder="https://... or assets/file.pdf" required></label>
+                        <label><span>URL or path</span><input id="resourceLink" placeholder="https://... (optional when uploading a file)"></label>
+                        <label><span>Upload material</span><input id="resourceFile" type="file" accept=".pdf,.pptx,.docx,.txt,.md,.rtf,video/*"></label>
                         <button class="primary-button" type="submit">Add resource</button>
                     </form>
                     <div class="data-grid" id="resourcesList"></div>
@@ -212,7 +217,7 @@
                         <label class="wide"><span>Assessments</span><textarea id="publishAssessments" rows="3" placeholder="One assessment per line. Example:\nFinal Examination | 100 marks | 80% pass"></textarea></label>
                         <label class="wide"><span>Course resources</span><textarea id="publishResources" rows="3" placeholder="One resource per line. Example:\nReference PDF | PDF | assets/file.pdf"></textarea></label>
                         <label class="wide"><span>Announcements</span><textarea id="publishAnnouncements" rows="2" placeholder="One announcement per line."></textarea></label>
-                        <label><span>Document</span><input id="publishDocument" type="file" accept=".txt,.md,.pdf,.doc,.docx,.rtf"></label>
+                        <label><span>Learning material</span><input id="publishDocument" type="file" accept=".pdf,.pptx,.docx,.txt,.md,.rtf"></label>
                         <label><span>Document cover image</span><input id="publishDocumentImage" type="file" accept="image/*"></label>
                         <label><span>Course image</span><input id="publishCourseImage" type="file" accept="image/*"></label>
                         <label><span>Lecture video URL</span><input id="publishVideoUrl" type="url" placeholder="https://..."></label>
@@ -223,6 +228,18 @@
                     </form>
                     <p class="form-message" id="publishMessage" aria-live="polite"></p>
                     <div class="data-grid" id="publishedCoursesList"></div>
+                </section>
+                <section class="panel" id="studentsPanel">
+                    <div class="panel-head"><div><p class="lecturer-kicker">Learner oversight</p><h2>My students</h2><p class="muted">Students appearing in your assessment sessions and their conduct status.</p></div></div>
+                    <div class="data-grid" id="lecturerStudentList"></div>
+                </section>
+                <section class="panel" id="invigilationPanel">
+                    <div class="panel-head"><div><p class="lecturer-kicker">Live assessment</p><h2>Invigilation room</h2><p class="muted">Watch attempt status, camera availability, progress, and violation alerts.</p></div></div>
+                    <div class="data-grid" id="lecturerAttemptList"></div>
+                </section>
+                <section class="panel" id="markingPanel">
+                    <div class="panel-head"><div><p class="lecturer-kicker">Assessment review</p><h2>Marking & results</h2><p class="muted">Review automatic scores, answers, and proctoring evidence before publishing.</p></div></div>
+                    <div class="data-grid" id="lecturerResultsList"></div>
                 </section>
             </div>
         </section>

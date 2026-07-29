@@ -1,3 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
+
+:root {
+    --portal-font: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+    font-family: var(--portal-font);
+}
+
 .portal-topbar,
 .portal-brand,
 .portal-links,
@@ -23,6 +37,36 @@
     background: var(--navy);
     color: #fff;
     box-shadow: 0 10px 24px rgba(8, 27, 52, 0.16);
+}
+
+body.admin-authenticated {
+    overflow: hidden;
+}
+
+body.admin-authenticated .portal-app {
+    font-size: 14px;
+}
+
+body.admin-authenticated .portal-app h2 {
+    font-size: 1.35rem;
+}
+
+body.admin-authenticated .portal-app h3 {
+    font-size: 1rem;
+}
+
+body.admin-authenticated .portal-app input,
+body.admin-authenticated .portal-app select,
+body.admin-authenticated .portal-app textarea,
+body.admin-authenticated .portal-app button {
+    font-size: 13px;
+}
+
+body.admin-authenticated .portal-topbar {
+    position: fixed;
+    inset: 0 0 auto;
+    height: 64px;
+    min-height: 64px;
 }
 
 .portal-brand,
@@ -53,6 +97,16 @@
     width: min(100%, 1440px);
     margin: 0 auto;
     padding: 1.35rem;
+}
+
+body.admin-authenticated .portal-shell {
+    position: fixed;
+    inset: 64px 0 0;
+    width: 100%;
+    height: calc(100dvh - 64px);
+    max-width: none;
+    padding: 0;
+    overflow: hidden;
 }
 
 .auth-panel {
@@ -219,6 +273,23 @@
     grid-column: 1 / -1;
 }
 
+#courseAdminForm {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: linear-gradient(145deg, #ffffff, var(--ice));
+}
+
+#courseAdminForm label small {
+    color: var(--muted);
+    font-weight: 600;
+}
+
+#courseAdminForm .primary-button {
+    min-height: 52px;
+}
+
 .hint,
 .form-message {
     margin: 0;
@@ -269,51 +340,196 @@
 
 .portal-app {
     display: grid;
-    grid-template-columns: 250px minmax(0, 1fr);
-    gap: 1rem;
-    align-items: start;
+    grid-template-columns: 76px minmax(0, 1fr);
+    gap: 0;
+    align-items: stretch;
+    height: 100%;
+    min-height: 0;
 }
 
 .portal-sidebar {
-    position: sticky;
-    top: 78px;
-    padding: 0.9rem;
+    position: fixed;
+    left: 0;
+    top: 64px;
+    width: 76px;
+    height: calc(100dvh - 64px);
+    z-index: 20;
+    padding: 0;
     display: grid;
-    gap: 0.55rem;
+    grid-template-rows: 1fr;
+    gap: 0;
+    overflow: hidden;
+    border: 0;
+    border-right: 1px solid var(--border);
+    border-radius: 0;
+    background: #fff;
+    box-shadow: none;
+    transition: width 0.2s ease, box-shadow 0.2s ease;
 }
 
-.portal-sidebar strong {
-    display: block;
-    padding: 0.35rem 0.35rem 0.65rem;
+.portal-sidebar:hover,
+.portal-sidebar:focus-within {
+    width: 290px;
+    box-shadow: 12px 0 28px rgba(11, 31, 58, 0.16);
+}
+
+.sidebar-heading {
+    display: none;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 92px;
+    padding: 1rem 1.15rem;
+    background: #fff;
     border-bottom: 1px solid var(--border);
+}
+
+.sidebar-heading strong,
+.sidebar-heading small {
+    display: block;
+}
+
+.sidebar-heading strong {
     color: var(--navy);
-    margin-bottom: 0.25rem;
+    font-size: 1.05rem;
+}
+
+.sidebar-heading small {
+    margin-top: 0.15rem;
+    color: var(--muted);
+}
+
+.sidebar-mark {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+    border-radius: 12px;
+    background: linear-gradient(145deg, var(--navy), #168d75);
+    color: #fff;
+    font-weight: 900;
+}
+
+.sidebar-menu {
+    display: grid;
+    align-content: start;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: #9aa5ad transparent;
+    overflow-x: hidden;
 }
 
 .tab-button {
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 0.75rem 0.85rem;
-    background: #fff;
-    color: var(--navy);
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    gap: 0.7rem;
+    min-height: 58px;
+    border: 0;
+    border-bottom: 1px solid #e2e7eb;
+    border-radius: 0;
+    padding: 0.75rem;
+    background: transparent;
+    color: #344054;
     cursor: pointer;
     text-align: left;
-    font-weight: 850;
+    font-weight: 750;
+    transition: background 0.18s ease, color 0.18s ease;
 }
 
 .tab-button.active,
 .tab-button:hover {
-    background: var(--navy);
+    background: #eef7f3;
+    color: #0f6248;
+}
+
+.tab-button.active {
+    color: #0f6248;
+    box-shadow: inset 3px 0 #168d75;
+}
+
+.tab-button > span:nth-child(2),
+.tab-button .nav-arrow {
+    display: none;
+}
+
+.tab-button:hover > span:nth-child(2),
+.tab-button:focus-visible > span:nth-child(2) {
+    position: fixed;
+    left: 84px;
+    z-index: 80;
+    display: block;
+    width: max-content;
+    max-width: 220px;
+    padding: 0.55rem 0.75rem;
+    border-radius: 7px;
+    background: #121716;
     color: #fff;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.24);
+    font-size: 0.88rem;
+    white-space: nowrap;
+}
+
+.portal-sidebar:hover .tab-button,
+.portal-sidebar:focus-within .tab-button {
+    grid-template-columns: 30px minmax(0, 1fr) 20px;
+    padding: 0.75rem 1rem;
+}
+
+.portal-sidebar:hover .tab-button > span:nth-child(2),
+.portal-sidebar:hover .tab-button .nav-arrow,
+.portal-sidebar:focus-within .tab-button > span:nth-child(2),
+.portal-sidebar:focus-within .tab-button .nav-arrow {
+    position: static;
+    z-index: auto;
+    display: block;
+    width: auto;
+    max-width: none;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    color: inherit;
+    box-shadow: none;
+    font-size: inherit;
+    white-space: normal;
+}
+
+.nav-icon {
+    font-size: 1.35rem;
+    text-align: center;
+}
+
+.nav-arrow {
+    font-size: 1.8rem;
+    font-weight: 400;
+    line-height: 1;
+    text-align: right;
 }
 
 .portal-content {
+    grid-column: 2;
     min-width: 0;
+    height: 100%;
+    padding: 1.5rem clamp(1rem, 3vw, 3rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background:
+        radial-gradient(circle at 100% 100%, rgba(31, 166, 122, 0.18), transparent 42%),
+        #eef7f2;
 }
 
 .panel {
     display: none;
-    padding: 1.1rem;
+    width: min(100%, 1500px);
+    margin: 0 auto;
+    padding: 1.25rem 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
 }
 
 .panel.active {
@@ -340,21 +556,200 @@
 .stat-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 0.75rem;
-    margin-bottom: 0.85rem;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
 }
 
 .stat-card {
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 0.85rem;
-    background: linear-gradient(145deg, #fff, #f4f9fc);
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    border: 0;
+    border-left: 4px solid #168d75;
+    border-radius: 10px;
+    padding: 1rem;
+    background: #fff;
+    box-shadow: 0 3px 10px rgba(11, 31, 58, 0.05);
 }
 
 .stat-card strong {
     display: block;
     color: var(--navy);
-    font-size: 1.55rem;
+    font-size: 1.6rem;
+    line-height: 1.15;
+}
+
+.stat-card small {
+    display: block;
+    margin-top: 0.2rem;
+    color: var(--muted);
+}
+
+.stat-icon {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    border-radius: 10px;
+    background: #e9f7f2;
+    color: #16704f;
+    font-size: 1.25rem;
+    font-weight: 900;
+}
+
+.dashboard-heading {
+    justify-content: space-between;
+}
+
+.dashboard-heading .muted {
+    margin: 0.4rem 0 0;
+}
+
+.dashboard-columns {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+    gap: 1rem;
+}
+
+.dashboard-section {
+    padding: 1.1rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #fff;
+}
+
+.activity-section {
+    margin-top: 1rem;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.8rem;
+}
+
+.section-title h3,
+.section-title p {
+    margin: 0;
+}
+
+.attention-count {
+    display: grid;
+    place-items: center;
+    min-width: 34px;
+    height: 34px;
+    padding: 0 0.6rem;
+    border-radius: 999px;
+    background: #fff1df;
+    color: #9a5b00;
+    font-weight: 900;
+}
+
+.operations-list {
+    display: grid;
+}
+
+.operation-row {
+    display: grid;
+    grid-template-columns: 14px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.7rem;
+    width: 100%;
+    padding: 0.85rem 0.2rem;
+    border: 0;
+    border-top: 1px solid #e7edf0;
+    background: transparent;
+    color: var(--navy);
+    text-align: left;
+    cursor: pointer;
+}
+
+.operation-row:first-child {
+    border-top: 0;
+}
+
+.operation-row small {
+    display: block;
+    margin-top: 0.15rem;
+    color: var(--muted);
+}
+
+.operation-row b {
+    color: #16704f;
+    font-size: 0.9rem;
+}
+
+.operation-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #e59a23;
+}
+
+.activity-icon {
+    color: #168d75;
+    font-size: 1.6rem;
+    line-height: 1;
+}
+
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+}
+
+.quick-actions button {
+    min-height: 104px;
+    padding: 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #f8fbfc;
+    color: var(--navy);
+    text-align: left;
+    cursor: pointer;
+}
+
+.quick-actions button:hover {
+    border-color: #168d75;
+    background: #eef9f5;
+}
+
+.quick-actions button > span,
+.quick-actions strong,
+.quick-actions small {
+    display: block;
+}
+
+.quick-actions button > span {
+    color: #168d75;
+    font-size: 1.35rem;
+    font-weight: 900;
+}
+
+.quick-actions small {
+    margin-top: 0.2rem;
+    color: var(--muted);
+}
+
+.dashboard-empty {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 0.25rem;
+    color: #16704f;
+}
+
+.dashboard-empty > span {
+    font-size: 1.5rem;
+}
+
+.dashboard-empty small {
+    display: block;
+    margin-top: 0.15rem;
+    color: var(--muted);
 }
 
 .split-grid,
@@ -377,6 +772,190 @@
 
 .data-card p {
     margin: 0;
+}
+
+.record-table {
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #fff;
+}
+
+.record-table-row {
+    display: grid;
+    grid-template-columns: var(--table-columns);
+    align-items: center;
+    min-width: 0;
+    border-top: 1px solid var(--border);
+}
+
+.record-table-row:first-child {
+    border-top: 0;
+}
+
+.record-table-head {
+    background: #edf8f4;
+    color: #5f728d;
+    font-size: 0.78rem;
+    font-weight: 850;
+}
+
+.record-table-head > span,
+.record-cell {
+    min-width: 0;
+    padding: 0.8rem 0.75rem;
+}
+
+.record-cell {
+    color: #172033;
+    overflow-wrap: anywhere;
+}
+
+.data-grid:has(> .record-table) {
+    display: block;
+}
+
+.record-cell small {
+    display: block;
+    max-width: 320px;
+    margin-top: 0.2rem;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.table-actions {
+    flex-wrap: wrap;
+}
+
+.table-link {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.45rem 0.65rem;
+    background: #eaf5ff;
+    color: var(--navy);
+    font-weight: 850;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.table-empty {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 1.2rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--muted);
+}
+
+.data-grid:has(> .table-empty) {
+    display: block;
+    width: 100%;
+}
+
+/* Record collections that still use rich cards render as one continuous list. */
+.data-grid:has(> .data-card) {
+    display: block;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #fff;
+}
+
+.data-grid:has(> .data-card) > .data-card {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border: 0;
+    border-bottom: 1px solid var(--border);
+    border-radius: 0;
+    background: #fff;
+    box-shadow: none;
+}
+
+.data-grid:has(> .data-card) > .data-card:last-child {
+    border-bottom: 0;
+}
+
+.data-grid:has(> .data-card) > .data-card:hover {
+    background: #fbfdfc;
+}
+
+.data-grid:has(> .empty-card:only-child) {
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+}
+
+.data-grid:has(> .empty-card:only-child) > .empty-card {
+    padding: 1.25rem 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: none;
+}
+
+.approval-list {
+    display: grid;
+    gap: 0.65rem;
+}
+
+.approval-row {
+    display: grid;
+    grid-template-columns: minmax(240px, 1fr) minmax(210px, auto) auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #fff;
+}
+
+.approval-identity {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    min-width: 0;
+}
+
+.approval-identity h3,
+.approval-identity p {
+    margin: 0;
+}
+
+.approval-identity p {
+    margin-top: 0.15rem;
+    overflow-wrap: anywhere;
+}
+
+.approval-avatar {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, var(--navy), #168d75);
+    color: #fff;
+    font-weight: 900;
+}
+
+.approval-status,
+.approval-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.approval-actions {
+    justify-content: flex-end;
 }
 
 .course-notes-preview {
@@ -409,6 +988,47 @@
     cursor: pointer;
 }
 
+/* Keep lecturer approval records compact and easy to scan. */
+#lecturerList .record-table {
+    font-size: 13px;
+}
+
+#lecturerList .record-table-head > span,
+#lecturerList .record-cell {
+    padding: 10px 12px;
+}
+
+#lecturerList .record-table-row:not(.record-table-head) {
+    min-height: 52px;
+}
+
+#lecturerList .record-cell > strong {
+    font-size: 13px;
+    line-height: 1.25;
+}
+
+#lecturerList .status-pill {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    min-height: 28px;
+    padding: 4px 11px;
+    font-size: 12px;
+    line-height: 1;
+}
+
+#lecturerList .table-actions {
+    flex-wrap: nowrap;
+    gap: 6px;
+}
+
+#lecturerList .table-actions button {
+    min-height: 34px;
+    padding: 6px 11px;
+    font-size: 12px;
+    line-height: 1;
+}
+
 .danger-button {
     background: #fee4e2 !important;
     color: #b42318 !important;
@@ -434,8 +1054,73 @@
         grid-template-columns: 1fr;
     }
 
+    #courseAdminForm {
+        grid-template-columns: 1fr;
+    }
+
     .portal-sidebar {
         position: static;
+        width: auto;
+        height: auto;
+        border-right: 0;
+        border-bottom: 1px solid var(--border);
+        background: #f5f7f8;
+        overflow: visible;
+    }
+
+    .sidebar-heading {
+        display: flex;
+    }
+
+    .portal-content {
+        grid-column: 1;
+        height: auto;
+        padding: 1rem;
+        overflow: visible;
+    }
+
+    .dashboard-columns {
+        grid-template-columns: 1fr;
+    }
+
+    .approval-row {
+        grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .approval-actions {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+    }
+
+    .sidebar-menu {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        overflow: visible;
+    }
+
+    .tab-button {
+        grid-template-columns: 30px minmax(0, 1fr) 20px;
+        border-right: 1px solid #e2e7eb;
+        color: #27323b;
+        padding: 0.85rem 1.1rem;
+    }
+
+    .tab-button > span:nth-child(2),
+    .tab-button .nav-arrow {
+        display: block;
+    }
+
+    .tab-button:hover > span:nth-child(2),
+    .tab-button:focus-visible > span:nth-child(2) {
+        position: static;
+        width: auto;
+        max-width: none;
+        padding: 0;
+        border-radius: 0;
+        background: transparent;
+        color: inherit;
+        box-shadow: none;
+        font-size: inherit;
+        white-space: normal;
     }
 }
 
@@ -471,5 +1156,116 @@
 
     .portal-links {
         justify-content: flex-start;
+    }
+
+    .sidebar-menu {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Compact typography across the complete authenticated admin portal. */
+body.admin-authenticated,
+body.admin-authenticated .portal-topbar,
+body.admin-authenticated .portal-app,
+body.admin-authenticated .portal-app p,
+body.admin-authenticated .portal-app span,
+body.admin-authenticated .portal-app strong,
+body.admin-authenticated .portal-app small,
+body.admin-authenticated .portal-app label,
+body.admin-authenticated .portal-app a,
+body.admin-authenticated .portal-app button,
+body.admin-authenticated .portal-app input,
+body.admin-authenticated .portal-app select,
+body.admin-authenticated .portal-app textarea {
+    font-size: 10px !important;
+}
+
+body.admin-authenticated .portal-app h2 {
+    font-size: 15px !important;
+    line-height: 1.25;
+}
+
+body.admin-authenticated .portal-app h3 {
+    font-size: 12px !important;
+    line-height: 1.3;
+}
+
+body.admin-authenticated .portal-kicker,
+body.admin-authenticated .portal-app small {
+    font-size: 9px !important;
+}
+
+body.admin-authenticated .status-pill {
+    min-height: 22px !important;
+    padding: 3px 8px !important;
+    font-size: 9px !important;
+}
+
+body.admin-authenticated .record-table-head > span,
+body.admin-authenticated .record-cell {
+    padding: 7px 9px !important;
+    font-size: 10px !important;
+}
+
+body.admin-authenticated .record-table-row:not(.record-table-head) {
+    min-height: 40px !important;
+}
+
+body.admin-authenticated .data-actions button,
+body.admin-authenticated .table-link {
+    min-height: 27px !important;
+    padding: 4px 8px !important;
+    font-size: 9px !important;
+}
+
+body.admin-authenticated .portal-content {
+    padding: 10px 12px !important;
+}
+
+body.admin-authenticated .panel {
+    padding: 8px 0 !important;
+}
+
+body.admin-authenticated .panel-head {
+    margin-bottom: 8px !important;
+}
+
+body.admin-authenticated .portal-card,
+body.admin-authenticated .data-card,
+body.admin-authenticated .stat-card {
+    padding: 8px 10px !important;
+}
+
+body.admin-authenticated .record-table-head > span,
+body.admin-authenticated .record-cell {
+    padding: 5px 7px !important;
+}
+
+body.admin-authenticated .record-table-row:not(.record-table-head) {
+    min-height: 34px !important;
+}
+
+body.admin-authenticated .portal-form {
+    gap: 6px !important;
+    padding: 8px !important;
+}
+
+body.admin-authenticated .portal-form input,
+body.admin-authenticated .portal-form select,
+body.admin-authenticated .portal-form textarea {
+    min-height: 32px !important;
+    padding: 5px 7px !important;
+}
+
+@media (max-width: 920px) {
+    body.admin-authenticated {
+        overflow: auto;
+    }
+
+    body.admin-authenticated .portal-shell {
+        position: static;
+        height: auto;
+        margin-top: 64px;
+        overflow: visible;
     }
 }

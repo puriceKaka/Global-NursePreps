@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Portal | Global NursePrep</title>
     <link rel="stylesheet" href="homepage.css">
-    <link rel="stylesheet" href="admin.css?v=20260724-auth-level-columns-2">
+    <link rel="stylesheet" href="admin.css?v=20260729-compact-padding">
     <style>
         /* Hard auth-layout override: keeps admin login/setup columns level even if old CSS is cached. */
         #adminAuth.auth-panel {
@@ -21,6 +21,11 @@
             border-radius: 28px !important;
             overflow: hidden !important;
             box-shadow: 0 18px 34px rgba(11, 31, 58, 0.12) !important;
+        }
+
+        #adminAuth.auth-panel.hidden,
+        #adminApp.portal-app.hidden {
+            display: none !important;
         }
 
         #adminAuth .auth-copy,
@@ -77,10 +82,12 @@
     </style>
     <script defer src="js/supabase-config.js"></script>
     <script defer src="js/supabase-bridge.js"></script>
+    <script defer src="js/course-materials.js?v=20260729-unified-course-manager"></script>
+    <script defer src="js/assessment-control.js?v=20260729-assessment-control"></script>
     <script defer src="learning-core.js"></script>
     <script defer src="js/auth-security.js"></script>
-    <script defer src="js/admin-api.js"></script>
-    <script defer src="admin.js"></script>
+    <script defer src="js/admin-api.js?v=20260729-normal-admin-login"></script>
+    <script defer src="admin.js?v=20260729-icon-rail"></script>
     <link rel="stylesheet" href="css/site-loader.css">
     <script src="js/site-loader.js"></script>
 </head>
@@ -132,19 +139,19 @@
                 <form class="portal-form hidden" id="adminSetupForm">
                     <h2>Create admin account</h2>
                     <label>
-                        <span>Email</span>
-                        <input type="email" id="adminSetupEmail" autocomplete="username" placeholder="Enter admin email" required>
+                        <span>Full name</span>
+                        <input type="text" id="adminSetupName" autocomplete="name" placeholder="Enter admin name" required>
                     </label>
                     <label>
-                        <span>Setup key</span>
-                        <input type="password" id="adminSetupKey" autocomplete="off" placeholder="Enter setup key" required>
+                        <span>Email</span>
+                        <input type="email" id="adminSetupEmail" autocomplete="username" placeholder="Enter admin email" required>
                     </label>
                     <label>
                         <span>Password</span>
                         <input type="password" id="adminSetupPassword" autocomplete="new-password" placeholder="Create password" required minlength="8">
                     </label>
                     <button class="primary-button" type="submit">Create admin account</button>
-                    <p class="hint">Uses the server setup key and stores the admin account on the backend.</p>
+                    <p class="hint">Create the administrator credentials, then use the same email and password to sign in.</p>
                     <p class="form-message" id="adminSetupMessage" aria-live="polite"></p>
                     <button class="link-button" type="button" id="showAdminLogin">Back to login</button>
                 </form>
@@ -153,56 +160,97 @@
 
         <section class="portal-app hidden" id="adminApp">
             <aside class="portal-sidebar">
-                <strong>Admin Console</strong>
-                <button class="tab-button active" data-panel="overview">Overview</button>
-                <button class="tab-button" data-panel="courses">Courses & Pricing</button>
-                <button class="tab-button" data-panel="lecturers">Lecturers</button>
-                <button class="tab-button" data-panel="lectures">Lectures</button>
-                <button class="tab-button" data-panel="exams">Exam Submissions</button>
-                <button class="tab-button" data-panel="memberships">Membership Groups</button>
-                <button class="tab-button" data-panel="payments">Payments</button>
+                <div class="sidebar-heading">
+                    <span class="sidebar-mark">GN</span>
+                    <div><strong>Admin Portal</strong><small>Global NursePrep</small></div>
+                </div>
+                <nav class="sidebar-menu" aria-label="Admin sections">
+                    <button class="tab-button active" data-panel="overview"><span class="nav-icon">▦</span><span>Dashboard</span><span class="nav-arrow">›</span></button>
+                    <button class="tab-button" data-panel="courses"><span class="nav-icon">▤</span><span>Courses</span><span class="nav-arrow">›</span></button>
+                    <button class="tab-button" data-panel="lecturers"><span class="nav-icon">♙</span><span>Lecturer approvals</span><span class="nav-arrow">›</span></button>
+                    <button class="tab-button" data-panel="lectures"><span class="nav-icon">▶</span><span>Lectures</span><span class="nav-arrow">›</span></button>
+                    <button class="tab-button" data-panel="exams"><span class="nav-icon">✓</span><span>Exams</span><span class="nav-arrow">›</span></button>
+                    <button class="tab-button" data-panel="memberships"><span class="nav-icon">♧</span><span>Groups</span><span class="nav-arrow">›</span></button>
+                    <button class="tab-button" data-panel="payments"><span class="nav-icon">▰</span><span>Payments</span><span class="nav-arrow">›</span></button>
+                    <button class="tab-button" data-panel="students"><span class="nav-icon">♟</span><span>Students & conduct</span><span class="nav-arrow">›</span></button>
+                    <button class="tab-button" data-panel="monitoring"><span class="nav-icon">◉</span><span>Live monitoring</span><span class="nav-arrow">›</span></button>
+                    <button class="tab-button" data-panel="results"><span class="nav-icon">▥</span><span>Results</span><span class="nav-arrow">›</span></button>
+                </nav>
             </aside>
 
             <div class="portal-content">
                 <section class="panel active" id="overview">
-                    <div class="panel-head">
+                    <div class="panel-head dashboard-heading">
                         <div>
-                            <p class="portal-kicker">Platform status</p>
-                            <h2>Daily operations</h2>
+                            <p class="portal-kicker">Administration overview</p>
+                            <h2>Good morning, Admin</h2>
+                            <p class="muted">Review what needs attention and manage Global NursePrep from one place.</p>
                         </div>
                         <button class="secondary-button" id="seedDataBtn">Load starter records</button>
                     </div>
                     <div class="stat-grid" id="adminStats"></div>
-                    <div class="split-grid">
-                        <article class="portal-card">
-                            <h3>Access control</h3>
-                            <p class="muted">Students, lecturers, and admins work in separate areas. Each role only sees the records that belong to that role.</p>
-                        </article>
-                        <article class="portal-card">
-                            <h3>Course payments</h3>
-                            <p class="muted">Courses can be free or paid. Payment records support M-Pesa, PayPal, card, and wallet references.</p>
-                        </article>
+                    <div class="dashboard-columns">
+                        <section class="dashboard-section">
+                            <div class="section-title">
+                                <div><p class="portal-kicker">Action centre</p><h3>Needs your attention</h3></div>
+                                <span class="attention-count" id="attentionCount">0</span>
+                            </div>
+                            <div class="operations-list" id="adminAttentionList"></div>
+                        </section>
+                        <section class="dashboard-section">
+                            <div class="section-title">
+                                <div><p class="portal-kicker">Shortcuts</p><h3>Quick actions</h3></div>
+                            </div>
+                            <div class="quick-actions">
+                                <button type="button" data-open-panel="courses"><span>＋</span><strong>Create course</strong><small>Publish learning content</small></button>
+                                <button type="button" data-open-panel="lecturers"><span>✓</span><strong>Review lecturers</strong><small>Approve teaching access</small></button>
+                                <button type="button" data-open-panel="exams"><span>▤</span><strong>Review exams</strong><small>Check assessments</small></button>
+                                <button type="button" data-open-panel="payments"><span>₭</span><strong>View payments</strong><small>Monitor revenue</small></button>
+                            </div>
+                        </section>
                     </div>
+                    <section class="dashboard-section activity-section">
+                        <div class="section-title">
+                            <div><p class="portal-kicker">Platform activity</p><h3>Latest records</h3></div>
+                        </div>
+                        <div class="operations-list" id="adminActivityList"></div>
+                    </section>
                 </section>
 
                 <section class="panel" id="courses">
                     <div class="panel-head">
                         <div>
-                            <p class="portal-kicker">Catalog</p>
-                            <h2>Courses, prices, and access</h2>
+                            <p class="portal-kicker">Course manager</p>
+                            <h2>Create and publish a course</h2>
+                            <p class="muted">Enter the essentials. Uploaded documents become notes and modules automatically.</p>
                         </div>
                         <button type="button" class="secondary-button" id="toggleAdminCourses">Show saved courses</button>
                     </div>
                     <form class="portal-form grid-form" id="courseAdminForm">
                         <input type="hidden" id="courseId">
-                        <label><span>Course title</span><input id="courseTitle" required></label>
-                        <label><span>Category</span><input id="courseCategory" required></label>
+                        <label><span>Course title</span><input id="courseTitle" placeholder="e.g., Medical-Surgical Nursing" required></label>
+                        <label><span>Course area</span><select id="courseCategory" required>
+                            <option value="">Choose an area</option>
+                            <option>Nursing Fundamentals</option>
+                            <option>Medical-Surgical Nursing</option>
+                            <option>Maternal & Newborn Nursing</option>
+                            <option>Pediatric Nursing</option>
+                            <option>Mental Health Nursing</option>
+                            <option>Community Health Nursing</option>
+                            <option>Pharmacology</option>
+                            <option>Anatomy & Physiology</option>
+                            <option>Licensing Preparation</option>
+                            <option>Critical & Emergency Care</option>
+                            <option>Nursing Research</option>
+                        </select></label>
                         <label><span>Level</span><select id="courseLevel"><option>Beginner</option><option>Intermediate</option><option>Advanced</option></select></label>
                         <label><span>Access</span><select id="courseAccess"><option value="free">Free</option><option value="paid">Paid</option></select></label>
                         <label><span>Price (KES)</span><input id="coursePrice" type="number" min="0" value="0"></label>
-                        <label><span>Lecturer</span><input id="courseLecturer" placeholder="Lecturer name"></label>
-                        <label class="wide"><span>Summary</span><textarea id="courseSummary" rows="3" required></textarea></label>
-                        <button class="primary-button" type="submit">Save course</button>
+                        <label class="wide"><span>Summary</span><textarea id="courseSummary" rows="3" placeholder="What will students learn?" required></textarea></label>
+                        <label><span>Learning material</span><input id="courseMaterial" type="file" accept=".pdf,.pptx,.docx,.txt,.md,.rtf"><small>PDF, PowerPoint, Word, or notes</small></label>
+                        <label><span>Lecture video</span><input id="courseVideo" type="file" accept="video/*"><input id="courseVideoUrl" type="url" placeholder="Or paste a video URL"></label>
+                        <button class="primary-button" type="submit">Publish course</button>
+                        <p class="form-message wide" id="courseAdminMessage" aria-live="polite"></p>
                     </form>
                     <div class="data-grid hidden" id="adminCourseList"></div>
                 </section>
@@ -214,7 +262,7 @@
                             <h2>Lecturer approvals and subscriptions</h2>
                         </div>
                     </div>
-                    <div class="data-grid" id="lecturerList"></div>
+                    <div class="approval-list" id="lecturerList"></div>
                 </section>
 
                 <section class="panel" id="lectures">
@@ -258,6 +306,18 @@
                         <span>M-Pesa</span><span>PayPal</span><span>Card</span><span>Wallet</span>
                     </div>
                     <div class="data-grid" id="paymentList"></div>
+                </section>
+                <section class="panel" id="students">
+                    <div class="panel-head"><div><p class="portal-kicker">Access and discipline</p><h2>Students & conduct</h2><p class="muted">Review warnings, suspend misconduct, or restore access.</p></div></div>
+                    <div class="data-grid" id="studentConductList"></div>
+                </section>
+                <section class="panel" id="monitoring">
+                    <div class="panel-head"><div><p class="portal-kicker">Assessment control</p><h2>Live exam monitoring</h2><p class="muted">Connection, camera, progress, and browser violations from active attempts.</p></div></div>
+                    <div class="data-grid" id="adminAttemptList"></div>
+                </section>
+                <section class="panel" id="results">
+                    <div class="panel-head"><div><p class="portal-kicker">Moderation</p><h2>Submissions and results</h2><p class="muted">Review scores and evidence, publish results, or reopen an attempt.</p></div></div>
+                    <div class="data-grid" id="adminResultsList"></div>
                 </section>
             </div>
         </section>
