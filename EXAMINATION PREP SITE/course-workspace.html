@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Workspace | Global NursePrep</title>
+    <link rel="stylesheet" href="lms-courses.css?v=20260724-full-width-cards">
+    <link rel="stylesheet" href="workspace-styles.css?v=20260724-lms-structure">
+    <link rel="stylesheet" href="../css/site-loader.css">
+    <script src="../js/site-loader.js"></script>
+    <script defer src="../js/utils.js"></script>
+    <script defer src="../js/supabase-config.js"></script>
+    <script defer src="../js/supabase-bridge.js"></script>
+    <script defer src="../learning-core.js"></script>
+    <script defer src="../js/auth-guard.js" data-login="../login.html"></script>
+    <script defer src="lms-data.js?v=20260724-lms-structure"></script>
+    <script defer src="lms-workspace.js?v=20260724-lms-structure"></script>
+    <script defer src="avatar-voice.js?v=20260705"></script>
+</head>
+<body class="lms-body" data-lms-page="workspace">
+    <nav class="lms-nav">
+        <a class="lms-brand" href="courses.html">
+            <img src="../logo/finalLogo.jpg" alt="Global NursePrep logo">
+            <span>Global <span style="color:#008c95;">Nurse</span>Prep</span>
+        </a>
+        <div class="lms-nav-links">
+            <a href="courses.html">Courses</a>
+            <a href="../my-learnings.html">My Learnings</a>
+            <a href="../meetings.html">Lectures</a>
+            <a href="../homepage.html">Dashboard</a>
+        </div>
+    </nav>
+
+    <main class="lms-shell">
+        <section class="lms-hero">
+            <div>
+                <p class="lms-kicker" id="courseKicker">Learning Workspace</p>
+                <h1 id="courseTitle">Course</h1>
+                <p class="lms-muted" id="courseSummary"></p>
+                <div class="lms-hero-metrics" id="courseMetrics"></div>
+                <div style="margin-top:1rem;">
+                    <div class="lms-progress"><span id="courseProgressBar"></span></div>
+                    <p class="lms-muted" id="courseProgressText">0% complete</p>
+                </div>
+            </div>
+            <div>
+                <img id="courseImage" src="" alt="">
+            </div>
+        </section>
+
+        <section class="lms-layout workspace-layout--two" style="margin-top:1rem;">
+            <aside class="lms-sidebar workspace-outline-card">
+                <div>
+                    <p class="lms-kicker">Course Outline</p>
+                    <h3>Terms and Lectures</h3>
+                </div>
+                <div id="outline"></div>
+            </aside>
+
+            <article class="lms-player workspace-lesson-card">
+                <div class="lms-video-frame" id="videoFrame">
+                    <video id="lectureVideo" class="workspace-lecture-video hidden" controls playsinline></video>
+                    <p class="lms-kicker" style="color:#d7b55d;">Bite-sized Lecture</p>
+                    <h2 id="lessonTitle">Lecture</h2>
+                    <p id="lessonSubtitle"></p>
+                </div>
+
+                <div class="lms-actions workspace-lesson-actions" style="margin:1rem 0;">
+                    <button type="button" class="lms-button" id="startLectureBtn">Start Lecture</button>
+                    <button type="button" class="lms-secondary" id="bookmarkBtn">Bookmark</button>
+                    <button type="button" class="lms-secondary" id="voiceBtn">Learn with Purpose</button>
+                    <button type="button" class="lms-secondary" id="prevBtn">Previous</button>
+                    <button type="button" class="lms-secondary" id="nextBtn">Next</button>
+                </div>
+
+                <section class="workspace-note-stack">
+                    <section class="lms-panel workspace-notes-panel">
+                        <p class="lms-kicker">Learn with Purpose</p>
+                        <h2 id="lessonObjective">Objective</h2>
+                        <p class="lms-lesson-body" id="lessonBody"></p>
+                        <div class="lms-concepts" id="conceptList"></div>
+                        <div id="studyNotes" class="workspace-study-notes"></div>
+                    </section>
+
+                    <section class="lms-panel workspace-checkpoint-panel">
+                        <p class="lms-kicker">Checkpoint</p>
+                        <h2>10-question unit check</h2>
+                        <p class="lms-muted" id="checkpointGate">Watch the lecture and read the lesson before attempting the checkpoint.</p>
+                        <div id="quizArea" class="hidden">
+                            <div class="workspace-quiz-head">
+                                <strong>Answer all 10 questions</strong>
+                                <span>Pass mark: 80%</span>
+                            </div>
+                            <div class="workspace-quiz-body" id="quizForm"></div>
+                            <button type="button" class="lms-button" id="checkAnswerBtn">Check Answer</button>
+                            <p id="quizFeedback" class="lms-feedback"></p>
+                        </div>
+                    </section>
+                </section>
+
+                <div class="workspace-avatar-dock">
+                    <div id="avatar-guide-card"></div>
+                </div>
+            </article>
+        </section>
+
+        <section class="lms-structure" id="courseStructure" aria-label="Course structure">
+            <div class="lms-structure-tabs" role="tablist" aria-label="Course details">
+                <button type="button" class="active" data-structure-panel="info">Course Info</button>
+                <button type="button" data-structure-panel="modules">Modules</button>
+                <button type="button" data-structure-panel="assignments">Assignments</button>
+                <button type="button" data-structure-panel="assessments">Assessments</button>
+                <button type="button" data-structure-panel="resources">Resources</button>
+                <button type="button" data-structure-panel="communication">Communication</button>
+                <button type="button" data-structure-panel="progress">Progress</button>
+                <button type="button" data-structure-panel="certificate">Certificate</button>
+                <button type="button" data-structure-panel="analytics">Analytics</button>
+            </div>
+            <div class="lms-structure-panels" id="structurePanels"></div>
+        </section>
+    </main>
+</body>
+</html>

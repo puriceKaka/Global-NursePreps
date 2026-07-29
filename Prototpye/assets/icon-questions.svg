@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128" role="img" aria-label="Questions icon">
+  <rect x="12" y="12" width="104" height="104" rx="28" fill="#eef4ff"/>
+  <path d="M36 52a22 22 0 0 1 22-22h12a22 22 0 0 1 0 44H64l-18 18v-18h-2a8 8 0 0 1-8-8V52z" fill="#ffffff" stroke="#0b1f3a" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M64 46c6 0 10 4 10 10 0 5-3 7-7 9-3 2-3 3-3 6" fill="none" stroke="#1a73e8" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="64" cy="84" r="5" fill="#1a73e8"/>
+</svg>
+

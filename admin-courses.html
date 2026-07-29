@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>window.location.replace("admin.html#courses");</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Courses | Global NursePrep</title>
+    <link rel="icon" type="image/jpeg" href="logo/finalLogo.jpg?v=20260729">
+    <link rel="stylesheet" href="homepage.css">
+    <link rel="stylesheet" href="admin-courses.css">
+    <script defer src="js/admin-api.js"></script>
+    <script defer src="js/admin-auth.js"></script>
+    <script defer src="js/supabase-config.js"></script>
+    <script defer src="js/supabase-bridge.js"></script>
+    <script defer src="js/course-materials.js"></script>
+    <script defer src="learning-core.js"></script>
+    <script defer src="admin-courses.js"></script>
+    <link rel="stylesheet" href="css/site-loader.css">
+    <script src="js/site-loader.js"></script>
+</head>
+<body>
+    <header class="topbar">
+        <div class="brand">
+            <span class="brand-logo">
+                <img src="logo/finalLogo.jpg" alt="Global NursePrep logo">
+            </span>
+            <div>
+                <h1>Global <span class="brand-nurse">Nurse</span>Prep</h1>
+                <p>Admin courses • Learning catalog</p>
+            </div>
+        </div>
+        <div class="topbar-actions">
+            <a class="pill-button" href="homepage.html">Homepage</a>
+        </div>
+    </header>
+
+    <main class="page admin-page">
+        <section class="section-card">
+            <header class="section-header">
+                <div>
+                    <h3>Add Learning Course</h3>
+                    <p class="muted">Courses saved here appear on the homepage course list.</p>
+                </div>
+            </header>
+
+            <form class="admin-form" id="courseForm">
+                <label class="field">
+                    <span>Course title</span>
+                    <input type="text" id="titleInput" placeholder="e.g., Emergency Nursing Review" required>
+                </label>
+                <label class="field">
+                    <span>Unit title</span>
+                    <input type="text" id="unitInput" placeholder="e.g., Licensing, NCLEX, BSN" required>
+                </label>
+                <label class="field">
+                    <span>Subunit title</span>
+                    <input type="text" id="subunitInput" placeholder="e.g., NCK, Year 1, Foundations">
+                </label>
+                <label class="field">
+                    <span>Category</span>
+                    <input type="text" id="categoryInput" list="categoryOptions" placeholder="e.g., Emergency Care" required>
+                </label>
+                <datalist id="categoryOptions"></datalist>
+                <label class="field">
+                    <span>Faculty</span>
+                    <input type="text" id="facultyInput" placeholder="e.g., Nursing Sciences">
+                </label>
+                <label class="field">
+                    <span>Department</span>
+                    <input type="text" id="departmentInput" placeholder="e.g., Clinical Nursing">
+                </label>
+                <label class="field">
+                    <span>Course code</span>
+                    <input type="text" id="courseCodeInput" placeholder="e.g., NUR 101">
+                </label>
+                <label class="field">
+                    <span>Difficulty</span>
+                    <select id="difficultyInput">
+                        <option>Beginner</option>
+                        <option>Intermediate</option>
+                        <option>Advanced</option>
+                    </select>
+                </label>
+                <label class="field">
+                    <span>Modules</span>
+                    <input type="number" id="moduleCountInput" min="1" value="3" required>
+                </label>
+                <label class="field">
+                    <span>Study duration (hours)</span>
+                    <input type="number" id="durationInput" min="0" value="0">
+                </label>
+                <label class="field">
+                    <span>Language</span>
+                    <input type="text" id="languageInput" value="English">
+                </label>
+                <label class="field">
+                    <span>Course price (KES)</span>
+                    <input type="number" id="priceInput" min="0" value="0">
+                </label>
+                <label class="field field-wide">
+                    <span>Module titles</span>
+                    <textarea id="moduleTitlesInput" rows="4" placeholder="One module per line. Example:\nAssessment priorities\nMedication safety\nExam practice"></textarea>
+                </label>
+                <label class="field field-wide">
+                    <span>Learning outcomes</span>
+                    <textarea id="learningOutcomesInput" rows="3" placeholder="One outcome per line."></textarea>
+                </label>
+                <label class="field field-wide">
+                    <span>Prerequisites</span>
+                    <textarea id="prerequisitesInput" rows="3" placeholder="One prerequisite per line."></textarea>
+                </label>
+                <label class="field field-wide">
+                    <span>Assignments</span>
+                    <textarea id="assignmentsInput" rows="3" placeholder="One assignment per line. Example:\nCase study submission | 2026-08-15 | 20 marks"></textarea>
+                </label>
+                <label class="field field-wide">
+                    <span>Assessments</span>
+                    <textarea id="assessmentsInput" rows="3" placeholder="One assessment per line. Example:\nMidterm Test | 30 marks | 70% pass"></textarea>
+                </label>
+                <label class="field field-wide">
+                    <span>Resources</span>
+                    <textarea id="resourcesInput" rows="3" placeholder="One resource per line. Example:\nReference PDF | PDF Documents | assets/file.pdf"></textarea>
+                </label>
+                <label class="field field-wide">
+                    <span>Announcements</span>
+                    <textarea id="announcementsInput" rows="2" placeholder="One announcement per line."></textarea>
+                </label>
+                <label class="field">
+                    <span>Image path</span>
+                    <input type="text" id="imageInput" value="assets/course-images/default.jpg" required>
+                </label>
+                <label class="field">
+                    <span>Upload course image</span>
+                    <input type="file" id="courseImageInput" accept="image/*">
+                </label>
+                <label class="field">
+                    <span>Lesson background image</span>
+                    <input type="file" id="backgroundImageInput" accept="image/*">
+                </label>
+                <label class="field">
+                    <span>Document cover image</span>
+                    <input type="file" id="documentImageInput" accept="image/*">
+                </label>
+                <label class="field">
+                    <span>Lecture video URL</span>
+                    <input type="url" id="videoUrlInput" placeholder="https://..." >
+                </label>
+                <label class="field">
+                    <span>Upload lecture video</span>
+                    <input type="file" id="videoFileInput" accept="video/*">
+                </label>
+                <label class="field field-wide">
+                    <span>Lecture notes / source text</span>
+                    <textarea id="contentNotesInput" rows="6" placeholder="Paste the lecture notes, PDF text, or teaching script here so the system can generate the study notes."></textarea>
+                </label>
+                <label class="field">
+                    <span>Upload learning material</span>
+                    <input type="file" id="notesFileInput" accept=".pdf,.pptx,.docx,.txt,.md,.rtf,application/pdf,application/vnd.openxmlformats-officedocument.presentationml.presentation,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                    <small>PDF, PowerPoint, Word, or text will be converted into notes and modules.</small>
+                </label>
+                <label class="field field-wide">
+                    <span>Summary</span>
+                    <textarea id="summaryInput" rows="3" placeholder="Describe what students will learn." required></textarea>
+                </label>
+                <button type="submit" class="primary-button">Add course</button>
+            </form>
+        </section>
+
+        <section class="section-card">
+            <header class="section-header">
+                <div>
+                    <h3>Current Courses</h3>
+                    <p class="muted">Delete a course to remove it from the homepage catalog.</p>
+                </div>
+            </header>
+            <div class="admin-course-grid" id="adminCourseGrid"></div>
+        </section>
+    </main>
+</body>
+</html>

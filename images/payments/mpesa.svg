@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="420" viewBox="0 0 640 420" role="img" aria-label="M-Pesa payment">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#22c55e"/>
+      <stop offset="1" stop-color="#057a3d"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="420" rx="34" fill="url(#g)"/>
+  <circle cx="505" cy="92" r="70" fill="#fff" opacity=".14"/>
+  <circle cx="130" cy="335" r="96" fill="#000" opacity=".08"/>
+  <rect x="115" y="96" width="410" height="228" rx="26" fill="#fff"/>
+  <rect x="145" y="126" width="350" height="52" rx="16" fill="#e8f8ef"/>
+  <text x="320" y="166" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" font-weight="800" fill="#128c45">M-PESA</text>
+  <text x="320" y="238" text-anchor="middle" font-family="Arial, sans-serif" font-size="74" font-weight="900" fill="#128c45">M</text>
+  <text x="320" y="290" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="#475569">Mobile Money</text>
+</svg>

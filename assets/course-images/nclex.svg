@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" role="img" aria-label="NCLEX preparation course">
+  <rect width="800" height="450" fill="#EAF4FC"/><path d="M0 330 C180 250 290 390 440 300 S650 190 800 260 V450 H0Z" fill="#0F4C81"/>
+  <rect x="78" y="74" width="310" height="225" rx="26" fill="#fff"/><path d="M135 145h185M135 198h145M135 250h185" stroke="#1E88E5" stroke-width="16" stroke-linecap="round"/>
+  <rect x="500" y="85" width="170" height="220" rx="28" fill="#4CAF50"/><path d="M545 185l33 33 62-74" fill="none" stroke="#fff" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="70" y="398" fill="#fff" font-family="Arial" font-size="40" font-weight="700">NCLEX-RN Prep</text>
+</svg>

@@ -1,0 +1,246 @@
+.hidden {
+    display: none !important;
+}
+
+body.drawer-open {
+    overflow: hidden;
+}
+
+/* Hamburger toggle + close button */
+#menuToggle,
+#drawerClose {
+    width: 38px;
+    height: 38px;
+    border-radius: 999px;
+    border: 1px solid rgba(11, 31, 58, 0.18);
+    background: #ffffff;
+    color: var(--navy, #0F4C81);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+}
+
+#menuToggle {
+    position: relative;
+    z-index: 60;
+    box-shadow: none;
+}
+
+.menu-floating {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 2100;
+}
+
+.menu-floating #menuToggle,
+#menuToggle.menu-floating {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 2102;
+    box-shadow: 0 10px 24px rgba(11, 31, 58, 0.12);
+}
+
+#menuToggle:hover,
+#drawerClose:hover {
+    filter: brightness(0.98);
+}
+
+#menuToggle:active,
+#drawerClose:active {
+    transform: translateY(1px);
+}
+
+#drawerClose {
+    font-size: 22px;
+    line-height: 1;
+}
+
+.hamburger {
+    width: 18px;
+    height: 2px;
+    background: var(--navy, #0F4C81);
+    display: inline-block;
+    border-radius: 999px;
+    position: relative;
+}
+
+.hamburger::before,
+.hamburger::after {
+    content: "";
+    width: 18px;
+    height: 2px;
+    background: var(--navy, #0F4C81);
+    position: absolute;
+    left: 0;
+    border-radius: 999px;
+}
+
+.hamburger::before {
+    top: -6px;
+}
+
+.hamburger::after {
+    top: 6px;
+}
+
+/* Drawer */
+.drawer-overlay {
+    position: fixed;
+    top: var(--drawer-top, 56px);
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(11, 31, 58, 0.42);
+    z-index: 45;
+}
+
+.drawer {
+    position: fixed;
+    top: var(--drawer-top, 56px);
+    left: 0;
+    height: calc(100dvh - var(--drawer-top, 56px));
+    width: 300px;
+    max-width: 86vw;
+    background: #ffffff;
+    border-right: 1px solid rgba(11, 31, 58, 0.12);
+    z-index: 46;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.drawer-header {
+    padding: 10px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    border-bottom: 1px solid rgba(11, 31, 58, 0.12);
+}
+
+.drawer-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.drawer-user .avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: rgba(26, 115, 232, 0.12);
+    color: var(--navy, #0F4C81);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    flex: 0 0 auto;
+}
+
+.drawer-user .avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.drawer-nav {
+    padding: 8px 8px 0;
+    display: grid;
+    gap: 6px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    max-height: calc(100dvh - var(--drawer-top, 56px) - 154px);
+    scrollbar-width: thin;
+}
+
+.drawer-link {
+    width: 100%;
+    text-align: left;
+    padding: 10px;
+    border-radius: 10px;
+    background: #ffffff;
+    border: 1px solid rgba(11, 31, 58, 0.12);
+    color: var(--navy, #0F4C81);
+    font-weight: 800;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.drawer-link:hover {
+    background: rgba(26, 115, 232, 0.08);
+}
+
+.drawer-footer {
+    margin-top: auto;
+    padding: 10px;
+    display: grid;
+    gap: 10px;
+    border-top: 1px solid rgba(11, 31, 58, 0.12);
+    background: #ffffff;
+}
+
+.drawer .muted {
+    color: rgba(11, 31, 58, 0.62);
+}
+
+.drawer .small {
+    font-size: 13px;
+}
+
+.chat-button {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 2200;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 18px;
+    border: 0;
+    border-radius: 999px;
+    background: #1fa67a;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 850;
+    box-shadow: 0 14px 30px rgba(15, 76, 129, 0.22);
+    cursor: pointer;
+}
+
+.chat-button img {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #ffffff;
+    object-fit: contain;
+    padding: 2px;
+}
+
+.chat-button:hover {
+    filter: brightness(0.96);
+}
+
+@media (max-width: 520px) {
+    .chat-button {
+        right: 12px;
+        bottom: 12px;
+        min-height: 42px;
+        padding: 0 14px 0 8px;
+        gap: 7px;
+        font-size: 12px;
+    }
+
+    .chat-button img {
+        width: 30px;
+        height: 30px;
+    }
+}

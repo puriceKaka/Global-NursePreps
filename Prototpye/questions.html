@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global NursePrep | Questions</title>
+    <link rel="stylesheet" href="homepage.css">
+    <link rel="stylesheet" href="../css/site-loader.css">
+    <script src="../js/site-loader.js"></script>
+</head>
+<body>
+    <header class="topbar">
+        <button type="button" class="icon-button" id="menuToggle" aria-label="Open menu">
+            <span class="hamburger" aria-hidden="true"></span>
+        </button>
+
+        <div class="brand">
+            <span class="brand-logo">
+                <img src="logo/finalLogo.jpg" alt="Global NursePrep logo">
+            </span>
+            <div>
+                <h1>Global NursePrep</h1>
+                <p>Questions • Community support • Learning together</p>
+            </div>
+        </div>
+
+        <div class="topbar-actions">
+            <a class="pill-button" href="homepage.html" target="_blank" rel="noopener">Home</a>
+            <button type="button" class="secondary-button" id="logoutBtn">Logout</button>
+        </div>
+    </header>
+
+    <div class="drawer-overlay hidden" id="drawerOverlay" tabindex="-1" aria-hidden="true"></div>
+
+    <aside class="drawer hidden" id="drawer" aria-label="Side menu">
+        <div class="drawer-header">
+            <div class="drawer-user">
+                <div class="avatar" id="drawerAvatar" aria-hidden="true">N</div>
+                <div>
+                    <strong id="drawerName">Member</strong>
+                    <div class="muted" id="drawerEmail">—</div>
+                </div>
+            </div>
+            <button type="button" class="icon-button" id="drawerClose" aria-label="Close menu">×</button>
+        </div>
+
+        <nav class="drawer-nav" aria-label="Navigation">
+            <a class="drawer-link" href="homepage.html" target="_blank" rel="noopener">Home</a>
+            <a class="drawer-link" href="homepage.html#career" target="_blank" rel="noopener">Career Paths</a>
+            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/courses.html" target="_blank" rel="noopener">Courses</a>
+            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/exam-interface/exam-interface.html" target="_blank" rel="noopener">Exams</a>
+            <button type="button" class="drawer-link" data-target="top">Questions</button>
+            <a class="drawer-link" href="my-learnings.html" target="_blank" rel="noopener">My Learnings</a>
+            <a class="drawer-link" href="Profile.html" target="_blank" rel="noopener">Profile</a>
+            <a class="drawer-link" href="Membership.html" target="_blank" rel="noopener">Membership</a>
+            <a class="drawer-link" href="Dashboard.html" target="_blank" rel="noopener">Meetings and Lectures</a>
+            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/landing.html" target="_blank" rel="noopener">Exam Prep</a>
+            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/exam-lobby/exam-lobby.html" target="_blank" rel="noopener">Exam Lobby</a>
+        </nav>
+
+        <div class="drawer-footer">
+            <div class="muted small">Tip: Ask clear questions and include context to get better answers.</div>
+        </div>
+    </aside>
+
+    <main class="page">
+        <section class="section-card" id="top">
+            <header class="section-header">
+                <div>
+                    <h3>Questions</h3>
+                    <p class="muted">Ask, answer, and learn faster with the community.</p>
+                </div>
+            </header>
+
+            <form class="stack-form" id="questionForm">
+                <label class="field">
+                    <span>Question title</span>
+                    <input type="text" id="questionTitle" placeholder="e.g., How do I remember insulin peak times?" required>
+                </label>
+
+                <label class="field">
+                    <span>Category</span>
+                    <select id="questionCategory" aria-label="Question category">
+                        <option value="General">General</option>
+                        <option value="Anatomy">Anatomy</option>
+                        <option value="Pharmacology">Pharmacology</option>
+                        <option value="OSCE">OSCE</option>
+                        <option value="Critical Care">Critical Care</option>
+                        <option value="Examination">Examination</option>
+                    </select>
+                </label>
+
+                <label class="field">
+                    <span>Details</span>
+                    <textarea id="questionDetails" rows="4" placeholder="Add details (what you tried, where you got stuck, key facts)…" required></textarea>
+                </label>
+
+                <button type="submit" class="primary-button">Post question</button>
+            </form>
+
+            <div class="questions" id="questionsList" aria-live="polite"></div>
+        </section>
+
+        <footer class="footer">
+            <div class="muted">© <span id="yearLabel"></span> Global NursePrep.</div>
+            <div class="muted small">Powered by Teams Technologies</div>
+        </footer>
+    </main>
+
+    <script src="learning-core.js"></script>
+    <script src="homepage.js"></script>
+</body>
+</html>

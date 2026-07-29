@@ -1,0 +1,651 @@
+{
+  "version": "2.0",
+  "lastUpdated": "2026-05-16",
+  "structure": {
+    "type": "year-based",
+    "progressionModel": "sequential",
+    "moduleGating": true,
+    "termAssessmentRequired": true
+  },
+  "years": [
+    {
+      "id": "bsn-year-1",
+      "title": "BSN Year 1: Nursing Foundations",
+      "yearLabel": "1st Year",
+      "description": "First-year BSN learning path covering core sciences, nursing foundations, communication, and early clinical thinking.",
+      "totalHours": 96,
+      "terms": [
+        {
+          "name": "Term 1",
+          "modules": [
+            {
+              "title": "Introduction to Nursing Profession",
+              "objectives": [
+                "Understand the history and evolution of nursing",
+                "Identify nursing roles and responsibilities",
+                "Apply nursing ethics and professional standards"
+              ],
+              "topics": [
+                "History of Nursing",
+                "Nursing as a Profession",
+                "Nursing Ethics and Legal Aspects",
+                "Nursing Theories and Models",
+                "Healthcare Systems Overview"
+              ],
+              "estimatedHours": 12
+            },
+            {
+              "title": "Anatomy and Physiology I",
+              "objectives": [
+                "Describe the structure and function of body systems",
+                "Understand homeostasis and feedback mechanisms",
+                "Apply anatomical terminology"
+              ],
+              "topics": [
+                "Anatomical Terminology and Body Planes",
+                "Cell Structure and Function",
+                "Tissues and Membranes",
+                "Integumentary System",
+                "Skeletal System",
+                "Muscular System"
+              ],
+              "estimatedHours": 16
+            },
+            {
+              "title": "Foundations of Nursing Practice",
+              "objectives": [
+                "Demonstrate basic nursing skills",
+                "Apply infection control principles",
+                "Perform vital signs assessment"
+              ],
+              "topics": [
+                "Basic Nursing Skills",
+                "Infection Prevention and Control",
+                "Vital Signs Assessment",
+                "Patient Hygiene and Comfort",
+                "Body Mechanics and Positioning",
+                "Documentation and Reporting"
+              ],
+              "estimatedHours": 14
+            },
+            {
+              "title": "Communication in Healthcare",
+              "objectives": [
+                "Apply therapeutic communication techniques",
+                "Document patient care effectively",
+                "Communicate with diverse populations"
+              ],
+              "topics": [
+                "Therapeutic Communication",
+                "Patient Interview Techniques",
+                "Documentation Standards",
+                "Interprofessional Communication",
+                "Cultural Competence in Communication"
+              ],
+              "estimatedHours": 8
+            }
+          ]
+        },
+        {
+          "name": "Term 2",
+          "modules": [
+            {
+              "title": "Microbiology for Nurses",
+              "objectives": [
+                "Identify common pathogens and diseases",
+                "Apply aseptic techniques",
+                "Understand infection transmission"
+              ],
+              "topics": [
+                "Introduction to Microorganisms",
+                "Bacterial Structure and Classification",
+                "Viral Infections",
+                "Fungal and Parasitic Infections",
+                "Sterilization and Disinfection",
+                "Hospital-Acquired Infections"
+              ],
+              "estimatedHours": 12
+            },
+            {
+              "title": "Biochemistry for Nursing",
+              "objectives": [
+                "Understand biochemical processes in the body",
+                "Relate biochemistry to clinical conditions",
+                "Interpret basic lab values"
+              ],
+              "topics": [
+                "Carbohydrate Metabolism",
+                "Protein and Amino Acid Metabolism",
+                "Lipid Metabolism",
+                "Enzyme Function",
+                "Acid-Base Balance",
+                "Clinical Biochemistry Basics"
+              ],
+              "estimatedHours": 10
+            },
+            {
+              "title": "Pharmacology I: Basics",
+              "objectives": [
+                "Understand drug classifications",
+                "Apply medication administration principles",
+                "Calculate medication dosages"
+              ],
+              "topics": [
+                "Pharmacokinetics and Pharmacodynamics",
+                "Drug Classifications",
+                "Medication Administration Routes",
+                "Dosage Calculations",
+                "Medication Safety",
+                "Common Drug Interactions"
+              ],
+              "estimatedHours": 12
+            },
+            {
+              "title": "Health Assessment Fundamentals",
+              "objectives": [
+                "Perform comprehensive health assessments",
+                "Document assessment findings",
+                "Identify normal vs abnormal findings"
+              ],
+              "topics": [
+                "Health History Taking",
+                "Physical Examination Techniques",
+                "Head-to-Toe Assessment",
+                "Mental Status Assessment",
+                "Functional Assessment",
+                "Assessment Documentation"
+              ],
+              "estimatedHours": 10
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bsn-year-2",
+      "title": "BSN Year 2: Core Clinical Nursing",
+      "yearLabel": "2nd Year",
+      "description": "Second-year clinical bridge with pathophysiology, medical-surgical nursing, nutrition, and community health.",
+      "totalHours": 112,
+      "terms": [
+        {
+          "name": "Term 1",
+          "modules": [
+            {
+              "title": "Pathophysiology",
+              "objectives": [
+                "Explain disease mechanisms",
+                "Relate pathophysiology to clinical manifestations",
+                "Apply pathophysiological concepts to patient care"
+              ],
+              "topics": [
+                "Cellular Adaptation and Injury",
+                "Inflammation and Immunity",
+                "Genetic and Developmental Disorders",
+                "Neoplasia",
+                "Cardiovascular Pathophysiology",
+                "Respiratory Pathophysiology"
+              ],
+              "estimatedHours": 16
+            },
+            {
+              "title": "Medical-Surgical Nursing I",
+              "objectives": [
+                "Provide nursing care for adult patients with common medical conditions",
+                "Apply the nursing process to medical-surgical patients",
+                "Manage post-operative care"
+              ],
+              "topics": [
+                "Perioperative Nursing Care",
+                "Fluid and Electrolyte Imbalances",
+                "Acid-Base Imbalances",
+                "Cardiovascular Disorders",
+                "Respiratory Disorders",
+                "Pain Management"
+              ],
+              "estimatedHours": 18
+            },
+            {
+              "title": "Nutrition and Dietetics",
+              "objectives": [
+                "Assess nutritional status",
+                "Develop nutritional care plans",
+                "Provide dietary counseling"
+              ],
+              "topics": [
+                "Basic Nutrition Principles",
+                "Nutritional Assessment",
+                "Therapeutic Diets",
+                "Nutrition in Health and Illness",
+                "Enteral and Parenteral Nutrition",
+                "Cultural Considerations in Nutrition"
+              ],
+              "estimatedHours": 10
+            },
+            {
+              "title": "Advanced Health Assessment",
+              "objectives": [
+                "Perform specialized assessments",
+                "Interpret assessment findings",
+                "Use assessment data for clinical decision-making"
+              ],
+              "topics": [
+                "Advanced Physical Examination",
+                "Special Population Assessments",
+                "Focused Assessments by System",
+                "Diagnostic Reasoning",
+                "Assessment Technology"
+              ],
+              "estimatedHours": 8
+            }
+          ]
+        },
+        {
+          "name": "Term 2",
+          "modules": [
+            {
+              "title": "Community Health Nursing I",
+              "objectives": [
+                "Apply community health nursing principles",
+                "Conduct community assessments",
+                "Plan community health interventions"
+              ],
+              "topics": [
+                "Community Health Concepts",
+                "Epidemiology Basics",
+                "Community Assessment",
+                "Health Promotion Strategies",
+                "Disease Prevention",
+                "Environmental Health"
+              ],
+              "estimatedHours": 12
+            },
+            {
+              "title": "Pharmacology II: Clinical Applications",
+              "objectives": [
+                "Administer medications safely in clinical settings",
+                "Monitor for medication effects and side effects",
+                "Educate patients about medications"
+              ],
+              "topics": [
+                "Cardiovascular Medications",
+                "Respiratory Medications",
+                "Gastrointestinal Medications",
+                "Neurological Medications",
+                "Antimicrobial Agents",
+                "Chemotherapy Basics"
+              ],
+              "estimatedHours": 14
+            },
+            {
+              "title": "Clinical Skills Laboratory",
+              "objectives": [
+                "Demonstrate competency in essential nursing skills",
+                "Apply critical thinking in simulated scenarios",
+                "Practice safe medication administration"
+              ],
+              "topics": [
+                "IV Therapy and Venipuncture",
+                "Catheterization",
+                "Wound Care",
+                "Oxygen Therapy",
+                "Medication Administration Simulation",
+                "Emergency Response Skills"
+              ],
+              "estimatedHours": 14
+            },
+            {
+              "title": "Nursing Informatics",
+              "objectives": [
+                "Use healthcare information systems",
+                "Apply technology in nursing practice",
+                "Maintain patient data confidentiality"
+              ],
+              "topics": [
+                "Healthcare Information Systems",
+                "Electronic Health Records",
+                "Telehealth and Remote Care",
+                "Data Security and Privacy",
+                "Clinical Decision Support Systems"
+              ],
+              "estimatedHours": 8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bsn-year-3",
+      "title": "BSN Year 3: Specialized Nursing Practice",
+      "yearLabel": "3rd Year",
+      "description": "Third-year BSN path for med-surg depth, pediatric nursing, mental health, maternal-newborn nursing, and research methods.",
+      "totalHours": 124,
+      "terms": [
+        {
+          "name": "Term 1",
+          "modules": [
+            {
+              "title": "Medical-Surgical Nursing II",
+              "objectives": [
+                "Manage complex medical-surgical patients",
+                "Apply evidence-based interventions",
+                "Coordinate multidisciplinary care"
+              ],
+              "topics": [
+                "Neurological Disorders",
+                "Endocrine Disorders",
+                "Gastrointestinal Disorders",
+                "Renal and Urinary Disorders",
+                "Hematological Disorders",
+                "Oncology Nursing"
+              ],
+              "estimatedHours": 18
+            },
+            {
+              "title": "Pediatric Nursing",
+              "objectives": [
+                "Provide age-appropriate nursing care for children",
+                "Assess pediatric patients using developmental frameworks",
+                "Support families of pediatric patients"
+              ],
+              "topics": [
+                "Growth and Development",
+                "Pediatric Assessment",
+                "Common Childhood Illnesses",
+                "Pediatric Medication Administration",
+                "Family-Centered Care",
+                "Child Abuse and Neglect"
+              ],
+              "estimatedHours": 16
+            },
+            {
+              "title": "Mental Health Nursing",
+              "objectives": [
+                "Assess mental health status",
+                "Implement therapeutic interventions",
+                "Manage psychiatric emergencies"
+              ],
+              "topics": [
+                "Mental Health Assessment",
+                "Therapeutic Communication",
+                "Anxiety and Mood Disorders",
+                "Psychotic Disorders",
+                "Substance Use Disorders",
+                "Crisis Intervention"
+              ],
+              "estimatedHours": 14
+            },
+            {
+              "title": "Nursing Research Methods",
+              "objectives": [
+                "Critique nursing research",
+                "Apply research findings to practice",
+                "Design basic research proposals"
+              ],
+              "topics": [
+                "Research Process",
+                "Literature Review",
+                "Research Designs",
+                "Data Collection Methods",
+                "Statistical Analysis Basics",
+                "Evidence-Based Practice"
+              ],
+              "estimatedHours": 10
+            }
+          ]
+        },
+        {
+          "name": "Term 2",
+          "modules": [
+            {
+              "title": "Maternal and Newborn Nursing",
+              "objectives": [
+                "Provide prenatal, intrapartum, and postpartum care",
+                "Assess and care for newborns",
+                "Support families during childbearing"
+              ],
+              "topics": [
+                "Antepartum Care",
+                "Intrapartum Care",
+                "Postpartum Care",
+                "Newborn Assessment and Care",
+                "High-Risk Pregnancies",
+                "Family Planning"
+              ],
+              "estimatedHours": 18
+            },
+            {
+              "title": "Emergency Nursing",
+              "objectives": [
+                "Triage patients in emergency settings",
+                "Manage emergency situations",
+                "Provide trauma nursing care"
+              ],
+              "topics": [
+                "Triage Principles",
+                "Trauma Nursing",
+                "Cardiac Emergencies",
+                "Respiratory Emergencies",
+                "Toxicological Emergencies",
+                "Disaster Nursing"
+              ],
+              "estimatedHours": 12
+            },
+            {
+              "title": "Community Health Nursing II",
+              "objectives": [
+                "Implement community health programs",
+                "Evaluate community health outcomes",
+                "Advocate for vulnerable populations"
+              ],
+              "topics": [
+                "Program Planning and Evaluation",
+                "Health Policy and Advocacy",
+                "Vulnerable Populations",
+                "Global Health Issues",
+                "Occupational Health",
+                "School Health Nursing"
+              ],
+              "estimatedHours": 12
+            },
+            {
+              "title": "Evidence-Based Practice",
+              "objectives": [
+                "Formulate clinical questions",
+                "Search and appraise evidence",
+                "Implement evidence-based changes"
+              ],
+              "topics": [
+                "PICOT Question Development",
+                "Database Searching",
+                "Critical Appraisal",
+                "Quality Improvement",
+                "Clinical Guidelines",
+                "Implementation Science"
+              ],
+              "estimatedHours": 8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bsn-year-4",
+      "title": "BSN Year 4: Leadership, Practicum and Licensing Readiness",
+      "yearLabel": "4th Year",
+      "description": "Final-year BSN path for leadership, ethics, critical care, internship preparation, final exams, and licensing readiness.",
+      "totalHours": 132,
+      "terms": [
+        {
+          "name": "Term 1",
+          "modules": [
+            {
+              "title": "Nursing Leadership and Management",
+              "objectives": [
+                "Apply leadership principles in nursing",
+                "Manage nursing teams effectively",
+                "Implement quality improvement initiatives"
+              ],
+              "topics": [
+                "Leadership Theories",
+                "Management Principles",
+                "Team Building and Collaboration",
+                "Conflict Resolution",
+                "Performance Improvement",
+                "Resource Management"
+              ],
+              "estimatedHours": 14
+            },
+            {
+              "title": "Critical Care Nursing",
+              "objectives": [
+                "Care for critically ill patients",
+                "Monitor hemodynamic parameters",
+                "Manage life-support equipment"
+              ],
+              "topics": [
+                "Hemodynamic Monitoring",
+                "Mechanical Ventilation",
+                "Shock and Multiple Organ Dysfunction",
+                "Critical Care Pharmacology",
+                "Neurological Critical Care",
+                "Ethical Issues in Critical Care"
+              ],
+              "estimatedHours": 16
+            },
+            {
+              "title": "Ethics and Legal Practice",
+              "objectives": [
+                "Apply ethical principles in nursing",
+                "Understand legal responsibilities",
+                "Navigate ethical dilemmas"
+              ],
+              "topics": [
+                "Bioethics Principles",
+                "Patient Rights",
+                "Informed Consent",
+                "End-of-Life Care",
+                "Professional Liability",
+                "Ethical Decision-Making"
+              ],
+              "estimatedHours": 10
+            },
+            {
+              "title": "Quality Improvement and Patient Safety",
+              "objectives": [
+                "Implement patient safety initiatives",
+                "Analyze healthcare errors",
+                "Lead quality improvement projects"
+              ],
+              "topics": [
+                "Patient Safety Culture",
+                "Error Reporting and Analysis",
+                "Root Cause Analysis",
+                "Performance Metrics",
+                "Benchmarking",
+                "Regulatory Requirements"
+              ],
+              "estimatedHours": 8
+            }
+          ]
+        },
+        {
+          "name": "Term 2",
+          "modules": [
+            {
+              "title": "Clinical Practicum",
+              "objectives": [
+                "Demonstrate competency in clinical practice",
+                "Integrate theory with practice",
+                "Function as a beginning practitioner"
+              ],
+              "topics": [
+                "Preceptored Clinical Experience",
+                "Case Management",
+                "Care Coordination",
+                "Clinical Documentation",
+                "Professional Socialization",
+                "Transition to Practice"
+              ],
+              "estimatedHours": 24
+            },
+            {
+              "title": "Research Project",
+              "objectives": [
+                "Complete an independent research project",
+                "Present research findings",
+                "Contribute to nursing knowledge"
+              ],
+              "topics": [
+                "Research Proposal Development",
+                "IRB Application",
+                "Data Collection",
+                "Data Analysis",
+                "Research Dissemination",
+                "Publication Process"
+              ],
+              "estimatedHours": 12
+            },
+            {
+              "title": "Comprehensive Review",
+              "objectives": [
+                "Review all nursing content areas",
+                "Identify knowledge gaps",
+                "Prepare for licensing examination"
+              ],
+              "topics": [
+                "Fundamentals of Nursing",
+                "Medical-Surgical Nursing",
+                "Pediatric Nursing",
+                "Maternal-Newborn Nursing",
+                "Mental Health Nursing",
+                "Community Health Nursing"
+              ],
+              "estimatedHours": 20
+            },
+            {
+              "title": "Licensing Exam Bridge",
+              "objectives": [
+                "Master exam-taking strategies",
+                "Practice with NCLEX-style questions",
+                "Build test-taking confidence"
+              ],
+              "topics": [
+                "NCLEX-RN Format and Content",
+                "Test-Taking Strategies",
+                "Clinical Judgment Questions",
+                "Prioritization and Delegation",
+                "Pharmacology Review",
+                "Mock Examinations"
+              ],
+              "estimatedHours": 16
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "assessmentStrategy": {
+    "moduleQuiz": {
+      "passingScore": 80,
+      "attempts": 3,
+      "questionCount": "5-10 per module"
+    },
+    "termAssessment": {
+      "passingScore": 70,
+      "attempts": 2,
+      "questionCount": "50-100 per term"
+    },
+    "finalExam": {
+      "passingScore": 60,
+      "attempts": 3,
+      "questionCount": "100-150"
+    }
+  },
+  "certificationRequirements": {
+    "minimumOverallProgress": 100,
+    "allTermsCompleted": true,
+    "finalExamPassed": true,
+    "clinicalHoursCompleted": true
+  }
+}

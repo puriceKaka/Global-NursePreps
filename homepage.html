@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard | Global NursePrep</title>
+    <link rel="stylesheet" href="css/design-system.css">
+    <link rel="stylesheet" href="homepage.css">
+    <link rel="stylesheet" href="css/site-loader.css">
+    <script src="js/site-loader.js"></script>
+</head>
+<body>
+    <header class="topbar">
+        <button type="button" class="icon-button" id="menuToggle" aria-label="Open menu">
+            <span class="hamburger" aria-hidden="true"></span>
+        </button>
+
+        <div class="brand">
+            <span class="brand-logo">
+                <img src="logo/finalLogo.jpg" alt="Global NursePrep logo">
+            </span>
+            <div>
+                <h1>Global <span class="brand-nurse">Nurse</span>Prep</h1>
+                <p>Student dashboard • Learning journey • Exam readiness</p>
+            </div>
+        </div>
+
+        <div class="topbar-actions">
+            <a class="pill-button" href="EXAMINATION%20PREP%20SITE/landing.html">Exam Prep</a>
+            <button type="button" class="secondary-button" id="logoutBtn">Logout</button>
+        </div>
+    </header>
+
+    <div class="drawer-overlay hidden" id="drawerOverlay" tabindex="-1" aria-hidden="true"></div>
+
+    <aside class="drawer hidden" id="drawer" aria-label="Side menu">
+        <div class="drawer-header">
+            <div class="drawer-user">
+                <div class="avatar" id="drawerAvatar" aria-hidden="true">N</div>
+                <div>
+                    <strong id="drawerName">Member</strong>
+                    <div class="muted" id="drawerEmail">—</div>
+                </div>
+            </div>
+            <button type="button" class="icon-button" id="drawerClose" aria-label="Close menu">×</button>
+        </div>
+
+        <nav class="drawer-nav" aria-label="Navigation">
+            <a class="drawer-link" href="homepage.html">Dashboard</a>
+            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/courses.html">Courses</a>
+            <a class="drawer-link" href="student-licensing.html">Licensing</a>
+            <a class="drawer-link" href="EXAMINATION%20PREP%20SITE/exam-lobby/exam-lobby.html">Exams</a>
+            <a class="drawer-link" href="research-consultation.html">Research Support</a>
+            <a class="drawer-link" href="my-learnings.html">My Learnings</a>
+            <a class="drawer-link" href="Profile.html">Profile</a>
+            <a class="drawer-link" href="student-support.html">Help &amp; Support</a>
+        </nav>
+
+        <div class="drawer-footer">
+            <div class="muted small">Follow courses, practice exams, and earn certificates as you progress.</div>
+        </div>
+    </aside>
+
+    <main class="page">
+        <section class="dashboard-hero" id="top">
+            <div class="hero-content">
+                <div class="hero-kicker">Welcome back</div>
+                <h2>Your nursing learning journey continues here.</h2>
+                <p>
+                    Track course progression, prepare for exams, collect certificates, and stay focused on your
+                    next clinical learning milestone.
+                </p>
+                <div class="study-flow" aria-label="Learning flow">
+                    <span>Enroll</span>
+                    <span>Practice</span>
+                    <span>Exam</span>
+                    <span>Certificate</span>
+                </div>
+                <div class="hero-actions">
+                    <a class="primary-button" href="my-learnings.html">Continue learning</a>
+                    <a class="pill-button" href="EXAMINATION%20PREP%20SITE/landing.html">Open Exam Prep</a>
+                </div>
+            </div>
+            <aside class="hero-media" aria-label="Nursing students preparing for exams">
+                <img src="logo/home image.jpg" alt="Nursing students preparing for exams" loading="eager">
+                <div class="floating-progress" aria-hidden="true">
+                    <strong>28%</strong>
+                    <span>Learning progress</span>
+                </div>
+            </aside>
+        </section>
+
+        <section class="dashboard-overview" aria-label="Dashboard overview">
+            <div class="overview-main">
+                <section class="quick-grid dashboard-stats" aria-label="Dashboard statistics">
+                    <div class="quick-card"><strong>Total Courses</strong><span class="muted">6 active tracks</span></div>
+                    <div class="quick-card"><strong>Exams Completed</strong><span class="muted">0 this week</span></div>
+                    <div class="quick-card"><strong>Certificates Earned</strong><span class="muted">Available after completion</span></div>
+                    <div class="quick-card"><strong>Study Hours</strong><span class="muted">Build consistency daily</span></div>
+                    <div class="quick-card"><strong>Average Score</strong><span class="muted">Practice to unlock insights</span></div>
+                </section>
+
+                <section class="two-col dashboard-panels">
+                    <div class="info-card progress-panel">
+                        <strong>Learning progress</strong>
+                        <p class="muted">Course progression is saved when you enroll and continue modules. Certificates become available after completion.</p>
+                        <div class="progress-bar"><span style="width: 28%"></span></div>
+                    </div>
+                    <div class="info-card">
+                        <strong>Upcoming exams</strong>
+                        <p class="muted">Recommended: complete one mock NCLEX-style exam after each course review block.</p>
+                        <a class="pill-button" href="EXAMINATION%20PREP%20SITE/exam-lobby/exam-lobby.html">View exams</a>
+                    </div>
+                </section>
+            </div>
+        </section>
+
+        <section class="section-card" id="courses">
+            <header class="section-header">
+                <div>
+                    <h3>Recommended Courses</h3>
+                    <p class="muted">Featured courses: Fundamentals of Nursing, NCLEX Preparation, and Clinical Procedures.</p>
+                </div>
+                <div class="section-tools">
+                    <input type="search" id="courseSearch" placeholder="Search courses (e.g., NCLEX, ICU)">
+                    <select id="courseCategory" aria-label="Filter by category">
+                        <option value="all">All categories</option>
+                    </select>
+                    <select id="courseLevel" aria-label="Filter by level">
+                        <option value="all">All levels</option>
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                    </select>
+                </div>
+            </header>
+            <div class="card-grid" id="courseGrid" aria-live="polite"></div>
+        </section>
+
+        <section class="two-col dashboard-panels activity-strip">
+            <div class="info-card">
+                <strong>Recent activity</strong>
+                <p class="muted">No recent activity yet. Enroll in a course or start an exam to begin tracking progress.</p>
+            </div>
+            <div class="info-card">
+                <strong>Certificates earned</strong>
+                <p class="muted">Certificates are generated after course completion and can be downloaded from My Learnings.</p>
+                <a class="pill-button" href="my-learnings.html">My Learnings</a>
+            </div>
+        </section>
+
+        <section class="section-card" id="career">
+            <header class="section-header career-heading">
+                <div>
+                    <h3>Career Paths and Goals</h3>
+                    <p class="muted">Keep study goals organized and open career pathway guidance only when you need it.</p>
+                </div>
+                <div class="section-actions">
+                    <button type="button" class="secondary-button small" id="careerPathToggle">Show career paths</button>
+                </div>
+            </header>
+
+            <div class="career-goals-grid">
+                <div class="info-card career-path-card hidden" id="careerPathPanel">
+                    <div class="panel-kicker">Step 1</div>
+                    <strong>Choose a nursing pathway</strong>
+                    <div class="pill-row" id="careerPills"></div>
+                    <div class="career-detail" id="careerDetail"></div>
+                </div>
+
+                <div class="info-card goal-planner-card">
+                    <div class="panel-kicker">Step 2</div>
+                    <strong>Set notifications and goals</strong>
+                    <p class="muted small">Add reminders for clinical skills, exam blocks, certification dates, or weak topics.</p>
+                    <form class="row-form" id="goalForm">
+                        <input type="text" id="goalInput" placeholder="Add a goal (e.g., Complete NCLEX mock)">
+                        <input type="date" id="goalDate">
+                        <button type="submit" class="primary-button small">Add</button>
+                    </form>
+                    <div class="goals" id="goalsList"></div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="muted">© <span id="yearLabel"></span> Global NursePrep — Nursing education &amp; community.</div>
+            <div class="muted small">Powered by Teams Technologies</div>
+        </footer>
+    </main>
+
+    <script src="js/utils.js"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/supabase-bridge.js"></script>
+    <script src="js/auth-ui.js"></script>
+    <script src="learning-core.js"></script>
+    <script src="homepage.js"></script>
+</body>
+</html>
