@@ -104,6 +104,166 @@
         }
     ];
 
+    const IMPORTED_LESSON_COURSES = [
+        {
+            id: "analgesics-pharmacology",
+            title: "Analgesics",
+            unit: "Pharmacology",
+            category: "Pharmacology",
+            difficulty: "Intermediate",
+            badge: "Lecture Slides",
+            durationHours: 8,
+            questions: 100,
+            exams: 1,
+            format: "PowerPoint + Structured Modules",
+            summary: "Pain pathways, non-opioid and opioid analgesics, adjuvant therapies, safe administration, palliative care, and nursing considerations.",
+            image: COURSE_IMAGES.medicationTray,
+            moduleCount: 10,
+            moduleTitles: [
+                "Pain Concepts and Analgesic Classification",
+                "Non-Opioid Analgesics and NSAIDs",
+                "Paracetamol Use and Toxicity",
+                "Opioid Analgesics",
+                "Opioid Safety, Dependence, and Reversal",
+                "Adjuvant and Local Analgesics",
+                "Cannabinoid Analgesics",
+                "WHO Analgesic Ladder and Special Populations",
+                "Palliative and End-of-Life Pain Management",
+                "Nursing Monitoring and Patient Education"
+            ],
+            uploadedDocument: {
+                name: "ANAGESICS UPDATED.pptx",
+                title: "Analgesics",
+                type: "PowerPoint",
+                link: "/assets/course-materials/analgesics-updated.pptx",
+                preservedOriginal: true
+            },
+            source: "lesson-import"
+        },
+        {
+            id: "cardiovascular-drugs",
+            title: "Cardiovascular Drugs",
+            unit: "Pharmacology",
+            category: "Pharmacology",
+            difficulty: "Advanced",
+            badge: "Lecture Slides",
+            durationHours: 10,
+            questions: 100,
+            exams: 1,
+            format: "PowerPoint + Structured Modules",
+            summary: "Lipid-lowering drugs, anticoagulants, haematinics, fibrinolytics, dosage principles, adverse effects, and application of the nursing process.",
+            image: COURSE_IMAGES.criticalCare,
+            moduleCount: 8,
+            moduleTitles: [
+                "Lipid-Lowering Drug Classes",
+                "Statins, Fibrates, and Cholesterol Therapies",
+                "Nursing Process for Lipid-Lowering Therapy",
+                "Heparins and Anticoagulant Therapy",
+                "Warfarin and Direct Oral Anticoagulants",
+                "Anticoagulant Safety and Nursing Care",
+                "Haematinics and Blood Formation",
+                "Fibrinolytics and Cardiovascular Emergency Care"
+            ],
+            uploadedDocument: {
+                name: "CARDIOVASCULAR DRUGS.pptx",
+                title: "Cardiovascular Drugs",
+                type: "PowerPoint",
+                link: "/assets/course-materials/cardiovascular-drugs.pptx",
+                preservedOriginal: true
+            },
+            source: "lesson-import"
+        },
+        {
+            id: "nursing-process-drug-therapy",
+            title: "Nursing Process and Drug Therapy",
+            unit: "Fundamentals of Nursing",
+            category: "Clinical Practice",
+            difficulty: "Beginner",
+            badge: "Lecture Slides",
+            durationHours: 6,
+            questions: 100,
+            exams: 1,
+            format: "PowerPoint + Structured Modules",
+            summary: "A structured guide to assessment, nursing diagnosis, planning, implementation, evaluation, and safe drug-therapy decisions.",
+            image: COURSE_IMAGES.lectureRoom,
+            moduleCount: 6,
+            moduleTitles: [
+                "Introduction to the Nursing Process",
+                "Patient Assessment Before Drug Therapy",
+                "Ongoing Assessment and Data Analysis",
+                "Nursing Diagnoses and Clinical Priorities",
+                "Planning and Implementation of Care",
+                "Evaluation of Therapeutic Outcomes"
+            ],
+            uploadedDocument: {
+                name: "NURSING PROCESS AND THERAPY.pptx",
+                title: "Nursing Process and Drug Therapy",
+                type: "PowerPoint",
+                link: "/assets/course-materials/nursing-process-and-therapy.pptx",
+                preservedOriginal: true
+            },
+            source: "lesson-import"
+        },
+        {
+            id: "pharmacokinetics",
+            title: "Pharmacokinetics",
+            unit: "Pharmacology",
+            category: "Pharmacology",
+            difficulty: "Intermediate",
+            badge: "Lecture Slides",
+            durationHours: 9,
+            questions: 100,
+            exams: 1,
+            format: "PowerPoint + Structured Modules",
+            summary: "Drug movement through the body, membrane transport, absorption, distribution, metabolism, excretion, half-life, and nursing application.",
+            image: COURSE_IMAGES.medicationTray,
+            moduleCount: 8,
+            moduleTitles: [
+                "Foundations of Pharmacokinetics and ADME",
+                "Drug Transport Across Biological Membranes",
+                "Absorption, Routes, and Bioavailability",
+                "Distribution and Body Compartments",
+                "Protein Binding and Tissue Storage",
+                "Drug Metabolism and Biotransformation",
+                "Drug Excretion and Renal Clearance",
+                "Half-Life, Accumulation, and Nursing Practice"
+            ],
+            uploadedDocument: {
+                name: "PHARMACOKINETICS UPDATED.pptx",
+                title: "Pharmacokinetics",
+                type: "PowerPoint",
+                link: "/assets/course-materials/pharmacokinetics-updated.pptx",
+                preservedOriginal: true
+            },
+            source: "lesson-import"
+        }
+    ];
+
+    DEFAULT_COURSES.push(...IMPORTED_LESSON_COURSES.map((course) => ({
+        ...course,
+        generatedLessons: course.moduleTitles.map((moduleTitle, index) => ({
+            title: moduleTitle,
+            lectureTitle: moduleTitle,
+            objective: `Study ${moduleTitle} using the original PowerPoint presentation.`,
+            body: "",
+            concepts: [moduleTitle, course.unit, "Nursing practice"],
+            summary: `Module ${index + 1} of ${course.title}.`,
+            materials: {
+                videoLecture: "",
+                pdfNotes: "",
+                slides: course.uploadedDocument.link,
+                downloads: [{
+                    title: course.uploadedDocument.name,
+                    type: "PowerPoint",
+                    link: course.uploadedDocument.link
+                }],
+                discussion: true,
+                assignment: null
+            }
+        })),
+        resources: [course.uploadedDocument]
+    })));
+
     const DEFAULT_STATE = {
         selectedCourseId: DEFAULT_COURSES[0]?.id || "",
         enrolledCourseIds: [],
@@ -184,6 +344,7 @@
             lectureVideo: String(course?.lectureVideo || fallback.lectureVideo || "").trim(),
             lectureVideoName: String(course?.lectureVideoName || fallback.lectureVideoName || "").trim(),
             lectureVideoSource: String(course?.lectureVideoSource || fallback.lectureVideoSource || "").trim(),
+            lectureVideoAsset: course?.lectureVideoAsset || fallback.lectureVideoAsset || null,
             assignments: normalizeObjectList(course?.assignments || fallback.assignments),
             assessments: normalizeObjectList(course?.assessments || fallback.assessments),
             resources: normalizeObjectList(course?.resources || fallback.resources),
@@ -213,8 +374,17 @@
         if (window.GnpLearning) {
             window.GnpLearning.COURSE_META = COURSE_META;
         }
-        if (!options.skipRemote && window.GnpAdminApi?.saveCourses) {
-            void window.GnpAdminApi.saveCourses(COURSE_META).catch(() => {});
+        if (!options.skipRemote) {
+            const token = getRemoteToken();
+            const savePromise = isSupabaseReady() && token
+                ? window.GnpSupabase.saveCourses(COURSE_META, token)
+                : window.GnpAdminApi?.saveCourses?.(COURSE_META);
+            if (savePromise?.catch) {
+                void savePromise.catch((error) => {
+                    window.dispatchEvent(new CustomEvent("gnp-course-save-error", { detail: { error } }));
+                    console.error("Unable to persist the course catalog", error);
+                });
+            }
         }
         window.dispatchEvent(new CustomEvent("gnp-courses-updated", { detail: { courses: COURSE_META.slice() } }));
         return COURSE_META;
@@ -353,9 +523,13 @@
 
         refreshCoursesPromise = (async () => {
             try {
-                const remoteCourses = await window.GnpAdminApi?.loadCourses?.();
-                if (Array.isArray(remoteCourses?.courses) && remoteCourses.courses.length > 0) {
-                    return saveCourseCatalog(remoteCourses.courses, { skipRemote: true });
+                const token = getRemoteToken();
+                const remoteCourses = isSupabaseReady()
+                    ? await window.GnpSupabase.loadCourses(token)
+                    : await window.GnpAdminApi?.loadCourses?.();
+                const courses = Array.isArray(remoteCourses) ? remoteCourses : remoteCourses?.courses;
+                if (Array.isArray(courses) && courses.length > 0) {
+                    return saveCourseCatalog(courses, { skipRemote: true });
                 }
 
                 return COURSE_META;

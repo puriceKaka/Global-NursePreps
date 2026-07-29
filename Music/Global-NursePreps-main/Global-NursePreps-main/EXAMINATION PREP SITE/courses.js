@@ -614,7 +614,16 @@ externalCourses.forEach((course) => {
         price: Number(course.price || 0),
         lecturer: course.lecturer || "",
         uploadedDocument: course.uploadedDocument || null,
-        modules: []
+        modules: Array.isArray(course.generatedLessons)
+            ? course.generatedLessons.map((lesson) => ({
+                ...lesson,
+                image: course.image || courseImages.nurseTablet,
+                pearlTitle: "Original lecture material",
+                pearl: `Use the attached ${course.uploadedDocument?.type || "course material"} alongside this module.`,
+                structures: Array.isArray(lesson.concepts) ? lesson.concepts : [],
+                quiz: null
+            }))
+            : []
     });
 });
 
@@ -842,6 +851,10 @@ Use this unit as a readiness checkpoint. The goal is not only to finish question
 }
 
 function expandCourseModules(course) {
+    if (Array.isArray(course.modules) && course.modules.length) {
+        return course.modules;
+    }
+
     const topics = Array.isArray(course.terms)
         ? course.terms.flatMap((term) => term.modules.map((title) => ({ title, term: term.name })))
         : COURSE_TOPIC_BLUEPRINTS[course.id] || [
@@ -1994,27 +2007,14 @@ function getCourseById(courseId) {
     return courseCatalog.find((course) => course.id === courseId) || null;
 }
 
-function hasStudentSession() {
-    const session = window.GnpLearning?.getSession?.() || (() => {
-        try {
-            return JSON.parse(localStorage.getItem("nurseprep_session") || "null");
-        } catch {
-            return null;
+    function hasStudentSession() {
+        const session = window.GnpLearning?.getSession?.() || window.GnpUtils?.getSession?.() || null;
+
+        if (!session?.userId) {
+            return false;
         }
-    })();
-
-    if (!session?.userId) {
-        return false;
+        return !session.role || session.role === "student";
     }
-
-    try {
-        const users = JSON.parse(localStorage.getItem("nurseprep_users") || "[]");
-        const account = Array.isArray(users) ? users.find((user) => user.id === session.userId) : null;
-        return Boolean(account && (!account.role || account.role === "student"));
-    } catch {
-        return false;
-    }
-}
 
 function redirectToLoginForEnrollment(courseId) {
     const next = encodeURIComponent(`EXAMINATION%20PREP%20SITE/courses.html?enroll=${encodeURIComponent(courseId)}`);
