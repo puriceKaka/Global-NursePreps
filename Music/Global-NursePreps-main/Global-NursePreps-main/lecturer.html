@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lecturer Portal | Global NursePrep</title>
+    <script>
+        try {
+            const savedLecturerSession = JSON.parse(localStorage.getItem("gnp_lecturer_session") || "null");
+            if (savedLecturerSession?.role === "lecturer") {
+                document.documentElement.classList.add("lecturer-session-restore");
+            }
+        } catch {
+            localStorage.removeItem("gnp_lecturer_session");
+        }
+    </script>
     <link rel="stylesheet" href="homepage.css">
     <link rel="stylesheet" href="lecturer.css?v=20260729-compact-padding">
     <script defer src="js/supabase-config.js"></script>
@@ -12,7 +22,7 @@
     <script defer src="js/assessment-control.js?v=20260729-assessment-control"></script>
     <script defer src="learning-core.js"></script>
     <script defer src="js/auth-security.js"></script>
-    <script defer src="lecturer.js?v=20260729-icon-rail"></script>
+    <script defer src="lecturer.js?v=20260729-session-restore"></script>
     <link rel="stylesheet" href="css/site-loader.css">
     <script src="js/site-loader.js"></script>
 </head>

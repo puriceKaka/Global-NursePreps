@@ -44,6 +44,15 @@
         return `KES ${Number(value || 0).toLocaleString()}`;
     }
 
+    function recordTable(columns, rows, emptyMessage) {
+        if (!rows.length) return `<div class="table-empty">${escapeHtml(emptyMessage)}</div>`;
+        const template = `repeat(${columns.length}, minmax(0, 1fr))`;
+        return `<div class="record-table" style="--table-columns:${template}">
+            <div class="record-table-row record-table-head">${columns.map((column) => `<span>${escapeHtml(column.label)}</span>`).join("")}</div>
+            ${rows.map((cells) => `<div class="record-table-row">${cells.map((cell) => `<div class="record-cell">${cell}</div>`).join("")}</div>`).join("")}
+        </div>`;
+    }
+
     function getSession() {
         return readJson(KEYS.session, null);
     }
@@ -69,28 +78,66 @@
         writeJson(key, [item, ...all]);
     }
 
+    function getLecturerAccounts() {
+        const direct = readJson(KEYS.lecturers, []);
+        const adminState = readJson("gnp_admin_state", {});
+        const merged = new Map();
+        [...(Array.isArray(adminState.lecturers) ? adminState.lecturers : []), ...direct].forEach((lecturer) => {
+            const key = String(lecturer.email || lecturer.id || "").trim().toLowerCase();
+            if (key) merged.set(key, { ...(merged.get(key) || {}), ...lecturer });
+        });
+        return Array.from(merged.values());
+    }
+
+    function mirrorLecturersToAdmin(lecturers) {
+        const adminState = readJson("gnp_admin_state", {});
+        writeJson("gnp_admin_state", {
+            ...adminState,
+            lecturers
+        });
+    }
+
     function saveLecturerAccount(account) {
-        const lecturers = readJson(KEYS.lecturers, []);
+        const lecturers = getLecturerAccounts();
         const email = account.email.toLowerCase();
         const existing = lecturers.find((lecturer) => String(lecturer.email || "").toLowerCase() === email);
+        let next;
         if (existing) {
-            writeJson(KEYS.lecturers, lecturers.map((lecturer) => (
+            next = lecturers.map((lecturer) => (
                 String(lecturer.email || "").toLowerCase() === email
                     ? { ...lecturer, ...account, id: lecturer.id || account.id, status: lecturer.status || "pending", subscription: lecturer.subscription || "Not paid" }
                     : lecturer
-            )));
-            return;
+            ));
+        } else {
+            next = [{
+                ...account,
+                status: "pending",
+                subscription: "Not paid",
+                createdAt: new Date().toISOString()
+            }, ...lecturers];
         }
-        writeJson(KEYS.lecturers, [{
-            ...account,
-            status: "pending",
-            subscription: "Not paid",
-            createdAt: new Date().toISOString()
-        }, ...lecturers]);
+        writeJson(KEYS.lecturers, next);
+        mirrorLecturersToAdmin(next);
+        localStorage.setItem("gnp_last_lecturer_application", email);
     }
 
     function showApp() {
         const session = getSession();
+        const account = currentLecturer();
+        if (!account || account.status !== "approved") {
+            localStorage.removeItem(KEYS.session);
+            showAuth();
+            const message = $("#lecturerLoginMessage");
+            if (message) {
+                message.textContent = account?.status === "suspended"
+                    ? "This lecturer account is suspended. Contact the administrator."
+                    : "Your lecturer application is waiting for administrator approval.";
+                message.className = "form-message error";
+            }
+            return;
+        }
+        document.body.classList.add("lecturer-authenticated");
+        document.documentElement.classList.remove("lecturer-session-restore");
         $("#lecturerAuth")?.classList.add("hidden");
         $("#lecturerApp")?.classList.remove("hidden");
         $("#lecturerLogout")?.classList.remove("hidden");
@@ -102,6 +149,8 @@
     }
 
     function showAuth() {
+        document.documentElement.classList.remove("lecturer-session-restore");
+        document.body.classList.remove("lecturer-authenticated");
         $("#lecturerAuth")?.classList.remove("hidden");
         $("#lecturerApp")?.classList.add("hidden");
         $("#lecturerLogout")?.classList.add("hidden");
@@ -137,7 +186,7 @@
             return;
         }
 
-        const lecturers = readJson(KEYS.lecturers, []);
+        const lecturers = getLecturerAccounts();
         const existing = lecturers.find((lecturer) => String(lecturer.email || "").toLowerCase() === email);
         if (existing?.passwordHash) {
             if (message) {
@@ -161,7 +210,7 @@
         if ($("#lecturerEmail")) $("#lecturerEmail").value = email;
         const loginMessage = $("#lecturerLoginMessage");
         if (loginMessage) {
-            loginMessage.textContent = "Account created. Login with your lecturer email and password.";
+            loginMessage.textContent = "Application submitted. Wait for an administrator to approve your lecturer account before signing in.";
             loginMessage.className = "form-message success";
         }
     }
@@ -180,11 +229,14 @@
             return;
         }
 
-        const lecturers = readJson(KEYS.lecturers, []);
+        const lecturers = getLecturerAccounts();
         const existing = lecturers.find((lecturer) => String(lecturer.email || "").toLowerCase() === email);
         if (!existing?.passwordHash) {
             if (message) {
-                message.textContent = "Lecturer account not found. Create an account first.";
+                const lastApplication = localStorage.getItem("gnp_last_lecturer_application");
+                message.textContent = lastApplication === email
+                    ? "Your lecturer application is waiting for administrator approval."
+                    : "Lecturer account not found. Create an account first.";
                 message.className = "form-message error";
             }
             return;
@@ -201,6 +253,18 @@
         await window.GnpAuthSecurity.upgradePasswordIfNeeded(password, existing, (upgraded) => {
             writeJson(KEYS.lecturers, lecturers.map((lecturer) => lecturer.id === existing.id ? upgraded : lecturer));
         });
+
+        const status = String(existing.status || "pending").toLowerCase();
+        if (status !== "approved") {
+            localStorage.removeItem(KEYS.session);
+            if (message) {
+                message.textContent = status === "suspended"
+                    ? "This lecturer account is suspended. Contact the administrator."
+                    : "Your lecturer account is pending. An administrator must approve it before you can log in.";
+                message.className = "form-message error";
+            }
+            return;
+        }
 
         const session = {
             id: existing.id,
@@ -259,7 +323,7 @@
 
     function currentLecturer() {
         const session = getSession();
-        const matches = readJson(KEYS.lecturers, []).filter((lecturer) => (
+        const matches = getLecturerAccounts().filter((lecturer) => (
             lecturer.id === session?.id || String(lecturer.email || "").toLowerCase() === String(session?.email || "").toLowerCase()
         ));
         return matches.find((lecturer) => lecturer.status === "approved") || matches[0] || null;
@@ -283,9 +347,11 @@
             status: "recorded",
             createdAt: new Date().toISOString()
         });
-        writeJson(KEYS.lecturers, readJson(KEYS.lecturers, []).map((lecturer) => (
+        const updatedLecturers = getLecturerAccounts().map((lecturer) => (
             lecturer.id === session.id ? { ...lecturer, subscription: planName } : lecturer
-        )));
+        ));
+        writeJson(KEYS.lecturers, updatedLecturers);
+        mirrorLecturersToAdmin(updatedLecturers);
         event.currentTarget.reset();
         renderAll();
     }
@@ -351,21 +417,59 @@
         renderAll();
     }
 
-    function handleResource(event) {
+    async function handleResource(event) {
         event.preventDefault();
         const session = getSession();
         const course = courseById($("#resourceCourse").value);
-        saveOwnItem(KEYS.resources, {
+        if (!course) return;
+        const file = $("#resourceFile")?.files?.[0] || null;
+        const suppliedLink = ($("#resourceLink")?.value || "").trim();
+        if (!file && !suppliedLink) {
+            window.alert("Upload a material or enter a resource URL.");
+            return;
+        }
+        let resource = {
             id: uid("resource"),
             lecturerId: session.id,
             lecturerName: session.name,
             title: $("#resourceTitle").value.trim(),
-            courseId: course?.id || "",
-            courseTitle: course?.title || "Course",
+            courseId: course.id,
+            courseTitle: course.title,
             type: $("#resourceType").value,
-            link: $("#resourceLink").value.trim(),
+            link: suppliedLink,
             createdAt: new Date().toISOString()
-        });
+        };
+        try {
+            if (file && String(file.type || "").startsWith("video/")) {
+                const video = await window.GnpCourseMaterials.processVideo(file, { courseId: course.id });
+                resource = { ...resource, ...video, title: resource.title || video.name, type: "Video" };
+                window.GnpLearning?.updateCourse?.(course.id, {
+                    lectureVideo: video.link,
+                    lectureVideoName: video.name,
+                    lectureVideoSource: video.storagePath || video.name,
+                    lectureVideoAsset: video,
+                    resources: [...(course.resources || []), resource]
+                });
+            } else if (file) {
+                const material = await window.GnpCourseMaterials.processDocument(file, { courseId: course.id });
+                resource = { ...resource, ...material, title: resource.title || material.title };
+                window.GnpLearning?.updateCourse?.(course.id, {
+                    contentNotes: [course.contentNotes, material.extractedNotes].filter(Boolean).join("\n\n"),
+                    moduleTitles: [...(course.moduleTitles || []), ...(material.moduleTitles || [])],
+                    generatedLessons: [...(course.generatedLessons || []), ...(material.generatedLessons || [])],
+                    resources: [...(course.resources || []), resource],
+                    uploadedDocument: material
+                });
+            } else {
+                window.GnpLearning?.updateCourse?.(course.id, {
+                    resources: [...(course.resources || []), resource]
+                });
+            }
+            saveOwnItem(KEYS.resources, resource);
+        } catch (error) {
+            window.alert(error?.message || "Unable to add the learning material.");
+            return;
+        }
         event.currentTarget.reset();
         renderAll();
     }
@@ -452,6 +556,10 @@
     function handlePublishCourse(event) {
         event.preventDefault();
         const session = getSession();
+        if (currentLecturer()?.status !== "approved") {
+            window.alert("An administrator must approve this lecturer account before courses can be published.");
+            return;
+        }
         const file = $("#publishDocument").files?.[0] || null;
         const documentImageFile = $("#publishDocumentImage").files?.[0] || null;
         const courseImageFile = $("#publishCourseImage").files?.[0] || null;
@@ -463,17 +571,24 @@
         const unit = ($("#publishUnit").value || "").trim();
         const subunit = ($("#publishSubunit").value || "").trim();
         const moduleCount = Number($("#publishModuleCount").value || 1);
-        const moduleTitles = parseModuleTitles($("#publishModuleTitles").value || "", moduleCount, title);
+        let moduleTitles = parseModuleTitles($("#publishModuleTitles").value || "", moduleCount, title);
+        const courseId = `lecturer-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}-${Date.now().toString(36)}`;
         const courseImagePromise = documentImageFile
             ? readFileAsDataUrl(documentImageFile)
             : (courseImageFile ? readFileAsDataUrl(courseImageFile) : Promise.resolve(""));
         const videoPromise = videoFile
-            ? readFileAsDataUrl(videoFile)
-            : Promise.resolve(($("#publishVideoUrl").value || "").trim());
+            ? window.GnpCourseMaterials.processVideo(videoFile, { courseId })
+            : Promise.resolve(null);
+        const materialPromise = file
+            ? window.GnpCourseMaterials.processDocument(file, { courseId })
+            : Promise.resolve(null);
 
-        void Promise.all([courseImagePromise, videoPromise]).then(([courseImage, lectureVideo]) => {
+        void Promise.all([courseImagePromise, videoPromise, materialPromise]).then(([courseImage, videoAsset, material]) => {
+            const lectureVideo = videoAsset?.link || ($("#publishVideoUrl").value || "").trim();
+            if (material?.moduleTitles?.length) moduleTitles = material.moduleTitles;
+            const generatedNotes = material?.extractedNotes || notes;
             const course = {
-                id: `lecturer-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}-${Date.now().toString(36)}`,
+                id: courseId,
                 title,
                 unit,
                 subunit,
@@ -501,13 +616,13 @@
                 lessonBackgroundImage: courseImage || "assets/course-images/default.jpg",
                 moduleCount,
                 moduleTitles,
-                contentNotes: notes,
-                uploadedDocument: file ? { name: file.name, type: file.type, size: file.size } : null,
-                generatedLessons: moduleTitles.map((moduleTitle, index) => ({
+                contentNotes: generatedNotes,
+                uploadedDocument: material,
+                generatedLessons: material?.generatedLessons?.length ? material.generatedLessons : moduleTitles.map((moduleTitle, index) => ({
                     title: moduleTitle,
                     lectureTitle: subunit || unit || "Lecturer module",
                     objective: `Understand ${moduleTitle} within the ${unit || $("#publishCategory").value.trim() || "course"} unit.`,
-                    body: notes || `${moduleTitle} supports the learning path for ${title}.`,
+                    body: generatedNotes || `${moduleTitle} supports the learning path for ${title}.`,
                     concepts: [moduleTitle, unit || subunit || $("#publishCategory").value.trim(), "Lecture notes"],
                     summary: `${moduleTitle} for ${title}.`,
                     materials: {
@@ -521,7 +636,10 @@
                 })),
                 assignments: parseStructuredRows($("#publishAssignments").value || "", { prefix: "assignment", label: "Assignment", type: "Assignment" }),
                 assessments: parseStructuredRows($("#publishAssessments").value || "", { prefix: "assessment", label: "Assessment", type: "Assessment" }),
-                resources: parseStructuredRows($("#publishResources").value || "", { prefix: "resource", label: "Resource" }),
+                resources: [
+                    ...(material ? [material] : []),
+                    ...parseStructuredRows($("#publishResources").value || "", { prefix: "resource", label: "Resource" })
+                ],
                 announcements: parseLines($("#publishAnnouncements").value || "").map((message, index) => ({
                     id: `announcement-${index + 1}`,
                     title: `Announcement ${index + 1}`,
@@ -531,6 +649,7 @@
                 lectureVideo,
                 lectureVideoName: videoFile?.name || "",
                 lectureVideoSource: videoFile?.name || ($("#publishVideoUrl").value || "").trim(),
+                lectureVideoAsset: videoAsset,
                 source: "lecturer"
             };
 
@@ -565,58 +684,130 @@
 
     function renderPayments() {
         const payments = readJson(KEYS.payments, []).filter((payment) => payment.lecturerId === getSession()?.id);
-        $("#lecturerPayments").innerHTML = payments.map((payment) => `
-            <article class="data-card">
-                <h3>${escapeHtml(payment.item)}</h3>
-                <p class="muted">${escapeHtml(payment.method)} • ${escapeHtml(payment.reference || "Reference pending")}</p>
-                <p><strong>${money(payment.amount)}</strong> <span class="status-pill">${escapeHtml(payment.status)}</span></p>
-            </article>
-        `).join("") || `<article class="data-card empty-card"><p class="muted">Teaching payment records will appear here.</p></article>`;
+        $("#lecturerPayments").innerHTML = recordTable(
+            [{ label: "Plan", width: "minmax(220px, 1.5fr)" }, { label: "Method" }, { label: "Reference" }, { label: "Amount" }, { label: "Status" }, { label: "Date" }],
+            payments.map((payment) => [
+                `<strong>${escapeHtml(payment.item)}</strong>`, escapeHtml(payment.method), escapeHtml(payment.reference || "Pending"),
+                `<strong>${money(payment.amount)}</strong>`, `<span class="status-pill">${escapeHtml(payment.status)}</span>`,
+                escapeHtml(payment.createdAt ? new Date(payment.createdAt).toLocaleDateString() : "—")
+            ]),
+            "Teaching payment records will appear here."
+        );
     }
 
     function renderGroups() {
         const groups = ownItems(KEYS.groups);
-        $("#groupsList").innerHTML = groups.map((group) => `
-            <article class="data-card">
-                <h3>${escapeHtml(group.name)}</h3>
-                <p class="muted">${escapeHtml(group.courseTitle)} • ${escapeHtml(group.access)} • limit ${escapeHtml(group.limit)}</p>
-                <p><span class="status-pill">${escapeHtml(group.members?.length || 0)} students joined</span></p>
-            </article>
-        `).join("") || `<article class="data-card empty-card"><p class="muted">Create a membership group to organize students by course or cohort.</p></article>`;
+        $("#groupsList").innerHTML = recordTable(
+            [{ label: "Group", width: "minmax(220px, 1.5fr)" }, { label: "Course" }, { label: "Access" }, { label: "Students" }, { label: "Limit" }, { label: "Created" }],
+            groups.map((group) => [
+                `<strong>${escapeHtml(group.name)}</strong>`, escapeHtml(group.courseTitle), `<span class="status-pill">${escapeHtml(group.access)}</span>`,
+                escapeHtml(group.members?.length || 0), escapeHtml(group.limit), escapeHtml(group.createdAt ? new Date(group.createdAt).toLocaleDateString() : "—")
+            ]),
+            "Create a membership group to organize students by course or cohort."
+        );
     }
 
     function renderMeetings() {
         const meetings = ownItems(KEYS.meetings);
-        $("#meetingsList").innerHTML = meetings.map((meeting) => `
-            <article class="data-card">
-                <h3>${escapeHtml(meeting.title)}</h3>
-                <p class="muted">${escapeHtml(meeting.groupName)} • ${escapeHtml(meeting.date || "Date pending")}</p>
-                <p><a href="${escapeHtml(meeting.link)}" target="_blank" rel="noopener">Open meeting link</a></p>
-            </article>
-        `).join("") || `<article class="data-card empty-card"><p class="muted">Scheduled teaching sessions will appear here.</p></article>`;
+        $("#meetingsList").innerHTML = recordTable(
+            [{ label: "Meeting", width: "minmax(220px, 1.5fr)" }, { label: "Group" }, { label: "Schedule" }, { label: "Link", width: "180px" }],
+            meetings.map((meeting) => [
+                `<strong>${escapeHtml(meeting.title)}</strong>`, escapeHtml(meeting.groupName), escapeHtml(meeting.date || "Pending"),
+                `<a class="table-link" href="${escapeHtml(meeting.link)}" target="_blank" rel="noopener">Open meeting</a>`
+            ]),
+            "Scheduled teaching sessions will appear here."
+        );
     }
 
     function renderExams() {
         const exams = ownItems(KEYS.exams);
-        $("#examsList").innerHTML = exams.map((exam) => `
-            <article class="data-card">
-                <h3>${escapeHtml(exam.title)}</h3>
-                <p class="muted">${escapeHtml(exam.courseTitle)} • ${escapeHtml(exam.questions)} questions • ${escapeHtml(exam.duration)} min</p>
-                <p>${escapeHtml(exam.instructions)}</p>
-                <p><span class="status-pill">${escapeHtml(exam.status)}</span></p>
-            </article>
-        `).join("") || `<article class="data-card empty-card"><p class="muted">Submitted exams will appear here with their review status.</p></article>`;
+        $("#examsList").innerHTML = recordTable(
+            [{ label: "Exam", width: "minmax(240px, 1.5fr)" }, { label: "Course" }, { label: "Questions" }, { label: "Duration" }, { label: "Status" }, { label: "Created" }],
+            exams.map((exam) => [
+                `<strong>${escapeHtml(exam.title)}</strong><small>${escapeHtml(exam.instructions || "")}</small>`, escapeHtml(exam.courseTitle),
+                escapeHtml(exam.questions), `${escapeHtml(exam.duration)} min`, `<span class="status-pill">${escapeHtml(exam.status)}</span>`,
+                escapeHtml(exam.createdAt ? new Date(exam.createdAt).toLocaleDateString() : "—")
+            ]),
+            "Submitted exams will appear here with their review status."
+        );
     }
 
     function renderResources() {
         const resources = ownItems(KEYS.resources);
-        $("#resourcesList").innerHTML = resources.map((resource) => `
-            <article class="data-card">
-                <h3>${escapeHtml(resource.title)}</h3>
-                <p class="muted">${escapeHtml(resource.courseTitle)} • ${escapeHtml(resource.type)}</p>
-                <p><a href="${escapeHtml(resource.link)}" target="_blank" rel="noopener">Open resource</a></p>
-            </article>
-        `).join("") || `<article class="data-card empty-card"><p class="muted">Add notes, links, worksheets, or question banks for your courses.</p></article>`;
+        $("#resourcesList").innerHTML = recordTable(
+            [{ label: "Resource", width: "minmax(220px, 1.5fr)" }, { label: "Course" }, { label: "Type" }, { label: "Added" }, { label: "Action", width: "170px" }],
+            resources.map((resource) => [
+                `<strong>${escapeHtml(resource.title)}</strong>`, escapeHtml(resource.courseTitle), escapeHtml(resource.type),
+                escapeHtml(resource.createdAt ? new Date(resource.createdAt).toLocaleDateString() : "—"),
+                resource.link ? `<a class="table-link" href="${escapeHtml(resource.link)}" target="_blank" rel="noopener">Open resource</a>` : "Stored material"
+            ]),
+            "Add notes, links, worksheets, or question banks for your courses."
+        );
+    }
+
+    function lecturerAssessmentAttempts() {
+        const control = window.GnpAssessmentControl;
+        const session = getSession();
+        if (!control) return [];
+        const attempts = control.listAttempts();
+        const ownedExamIds = new Set(ownItems(KEYS.exams).map((exam) => exam.id));
+        return attempts.filter((attempt) => (
+            attempt.lecturerId === session?.id
+            || ownedExamIds.has(attempt.examId)
+            || (!attempt.lecturerId && ownedExamIds.size === 0)
+        ));
+    }
+
+    function renderAssessmentControl() {
+        const control = window.GnpAssessmentControl;
+        if (!control) return;
+        const attempts = lecturerAssessmentAttempts();
+        const studentIds = new Set(attempts.map((attempt) => attempt.studentId));
+        const students = control.listStudents().filter((student) => studentIds.has(student.id));
+        const now = Date.now();
+
+        $("#lecturerStudentList").innerHTML = students.map((student) => {
+            const studentAttempts = attempts.filter((attempt) => attempt.studentId === student.id);
+            const violations = studentAttempts.reduce((sum, attempt) => sum + Number(attempt.violations?.length || 0), 0);
+            return `
+                <article class="data-card">
+                    <h3>${escapeHtml(student.name || "Student")}</h3>
+                    <p class="muted">${escapeHtml(student.email || student.id)}</p>
+                    <p><span class="status-pill">${escapeHtml(student.status || "active")}</span> <span class="status-pill">${studentAttempts.length} attempt${studentAttempts.length === 1 ? "" : "s"}</span></p>
+                    <p>${violations} conduct alert${violations === 1 ? "" : "s"} recorded.</p>
+                </article>
+            `;
+        }).join("") || `<article class="data-card empty-card"><p class="muted">Students appear here after entering one of your assessments.</p></article>`;
+
+        $("#lecturerAttemptList").innerHTML = attempts
+            .filter((attempt) => ["active", "reopened"].includes(attempt.status))
+            .map((attempt) => {
+                const lastSeen = Date.parse(attempt.lastSeenAt || "");
+                const connected = Number.isFinite(lastSeen) && now - lastSeen < 15000;
+                return `
+                    <article class="data-card live-attempt">
+                        <h3>${escapeHtml(attempt.studentName)} — ${escapeHtml(attempt.examTitle)}</h3>
+                        <p><span class="status-pill">${connected ? "Online" : "Disconnected"}</span> <span class="status-pill">Camera: ${escapeHtml(attempt.cameraStatus || "unknown")}</span> <span class="status-pill">Mic: ${escapeHtml(attempt.microphoneStatus || "unknown")}</span></p>
+                        <p class="muted">Question ${escapeHtml(attempt.currentQuestion || 1)} · ${escapeHtml(attempt.answeredCount || 0)} answered</p>
+                        <p>${escapeHtml(attempt.violations?.length || 0)} proctoring alert${attempt.violations?.length === 1 ? "" : "s"}.</p>
+                        <div class="data-actions"><button type="button" data-lecturer-attempt-action="flag" data-attempt-id="${escapeHtml(attempt.id)}">Flag for admin</button></div>
+                    </article>
+                `;
+            }).join("") || `<article class="data-card empty-card"><p class="muted">No students are currently taking your exams.</p></article>`;
+
+        $("#lecturerResultsList").innerHTML = attempts
+            .filter((attempt) => ["submitted", "terminated", "locked", "marked", "published"].includes(attempt.status))
+            .map((attempt) => `
+                <article class="data-card">
+                    <h3>${escapeHtml(attempt.studentName)} — ${escapeHtml(attempt.examTitle)}</h3>
+                    <p><strong>${escapeHtml(attempt.manualScore ?? attempt.score ?? "Pending")}${Number.isFinite(Number(attempt.manualScore ?? attempt.score)) ? "%" : ""}</strong> <span class="status-pill">${escapeHtml(attempt.status)}</span></p>
+                    <p class="muted">${escapeHtml(attempt.answeredCount || 0)} of ${escapeHtml(attempt.totalQuestions || 0)} answered · ${escapeHtml(attempt.violations?.length || 0)} alerts</p>
+                    <div class="data-actions">
+                        <button type="button" data-lecturer-attempt-action="mark" data-attempt-id="${escapeHtml(attempt.id)}">Enter mark</button>
+                        <button type="button" data-lecturer-attempt-action="publish" data-attempt-id="${escapeHtml(attempt.id)}">Publish</button>
+                    </div>
+                </article>
+            `).join("") || `<article class="data-card empty-card"><p class="muted">Submitted attempts will appear here for marking.</p></article>`;
     }
 
     function renderAll() {
@@ -627,6 +818,7 @@
         renderExams();
         renderResources();
         renderPublishedCourses();
+        renderAssessmentControl();
     }
 
     function renderPublishedCourses() {
@@ -636,17 +828,38 @@
         ));
         const container = $("#publishedCoursesList");
         if (!container) return;
-        container.innerHTML = courses.map((course) => `
-            <article class="data-card">
-                <h3>${escapeHtml(course.title)}</h3>
-                <p class="muted">${escapeHtml(course.category)} • ${escapeHtml(course.difficulty)} • ${course.access === "paid" ? money(course.price) : "Free"}</p>
-                <p>${escapeHtml(course.summary)}</p>
-                <span class="status-pill">Posted to students</span>
-            </article>
-        `).join("") || `<article class="data-card empty-card"><p class="muted">Published courses will appear here after posting.</p></article>`;
+        container.innerHTML = recordTable(
+            [{ label: "Course", width: "minmax(260px, 2fr)" }, { label: "Category" }, { label: "Level" }, { label: "Access" }, { label: "Status" }, { label: "Action", width: "170px" }],
+            courses.map((course) => [
+                `<strong>${escapeHtml(course.title)}</strong><small>${escapeHtml(course.summary || "")}</small>`, escapeHtml(course.category),
+                escapeHtml(course.difficulty), course.access === "paid" ? money(course.price) : "Free", `<span class="status-pill">Published</span>`,
+                `<a class="table-link" href="EXAMINATION%20PREP%20SITE/course-workspace.html?courseId=${encodeURIComponent(course.id)}">View course</a>`
+            ]),
+            "Published courses will appear here after posting."
+        );
     }
 
     function handleTabs(event) {
+        const attemptButton = event.target.closest("[data-lecturer-attempt-action]");
+        if (attemptButton) {
+            const action = attemptButton.dataset.lecturerAttemptAction;
+            const attemptId = attemptButton.dataset.attemptId;
+            if (action === "mark") {
+                const raw = window.prompt("Enter the final mark (0–100):");
+                const score = Number(raw);
+                if (raw !== null && Number.isFinite(score) && score >= 0 && score <= 100) {
+                    window.GnpAssessmentControl?.updateAttempt(attemptId, { manualScore: score, status: "marked", markedAt: new Date().toISOString() });
+                }
+            }
+            if (action === "publish") {
+                window.GnpAssessmentControl?.updateAttempt(attemptId, { status: "published", publishedAt: new Date().toISOString() });
+            }
+            if (action === "flag") {
+                window.GnpAssessmentControl?.addViolation(attemptId, "lecturer-review", "Lecturer flagged this attempt for administrator review.");
+            }
+            renderAssessmentControl();
+            return;
+        }
         const tab = event.target.closest(".tab-button");
         if (!tab) return;
         $$(".tab-button").forEach((button) => button.classList.toggle("active", button === tab));
@@ -654,6 +867,14 @@
     }
 
     function main() {
+        $$(".tab-button").forEach((button) => {
+            const label = button.querySelector("span:nth-child(2)")?.textContent?.trim();
+            if (label) {
+                button.title = label;
+                button.setAttribute("aria-label", label);
+            }
+        });
+        setAuthMode("login");
         $("#lecturerLoginForm")?.addEventListener("submit", handleLogin);
         $("#lecturerRegisterForm")?.addEventListener("submit", handleRegister);
         $("#showLecturerRegister")?.addEventListener("click", () => setAuthMode("register"));
@@ -669,11 +890,27 @@
             localStorage.removeItem(KEYS.session);
             showAuth();
         });
+        window.addEventListener("storage", (event) => {
+            if (event.key === KEYS.lecturers) {
+                const status = currentLecturer()?.status || "pending";
+                if (status === "approved" && getSession()?.role === "lecturer") {
+                    showApp();
+                } else if (getSession()?.role === "lecturer") {
+                    localStorage.removeItem(KEYS.session);
+                    showAuth();
+                }
+            }
+            if ([window.GnpAssessmentControl?.KEYS.attempts, window.GnpAssessmentControl?.KEYS.students].includes(event.key)) {
+                renderAssessmentControl();
+            }
+        });
+        window.addEventListener("gnp:assessment-updated", renderAssessmentControl);
         document.addEventListener("click", handleTabs);
 
-        if (getSession()?.role === "lecturer") {
+        if (getSession()?.role === "lecturer" && currentLecturer()?.status === "approved") {
             showApp();
         } else {
+            localStorage.removeItem(KEYS.session);
             showAuth();
         }
     }
