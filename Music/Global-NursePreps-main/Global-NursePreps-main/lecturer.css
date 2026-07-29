@@ -177,7 +177,7 @@ body.lecturer-authenticated .lecturer-shell {
 }
 
 .lecturer-auth-forms .lecturer-form > .primary-button {
-    margin-top: 1rem;
+    margin-top: 3rem;
 }
 
 .lecturer-auth-forms .lecturer-form.hidden,
